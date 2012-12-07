@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.WildAmazing.marinating.Demigods.DUtil;
@@ -19,6 +20,7 @@ public class Typhon implements Deity {
 	private static final int ULTIMATECOST = 10000;
 	private static final int ULTIMATECOOLDOWNMAX = 180; //seconds
 	private static final int ULTIMATECOOLDOWNMIN = 60;
+	private static final int EXPLOSIONSIZE = 4;
 
 	private static final String skillname = "";
 	private static final String ult = "";
@@ -147,4 +149,14 @@ public class Typhon implements Deity {
 			LASTCHECK = timeSent;
 		}
 	}
+	
+	public static void onEntityDeath(EntityDeathEvent e){
+		if (e.getEntity() instanceof Player){
+			Player p = (Player)e.getEntity();
+				if (!DUtil.hasDeity(p, "Typhon"))
+					return;
+				if (DUtil.canWorldGuardPVP(p.getLocation()) || DUtil.canFactionsPVP(p.getLocation()))
+					p.getWorld().createExplosion(p.getLocation(), EXPLOSIONSIZE);
+		}
+}
 }

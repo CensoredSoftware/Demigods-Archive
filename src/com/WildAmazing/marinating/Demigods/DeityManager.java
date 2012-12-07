@@ -20,6 +20,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.clashnia.ClashniaUpdate.DemigodsUpdate;
+import com.clashnia.Demigods.Deities.Giants.Typhon;
 
 public class DeityManager implements Listener {
 	/*
@@ -83,6 +84,10 @@ public class DeityManager implements Listener {
 			return;
 		if (e.getEntity() instanceof Player) {
 			Player p = (Player)e.getEntity();
+			
+			// Deity specific needs
+			Typhon.onEntityDeath(e);
+			
 			if ((DUtil.getDeities(p)!=null) && (DUtil.getDeities(p).size()>0)) {
 				for (Deity d : DUtil.getDeities(p))
 					d.onEvent(e);
