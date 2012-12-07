@@ -1996,7 +1996,7 @@ public class DCommandExecutor implements CommandExecutor
 		if (DUtil.isFullParticipant(p))
 			if (p.getItemInHand() != null)
 				p.sendMessage(ChatColor.YELLOW+p.getItemInHand().getType().name()+" x"+p.getItemInHand().getAmount()+" is worth "+
-						(int)(DUtil.getValue(p.getItemInHand())*ShrineManager.FAVORMULTIPLIER)+" at a shrine.");
+						(int)(DUtil.getValue(p.getItemInHand())*DShrines.FAVORMULTIPLIER)+" at a shrine.");
 		return true;
 	}
 	

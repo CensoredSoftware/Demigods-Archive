@@ -1076,7 +1076,7 @@ public class DUtil {
 			if (!w.getWorld().equals(l.getWorld().getName()))
 				continue;
 			Location l1 = DUtil.toLocation(w);
-			if (l1.distance(l) < ShrineManager.RADIUS) {
+			if (l1.distance(l) < DShrines.RADIUS) {
 				shrine = w;
 				break;
 			}

@@ -3,6 +3,7 @@ package com.WildAmazing.marinating.Demigods;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
@@ -42,9 +43,6 @@ import com.WildAmazing.marinating.Demigods.Deities.Titans.Themis;
 import com.clashnia.Demigods.Deities.Giants.Ephialtes;
 import com.clashnia.Demigods.Deities.Giants.Otus;
 import com.clashnia.Demigods.Deities.Giants.Typhon;
-
-
-import com.WildAmazing.marinating.Demigods.MetricsLite;
 
 import com.massivecraft.factions.P;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -120,14 +118,17 @@ public class Demigods extends JavaPlugin implements Listener
 		loadCommands(); // #5 (needed)
 		initializeThreads(); // #6 (regen and etc)
 		loadDependencies(); // #7 compatibility with protection plugins
+		cleanUp(); // #8
+		invalidShrines(); // #9
+		levelPlayers(); // #10
 		
 		if (DUtil.checkDemigodsExpansion()) log.info("[Demigods] Found DemigodsExpansion...");
 		else log.info("[Demigods] DemigodsExpansion not found...");
 		
 		log.info("[Demigods] Attempting to load Metrics.");
 		
-		loadMetrics(); // #8
-		unstickFireball(); // #9
+		loadMetrics(); // #11
+		unstickFireball(); // #12
 		
 		// Check for updates, and then update if need be
 		
@@ -219,16 +220,9 @@ public class Demigods extends JavaPlugin implements Listener
 	
 	public void loadMetrics()
 	{
-		// Attempt to send metrics to the mcstats.org website
-		try
-		{
-			MetricsLite metrics = new MetricsLite(this);
-			metrics.start();
-		}
-		catch (IOException e)
-		{
-			// Failed to submit the stats
-		}
+		new DMetrics(this);
+		DMetrics.allianceStatsPastWeek();
+		DMetrics.allianceStatsAllTime();
 	}
 
 	public void loadCommands()
@@ -358,8 +352,10 @@ public class Demigods extends JavaPlugin implements Listener
 
 	public void loadListeners()
 	{
+		getServer().getPluginManager().registerEvents(new DListeners(), this);
+		
 		getServer().getPluginManager().registerEvents(new DChatCommandExecutor(), this);
-		getServer().getPluginManager().registerEvents(new ShrineManager(), this);
+		
 		getServer().getPluginManager().registerEvents(new DeityManager(), this);
 		getServer().getPluginManager().registerEvents(new LevelManager(), this);
 		getServer().getPluginManager().registerEvents(new PVPManager(), this);
@@ -537,9 +533,7 @@ public class Demigods extends JavaPlugin implements Listener
 		}
 	}
 	
-	
-	/**
-	private void updateSave()
+	private void cleanUp()
 	{
 		// Clean things that may cause glitches
 		for (String player : DUtil.getFullParticipants())
@@ -552,7 +546,11 @@ public class Demigods extends JavaPlugin implements Listener
 				}
 			}
 		}
-		
+	}
+	
+	/**
+	private void updateSave()
+	{
 		// Updating to 1.1
 		HashMap<String, HashMap<String, Object>> copy = DSave.getCompleteData();
 		String updated = "[Demigods] Updated players:";
@@ -579,11 +577,11 @@ public class Demigods extends JavaPlugin implements Listener
 		if (yes)
 			log.info(updated);
 		DSave.overwrite(copy);
-		
-		// Level players		
-		for (String player : DSave.getCompleteData().keySet())
-			LevelManager.levelProcedure(player);
-		
+	}
+	*/
+	
+	private void invalidShrines()
+	{
 		// Remove invalid shrines
 		Iterator<WriteLocation> i = DUtil.getAllShrines().iterator();
 		ArrayList<String> worldnames = new ArrayList<String>();
@@ -598,9 +596,15 @@ public class Demigods extends JavaPlugin implements Listener
 			}
 		}
 		if (count > 0)
-			log.info("[Demigods] Removed "+count+" invalid shrines.");	
+			log.info("[Demigods] Removed "+count+" invalid shrines.");
 	}
-	*/
+	
+	private void levelPlayers()
+	{
+		// Level players		
+		for (String player : DSave.getCompleteData().keySet())
+			LevelManager.levelProcedure(player);
+	}
 	
 	private void unstickFireball()
 	{
