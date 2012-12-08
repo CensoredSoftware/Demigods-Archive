@@ -1,28 +1,28 @@
-package com.WildAmazing.marinating.Demigods;
+package com.WildAmazing.marinating.Demigods.Listeners;
 
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-public class DamageHandler implements Listener {
+import com.WildAmazing.marinating.Demigods.DSettings;
+import com.WildAmazing.marinating.Demigods.DUtil;
+
+public class DDamage
+{
 	/*
 	 * This handler deals with non-Demigods damage (all of that will go directly to DUtil's built in damage function) and converts it
 	 * to Demigods HP, using individual multipliers for balance purposes.
 	 * 
 	 * The adjusted value should be around/less than 1 to adjust for the increased health, but not ridiculous
 	 */
-	public static boolean FRIENDLYFIRE = Settings.getSettingBoolean("friendly_fire");
+	public static boolean FRIENDLYFIRE = DSettings.getSettingBoolean("friendly_fire");
 
-	@EventHandler (priority = EventPriority.HIGHEST)
-	public void onDamage(EntityDamageEvent e)
+	public static void onDamage(EntityDamageEvent e)
 	{
 		if (!(e.getEntity() instanceof Player))
 			return;
@@ -31,7 +31,7 @@ public class DamageHandler implements Listener {
 		{
 			return;
 		}
-		if (!Settings.getEnabledWorlds().contains(p.getWorld()))
+		if (!DSettings.getEnabledWorlds().contains(p.getWorld()))
 			return;
 		if (e instanceof EntityDamageByEntityEvent)
 		{
@@ -60,8 +60,7 @@ public class DamageHandler implements Listener {
 		}
 	}
 
-	@EventHandler (priority = EventPriority.HIGHEST)
-	public void onRespawn(PlayerRespawnEvent e)
+	public static void onRespawn(PlayerRespawnEvent e)
 	{
 		if (DUtil.isFullParticipant(e.getPlayer()))
 		{
@@ -69,8 +68,7 @@ public class DamageHandler implements Listener {
 		}
 	}
 
-	@EventHandler (priority = EventPriority.HIGHEST)
-	public void onHeal(EntityRegainHealthEvent e)
+	public static void onHeal(EntityRegainHealthEvent e)
 	{
 		if (!(e.getEntity() instanceof Player))
 			return;

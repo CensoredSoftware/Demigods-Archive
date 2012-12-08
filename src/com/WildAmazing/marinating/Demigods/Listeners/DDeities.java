@@ -1,11 +1,9 @@
-package com.WildAmazing.marinating.Demigods;
+package com.WildAmazing.marinating.Demigods.Listeners;
 
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -18,34 +16,18 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
+import com.WildAmazing.marinating.Demigods.DSave;
+import com.WildAmazing.marinating.Demigods.DSettings;
+import com.WildAmazing.marinating.Demigods.DUtil;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.clashnia.ClashniaUpdate.DemigodsUpdate;
 import com.clashnia.Demigods.Deities.Giants.Typhon;
 
-public class DeityManager implements Listener {
-	/*
-	 * Distributes all events to deities
-	 */
-	public DeityManager() {
-		DUtil.getPlugin().getServer().getScheduler().scheduleSyncRepeatingTask(DUtil.getPlugin(), new Runnable() {
-			@Override
-			public void run() {
-				for (String name : DUtil.getFullParticipants()) {
-					Player p = DUtil.getOnlinePlayer(name);
-					if ((p != null) && p.isOnline()) {
-						if (Settings.getEnabledWorlds().contains(p.getWorld())) {
-							for (Deity d : DUtil.getDeities(p))
-								d.onTick(System.currentTimeMillis());
-						}
-					}
-				}
-			}
-		}, 20, 5);
-	}
+public class DDeities
+{
 
-	@EventHandler
-	public void onBlockBreak(BlockBreakEvent e) {
-		if (!Settings.getEnabledWorlds().contains(e.getBlock().getWorld()))
+	public static void onBlockBreak(BlockBreakEvent e) {
+		if (!DSettings.getEnabledWorlds().contains(e.getBlock().getWorld()))
 			return;
 		//Player
 		Player p = e.getPlayer();
@@ -54,9 +36,9 @@ public class DeityManager implements Listener {
 				d.onEvent(e);
 		}
 	}
-	@EventHandler
-	public void onBlockPlace(BlockPlaceEvent e) {
-		if (!Settings.getEnabledWorlds().contains(e.getBlock().getWorld()))
+	
+	public static void onBlockPlace(BlockPlaceEvent e) {
+		if (!DSettings.getEnabledWorlds().contains(e.getBlock().getWorld()))
 			return;
 		//Player
 		Player p = e.getPlayer();
@@ -65,9 +47,9 @@ public class DeityManager implements Listener {
 				d.onEvent(e);
 		}
 	}
-	@EventHandler
-	public void onEntityDamage(EntityDamageEvent e){
-		if (!Settings.getEnabledWorlds().contains(e.getEntity().getWorld()))
+	
+	public static void onEntityDamage(EntityDamageEvent e){
+		if (!DSettings.getEnabledWorlds().contains(e.getEntity().getWorld()))
 			return;
 		for (Player pl : e.getEntity().getWorld().getPlayers()) {
 			if (DUtil.isFullParticipant(pl)) {
@@ -78,9 +60,9 @@ public class DeityManager implements Listener {
 			}
 		}
 	}
-	@EventHandler
-	public void onEntityDeath(EntityDeathEvent e){
-		if (!Settings.getEnabledWorlds().contains(e.getEntity().getWorld()))
+
+	public static void onEntityDeath(EntityDeathEvent e){
+		if (!DSettings.getEnabledWorlds().contains(e.getEntity().getWorld()))
 			return;
 		if (e.getEntity() instanceof Player) {
 			Player p = (Player)e.getEntity();
@@ -94,9 +76,9 @@ public class DeityManager implements Listener {
 			}
 		}
 	}
-	@EventHandler
-	public void onEntityTarget(EntityTargetEvent e){
-		if (!Settings.getEnabledWorlds().contains(e.getEntity().getWorld()))
+
+	public static void onEntityTarget(EntityTargetEvent e){
+		if (!DSettings.getEnabledWorlds().contains(e.getEntity().getWorld()))
 			return;
 		if (e.isCancelled())
 			return;
@@ -108,15 +90,15 @@ public class DeityManager implements Listener {
 			}
 		}
 	}
-	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent e){ //sync to master file
+
+	public static void onPlayerJoin(PlayerJoinEvent e){ //sync to master file
 		final Player p = e.getPlayer();
-		if (!Settings.getEnabledWorlds().contains(p.getWorld()))
+		if (!DSettings.getEnabledWorlds().contains(p.getWorld()))
 			return;
-		if (Settings.getSettingBoolean("motd")) {
+		if (DSettings.getSettingBoolean("motd")) {
 			p.sendMessage("This server is running Demigods v"+ChatColor.YELLOW+DUtil.getPlugin().getDescription().getVersion()+ChatColor.WHITE+".");
 			p.sendMessage(ChatColor.GRAY+"Type "+ChatColor.GREEN+"/dg"+ChatColor.GRAY+" for more info.");
-			if ((!Settings.getSettingBoolean("update")) && (DemigodsUpdate.shouldUpdate()) && DUtil.hasPermissionOrOP(p, "demigods.admin")) {
+			if ((!DSettings.getSettingBoolean("update")) && (DemigodsUpdate.shouldUpdate()) && DUtil.hasPermissionOrOP(p, "demigods.admin")) {
 				p.sendMessage(ChatColor.RED + "There is a new, stable release for Infractions.");
 				p.sendMessage(ChatColor.RED + "Please update ASAP.");
 				p.sendMessage(ChatColor.GREEN + "Latest: http://clashnia.com/plugins/demigods/Demigods.jar");
@@ -128,18 +110,18 @@ public class DeityManager implements Listener {
 		}
 		DSave.saveData(p, "LASTLOGINTIME", System.currentTimeMillis());
 	}
-	@EventHandler
-	public void onPlayerPickupItem(PlayerPickupItemEvent e){
+
+	public static void onPlayerPickupItem(PlayerPickupItemEvent e){
 		Player p = e.getPlayer();
-		if (!Settings.getEnabledWorlds().contains(p.getWorld()))
+		if (!DSettings.getEnabledWorlds().contains(p.getWorld()))
 			return;
 		if ((DUtil.getDeities(p)!=null) && (DUtil.getDeities(p).size()>0)) {
 			for (Deity d : DUtil.getDeities(p))
 				d.onEvent(e);
 		}
 	}
-	@EventHandler
-	public void onPlayerChat(AsyncPlayerChatEvent e){
+
+	public static void onPlayerChat(AsyncPlayerChatEvent e){
 		Player p = e.getPlayer();
 		if (DUtil.isFullParticipant(p))
 			if (DSave.hasData(p, "ALLIANCECHAT")) {
@@ -152,37 +134,37 @@ public class DeityManager implements Listener {
 					}
 				}
 			}
-		if (!Settings.getEnabledWorlds().contains(p.getWorld()))
+		if (!DSettings.getEnabledWorlds().contains(p.getWorld()))
 			return;
 		if ((DUtil.getDeities(p)!=null) && (DUtil.getDeities(p).size()>0)) {
 			for (Deity d : DUtil.getDeities(p))
 				d.onEvent(e);
 		}
 	}
-	@EventHandler
-	public void onPlayerInteract(PlayerInteractEvent e){
+
+	public static void onPlayerInteract(PlayerInteractEvent e){
 		Player p = e.getPlayer();
-		if (!Settings.getEnabledWorlds().contains(p.getWorld()))
+		if (!DSettings.getEnabledWorlds().contains(p.getWorld()))
 			return;
 		if ((DUtil.getDeities(p)!=null) && (DUtil.getDeities(p).size()>0)) {
 			for (Deity d : DUtil.getDeities(p))
 				d.onEvent(e);
 		}
 	}
-	@EventHandler
-	public void onPlayerInteractEntity(PlayerInteractEntityEvent e) {
+
+	public static void onPlayerInteractEntity(PlayerInteractEntityEvent e) {
 		Player p = e.getPlayer();
-		if (!Settings.getEnabledWorlds().contains(p.getWorld()))
+		if (!DSettings.getEnabledWorlds().contains(p.getWorld()))
 			return;
 		if ((DUtil.getDeities(p)!=null) && (DUtil.getDeities(p).size()>0)) {
 			for (Deity d : DUtil.getDeities(p))
 				d.onEvent(e);
 		}
 	}
-	@EventHandler
-	public void onPlayerRespawn(PlayerRespawnEvent e) {
+
+	public static void onPlayerRespawn(PlayerRespawnEvent e) {
 		Player p = e.getPlayer();
-		if (!Settings.getEnabledWorlds().contains(p.getWorld()))
+		if (!DSettings.getEnabledWorlds().contains(p.getWorld()))
 			return;
 		if ((DUtil.getDeities(p)!=null) && (DUtil.getDeities(p).size()>0)) {
 			for (Deity d : DUtil.getDeities(p))

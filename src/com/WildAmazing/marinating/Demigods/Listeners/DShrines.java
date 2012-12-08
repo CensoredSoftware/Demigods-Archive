@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods;
+package com.WildAmazing.marinating.Demigods.Listeners;
 
 import java.util.Iterator;
 import java.util.List;
@@ -22,18 +22,23 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.WildAmazing.marinating.Demigods.DSave;
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Demigods;
+import com.WildAmazing.marinating.Demigods.DSettings;
+import com.WildAmazing.marinating.Demigods.WriteLocation;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
 public class DShrines
 {
 	// Define variables
-	protected static double FAVORMULTIPLIER = Settings.getSettingDouble("globalfavormultiplier");
-	protected static int RADIUS = 8;
+	public static double FAVORMULTIPLIER = DSettings.getSettingDouble("globalfavormultiplier");
+	public static int RADIUS = 8;
 	
 	public static void createShrine(PlayerInteractEvent e)
 	{
 		if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-		if (!Settings.getEnabledWorlds().contains(e.getClickedBlock().getWorld())) return;
+		if (!DSettings.getEnabledWorlds().contains(e.getClickedBlock().getWorld())) return;
 		if (!DUtil.isFullParticipant(e.getPlayer())) return;
 		if ((e.getClickedBlock().getType() != Material.SIGN) && (e.getClickedBlock().getType() != Material.SIGN_POST)) return;
 		Sign s = (Sign)e.getClickedBlock().getState();
@@ -107,7 +112,7 @@ public class DShrines
 	
 	public static void destroyShrine(BlockBreakEvent e)
 	{
-		if (!Settings.getEnabledWorlds().contains(e.getBlock().getWorld()))	return;
+		if (!DSettings.getEnabledWorlds().contains(e.getBlock().getWorld()))	return;
 		for (WriteLocation center : DUtil.getAllShrines())
 		{
 			if ((DUtil.toWriteLocation(e.getBlock().getLocation())).equalsApprox(center))
@@ -121,7 +126,7 @@ public class DShrines
 	
 	public static void stopShrineDamage(BlockDamageEvent e)
 	{
-		if (!Settings.getEnabledWorlds().contains(e.getBlock().getWorld())) return;
+		if (!DSettings.getEnabledWorlds().contains(e.getBlock().getWorld())) return;
 		for (WriteLocation center : DUtil.getAllShrines())
 		{
 			if ((DUtil.toWriteLocation(e.getBlock().getLocation())).equalsApprox(center))
@@ -133,7 +138,7 @@ public class DShrines
 	
 	public static void stopShrineIgnite(BlockIgniteEvent e)
 	{
-		if (!Settings.getEnabledWorlds().contains(e.getBlock().getWorld())) return;
+		if (!DSettings.getEnabledWorlds().contains(e.getBlock().getWorld())) return;
 		for (WriteLocation center : DUtil.getAllShrines())
 		{
 			if ((DUtil.toWriteLocation(e.getBlock().getLocation())).equalsApprox(center))
@@ -145,7 +150,7 @@ public class DShrines
 	
 	public static void stopShrineBurn(BlockBurnEvent e)
 	{
-		if (!Settings.getEnabledWorlds().contains(e.getBlock().getWorld())) return;
+		if (!DSettings.getEnabledWorlds().contains(e.getBlock().getWorld())) return;
 		for (WriteLocation center : DUtil.getAllShrines())
 		{
 			if ((DUtil.toWriteLocation(e.getBlock().getLocation())).equalsApprox(center))
@@ -162,7 +167,7 @@ public class DShrines
 		CHECKBLOCKS:
 		for (Block b : blocks)
 		{
-			if (!Settings.getEnabledWorlds().contains(b.getWorld()))
+			if (!DSettings.getEnabledWorlds().contains(b.getWorld()))
 			{
 				return;
 			}
@@ -182,7 +187,7 @@ public class DShrines
 		// Define variables
 		final Block b = e.getBlock().getRelative(e.getDirection(), 2);
 		
-		if (!Settings.getEnabledWorlds().contains(b.getWorld())) return;
+		if (!DSettings.getEnabledWorlds().contains(b.getWorld())) return;
 		for (WriteLocation shrine : DUtil.getAllShrines())
 		{
 			if ((DUtil.toWriteLocation(b.getLocation())).equalsApprox((shrine)) && e.isSticky())
@@ -194,7 +199,7 @@ public class DShrines
 	
 	public static void shrineExplode(final EntityExplodeEvent e)
 	{
-		if (!Settings.getEnabledWorlds().contains(e.getLocation().getWorld())) return;
+		if (!DSettings.getEnabledWorlds().contains(e.getLocation().getWorld())) return;
 		try {
 			// Remove shrine blocks from explosions
 			Iterator<Block> i = e.blockList().iterator();
@@ -215,7 +220,7 @@ public class DShrines
 	{
 		if (e.getAction() != Action.RIGHT_CLICK_BLOCK)
 			return;
-		if (!Settings.getEnabledWorlds().contains(e.getClickedBlock().getWorld()))
+		if (!DSettings.getEnabledWorlds().contains(e.getClickedBlock().getWorld()))
 			return;
 		if (e.getClickedBlock().getType() != Material.GOLD_BLOCK)
 			return;
@@ -272,7 +277,7 @@ public class DShrines
 	
 	public static void tributeSuccess(InventoryCloseEvent e)
 	{
-		if (!Settings.getEnabledWorlds().contains(e.getPlayer().getWorld()))
+		if (!DSettings.getEnabledWorlds().contains(e.getPlayer().getWorld()))
 			return;
 		if (!(e.getPlayer() instanceof Player))
 			return;
@@ -319,7 +324,7 @@ public class DShrines
 			p.sendMessage(ChatColor.YELLOW+"Your Favor Cap has increased to "+DUtil.getFavorCap(p)+".");
 		if ((fbefore == DUtil.getFavorCap(p)) && (dbefore == DUtil.getDevotion(p, togive)) && (items > 0))
 			p.sendMessage(ChatColor.YELLOW+"Your tributes were insufficient for "+togive+"'s blessings.");
-		LevelManager.levelProcedure(p);
+		DLevels.levelProcedure(p);
 		//clear inventory
 		e.getInventory().clear();
 	}

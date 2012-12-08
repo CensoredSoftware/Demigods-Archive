@@ -1,29 +1,37 @@
-package com.WildAmazing.marinating.Demigods;
+package com.WildAmazing.marinating.Demigods.Listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.DSettings;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
-public class LevelManager implements Listener {
-
-	static double MULTIPLIER = Settings.getSettingDouble("globalexpmultiplier"); //can be modified
+public class DLevels
+{
+	static double MULTIPLIER = DSettings.getSettingDouble("globalexpmultiplier"); //can be modified
 	static int LOSSLIMIT = 15000; //max devotion lost on death per deity
 
 	@SuppressWarnings("incomplete-switch")
-	@EventHandler (priority = EventPriority.HIGHEST)
-	public void gainEXP(BlockBreakEvent e) {
+	public static void gainEXP(BlockBreakEvent e)
+	{
 		if (e.getPlayer() != null) {
 			Player p = e.getPlayer();
+			try
+			{
+				if (!DUtil.getWorldGuard().canBuild(p, e.getBlock().getLocation()))
+					return;
+			}
+			catch (Exception ex)
+			{
+				// Do nothing
+			}
 			if (!DUtil.isFullParticipant(p))
 				return;
-			if (!Settings.getEnabledWorlds().contains(p.getWorld()))
+			if (!DSettings.getEnabledWorlds().contains(p.getWorld()))
 				return;
 			int value = 0;
 			switch (e.getBlock().getType()) {
@@ -58,13 +66,22 @@ public class LevelManager implements Listener {
 		}
 	}
 
-	@EventHandler (priority = EventPriority.HIGHEST)
-	public void gainEXP(EntityDamageByEntityEvent e) {
-		if (e.getDamager() instanceof Player) {
+	public static void gainEXP(EntityDamageByEntityEvent e)
+	{
+		if (e.getDamager() instanceof Player){
 			Player p = (Player)e.getDamager();
+			try
+			{
+				if (!DUtil.getWorldGuard().canBuild(p, e.getEntity().getLocation()))
+					return;
+			}
+			catch (Exception ex)
+			{
+				// Do nothing
+			}
 			if (!DUtil.isFullParticipant(p))
 				return;
-			if (!Settings.getEnabledWorlds().contains(p.getWorld()))
+			if (!DSettings.getEnabledWorlds().contains(p.getWorld()))
 				return;
 			if (!DUtil.canPVP(e.getEntity().getLocation())) {
 				return;
@@ -79,14 +96,15 @@ public class LevelManager implements Listener {
 			levelProcedure(p);
 		}
 	}
-	@EventHandler (priority = EventPriority.HIGHEST)
-	public void deathPenalty(EntityDeathEvent e) {
+	
+	public static void deathPenalty(EntityDeathEvent e)
+	{
 		if (!(e.getEntity() instanceof Player))
 			return;
 		Player p = (Player)e.getEntity();
 		if (!DUtil.isFullParticipant(p))
 			return;
-		if (!Settings.getEnabledWorlds().contains(p.getWorld()))
+		if (!DSettings.getEnabledWorlds().contains(p.getWorld()))
 			return;
 		double reduced = 0.1; //TODO
 		long before = DUtil.getDevotion(p);
@@ -102,10 +120,14 @@ public class LevelManager implements Listener {
 		p.sendMessage(ChatColor.DARK_RED+"Your Devotion has been reduced by "+(before-DUtil.getDevotion(p))+".");
 		DUtil.setHP(p, 0);
 	}
-	public static void levelProcedure(Player p) {
+	
+	public static void levelProcedure(Player p)
+	{
 		levelProcedure(p.getName());
 	}
-	public static void levelProcedure(String p) {
+	
+	public static void levelProcedure(String p) 
+	{
 		if (DUtil.isFullParticipant(p))
 			if (DUtil.getAscensions(p) >= DUtil.ASCENSIONCAP)
 				return;

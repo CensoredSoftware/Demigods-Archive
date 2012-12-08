@@ -30,7 +30,7 @@ import com.WildAmazing.marinating.Demigods.Deities.Titans.Rhea;
 import com.WildAmazing.marinating.Demigods.Deities.Titans.Themis;
 import com.clashnia.Demigods.Deities.Giants.Typhon;
 
-public class DebugManager {
+public class DDebug {
 
 	/**
 	 * Prints data for "p" in-game to "cm".

@@ -1,21 +1,20 @@
-package com.WildAmazing.marinating.Demigods;
+package com.WildAmazing.marinating.Demigods.Listeners;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.DSettings;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
-public class DChatCommandExecutor implements Listener
+public class DChatCommands
 {
-	@EventHandler (priority = EventPriority.MONITOR)
-	public void onChatCommand(AsyncPlayerChatEvent e)
+	public static void onChatCommand(AsyncPlayerChatEvent e)
 	{
 		// Define variables
 		Player p = e.getPlayer();
@@ -25,7 +24,7 @@ public class DChatCommandExecutor implements Listener
 		else if (e.getMessage().equals("dg")) dg(p,e);
 	}
 	
-	private void qd(Player p, AsyncPlayerChatEvent e)
+	private static void qd(Player p, AsyncPlayerChatEvent e)
 	{
 		if ((e.getMessage().charAt(0) == 'q') && (e.getMessage().charAt(1) == 'd')){
 			String str;
@@ -70,11 +69,11 @@ public class DChatCommandExecutor implements Listener
 		}
 	}
 	
-	private void dg(Player p, AsyncPlayerChatEvent e)
+	private static void dg(Player p, AsyncPlayerChatEvent e)
 	{
 		HashMap<String, ArrayList<String>> alliances = new HashMap<String, ArrayList<String>>();
 		for (Player pl : DUtil.getPlugin().getServer().getOnlinePlayers()) {
-			if (Settings.getEnabledWorlds().contains(pl.getWorld())) {
+			if (DSettings.getEnabledWorlds().contains(pl.getWorld())) {
 				if (DUtil.isFullParticipant(pl)) {
 					if (!alliances.containsKey(DUtil.getAllegiance(pl).toUpperCase())) {
 						alliances.put(DUtil.getAllegiance(pl).toUpperCase(), new ArrayList<String>());

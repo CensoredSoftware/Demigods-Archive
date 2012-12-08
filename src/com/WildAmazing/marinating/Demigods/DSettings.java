@@ -6,11 +6,11 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
-public class Settings {
+public class DSettings {
 
 	static Demigods plugin;
 
-	public Settings(Demigods instance)
+	public DSettings(Demigods instance)
 	{
 		plugin = instance;
 		plugin.getConfig().options().copyDefaults(true);

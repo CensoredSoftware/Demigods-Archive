@@ -1,5 +1,6 @@
-package com.WildAmazing.marinating.Demigods;
+package com.WildAmazing.marinating.Demigods.Listeners;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -30,8 +31,32 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-public class DListeners implements Listener
+import com.WildAmazing.marinating.Demigods.DSettings;
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Deities.Gods.Hephaestus;
+
+
+public class DemigodsListeners implements Listener
 {
+	
+	public DemigodsListeners() {
+		DUtil.getPlugin().getServer().getScheduler().scheduleSyncRepeatingTask(DUtil.getPlugin(), new Runnable() {
+			@Override
+			public void run() {
+				for (String name : DUtil.getFullParticipants()) {
+					Player p = DUtil.getOnlinePlayer(name);
+					if ((p != null) && p.isOnline()) {
+						if (DSettings.getEnabledWorlds().contains(p.getWorld())) {
+							for (Deity d : DUtil.getDeities(p))
+								d.onTick(System.currentTimeMillis());
+						}
+					}
+				}
+			}
+		}, 20, 5);
+	}
+	
 	// Player listeners
 	@EventHandler (priority = EventPriority.HIGH)
 	public static void onPlayerInteract(PlayerInteractEvent e)
@@ -40,6 +65,8 @@ public class DListeners implements Listener
 		DShrines.createShrine(e);
 		DShrines.playerTribute(e);
 		
+		// Deities
+		DDeities.onPlayerInteract(e);		
 	}
 	
 	@EventHandler (priority = EventPriority.HIGH)
@@ -52,25 +79,32 @@ public class DListeners implements Listener
 	@EventHandler (priority = EventPriority.MONITOR)
 	public static void onPlayerJoin(PlayerJoinEvent e)
 	{
-		
+		// Deities
+		DDeities.onPlayerJoin(e);
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)
 	public static void onPlayerPickupItem(PlayerPickupItemEvent e)
 	{
-		
+		// Deities
+		DDeities.onPlayerPickupItem(e);
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)
 	public static void onPlayerInteractEntity(PlayerInteractEntityEvent e)
 	{
-		
+		// Deities
+		DDeities.onPlayerInteractEntity(e);
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)
 	public static void onPlayerRespawn(PlayerRespawnEvent e)
 	{
+		// Damage
+		DDamage.onRespawn(e);
 		
+		// Deities
+		DDeities.onPlayerRespawn(e);
 	}
 	
 	// Chat listeners
@@ -78,7 +112,11 @@ public class DListeners implements Listener
 	@EventHandler (priority = EventPriority.MONITOR)
 	public static void onPlayerChat(AsyncPlayerChatEvent e)
 	{
+		// Chat Commands
+		DChatCommands.onChatCommand(e);
 		
+		// Deities
+		DDeities.onPlayerChat(e);
 	}
 	
 	// Block listeners
@@ -87,12 +125,19 @@ public class DListeners implements Listener
 	{
 		// Shrines
 		DShrines.destroyShrine(e);
+		
+		// Levels
+		DLevels.gainEXP(e);
+		
+		// Deities
+		DDeities.onBlockBreak(e);
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)
 	public static void onBlockPlace(BlockPlaceEvent e)
 	{
-		
+		// Deities
+		DDeities.onBlockPlace(e);
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)
@@ -135,31 +180,42 @@ public class DListeners implements Listener
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public static void onEntityDamgageByEntity(EntityDamageByEntityEvent e)
 	{
-		
+		// PvP
+		DPvP.pvpDamage(e);
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)
 	public static void onEntityDamage(EntityDamageEvent e)
 	{
+		// Damage
+		DDamage.onDamage(e);
 		
+		// Deities
+		DDeities.onEntityDamage(e);
 	}
 	
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public static void onEntityDeath(EntityDeathEvent e)
 	{
+		// PvP
+		DPvP.playerDeath(e);
 		
+		// Deities
+		DDeities.onEntityDeath(e);
 	}
 	
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public static void onEntityTarget(EntityTargetEvent e)
 	{
-		
+		// Deities
+		DDeities.onEntityTarget(e);
 	}
 	
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public static void onEntityRegainHealth(EntityRegainHealthEvent e)
 	{
-		
+		// Damage
+		DDamage.onHeal(e);
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)
@@ -181,6 +237,7 @@ public class DListeners implements Listener
 	@EventHandler (priority = EventPriority.MONITOR)
 	public static void onFurnaceSmelt(FurnaceSmeltEvent e)
 	{
-		
+		// Deity Specific
+		Hephaestus.onSmelt(e);
 	}
 }
