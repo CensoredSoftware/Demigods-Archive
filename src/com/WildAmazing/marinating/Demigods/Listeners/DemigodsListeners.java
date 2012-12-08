@@ -1,6 +1,5 @@
 package com.WildAmazing.marinating.Demigods.Listeners;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -31,15 +30,12 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-import com.WildAmazing.marinating.Demigods.DSettings;
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Deities.Gods.Hephaestus;
 
 
 public class DemigodsListeners implements Listener
 {
-	
+	/*
 	public DemigodsListeners() {
 		DUtil.getPlugin().getServer().getScheduler().scheduleSyncRepeatingTask(DUtil.getPlugin(), new Runnable() {
 			@Override
@@ -56,6 +52,7 @@ public class DemigodsListeners implements Listener
 			}
 		}, 20, 5);
 	}
+	*/
 	
 	// Player listeners
 	@EventHandler (priority = EventPriority.HIGH)
@@ -66,7 +63,7 @@ public class DemigodsListeners implements Listener
 		DShrines.playerTribute(e);
 		
 		// Deities
-		DDeities.onPlayerInteract(e);		
+		// DDeities.onPlayerInteract(e);		
 	}
 	
 	@EventHandler (priority = EventPriority.HIGH)
@@ -80,21 +77,21 @@ public class DemigodsListeners implements Listener
 	public static void onPlayerJoin(PlayerJoinEvent e)
 	{
 		// Deities
-		DDeities.onPlayerJoin(e);
+		// DDeities.onPlayerJoin(e);
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)
 	public static void onPlayerPickupItem(PlayerPickupItemEvent e)
 	{
 		// Deities
-		DDeities.onPlayerPickupItem(e);
+		// DDeities.onPlayerPickupItem(e);
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)
 	public static void onPlayerInteractEntity(PlayerInteractEntityEvent e)
 	{
 		// Deities
-		DDeities.onPlayerInteractEntity(e);
+		// DDeities.onPlayerInteractEntity(e);
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)
@@ -104,7 +101,7 @@ public class DemigodsListeners implements Listener
 		DDamage.onRespawn(e);
 		
 		// Deities
-		DDeities.onPlayerRespawn(e);
+		// DDeities.onPlayerRespawn(e);
 	}
 	
 	// Chat listeners
@@ -116,7 +113,7 @@ public class DemigodsListeners implements Listener
 		DChatCommands.onChatCommand(e);
 		
 		// Deities
-		DDeities.onPlayerChat(e);
+		// DDeities.onPlayerChat(e);
 	}
 	
 	// Block listeners
@@ -130,14 +127,14 @@ public class DemigodsListeners implements Listener
 		DLevels.gainEXP(e);
 		
 		// Deities
-		DDeities.onBlockBreak(e);
+		// DDeities.onBlockBreak(e);
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)
 	public static void onBlockPlace(BlockPlaceEvent e)
 	{
 		// Deities
-		DDeities.onBlockPlace(e);
+		// DDeities.onBlockPlace(e);
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)
@@ -191,7 +188,7 @@ public class DemigodsListeners implements Listener
 		DDamage.onDamage(e);
 		
 		// Deities
-		DDeities.onEntityDamage(e);
+		// DDeities.onEntityDamage(e);
 	}
 	
 	@EventHandler (priority = EventPriority.HIGHEST)
@@ -201,14 +198,14 @@ public class DemigodsListeners implements Listener
 		DPvP.playerDeath(e);
 		
 		// Deities
-		DDeities.onEntityDeath(e);
+		// DDeities.onEntityDeath(e);
 	}
 	
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public static void onEntityTarget(EntityTargetEvent e)
 	{
 		// Deities
-		DDeities.onEntityTarget(e);
+		// DDeities.onEntityTarget(e);
 	}
 	
 	@EventHandler (priority = EventPriority.HIGHEST)

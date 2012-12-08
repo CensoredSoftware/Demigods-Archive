@@ -4,6 +4,8 @@ import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -23,9 +25,27 @@ import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.clashnia.ClashniaUpdate.DemigodsUpdate;
 import com.clashnia.Demigods.Deities.Giants.Typhon;
 
-public class DDeities
+public class DDeities implements Listener
 {
 
+	public DDeities() {
+		DUtil.getPlugin().getServer().getScheduler().scheduleSyncRepeatingTask(DUtil.getPlugin(), new Runnable() {
+			@Override
+			public void run() {
+				for (String name : DUtil.getFullParticipants()) {
+					Player p = DUtil.getOnlinePlayer(name);
+					if ((p != null) && p.isOnline()) {
+						if (DSettings.getEnabledWorlds().contains(p.getWorld())) {
+							for (Deity d : DUtil.getDeities(p))
+								d.onTick(System.currentTimeMillis());
+						}
+					}
+				}
+			}
+		}, 20, 5);
+	}
+	
+	@EventHandler
 	public static void onBlockBreak(BlockBreakEvent e) {
 		if (!DSettings.getEnabledWorlds().contains(e.getBlock().getWorld()))
 			return;
@@ -37,6 +57,7 @@ public class DDeities
 		}
 	}
 	
+	@EventHandler
 	public static void onBlockPlace(BlockPlaceEvent e) {
 		if (!DSettings.getEnabledWorlds().contains(e.getBlock().getWorld()))
 			return;
@@ -48,6 +69,7 @@ public class DDeities
 		}
 	}
 	
+	@EventHandler
 	public static void onEntityDamage(EntityDamageEvent e){
 		if (!DSettings.getEnabledWorlds().contains(e.getEntity().getWorld()))
 			return;
@@ -61,6 +83,7 @@ public class DDeities
 		}
 	}
 
+	@EventHandler
 	public static void onEntityDeath(EntityDeathEvent e){
 		if (!DSettings.getEnabledWorlds().contains(e.getEntity().getWorld()))
 			return;
@@ -77,6 +100,7 @@ public class DDeities
 		}
 	}
 
+	@EventHandler
 	public static void onEntityTarget(EntityTargetEvent e){
 		if (!DSettings.getEnabledWorlds().contains(e.getEntity().getWorld()))
 			return;
@@ -91,6 +115,7 @@ public class DDeities
 		}
 	}
 
+	@EventHandler
 	public static void onPlayerJoin(PlayerJoinEvent e){ //sync to master file
 		final Player p = e.getPlayer();
 		if (!DSettings.getEnabledWorlds().contains(p.getWorld()))
@@ -111,6 +136,7 @@ public class DDeities
 		DSave.saveData(p, "LASTLOGINTIME", System.currentTimeMillis());
 	}
 
+	@EventHandler
 	public static void onPlayerPickupItem(PlayerPickupItemEvent e){
 		Player p = e.getPlayer();
 		if (!DSettings.getEnabledWorlds().contains(p.getWorld()))
@@ -121,6 +147,7 @@ public class DDeities
 		}
 	}
 
+	@EventHandler
 	public static void onPlayerChat(AsyncPlayerChatEvent e){
 		Player p = e.getPlayer();
 		if (DUtil.isFullParticipant(p))
@@ -142,6 +169,7 @@ public class DDeities
 		}
 	}
 
+	@EventHandler
 	public static void onPlayerInteract(PlayerInteractEvent e){
 		Player p = e.getPlayer();
 		if (!DSettings.getEnabledWorlds().contains(p.getWorld()))
@@ -152,6 +180,7 @@ public class DDeities
 		}
 	}
 
+	@EventHandler
 	public static void onPlayerInteractEntity(PlayerInteractEntityEvent e) {
 		Player p = e.getPlayer();
 		if (!DSettings.getEnabledWorlds().contains(p.getWorld()))
@@ -162,6 +191,7 @@ public class DDeities
 		}
 	}
 
+	@EventHandler
 	public static void onPlayerRespawn(PlayerRespawnEvent e) {
 		Player p = e.getPlayer();
 		if (!DSettings.getEnabledWorlds().contains(p.getWorld()))

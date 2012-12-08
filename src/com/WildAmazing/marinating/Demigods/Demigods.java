@@ -41,6 +41,7 @@ import com.WildAmazing.marinating.Demigods.Deities.Titans.Rhea;
 import com.WildAmazing.marinating.Demigods.Deities.Titans.Themis;
 
 import com.WildAmazing.marinating.Demigods.Listeners.DDamage;
+import com.WildAmazing.marinating.Demigods.Listeners.DDeities;
 import com.WildAmazing.marinating.Demigods.Listeners.DLevels;
 import com.WildAmazing.marinating.Demigods.Listeners.DemigodsListeners;
 
@@ -357,6 +358,7 @@ public class Demigods extends JavaPlugin implements Listener
 	public void loadListeners()
 	{
 		getServer().getPluginManager().registerEvents(new DemigodsListeners(), this);
+		getServer().getPluginManager().registerEvents(new DDeities(), this);
 	}
 
 	private void initializeThreads()
