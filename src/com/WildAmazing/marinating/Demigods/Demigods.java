@@ -40,6 +40,10 @@ import com.WildAmazing.marinating.Demigods.Deities.Titans.Prometheus;
 import com.WildAmazing.marinating.Demigods.Deities.Titans.Rhea;
 import com.WildAmazing.marinating.Demigods.Deities.Titans.Themis;
 
+import com.WildAmazing.marinating.Demigods.Listeners.DDamage;
+import com.WildAmazing.marinating.Demigods.Listeners.DLevels;
+import com.WildAmazing.marinating.Demigods.Listeners.DemigodsListeners;
+
 import com.clashnia.Demigods.Deities.Giants.Ephialtes;
 import com.clashnia.Demigods.Deities.Giants.Otus;
 import com.clashnia.Demigods.Deities.Giants.Typhon;
@@ -59,7 +63,7 @@ public class Demigods extends JavaPlugin implements Listener
 	DUtil initialize;
 	DSave SAVE;
 
-	static Deity[] deities =
+	public static Deity[] deities =
 		{
 		
 		/*
@@ -111,7 +115,7 @@ public class Demigods extends JavaPlugin implements Listener
 		
 		log.info("[Demigods] Initializing.");
 		
-		new Settings(this); // #1 (needed for DUtil to load)
+		new DSettings(this); // #1 (needed for DUtil to load)
 		initialize = new DUtil(this); // #2 (needed for everything else to work)
 		SAVE = new DSave(mainDirectory, deities); // #3 (needed to start save system)
 		loadListeners(); // #4
@@ -133,7 +137,7 @@ public class Demigods extends JavaPlugin implements Listener
 		// Check for updates, and then update if need be
 		
 		Boolean shouldUpdate = DemigodsUpdate.shouldUpdate();
-		if(shouldUpdate && Settings.getSettingBoolean("update"))
+		if(shouldUpdate && DSettings.getSettingBoolean("update"))
 		{
 			DemigodsUpdate.demigodsUpdate();
 		}
@@ -201,7 +205,7 @@ public class Demigods extends JavaPlugin implements Listener
 		if ((pg != null) && (pg instanceof WorldGuardPlugin))
 		{
 			WORLDGUARD = (WorldGuardPlugin)pg;
-			if (!Settings.getSettingBoolean("allow_skills_everywhere"))
+			if (!DSettings.getSettingBoolean("allow_skills_everywhere"))
 				log.info("[Demigods] WorldGuard detected. Skills are disabled in no-PvP zones.");
 		}
 		
@@ -210,7 +214,7 @@ public class Demigods extends JavaPlugin implements Listener
 		if (pg != null)
 		{
 			FACTIONS = ((P)pg);
-			if (!Settings.getSettingBoolean("allow_skills_everywhere"))
+			if (!DSettings.getSettingBoolean("allow_skills_everywhere"))
 				log.info("[Demigods] Factions detected. Skills are disabled in peaceful zones.");
 		}
 		
@@ -352,24 +356,16 @@ public class Demigods extends JavaPlugin implements Listener
 
 	public void loadListeners()
 	{
-		getServer().getPluginManager().registerEvents(new DListeners(), this);
-		
-		getServer().getPluginManager().registerEvents(new DChatCommandExecutor(), this);
-		
-		getServer().getPluginManager().registerEvents(new DeityManager(), this);
-		getServer().getPluginManager().registerEvents(new LevelManager(), this);
-		getServer().getPluginManager().registerEvents(new PVPManager(), this);
-		getServer().getPluginManager().registerEvents(new DamageHandler(), this);
-		getServer().getPluginManager().registerEvents(new Hephaestus("LISTENER"), this);
+		getServer().getPluginManager().registerEvents(new DemigodsListeners(), this);
 	}
 
 	private void initializeThreads()
 	{
 		// Setup threads for saving, health, and favor
-		int startdelay = (int)(Settings.getSettingDouble("start_delay_seconds")*20);
-		int favorfrequency = (int)(Settings.getSettingDouble("favor_regen_seconds")*20);
-		int hpfrequency = (int)(Settings.getSettingDouble("hp_regen_seconds")*20);
-		int savefrequency = Settings.getSettingInt("save_interval_seconds")*20;
+		int startdelay = (int)(DSettings.getSettingDouble("start_delay_seconds")*20);
+		int favorfrequency = (int)(DSettings.getSettingDouble("favor_regen_seconds")*20);
+		int hpfrequency = (int)(DSettings.getSettingDouble("hp_regen_seconds")*20);
+		int savefrequency = DSettings.getSettingInt("save_interval_seconds")*20;
 		if (hpfrequency < 0) hpfrequency = 600;
 		if (favorfrequency < 0) favorfrequency = 600;
 		if (startdelay <= 0) startdelay = 1;
@@ -381,7 +377,7 @@ public class Demigods extends JavaPlugin implements Listener
 			@Override
 			public void run()
 			{
-				for (World w : Settings.getEnabledWorlds())
+				for (World w : DSettings.getEnabledWorlds())
 				{
 					for (Player p : w.getPlayers())
 						if (DUtil.isFullParticipant(p))
@@ -400,7 +396,7 @@ public class Demigods extends JavaPlugin implements Listener
 			@Override
 			public void run()
 			{
-				for (World w : Settings.getEnabledWorlds())
+				for (World w : DSettings.getEnabledWorlds())
 				{
 					for (Player p : w.getPlayers())
 						if (DUtil.isFullParticipant(p))
@@ -420,12 +416,12 @@ public class Demigods extends JavaPlugin implements Listener
 		{
 			@Override
 			public void run() {
-				for (World w : Settings.getEnabledWorlds())
+				for (World w : DSettings.getEnabledWorlds())
 				{
 					for (Player p : w.getPlayers())
 						if (DUtil.isFullParticipant(p))
 							if (p.getHealth() > 0)
-								DamageHandler.syncHealth(p);
+								DDamage.syncHealth(p);
 				}
 			}
 		}, startdelay, 2);
@@ -455,7 +451,7 @@ public class Demigods extends JavaPlugin implements Listener
 		}, startdelay, savefrequency);
 		
 		// Information display
-		int frequency = (int)(Settings.getSettingDouble("stat_display_frequency_in_seconds")*20);
+		int frequency = (int)(DSettings.getSettingDouble("stat_display_frequency_in_seconds")*20);
 		if (frequency > 0)
 		{
 			getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable()
@@ -463,7 +459,7 @@ public class Demigods extends JavaPlugin implements Listener
 				@Override
 				public void run()
 				{
-					for (World w : Settings.getEnabledWorlds())
+					for (World w : DSettings.getEnabledWorlds())
 					{
 						for (Player p : w.getPlayers())
 							if (DUtil.isFullParticipant(p))
@@ -603,13 +599,13 @@ public class Demigods extends JavaPlugin implements Listener
 	{
 		// Level players		
 		for (String player : DSave.getCompleteData().keySet())
-			LevelManager.levelProcedure(player);
+			DLevels.levelProcedure(player);
 	}
 	
 	private void unstickFireball()
 	{
 		// Unstick Prometheus fireballs
-		for (World w : Settings.getEnabledWorlds())
+		for (World w : DSettings.getEnabledWorlds())
 		{
 			Iterator<Entity> it = w.getEntities().iterator();
 			while (it.hasNext())

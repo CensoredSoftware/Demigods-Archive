@@ -28,19 +28,22 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Listeners.DDamage;
+import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 public class DUtil {
 	private static Demigods plugin; //obviously needed
-	private static int dist = Settings.getSettingInt("max_target_range"); //maximum range on targeting
-	private static int MAXIMUMHP = Settings.getSettingInt("max_hp"); //max hp a player can have
-	public static int ASCENSIONCAP = Settings.getSettingInt("ascension_cap"); //max levels
-	private static int FAVORCAP = Settings.getSettingInt("globalfavorcap"); //max favor
-	private static boolean BROADCASTNEWDEITY = Settings.getSettingBoolean("broadcast_new_deities"); //tell server when a player gets a deity
-	private static boolean ALLOWPVPEVERYWHERE = Settings.getSettingBoolean("allow_skills_everywhere");
+	private static int dist = DSettings.getSettingInt("max_target_range"); //maximum range on targeting
+	private static int MAXIMUMHP = DSettings.getSettingInt("max_hp"); //max hp a player can have
+	public static int ASCENSIONCAP = DSettings.getSettingInt("ascension_cap"); //max levels
+	private static int FAVORCAP = DSettings.getSettingInt("globalfavorcap"); //max favor
+	private static boolean BROADCASTNEWDEITY = DSettings.getSettingBoolean("broadcast_new_deities"); //tell server when a player gets a deity
+	private static boolean ALLOWPVPEVERYWHERE = DSettings.getSettingBoolean("allow_skills_everywhere");
 
 	public DUtil(Demigods d) {
 		plugin = d;
@@ -188,7 +191,7 @@ public class DUtil {
 	 * @return
 	 */
 	public static boolean hasPermissionOrOP(Player p, String pe){//convenience method for permissions
-		if (p.getName().equals("WildAmazing") || p.getName().equals("HmmmQuestionMark") || p.isOp())
+		if (p.isOp())
 			return true;
 		return p.hasPermission(pe);
 	}
@@ -199,8 +202,6 @@ public class DUtil {
 	 * @return
 	 */
 	public static boolean hasPermission(Player p, String pe){//convenience method for permissions
-		if (p.getName().equals("WildAmazing") || p.getName().equals("HmmmQuestionMark")) //I ALWAYS HAVE PERMISSION
-			return true;
 		return p.hasPermission(pe);
 	}
 	/**
@@ -291,6 +292,9 @@ public class DUtil {
 		giveDeity(p.getName(), d);
 	}
 	public static void giveDeity(String p, Deity d) {
+		if (!hasPermission(getOnlinePlayer(p), d.getDefaultAlliance().toLowerCase() + "." + d.getName().toLowerCase())
+				&& (!hasPermission(getOnlinePlayer(p), d.getDefaultAlliance().toLowerCase() + ".all")))
+			return;
 		if (BROADCASTNEWDEITY)
 			plugin.getServer().broadcastMessage(ChatColor.YELLOW+p+" has joined the lineage of "+d.getName()+".");
 		if (DSave.hasData(p, "DEITIES"))
@@ -303,6 +307,9 @@ public class DUtil {
 		setDevotion(p, d, 1);
 	}
 	public static void giveDeitySilent(String p, Deity d) {
+		if (!hasPermission(getOnlinePlayer(p), d.getDefaultAlliance().toLowerCase() + "." + d.getName().toLowerCase())
+				&& (!hasPermission(getOnlinePlayer(p), d.getDefaultAlliance().toLowerCase() + ".all")))
+			return;
 		if (DSave.hasData(p, "DEITIES"))
 			getDeities(p).add(d);
 		else {
@@ -1404,6 +1411,16 @@ public class DUtil {
 			return true;
 		return (canWorldGuardPVP(l)&&canFactionsPVP(l));
 	}
+	public static WorldGuardPlugin getWorldGuard() {
+	    Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+	 
+	    // WorldGuard may not be loaded
+	    if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
+	        return null; // Maybe you want throw an exception instead
+	    }
+	 
+	    return (WorldGuardPlugin) plugin;
+	}	
 	/**
 	 * For fancy effects
 	 */
@@ -1478,14 +1495,14 @@ public class DUtil {
 				return;
 			int hp = getHP((Player)target);
 			if (amount < 1) return;
-			amount -= DamageHandler.armorReduction((Player)target);
-			amount = DamageHandler.specialReduction((Player)target, amount);
+			amount -= DDamage.armorReduction((Player)target);
+			amount = DDamage.specialReduction((Player)target, amount);
 			if (amount < 1) return;
 			setHP(((Player)target), hp-amount);
 			if (source instanceof Player) {
 				target.setLastDamageCause(new EntityDamageByEntityEvent(source, target, cause, amount));
 			}
-			DamageHandler.syncHealth(((Player)target));
+			DDamage.syncHealth(((Player)target));
 		} else target.damage(amount);
 	}
 	public static void damageDemigodsNonCombat(Player target, int amount) {
@@ -1493,8 +1510,8 @@ public class DUtil {
 			return;
 		int hp = getHP(target);
 		if (amount < 1) return;
-		amount -= DamageHandler.armorReduction(target);
-		amount = DamageHandler.specialReduction(target, amount);
+		amount -= DDamage.armorReduction(target);
+		amount = DDamage.specialReduction(target, amount);
 		if (amount < 1) return;
 		setHP((target), hp-amount);
 		if (target.getHealth() > 1)
@@ -1507,8 +1524,8 @@ public class DUtil {
 			return;
 		int hp = getHP(target);
 		if (amount < 1) return;
-		amount -= DamageHandler.armorReduction(target);
-		amount = DamageHandler.specialReduction(target, amount);
+		amount -= DDamage.armorReduction(target);
+		amount = DDamage.specialReduction(target, amount);
 		if (amount < 1) return;
 		setHP((target), hp-amount);
 		if (target.getHealth() > 1)

@@ -3,8 +3,6 @@ package com.WildAmazing.marinating.Demigods.Deities.Gods;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
@@ -13,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import com.WildAmazing.marinating.Demigods.DUtil;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
-public class Hephaestus implements Deity, Listener {
+public class Hephaestus implements Deity {
 	private static final long serialVersionUID = -2472769863144336856L;
 	private String PLAYER;
 
@@ -146,17 +144,16 @@ public class Hephaestus implements Deity, Listener {
 	public void onTick(long timeSent) {
 	}
 
-	@EventHandler
-	public void onSmelt(FurnaceSmeltEvent e) {
+	public static void onSmelt(FurnaceSmeltEvent e) {
 		if (e.getBlock() == null)
 			return;
 		for (String s : DUtil.getFullParticipants()) {
 			Player p = DUtil.getOnlinePlayer(s);
 			if ((p == null) || p.isDead())
 				continue;
-			if (DUtil.hasDeity(p, getName())) {
+			if (DUtil.hasDeity(p, "Hephaestus")) {
 				if (p.getLocation().getWorld().equals(e.getBlock().getLocation().getWorld()))
-					if (p.getLocation().distance(e.getBlock().getLocation()) <(int)Math.round(20*Math.pow(DUtil.getDevotion(p, getName()), 0.15))) {
+					if (p.getLocation().distance(e.getBlock().getLocation()) <(int)Math.round(20*Math.pow(DUtil.getDevotion(p, "Hephaestus"), 0.15))) {
 						int amount = e.getResult().getAmount()*2;
 						ItemStack out = e.getResult();
 						out.setAmount(amount);

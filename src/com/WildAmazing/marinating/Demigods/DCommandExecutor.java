@@ -34,6 +34,8 @@ import com.WildAmazing.marinating.Demigods.Deities.Titans.Oceanus;
 import com.WildAmazing.marinating.Demigods.Deities.Titans.Prometheus;
 import com.WildAmazing.marinating.Demigods.Deities.Titans.Rhea;
 import com.WildAmazing.marinating.Demigods.Deities.Titans.Themis;
+import com.WildAmazing.marinating.Demigods.Listeners.DLevels;
+import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
 import com.clashnia.Demigods.Deities.Giants.Typhon;
 
 public class DCommandExecutor implements CommandExecutor
@@ -41,7 +43,7 @@ public class DCommandExecutor implements CommandExecutor
 	Demigods plugin;
 	double ADVANTAGEPERCENT = 1.3;
 	double TRANSFERTAX = 0.9;
-	boolean BALANCETEAMS = Settings.getSettingBoolean("balance_teams");
+	boolean BALANCETEAMS = DSettings.getSettingBoolean("balance_teams");
 
 	public DCommandExecutor(Demigods d) {
 		plugin = d;
@@ -89,7 +91,7 @@ public class DCommandExecutor implements CommandExecutor
 		}
 		else
 		{
-			if (!Settings.getEnabledWorlds().contains(p.getWorld())) {
+			if (!DSettings.getEnabledWorlds().contains(p.getWorld())) {
 				p.sendMessage(ChatColor.YELLOW+"Demigods is not enabled in your world.");
 				return true;
 			}
@@ -130,7 +132,7 @@ public class DCommandExecutor implements CommandExecutor
 			
 			else if (c.isRegistered())
 			{
-				if (!Settings.getEnabledWorlds().contains(p.getWorld()))
+				if (!DSettings.getEnabledWorlds().contains(p.getWorld()))
 				{
 					p.sendMessage(ChatColor.YELLOW+"Demigods is not enabled in this world.");
 					return true;
@@ -384,7 +386,7 @@ public class DCommandExecutor implements CommandExecutor
 				Logger.getLogger("Minecraft").info("[Demigods] Player not found.");
 				return true;
 			}
-			DebugManager.printData(Logger.getLogger("Minecraft"), player);
+			DDebug.printData(Logger.getLogger("Minecraft"), player);
 			return true;
 		} else if (args.length == 2) {
 			if (args[1].equalsIgnoreCase("print")) {
@@ -393,7 +395,7 @@ public class DCommandExecutor implements CommandExecutor
 					Logger.getLogger("Minecraft").info("[Demigods] Player not found.");
 					return true;
 				}
-				DebugManager.printData(Logger.getLogger("Minecraft"), player);
+				DDebug.printData(Logger.getLogger("Minecraft"), player);
 				return true;
 			} else if (args[1].equalsIgnoreCase("write")) {
 				String player = DUtil.getDemigodsPlayer(args[0]);
@@ -402,7 +404,7 @@ public class DCommandExecutor implements CommandExecutor
 					return true;
 				}
 				try {
-					DebugManager.writeData(player);
+					DDebug.writeData(player);
 					return true;
 				} catch (IOException e) {
 					Logger.getLogger("Minecraft").warning("[Demigods] Error writing debug for "+player+".");
@@ -416,7 +418,7 @@ public class DCommandExecutor implements CommandExecutor
 					return true;
 				}
 				try {
-					if (DebugManager.loadData(player))
+					if (DDebug.loadData(player))
 					{
 						Logger.getLogger("Minecraft").info("[Demigods] "+player+" successfully loaded into save from file.");
 						return true;
@@ -464,7 +466,7 @@ public class DCommandExecutor implements CommandExecutor
 						}
 						try {
 							p.sendMessage(ChatColor.YELLOW+"Writing debug data for "+target+"...");
-							DebugManager.writeData(target);
+							DDebug.writeData(target);
 						} catch (IOException e) {
 							Logger.getLogger("Minecraft").warning("[Demigods] Error writing debug data for "+target+".");
 							e.printStackTrace();
@@ -478,7 +480,7 @@ public class DCommandExecutor implements CommandExecutor
 							return true;
 						}
 						try {
-							if (DebugManager.loadData(target))
+							if (DDebug.loadData(target))
 								p.sendMessage(ChatColor.YELLOW+"Loaded data for "+target+" into save from file.");
 							else {
 								p.sendMessage(ChatColor.YELLOW+"Failed to locate a debug file for "+target+".");
@@ -497,7 +499,7 @@ public class DCommandExecutor implements CommandExecutor
 						p.sendMessage(ChatColor.YELLOW+"Player not found.");
 						return true;
 					}
-					DebugManager.printData(p, target);
+					DDebug.printData(p, target);
 				}
 			}
 		}
@@ -1276,10 +1278,10 @@ public class DCommandExecutor implements CommandExecutor
 			return true;
 		}
 		//check if warp is valid
-		if (!Settings.getEnabledWorlds().contains(p.getWorld())) {
+		if (!DSettings.getEnabledWorlds().contains(p.getWorld())) {
 			return true;
 		}
-		if (!Settings.getEnabledWorlds().contains(DUtil.toLocation(target).getWorld())) {
+		if (!DSettings.getEnabledWorlds().contains(DUtil.toLocation(target).getWorld())) {
 			p.sendMessage(ChatColor.YELLOW+"Demigods is not enabled in the target world.");
 			return true;
 		}
@@ -1618,7 +1620,7 @@ public class DCommandExecutor implements CommandExecutor
 		DUtil.setUnclaimedDevotion(p, DUtil.getUnclaimedDevotion(p)-amount);
 		DUtil.setDevotion(p, d, DUtil.getDevotion(p, d)+amount);
 		p.sendMessage(ChatColor.YELLOW+"Your Devotion for "+d.getName()+" has increased to "+DUtil.getDevotion(p, d)+".");
-		LevelManager.levelProcedure(p);
+		DLevels.levelProcedure(p);
 		p.sendMessage("You have "+DUtil.getUnclaimedDevotion(p)+" unclaimed Devotion remaining.");
 		return true;
 	}
@@ -1646,7 +1648,7 @@ public class DCommandExecutor implements CommandExecutor
 			if (DUtil.getDeities(p).size() >= 2) {
 				String str = "";
 				Deity toremove = DUtil.getDeity(p, args[0]);
-				LevelManager.levelProcedure(p);
+				DLevels.levelProcedure(p);
 				p.sendMessage(ChatColor.YELLOW+"You have forsaken "+toremove.getName()+"."+str);
 				DUtil.getPlugin().getServer().broadcastMessage(ChatColor.RED+p.getName()+" has forsaken "+toremove.getName()+".");
 				DUtil.getDeities(p).remove(toremove);
@@ -1921,7 +1923,8 @@ public class DCommandExecutor implements CommandExecutor
 				p.sendMessage(ChatColor.YELLOW+"The Fates ponder your decision...");
 				final Deity fchoice = choice;
 				final Player pl = p;
-				if (BALANCETEAMS && DUtil.hasAdvantage(fchoice.getDefaultAlliance(), ADVANTAGEPERCENT) && (choice != new Typhon(p.getName()))) {
+				if (BALANCETEAMS && DUtil.hasAdvantage(fchoice.getDefaultAlliance(), ADVANTAGEPERCENT) && (choice != new Typhon(p.getName()))) // TODO Temp fix for Typhon.
+				{
 					pl.sendMessage(ChatColor.RED+"The Fates have determined that your selection would");
 					pl.sendMessage(ChatColor.RED+"unbalance the order of the universe. Try again");
 					pl.sendMessage(ChatColor.RED+"later or select a different deity.");
