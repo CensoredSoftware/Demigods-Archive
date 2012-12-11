@@ -535,12 +535,12 @@ public class DCommandExecutor implements CommandExecutor
 				p.sendMessage(ChatColor.GRAY+"Hephaestus - God of the forge.");
 				p.sendMessage(ChatColor.GRAY+"Apollo - God of archery and healing.");
 				/*
-			p.sendMessage(ChatColor.GOLD+"----Tier 3");
-			p.sendMessage(ChatColor.GRAY+"Artemis - Goddess of the hunt.");
-			p.sendMessage(ChatColor.GRAY+"Demeter - Goddess of the harvest.");
-			p.sendMessage(ChatColor.GRAY+"Dionysus - God of wine.");
-			p.sendMessage(ChatColor.GRAY+"Hermes - God of travel and thievery.");
-			p.sendMessage(ChatColor.GRAY+"Hestia - Goddess of cooking and the home.");
+				p.sendMessage(ChatColor.GOLD+"----Tier 3");
+				p.sendMessage(ChatColor.GRAY+"Artemis - Goddess of the hunt.");
+				p.sendMessage(ChatColor.GRAY+"Demeter - Goddess of the harvest.");
+				p.sendMessage(ChatColor.GRAY+"Dionysus - God of wine.");
+				p.sendMessage(ChatColor.GRAY+"Hermes - God of travel and thievery.");
+				p.sendMessage(ChatColor.GRAY+"Hestia - Goddess of cooking and the home.");
 				 */
 			} else if (args[0].equalsIgnoreCase("titan")) {
 				p.sendMessage(ChatColor.YELLOW+"[Demigods] Titan Help File");
@@ -555,16 +555,16 @@ public class DCommandExecutor implements CommandExecutor
 				p.sendMessage(ChatColor.GRAY+"Hyperion - Titan of light.");
 				p.sendMessage(ChatColor.GRAY+"Themis - Titaness of diplomacy and foresight.");
 				/*
-			p.sendMessage(ChatColor.GOLD+"----Tier 3");
-			p.sendMessage(ChatColor.GRAY+"Lelantos - Titan of the predator.");
-			p.sendMessage(ChatColor.GRAY+"Perses - Titan of destruction.");
-			p.sendMessage(ChatColor.GRAY+"Styx - Titan of death.");
-			p.sendMessage(ChatColor.GRAY+"Helios - Titan of the sun and keeper of oaths.");
-			p.sendMessage(ChatColor.GRAY+"Koios - Titan of intelligence.");
+				p.sendMessage(ChatColor.GOLD+"----Tier 3");
+				p.sendMessage(ChatColor.GRAY+"Lelantos - Titan of the predator.");
+				p.sendMessage(ChatColor.GRAY+"Perses - Titan of destruction.");
+				p.sendMessage(ChatColor.GRAY+"Styx - Titan of death.");
+				p.sendMessage(ChatColor.GRAY+"Helios - Titan of the sun and keeper of oaths.");
+				p.sendMessage(ChatColor.GRAY+"Koios - Titan of intelligence.");
 				 */
 			} else if (args[0].equalsIgnoreCase("giant")) {
 				p.sendMessage(ChatColor.YELLOW+"[Demigods] Giant Help File");
-				p.sendMessage(ChatColor.YELLOW+"Coming soon.");
+				p.sendMessage(ChatColor.GRAY+"Coming in the next stable update!");
 			} else if (args[0].equalsIgnoreCase("claim")) {
 				p.sendMessage(ChatColor.YELLOW+"[Demigods] Claim Help File");
 				p.sendMessage(ChatColor.GRAY+"To claim your first deity, use "+ChatColor.YELLOW+"/claim"+ChatColor.GRAY+" with");
@@ -1917,7 +1917,7 @@ public class DCommandExecutor implements CommandExecutor
 			case CLAY_BALL: choice = new Prometheus(p.getName()); break;
 			case VINE: choice = new Rhea(p.getName()); break;
 			//
-			case SULPHUR: choice = new Typhon(p.getName()); break;
+			//case SULPHUR: choice = new Typhon(p.getName()); break; //TODO Not accessible in stable release.
 			}
 			if (choice != null) {
 				if (!DUtil.hasPermission(p, choice.getDefaultAlliance().toLowerCase() + "." + choice.getName().toLowerCase())
@@ -1972,7 +1972,7 @@ public class DCommandExecutor implements CommandExecutor
 		case GLOWSTONE: choice = new Hyperion(p.getName()); break;
 		case COMPASS: choice = new Themis(p.getName()); break;
 		//
-		case SULPHUR: choice = new Typhon(p.getName()); break;
+		//case SULPHUR: choice = new Typhon(p.getName()); break; //TODO Not accessible in stable release.
 		}
 		if (choice == null) {
 			p.sendMessage(ChatColor.YELLOW+"That is not a valid selection item.");
