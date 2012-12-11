@@ -613,7 +613,7 @@ public class Demigods extends JavaPlugin implements Listener
 			while (it.hasNext())
 			{
 				Entity e = it.next();
-				if ((e instanceof net.minecraft.server.EntityFireball) || (e instanceof Fireball))
+				if (e instanceof Fireball)
 				{
 					e.remove();
 					it.remove();

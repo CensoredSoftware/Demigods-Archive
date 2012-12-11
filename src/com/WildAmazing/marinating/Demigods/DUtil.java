@@ -6,18 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import net.minecraft.server.DataWatcher;
-import net.minecraft.server.EntityLiving;
-import net.minecraft.server.Packet40EntityMetadata;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -294,7 +288,11 @@ public class DUtil {
 	public static void giveDeity(String p, Deity d) {
 		if (!hasPermission(getOnlinePlayer(p), d.getDefaultAlliance().toLowerCase() + "." + d.getName().toLowerCase())
 				&& (!hasPermission(getOnlinePlayer(p), d.getDefaultAlliance().toLowerCase() + ".all")))
+		{
+			consoleMSG("info", p + " does not have permission to get this deity.");
 			return;
+		}
+
 		if (BROADCASTNEWDEITY)
 			plugin.getServer().broadcastMessage(ChatColor.YELLOW+p+" has joined the lineage of "+d.getName()+".");
 		if (DSave.hasData(p, "DEITIES"))
@@ -309,7 +307,10 @@ public class DUtil {
 	public static void giveDeitySilent(String p, Deity d) {
 		if (!hasPermission(getOnlinePlayer(p), d.getDefaultAlliance().toLowerCase() + "." + d.getName().toLowerCase())
 				&& (!hasPermission(getOnlinePlayer(p), d.getDefaultAlliance().toLowerCase() + ".all")))
+		{
+			consoleMSG("info", p + " does not have permission to get this deity.");
 			return;
+		}
 		if (DSave.hasData(p, "DEITIES"))
 			getDeities(p).add(d);
 		else {
@@ -1430,7 +1431,6 @@ public class DUtil {
 	 * Color: In hex, eg 0x000FF
 	 * Duration in ticks
 	 * Originally by nisovin
-	 */
 	public static void playEffect(final Player player, final LivingEntity entity, int color, int duration) {
 		final DataWatcher dw = new DataWatcher();
 		dw.a(8, Integer.valueOf(0));
@@ -1449,6 +1449,8 @@ public class DUtil {
 			}
 		}, duration);
 	}
+	*/
+	
 	/**
 	 * Entity: Entity to have the effect
 	 * Color: In hex, eg 0x000FF
@@ -1457,7 +1459,6 @@ public class DUtil {
 	 * @param color
 	 * @param duration
 	 * Originally by nisovin
-	 */
 	public static void playEffect(LivingEntity entity, int color, int duration) {
 		final EntityLiving el = ((CraftLivingEntity)entity).getHandle();
 		final DataWatcher dw = el.getDataWatcher();
@@ -1474,6 +1475,8 @@ public class DUtil {
 			}
 		}, duration);
 	}
+	*/
+	
 	/**
 	 * For SimpleNotice
 	 */

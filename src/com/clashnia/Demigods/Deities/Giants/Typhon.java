@@ -2,10 +2,15 @@ package com.clashnia.Demigods.Deities.Giants;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.util.Vector;
 
 import com.WildAmazing.marinating.Demigods.DUtil;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
@@ -21,6 +26,7 @@ public class Typhon implements Deity {
 	private static final int ULTIMATECOOLDOWNMAX = 180; //seconds
 	private static final int ULTIMATECOOLDOWNMIN = 60;
 	private static final int EXPLOSIONSIZE = 4;
+	private static final double PLAYERPUSH = 0.8;
 
 	private static final String skillname = "";
 	private static final String ult = "";
@@ -151,12 +157,40 @@ public class Typhon implements Deity {
 	}
 	
 	public static void onEntityDeath(EntityDeathEvent e){
-		if (e.getEntity() instanceof Player){
-			Player p = (Player)e.getEntity();
-				if (!DUtil.hasDeity(p, "Typhon"))
-					return;
-				if (DUtil.canWorldGuardPVP(p.getLocation()) || DUtil.canFactionsPVP(p.getLocation()))
-					p.getWorld().createExplosion(p.getLocation(), EXPLOSIONSIZE);
+		if (e.getEntity() instanceof Player)
+		{
+			EntityDamageEvent ede = e.getEntity().getLastDamageCause();
+		    DamageCause dc = ede.getCause();
+			if (dc == DamageCause.ENTITY_ATTACK /*|| dc == DamageCause.SUICIDE*/)
+			{
+				Player p = (Player)e.getEntity();
+					if (!DUtil.hasDeity(p, "Typhon"))
+						return;
+					if (DUtil.canWorldGuardPVP(p.getLocation()) || DUtil.canFactionsPVP(p.getLocation()))
+						p.getWorld().createExplosion(p.getLocation(), EXPLOSIONSIZE);
+			}
 		}
-}
+	}
+	
+	public static void onEntityDamageByEntity(EntityDamageByEntityEvent ee)
+	{
+		if (ee.getDamager() instanceof Player)
+		{
+			Player p = (Player)ee.getDamager();
+			if (!DUtil.hasDeity(p, "Typhon")) return;
+			LivingEntity le = (LivingEntity)ee.getEntity();
+			Vector v = p.getLocation().toVector();
+			Vector victor = le.getLocation().toVector().subtract(v);
+			victor.multiply(PLAYERPUSH);
+			if (le instanceof Player)
+			{
+				Player pl = (Player)le;
+				if (DUtil.isFullParticipant(pl))
+				{
+					if (ee.getEntity().isDead()) return;
+				}
+			}
+			le.setVelocity(victor); //super kb
+		}
+	}
 }

@@ -1894,7 +1894,7 @@ public class DCommandExecutor implements CommandExecutor
 		if (DSave.hasPlayer(toremove)) {
 			p.sendMessage(ChatColor.YELLOW+toremove.getName()+ " was successfully removed from the save.");
 			DSave.removePlayer(toremove);
-			p.kickPlayer("Save removed. Please log in again.");
+			toremove.kickPlayer("Save removed. Please log in again.");
 
 		} else p.sendMessage(ChatColor.YELLOW+"That player is not in the save.");
 		return true;
@@ -1920,6 +1920,12 @@ public class DCommandExecutor implements CommandExecutor
 			case SULPHUR: choice = new Typhon(p.getName()); break;
 			}
 			if (choice != null) {
+				if (!DUtil.hasPermission(p, choice.getDefaultAlliance().toLowerCase() + "." + choice.getName().toLowerCase())
+						&& (!DUtil.hasPermission(p, choice.getDefaultAlliance().toLowerCase() + ".all")))
+				{
+					p.sendMessage(ChatColor.RED+"You do not have permission to claim this deity.");
+					return true;
+				}
 				p.sendMessage(ChatColor.YELLOW+"The Fates ponder your decision...");
 				final Deity fchoice = choice;
 				final Player pl = p;
@@ -1972,7 +1978,17 @@ public class DCommandExecutor implements CommandExecutor
 			p.sendMessage(ChatColor.YELLOW+"That is not a valid selection item.");
 			return true;
 		}
-		if (!choice.getDefaultAlliance().equalsIgnoreCase(DUtil.getAllegiance(p))) {
+		if (!DUtil.hasPermission(p, choice.getDefaultAlliance().toLowerCase() + "." + choice.getName().toLowerCase())
+				&& (!DUtil.hasPermission(p, choice.getDefaultAlliance().toLowerCase() + ".all")))
+		{
+			p.sendMessage(ChatColor.RED+"You do not have permission to claim this deity.");
+			return true;
+		}
+		if (DUtil.getAllegiance(p).contains("ant"))
+		{
+			p.sendMessage(ChatColor.YELLOW+choice.getName()+" has offered you power in exchange for loyalty."); //TODO Only for testing on IRPG.
+		}
+		else if (!choice.getDefaultAlliance().equalsIgnoreCase(DUtil.getAllegiance(p))) {
 			p.sendMessage(ChatColor.RED+"That deity is not of your alliance.");
 			return true;
 		}

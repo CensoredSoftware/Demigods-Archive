@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
@@ -73,6 +74,24 @@ public class DDeities implements Listener
 	public static void onEntityDamage(EntityDamageEvent e){
 		if (!DSettings.getEnabledWorlds().contains(e.getEntity().getWorld()))
 			return;
+		for (Player pl : e.getEntity().getWorld().getPlayers()) {
+			if (DUtil.isFullParticipant(pl)) {
+				if ((DUtil.getDeities(pl)!=null) && (DUtil.getDeities(pl).size()>0)) {
+					for (Deity d : DUtil.getDeities(pl))
+						d.onEvent(e);
+				}
+			}
+		}
+	}
+	
+	@EventHandler
+	public static void onEntityDamageByEntity(EntityDamageByEntityEvent e){
+		if (!DSettings.getEnabledWorlds().contains(e.getEntity().getWorld()))
+			return;
+		
+		// Deity specific needs
+		Typhon.onEntityDamageByEntity(e);
+		
 		for (Player pl : e.getEntity().getWorld().getPlayers()) {
 			if (DUtil.isFullParticipant(pl)) {
 				if ((DUtil.getDeities(pl)!=null) && (DUtil.getDeities(pl).size()>0)) {
