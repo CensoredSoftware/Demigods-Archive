@@ -1,7 +1,6 @@
 #default config.yml
 #Demigods Configuration File
 #Global Settings
-update: true
 motd: true
 active_worlds:
 - DEFAULT

@@ -1,6 +1,6 @@
 name: Demigods
 main: com.WildAmazing.marinating.Demigods.Demigods
-version: d2.3
+version: 2.3
 description: Ally yourself with mythical deities and battle in the name of the Gods or Titans.
 author: marinating, Clashnia
 softdepend: [WorldGuard, WorldEdit, Factions]

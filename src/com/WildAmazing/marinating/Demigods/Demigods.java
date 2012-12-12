@@ -1,13 +1,11 @@
 package com.WildAmazing.marinating.Demigods;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -20,8 +18,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scheduler.BukkitWorker;
-
-import com.clashnia.ClashniaUpdate.DemigodsUpdate;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Deities.Gods.Apollo;
@@ -112,7 +108,7 @@ public class Demigods extends JavaPlugin implements Listener
 	public void onEnable()
 	{
 		long firstTime = System.currentTimeMillis();
-		oldDownloader(); // #0 (disable our old update method)
+		//oldDownloader(); // #0 (disable our old update method) TODO
 		
 		log.info("[Demigods] Initializing.");
 		
@@ -135,13 +131,15 @@ public class Demigods extends JavaPlugin implements Listener
 		loadMetrics(); // #11
 		unstickFireball(); // #12
 		
-		// Check for updates, and then update if need be
+		// Check for updates, and then update if need be //TODO Turned off auto-update, as it is not ready yet.
 		
+		/*
 		Boolean shouldUpdate = DemigodsUpdate.shouldUpdate();
 		if(shouldUpdate && DSettings.getSettingBoolean("update"))
 		{
 			DemigodsUpdate.demigodsUpdate();
 		}
+		*/
 		
 		log.info("[Demigods] Preparation completed in "+((double)(System.currentTimeMillis()-firstTime)/1000)+" seconds.");
 	}
@@ -479,7 +477,7 @@ public class Demigods extends JavaPlugin implements Listener
 		}
 	}
 
-	
+	/*
 	private void oldDownloader()
 	{
 	    try
@@ -530,6 +528,7 @@ public class Demigods extends JavaPlugin implements Listener
 			// Plugin doesn't exist, do nothing
 		}
 	}
+	*/
 	
 	private void cleanUp()
 	{
