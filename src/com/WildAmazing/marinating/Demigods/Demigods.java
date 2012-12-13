@@ -1,11 +1,13 @@
 package com.WildAmazing.marinating.Demigods;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -109,7 +111,7 @@ public class Demigods extends JavaPlugin implements Listener
 	public void onEnable()
 	{
 		long firstTime = System.currentTimeMillis();
-		//oldDownloader(); // #0 (disable our old update method) TODO
+		oldDownloader(); // #0 (disable our old update method) TODO
 		
 		log.info("[Demigods] Initializing.");
 		
@@ -476,7 +478,6 @@ public class Demigods extends JavaPlugin implements Listener
 		}
 	}
 
-	/*
 	private void oldDownloader()
 	{
 	    try
@@ -527,7 +528,6 @@ public class Demigods extends JavaPlugin implements Listener
 			// Plugin doesn't exist, do nothing
 		}
 	}
-	*/
 	
 	private void cleanUp()
 	{
