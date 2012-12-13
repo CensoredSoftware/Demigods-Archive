@@ -145,7 +145,7 @@ public class DDeities implements Listener
 			if ((!DSettings.getSettingBoolean("update")) && (DemigodsUpdate.shouldUpdate()) && DUtil.hasPermissionOrOP(p, "demigods.admin")) {
 				p.sendMessage(ChatColor.RED + "There is a new, stable release for Demigods.");
 				p.sendMessage(ChatColor.RED + "Please update ASAP.");
-				p.sendMessage(ChatColor.GREEN + "Latest: " + DemigodsUpdate.checker.getLink());
+				p.sendMessage(ChatColor.RED + "Latest: " + ChatColor.GREEN + "dev.bukkit.org/server-mods/demigods");
 			}
 		}
 		if (!DSave.hasPlayer(p)) {

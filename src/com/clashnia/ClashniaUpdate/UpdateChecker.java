@@ -8,25 +8,23 @@ import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.WildAmazing.marinating.Demigods.DUtil;
+
 public class UpdateChecker
 {
-
-	private Plugin plugin;
 	private URL filesFeed;
 
 	private String version;
 	private String link;
 	private String jarLink;
-
-	public UpdateChecker(Plugin plugin, String url)
+	
+	public UpdateChecker(String url)
 	{
-		this.plugin = plugin;
-
 		try
 		{
 			this.filesFeed = new URL(url);
@@ -48,11 +46,26 @@ public class UpdateChecker
 			NodeList children = latestFile.getChildNodes();
 
 			this.version = children.item(1).getTextContent().replaceAll("[a-zA-Z ]", "");
+			try
+			{
 			this.link = children.item(3).getTextContent();
-
+			}
+			catch (Exception e)
+			{
+				DUtil.consoleMSG("warning","Failed to find download page.");
+				e.printStackTrace();
+			}
 			input.close();
 
+			try
+			{
 			input = (new URL(this.link)).openConnection().getInputStream();
+			}
+			catch (Exception e)
+			{
+				DUtil.consoleMSG("warning","Failed to open connection with download page.");
+				e.printStackTrace();
+			}
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 			String line;
@@ -69,13 +82,17 @@ public class UpdateChecker
 			reader.close();
 			input.close();
 
-			if (!plugin.getDescription().getVersion().equals(this.version))
+			
+			PluginDescriptionFile pdf = DUtil.getPlugin().getDescription();	  	
+			String currentVersion = pdf.getVersion();
+			if (!currentVersion.equals(this.version))
 			{
 				return true;
 			}
 		}
 		catch (Exception e)
 		{
+			DUtil.consoleMSG("warning","Failed to read download page.");
 			e.printStackTrace();
 		}
 

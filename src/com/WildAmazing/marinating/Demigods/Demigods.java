@@ -38,15 +38,17 @@ import com.WildAmazing.marinating.Demigods.Deities.Titans.Prometheus;
 import com.WildAmazing.marinating.Demigods.Deities.Titans.Rhea;
 import com.WildAmazing.marinating.Demigods.Deities.Titans.Themis;
 
+import com.clashnia.Demigods.Deities.Giants.Ephialtes;
+import com.clashnia.Demigods.Deities.Giants.Otus;
+import com.clashnia.Demigods.Deities.Giants.Typhon;
+
 import com.WildAmazing.marinating.Demigods.Listeners.DDamage;
 import com.WildAmazing.marinating.Demigods.Listeners.DDeities;
 import com.WildAmazing.marinating.Demigods.Listeners.DLevels;
 import com.WildAmazing.marinating.Demigods.Listeners.DemigodsListeners;
 
 import com.clashnia.ClashniaUpdate.DemigodsUpdate;
-import com.clashnia.Demigods.Deities.Giants.Ephialtes;
-import com.clashnia.Demigods.Deities.Giants.Otus;
-import com.clashnia.Demigods.Deities.Giants.Typhon;
+
 
 import com.massivecraft.factions.P;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -134,8 +136,8 @@ public class Demigods extends JavaPlugin implements Listener
 		loadMetrics(); // #11
 		unstickFireball(); // #12
 		
-		// Check for updates, and then update if need be
-		
+		// Check for updates, and then update if need be		
+		new DemigodsUpdate(this);
 		Boolean shouldUpdate = DemigodsUpdate.shouldUpdate();
 		if(shouldUpdate && DSettings.getSettingBoolean("update"))
 		{

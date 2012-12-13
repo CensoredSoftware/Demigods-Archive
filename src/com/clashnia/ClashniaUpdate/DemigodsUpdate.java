@@ -24,8 +24,13 @@ public class DemigodsUpdate
 	 *  (String)OLD_DOWNLOAD_LINK : The download link for what should be this exact jar, or the last stable jar if this is a development build.
 	 */
 
-	public static UpdateChecker checker = new UpdateChecker(plugin, "http://dev.bukkit.org/server-mods/demigods/files.rss");
+	public static UpdateChecker checker = new UpdateChecker("http://dev.bukkit.org/server-mods/demigods/files.rss");
 	
+	public DemigodsUpdate(Demigods demigods)
+	{
+		plugin = demigods;
+	}
+
 	public static boolean shouldUpdate()
 	{
 		PluginDescriptionFile pdf = DUtil.getPlugin().getDescription();	  	
