@@ -1,12 +1,10 @@
 package com.clashnia.ClashniaUpdate;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -14,48 +12,27 @@ import java.net.URLConnection;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginDescriptionFile;
 
 import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Demigods;
 
 public class DemigodsUpdate
 {
+	static Demigods plugin;
+	
 	static Logger log = Logger.getLogger("Minecraft");
 	
 	/*
 	 *  (String)OLD_DOWNLOAD_LINK : The download link for what should be this exact jar, or the last stable jar if this is a development build.
 	 */
-	static String OLD_DOWNLOAD_LINK = "http://dev.bukkit.org/media/files/628/826/Demigods.jar";
+
+	public static UpdateChecker checker = new UpdateChecker(plugin, "http://dev.bukkit.org/server-mods/demigods/files.rss");
 	
 	public static boolean shouldUpdate()
 	{
-		PluginDescriptionFile pdf = DUtil.getPlugin().getDescription();
-		String currentVersion = pdf.getVersion();
-		
-		if (currentVersion.startsWith("d")) return false; // development versions shouldn't downgrade
-
-		try
-		{
-			String downloadLink = getDownloadLink();
-			
-			if (downloadLink.equals(OLD_DOWNLOAD_LINK))
-			{
-				log.info("[Demigods] Demigods is up to date.");
-				return false;
-			}
-			else
-			{
-				log.info("[Demigods] Demigods is not up to date...");
-				return true;
-			}
-		}
-	catch (MalformedURLException ex)
-	{
-			log.severe("[Demigods] Error accessing version URL.");
-		}
-		catch (IOException ex)
-		{
-			log.severe("[Demigods] Error checking for update.");
+		if (checker.updateNeeded()){
+			DUtil.consoleMSG("info","A new version is available: " + checker.getVersion());
+			return true;
 		}
 		return false;
 	}
@@ -131,14 +108,7 @@ public class DemigodsUpdate
 	
 	private static String getDownloadLink() throws IOException
 	{
-		String downloadLink;
-		
-		URL version = new URL("http://www.clashnia.com/plugins/demigods/dl.txt");
-		URLConnection downloadCon = version.openConnection();
-		downloadCon.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2"); //FIXES 403 ERROR
-		BufferedReader in = new BufferedReader(new InputStreamReader(downloadCon.getInputStream()));
-		downloadLink = in.readLine();
-		in.close();
+		String downloadLink = checker.getJarLink();
 		
 		return downloadLink;
 	}

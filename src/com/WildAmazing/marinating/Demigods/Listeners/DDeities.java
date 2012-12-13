@@ -23,6 +23,7 @@ import com.WildAmazing.marinating.Demigods.DSave;
 import com.WildAmazing.marinating.Demigods.DSettings;
 import com.WildAmazing.marinating.Demigods.DUtil;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.clashnia.ClashniaUpdate.DemigodsUpdate;
 import com.clashnia.Demigods.Deities.Giants.Typhon;
 
 public class DDeities implements Listener
@@ -141,11 +142,11 @@ public class DDeities implements Listener
 		if (DSettings.getSettingBoolean("motd")) {
 			p.sendMessage("This server is running Demigods v"+ChatColor.YELLOW+DUtil.getPlugin().getDescription().getVersion()+ChatColor.WHITE+".");
 			p.sendMessage(ChatColor.GRAY+"Type "+ChatColor.GREEN+"/dg"+ChatColor.GRAY+" for more info.");
-			/*if ((!DSettings.getSettingBoolean("update")) && (DemigodsUpdate.shouldUpdate()) && DUtil.hasPermissionOrOP(p, "demigods.admin")) {
-				p.sendMessage(ChatColor.RED + "There is a new, stable release for Infractions.");
+			if ((!DSettings.getSettingBoolean("update")) && (DemigodsUpdate.shouldUpdate()) && DUtil.hasPermissionOrOP(p, "demigods.admin")) {
+				p.sendMessage(ChatColor.RED + "There is a new, stable release for Demigods.");
 				p.sendMessage(ChatColor.RED + "Please update ASAP.");
-				p.sendMessage(ChatColor.GREEN + "Latest: http://clashnia.com/plugins/demigods/Demigods.jar");
-			}*/
+				p.sendMessage(ChatColor.GREEN + "Latest: " + DemigodsUpdate.checker.getLink());
+			}
 		}
 		if (!DSave.hasPlayer(p)) {
 			Logger.getLogger("Minecraft").info("[Demigods] "+p.getName()+" joined and no save was detected. Creating new file.");

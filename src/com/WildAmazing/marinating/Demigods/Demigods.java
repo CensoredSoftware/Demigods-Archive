@@ -41,6 +41,7 @@ import com.WildAmazing.marinating.Demigods.Listeners.DDeities;
 import com.WildAmazing.marinating.Demigods.Listeners.DLevels;
 import com.WildAmazing.marinating.Demigods.Listeners.DemigodsListeners;
 
+import com.clashnia.ClashniaUpdate.DemigodsUpdate;
 import com.clashnia.Demigods.Deities.Giants.Ephialtes;
 import com.clashnia.Demigods.Deities.Giants.Otus;
 import com.clashnia.Demigods.Deities.Giants.Typhon;
@@ -131,15 +132,13 @@ public class Demigods extends JavaPlugin implements Listener
 		loadMetrics(); // #11
 		unstickFireball(); // #12
 		
-		// Check for updates, and then update if need be //TODO Turned off auto-update, as it is not ready yet.
+		// Check for updates, and then update if need be
 		
-		/*
 		Boolean shouldUpdate = DemigodsUpdate.shouldUpdate();
 		if(shouldUpdate && DSettings.getSettingBoolean("update"))
 		{
 			DemigodsUpdate.demigodsUpdate();
 		}
-		*/
 		
 		log.info("[Demigods] Preparation completed in "+((double)(System.currentTimeMillis()-firstTime)/1000)+" seconds.");
 	}
