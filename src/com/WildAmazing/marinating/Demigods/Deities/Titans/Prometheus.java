@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -257,9 +258,13 @@ public class Prometheus implements Deity {
 	private void shootFireball(Location from, Location to, Player player){
 		if (!DUtil.canPVP(to) || !DUtil.canPVP(from))
 			return;
-		Fireball fireball = player.launchProjectile(Fireball.class);
-		Vector velo = fireball.getVelocity().multiply(10);
-		fireball.setVelocity(velo);
+				
+		Vector path = to.toVector().subtract(from.toVector());
+		Location spawnLocation = new Location(player.getWorld(), path.getX(), path.getY(), path.getZ());
+		
+		// Fire the fireball
+		Entity fireball = player.getWorld().spawn(spawnLocation, Fireball.class);
+		fireball.teleport(to);
 	}
 	private void blaze(Location target, int diameter) {
 		for (int x=-diameter/2; x<= diameter/2; x++) {
