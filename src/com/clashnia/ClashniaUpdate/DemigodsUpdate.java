@@ -11,7 +11,6 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginDescriptionFile;
 
 import com.WildAmazing.marinating.Demigods.DUtil;
 import com.WildAmazing.marinating.Demigods.Demigods;
@@ -33,10 +32,6 @@ public class DemigodsUpdate
 
 	public static boolean shouldUpdate()
 	{
-		PluginDescriptionFile pdf = DUtil.getPlugin().getDescription();	  	
-		String currentVersion = pdf.getVersion();	  	  	
-		if (currentVersion.startsWith("d")) return false; // development versions shouldn't downgrade
-		
 		if (checker.updateNeeded()){
 			DUtil.consoleMSG("info","A new version is available: " + checker.getVersion());
 			return true;
