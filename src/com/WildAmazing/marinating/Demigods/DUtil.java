@@ -1412,15 +1412,23 @@ public class DUtil {
 			return true;
 		return (canWorldGuardPVP(l)&&canFactionsPVP(l));
 	}
-	public static WorldGuardPlugin getWorldGuard() {
-	    Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-	 
-	    // WorldGuard may not be loaded
-	    if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
-	        return null; // Maybe you want throw an exception instead
-	    }
-	 
-	    return (WorldGuardPlugin) plugin;
+	public static WorldGuardPlugin getWorldGuard()
+	{
+		try
+		{
+		    Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+		 
+		    // WorldGuard may not be loaded
+		    if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
+		        return null; // Maybe you want throw an exception instead
+		    }
+		 
+		    return (WorldGuardPlugin) plugin;
+		}
+		catch (Exception e)
+		{
+			return null; // Maybe you want throw an exception instead
+		}
 	}	
 	/**
 	 * For fancy effects

@@ -15,7 +15,7 @@ public class DLevels
 	static double MULTIPLIER = DSettings.getSettingDouble("globalexpmultiplier"); //can be modified
 	static int LOSSLIMIT = 15000; //max devotion lost on death per deity
 
-	@SuppressWarnings("incomplete-switch")
+	@SuppressWarnings({ "incomplete-switch" })
 	public static void gainEXP(BlockBreakEvent e)
 	{
 		if (e.getPlayer() != null) {

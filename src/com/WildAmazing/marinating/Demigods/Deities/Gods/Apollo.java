@@ -265,10 +265,11 @@ public class Apollo implements Deity {
 			}
 	}
 	private void cure() {
-		int healamt = (int)Math.round(5*Math.pow(DUtil.getDevotion(getPlayerName(), getName()), 0.09));
 		Player p = DUtil.getOnlinePlayer(getPlayerName());
-		int selfheal = healamt/2;
-		if (DUtil.getHP(p)+selfheal > DUtil.getMaxHP(p)) {
+		int healamt = DUtil.getMaxHP(p);
+		int selfheal = healamt/9;
+		if (DUtil.getHP(p)+selfheal > DUtil.getMaxHP(p))
+		{
 			selfheal = DUtil.getMaxHP(p)-DUtil.getHP(p);
 		}
 		DUtil.setHP(p, DUtil.getHP(p)+selfheal);

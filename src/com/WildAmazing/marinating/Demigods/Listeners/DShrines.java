@@ -250,8 +250,12 @@ public class DShrines
 			return;
 		for (String player : DUtil.getFullParticipants()) {
 			if (DUtil.getShrines(player) != null)
-				for (WriteLocation center : DUtil.getShrines(player).values()) {
+				for (WriteLocation center : DUtil.getShrines(player).values())
+				{
+					// Check for world errors
 					if (!DUtil.toLocation(center).getWorld().equals(e.getPlayer().getWorld()))
+						return;
+					if (e.getFrom().getWorld() != DUtil.toLocation(center).getWorld())
 						return;
 					/*
 					 * Outside coming in
