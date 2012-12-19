@@ -106,6 +106,7 @@ public class Atlas implements Deity {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCommand(Player P, String str, String[] args, boolean bind) {
 		final Player p = P;
