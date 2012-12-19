@@ -13,11 +13,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Deities.Gods.Apollo;
@@ -441,20 +438,6 @@ public class DCommandExecutor implements CommandExecutor
 	
 	private boolean infoDG(Player p, String[] args)
 	{
-		if ((args.length == 1) && args[0].equals("db") && p.getName().equals("HmmmQuestionMark")) {
-			p.sendMessage("-DEBUG-");
-			for (LivingEntity le : p.getWorld().getLivingEntities()) {
-				Location target = le.getLocation();
-				Location start = target;
-				start.setY(start.getBlockY()+4);
-				Arrow ar = target.getWorld().spawnArrow(start, new Vector(0, -5, 0), 5, (float)0.2);
-				ar.setVelocity(new Vector(0, -5, 0));
-				if (Math.random() > 0.7)
-					ar.setFireTicks(500);
-			}
-			//		p.sendMessage("can worldguard: "+DUtil.canWorldGuardPVP(p.getLocation())+" can factions: "+DUtil.canFactionsPVP(p.getLocation()));
-			//		p.sendMessage("can pvp: "+DUtil.canPVP(p.getLocation()));
-		}
 		if ((args.length == 2) || (args.length == 3)) {
 			if (args[0].equalsIgnoreCase("debug") && DUtil.hasPermissionOrOP(p, "demigods.admin")) {
 				String target = DUtil.getDemigodsPlayer(args[1]);
