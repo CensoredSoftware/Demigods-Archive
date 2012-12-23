@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -24,10 +23,11 @@ import org.bukkit.plugin.Plugin;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Listeners.DDamage;
 import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
+
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 public class DUtil {
@@ -1389,15 +1389,38 @@ public class DUtil {
 				names.add(s);
 		return names;
 	}
-	@SuppressWarnings("static-access")
-	public static boolean canWorldGuardPVP(Location l) {
-		if (ALLOWPVPEVERYWHERE)
-			return true;
-		if (plugin.WORLDGUARD == null)
-			return true;
-		ApplicableRegionSet set = plugin.WORLDGUARD.getRegionManager(l.getWorld()).getApplicableRegions(l);
-		return set.allows(DefaultFlag.PVP);
-	}
+	
+	/*
+	 *  WORLDGUARD SUPPORT START
+	 */
+		@SuppressWarnings("static-access")
+		public static boolean canWorldGuardPVP(Location l) {
+			if (ALLOWPVPEVERYWHERE)
+				return true;
+			if (plugin.WORLDGUARD == null)
+				return true;
+			ApplicableRegionSet set = plugin.WORLDGUARD.getRegionManager(l.getWorld()).getApplicableRegions(l);
+			return set.allows(DefaultFlag.PVP);
+		}
+		
+		@SuppressWarnings("static-access")
+		public static boolean canWorldGuardBuild(Player player, Location location) {
+			if (plugin.WORLDGUARD == null)
+				return true;
+			return plugin.WORLDGUARD.canBuild(player, location);
+		}
+		
+		@SuppressWarnings("static-access")
+		public static boolean canWorldGuardDamage(Location l) {
+			if (plugin.WORLDGUARD == null)
+				return true;
+			ApplicableRegionSet set = plugin.WORLDGUARD.getRegionManager(l.getWorld()).getApplicableRegions(l);
+			return !set.allows(DefaultFlag.INVINCIBILITY);
+		}
+	/*
+	 *  WORLDGUARD SUPPORT END
+	 */
+	
 	@SuppressWarnings("static-access")
 	public static boolean canFactionsPVP(Location l) {
 		if (ALLOWPVPEVERYWHERE)
@@ -1412,24 +1435,6 @@ public class DUtil {
 			return true;
 		return (canWorldGuardPVP(l)&&canFactionsPVP(l));
 	}
-	public static WorldGuardPlugin getWorldGuard()
-	{
-		try
-		{
-		    Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-		 
-		    // WorldGuard may not be loaded
-		    if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
-		        return null; // Maybe you want throw an exception instead
-		    }
-		 
-		    return (WorldGuardPlugin) plugin;
-		}
-		catch (Exception e)
-		{
-			return null; // Maybe you want throw an exception instead
-		}
-	}	
 	/**
 	 * For fancy effects
 	 */
@@ -1504,6 +1509,8 @@ public class DUtil {
 				return;
 			if (!canPVP(target.getLocation()))
 				return;
+			if (!canWorldGuardDamage(target.getLocation()))
+				return;
 			int hp = getHP((Player)target);
 			if (amount < 1) return;
 			amount -= DDamage.armorReduction((Player)target);
@@ -1516,8 +1523,11 @@ public class DUtil {
 			DDamage.syncHealth(((Player)target));
 		} else target.damage(amount);
 	}
-	public static void damageDemigodsNonCombat(Player target, int amount) {
+	public static void damageDemigodsNonCombat(Player target, int amount)
+	{
 		if ((target).getGameMode() == GameMode.CREATIVE)
+			return;
+		if (!canWorldGuardDamage(target.getLocation()))
 			return;
 		int hp = getHP(target);
 		if (amount < 1) return;
@@ -1532,6 +1542,8 @@ public class DUtil {
 		if ((target).getGameMode() == GameMode.CREATIVE)
 			return;
 		if (!canPVP(target.getLocation()))
+			return;
+		if (!canWorldGuardDamage(target.getLocation()))
 			return;
 		int hp = getHP(target);
 		if (amount < 1) return;

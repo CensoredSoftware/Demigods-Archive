@@ -68,8 +68,8 @@ public class Typhon implements Deity {
 		p.sendMessage("--"+getName());
 		p.sendMessage("Passive: Explodes on death caused by PvP.");
 		p.sendMessage("Passive: Knockback largely increased.");
-		/*p.sendMessage("Active: "); //TODO
-		p.sendMessage("Ultimate: ");*/
+		p.sendMessage("Active: "); //TODO
+		//p.sendMessage("Ultimate: ");
 		p.sendMessage(ChatColor.YELLOW+"Select item: gunpowder");
 	}
 

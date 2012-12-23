@@ -22,7 +22,7 @@ public class DLevels
 			Player p = e.getPlayer();
 			try
 			{
-				if (!DUtil.getWorldGuard().canBuild(p, e.getBlock().getLocation()))
+				if (!DUtil.canWorldGuardBuild(p, e.getBlock().getLocation()))
 					return;
 			}
 			catch (Exception ex)
@@ -72,7 +72,7 @@ public class DLevels
 			Player p = (Player)e.getDamager();
 			try
 			{
-				if (!DUtil.getWorldGuard().canBuild(p, e.getEntity().getLocation()))
+				if (!DUtil.canWorldGuardBuild(p, e.getEntity().getLocation()))
 					return;
 			}
 			catch (Exception ex)

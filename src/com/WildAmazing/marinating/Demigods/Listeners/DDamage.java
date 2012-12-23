@@ -32,7 +32,13 @@ public class DDamage
 			return;
 		}
 		if (!DSettings.getEnabledWorlds().contains(p.getWorld()))
+		{
 			return;
+		}
+		if (!DUtil.canWorldGuardDamage(p.getLocation()))
+		{
+			return;
+		}
 		if (e instanceof EntityDamageByEntityEvent)
 		{
 			EntityDamageByEntityEvent ee = (EntityDamageByEntityEvent)e;
@@ -75,7 +81,6 @@ public class DDamage
 		Player p = (Player)e.getEntity();
 		if (!DUtil.isFullParticipant(p))
 			return;
-		e.setCancelled(true);
 		DUtil.setHP(p, DUtil.getHP(p)+e.getAmount());
 	}
 	public static void syncHealth(Player p)
