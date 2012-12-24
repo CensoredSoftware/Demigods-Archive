@@ -3,6 +3,8 @@ package com.WildAmazing.marinating.Demigods.Listeners;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -12,7 +14,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import com.WildAmazing.marinating.Demigods.DSettings;
 import com.WildAmazing.marinating.Demigods.DUtil;
 
-public class DDamage
+public class DDamage implements Listener
 {
 	/*
 	 * This handler deals with non-Demigods damage (all of that will go directly to DUtil's built in damage function) and converts it
@@ -22,6 +24,7 @@ public class DDamage
 	 */
 	public static boolean FRIENDLYFIRE = DSettings.getSettingBoolean("friendly_fire");
 
+	@EventHandler
 	public static void onDamage(EntityDamageEvent e)
 	{
 		if (!(e.getEntity() instanceof Player))
@@ -66,6 +69,7 @@ public class DDamage
 		}
 	}
 
+	@EventHandler
 	public static void onRespawn(PlayerRespawnEvent e)
 	{
 		if (DUtil.isFullParticipant(e.getPlayer()))
@@ -74,6 +78,7 @@ public class DDamage
 		}
 	}
 
+	@EventHandler
 	public static void onHeal(EntityRegainHealthEvent e)
 	{
 		if (!(e.getEntity() instanceof Player))

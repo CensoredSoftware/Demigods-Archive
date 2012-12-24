@@ -3,6 +3,8 @@ package com.WildAmazing.marinating.Demigods.Deities.Gods;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
@@ -11,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import com.WildAmazing.marinating.Demigods.DUtil;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
-public class Hephaestus implements Deity {
+public class Hephaestus implements Deity, Listener {
 	private static final long serialVersionUID = -2472769863144336856L;
 	private String PLAYER;
 
@@ -144,6 +146,7 @@ public class Hephaestus implements Deity {
 	public void onTick(long timeSent) {
 	}
 
+	@EventHandler
 	public static void onSmelt(FurnaceSmeltEvent e) {
 		if (e.getBlock() == null)
 			return;

@@ -5,6 +5,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -15,7 +17,7 @@ import org.bukkit.util.Vector;
 import com.WildAmazing.marinating.Demigods.DUtil;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
-public class Typhon implements Deity {
+public class Typhon implements Deity, Listener {
 	private static final long serialVersionUID = -7376781567872708495L;
 
 	private String PLAYER;
@@ -157,6 +159,7 @@ public class Typhon implements Deity {
 		}
 	}
 	
+	@EventHandler
 	public static void onEntityDeath(EntityDeathEvent e){
 		if (e.getEntity() instanceof Player)
 		{
@@ -173,6 +176,7 @@ public class Typhon implements Deity {
 		}
 	}
 	
+	@EventHandler
 	public static void onEntityDamageByEntity(EntityDamageByEntityEvent ee)
 	{
 		if (ee.getDamager() instanceof Player)

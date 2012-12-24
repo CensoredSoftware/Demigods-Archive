@@ -6,14 +6,17 @@ import java.util.HashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.WildAmazing.marinating.Demigods.DUtil;
 import com.WildAmazing.marinating.Demigods.DSettings;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
-public class DChatCommands
+public class DChatCommands implements Listener
 {
+	@EventHandler
 	public static void onChatCommand(AsyncPlayerChatEvent e)
 	{
 		// Define variables

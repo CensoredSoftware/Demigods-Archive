@@ -42,10 +42,12 @@ import com.clashnia.Demigods.Deities.Giants.Ephialtes;
 import com.clashnia.Demigods.Deities.Giants.Otus;
 import com.clashnia.Demigods.Deities.Giants.Typhon;
 
+import com.WildAmazing.marinating.Demigods.Listeners.DChatCommands;
 import com.WildAmazing.marinating.Demigods.Listeners.DDamage;
 import com.WildAmazing.marinating.Demigods.Listeners.DDeities;
 import com.WildAmazing.marinating.Demigods.Listeners.DLevels;
-import com.WildAmazing.marinating.Demigods.Listeners.DemigodsListeners;
+import com.WildAmazing.marinating.Demigods.Listeners.DPvP;
+import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
 
 import com.clashnia.ClashniaUpdate.DemigodsUpdate;
 
@@ -358,7 +360,11 @@ public class Demigods extends JavaPlugin implements Listener
 
 	public void loadListeners()
 	{
-		getServer().getPluginManager().registerEvents(new DemigodsListeners(), this);
+		getServer().getPluginManager().registerEvents(new DLevels(), this);
+		getServer().getPluginManager().registerEvents(new DChatCommands(), this);
+		getServer().getPluginManager().registerEvents(new DDamage(), this);
+		getServer().getPluginManager().registerEvents(new DPvP(), this);
+		getServer().getPluginManager().registerEvents(new DShrines(), this);
 		getServer().getPluginManager().registerEvents(new DDeities(), this);
 	}
 

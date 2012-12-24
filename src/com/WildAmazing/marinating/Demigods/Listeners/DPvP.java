@@ -2,6 +2,8 @@ package com.WildAmazing.marinating.Demigods.Listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
@@ -9,11 +11,12 @@ import com.WildAmazing.marinating.Demigods.DUtil;
 import com.WildAmazing.marinating.Demigods.DSettings;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
-public class DPvP
+public class DPvP implements Listener
 {
 	static double MULTIPLIER = DSettings.getSettingDouble("pvp_exp_bonus"); //bonus for dealing damage
 	static int pvpkillreward = 1500; //Devotion
 	
+	@EventHandler
 	public static void pvpDamage(EntityDamageByEntityEvent e) {
 		if (!(e.getDamager() instanceof Player))
 			return;
@@ -36,6 +39,7 @@ public class DPvP
 		DLevels.levelProcedure(attacker);
 	}
 	
+	@EventHandler
 	public static void playerDeath(EntityDeathEvent e1) {
 		if (!(e1.getEntity() instanceof Player))
 			return;

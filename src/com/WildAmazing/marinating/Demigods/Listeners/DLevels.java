@@ -2,6 +2,8 @@ package com.WildAmazing.marinating.Demigods.Listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -10,12 +12,13 @@ import com.WildAmazing.marinating.Demigods.DUtil;
 import com.WildAmazing.marinating.Demigods.DSettings;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
-public class DLevels
+public class DLevels implements Listener
 {
 	static double MULTIPLIER = DSettings.getSettingDouble("globalexpmultiplier"); //can be modified
 	static int LOSSLIMIT = 15000; //max devotion lost on death per deity
 
 	@SuppressWarnings({ "incomplete-switch" })
+	@EventHandler
 	public static void gainEXP(BlockBreakEvent e)
 	{
 		if (e.getPlayer() != null) {
@@ -66,6 +69,7 @@ public class DLevels
 		}
 	}
 
+	@EventHandler
 	public static void gainEXP(EntityDamageByEntityEvent e)
 	{
 		if (e.getDamager() instanceof Player){
@@ -97,6 +101,7 @@ public class DLevels
 		}
 	}
 	
+	@EventHandler
 	public static void deathPenalty(EntityDeathEvent e)
 	{
 		if (!(e.getEntity() instanceof Player))
