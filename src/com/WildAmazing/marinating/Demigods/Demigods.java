@@ -366,6 +366,7 @@ public class Demigods extends JavaPlugin implements Listener
 		getServer().getPluginManager().registerEvents(new DPvP(), this);
 		getServer().getPluginManager().registerEvents(new DShrines(), this);
 		getServer().getPluginManager().registerEvents(new DDeities(), this);
+		getServer().getPluginManager().registerEvents(new Hephaestus("LISTENER"), this);
 	}
 
 	private void initializeThreads()

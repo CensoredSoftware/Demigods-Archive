@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -24,7 +25,7 @@ public class DDamage implements Listener
 	 */
 	public static boolean FRIENDLYFIRE = DSettings.getSettingBoolean("friendly_fire");
 
-	@EventHandler
+	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onDamage(EntityDamageEvent e)
 	{
 		if (!(e.getEntity() instanceof Player))
@@ -69,7 +70,7 @@ public class DDamage implements Listener
 		}
 	}
 
-	@EventHandler
+	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onRespawn(PlayerRespawnEvent e)
 	{
 		if (DUtil.isFullParticipant(e.getPlayer()))
@@ -78,7 +79,7 @@ public class DDamage implements Listener
 		}
 	}
 
-	@EventHandler
+	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onHeal(EntityRegainHealthEvent e)
 	{
 		if (!(e.getEntity() instanceof Player))

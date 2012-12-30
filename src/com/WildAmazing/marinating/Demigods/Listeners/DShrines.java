@@ -9,6 +9,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -37,7 +38,7 @@ public class DShrines implements Listener
 	public static double FAVORMULTIPLIER = DSettings.getSettingDouble("globalfavormultiplier");
 	public static int RADIUS = 8;
 	
-	@EventHandler
+	@EventHandler (priority = EventPriority.HIGH)
 	public void createShrine(PlayerInteractEvent e)
 	{
 		if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
@@ -113,7 +114,7 @@ public class DShrines implements Listener
 		}
 	}
 	
-	@EventHandler
+	@EventHandler (priority = EventPriority.HIGH)
 	public static void destroyShrine(BlockBreakEvent e)
 	{
 		if (!DSettings.getEnabledWorlds().contains(e.getBlock().getWorld()))	return;
@@ -128,7 +129,7 @@ public class DShrines implements Listener
 		}
 	}
 	
-	@EventHandler
+	@EventHandler (priority = EventPriority.MONITOR)
 	public void stopShrineDamage(BlockDamageEvent e)
 	{
 		if (!DSettings.getEnabledWorlds().contains(e.getBlock().getWorld())) return;
@@ -141,7 +142,7 @@ public class DShrines implements Listener
 		}
 	}
 	
-	@EventHandler
+	@EventHandler (priority = EventPriority.MONITOR)
 	public void stopShrineIgnite(BlockIgniteEvent e)
 	{
 		if (!DSettings.getEnabledWorlds().contains(e.getBlock().getWorld())) return;
@@ -154,7 +155,7 @@ public class DShrines implements Listener
 		}
 	}
 	
-	@EventHandler
+	@EventHandler (priority = EventPriority.MONITOR)
 	public void stopShrineBurn(BlockBurnEvent e)
 	{
 		if (!DSettings.getEnabledWorlds().contains(e.getBlock().getWorld())) return;
@@ -167,7 +168,7 @@ public class DShrines implements Listener
 		}
 	}
 	
-	@EventHandler
+	@EventHandler (priority = EventPriority.MONITOR)
 	public void stopShrinePistonExtend(BlockPistonExtendEvent e)
 	{
 		List<Block> blocks = e.getBlocks();
@@ -190,7 +191,7 @@ public class DShrines implements Listener
 		}
 	}
 	
-	@EventHandler
+	@EventHandler (priority = EventPriority.MONITOR)
 	public void stopShrinePistonRetract(BlockPistonRetractEvent e)
 	{
 		// Define variables
@@ -206,7 +207,7 @@ public class DShrines implements Listener
 		}
 	}
 	
-	@EventHandler
+	@EventHandler (priority = EventPriority.MONITOR)
 	public void shrineExplode(final EntityExplodeEvent e)
 	{
 		if (!DSettings.getEnabledWorlds().contains(e.getLocation().getWorld())) return;
@@ -226,7 +227,7 @@ public class DShrines implements Listener
 		catch (Exception er) {}
 	}
 	
-	@EventHandler
+	@EventHandler (priority = EventPriority.HIGH)
 	public void playerTribute(PlayerInteractEvent e)
 	{
 		if (e.getAction() != Action.RIGHT_CLICK_BLOCK)
@@ -255,7 +256,7 @@ public class DShrines implements Listener
 		p.sendMessage(ChatColor.YELLOW+"You must be allianced to "+deityname+" in order to tribute here.");
 	}
 	
-	@EventHandler
+	@EventHandler (priority = EventPriority.HIGH)
 	public void shrineAlerts(PlayerMoveEvent e)
 	{
 		if (e.getFrom().distance(e.getTo()) < 0.1)
@@ -291,7 +292,7 @@ public class DShrines implements Listener
 		}
 	}
 	
-	@EventHandler
+	@EventHandler (priority = EventPriority.MONITOR)
 	public void tributeSuccess(InventoryCloseEvent e)
 	{
 		if (!DSettings.getEnabledWorlds().contains(e.getPlayer().getWorld()))
