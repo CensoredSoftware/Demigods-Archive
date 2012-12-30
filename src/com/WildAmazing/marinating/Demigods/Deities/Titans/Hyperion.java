@@ -66,7 +66,7 @@ public class Hyperion implements Deity {
 			 * Calculate special values first
 			 */
 			//starfall
-			int damage = (int)(Math.round(1.4*Math.pow(devotion, 0.1)));
+			int damage = (int)(Math.round(1.4*Math.pow(devotion, 0.8)));
 			int range = (int)(Math.ceil(8*Math.pow(devotion, 0.08)));
 			//ult
 			int numtargets = (int)Math.round(10*Math.pow(devotion, 0.11));

@@ -122,7 +122,7 @@ public class Zeus implements Deity {
 				if (!DUtil.hasDeity(p, "Zeus") || !DUtil.isFullParticipant(p))
 					return;
 				if (e.getCause()==DamageCause.FALL) {
-					e.setDamage(0);
+					e.setCancelled(true);
 				}
 				else if (e.getCause()==DamageCause.LIGHTNING){
 					e.setCancelled(true);
