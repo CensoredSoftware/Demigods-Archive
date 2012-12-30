@@ -19,7 +19,7 @@ public class DLevels implements Listener
 
 	@SuppressWarnings({ "incomplete-switch" })
 	@EventHandler
-	public static void gainEXP(BlockBreakEvent e)
+	public void gainEXP(BlockBreakEvent e)
 	{
 		if (e.getPlayer() != null) {
 			Player p = e.getPlayer();
@@ -70,7 +70,7 @@ public class DLevels implements Listener
 	}
 
 	@EventHandler
-	public static void gainEXP(EntityDamageByEntityEvent e)
+	public void gainEXP(EntityDamageByEntityEvent e)
 	{
 		if (e.getDamager() instanceof Player){
 			Player p = (Player)e.getDamager();
@@ -102,7 +102,7 @@ public class DLevels implements Listener
 	}
 	
 	@EventHandler
-	public static void deathPenalty(EntityDeathEvent e)
+	public void deathPenalty(EntityDeathEvent e)
 	{
 		if (!(e.getEntity() instanceof Player))
 			return;

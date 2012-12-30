@@ -25,7 +25,7 @@ public class DDamage implements Listener
 	public static boolean FRIENDLYFIRE = DSettings.getSettingBoolean("friendly_fire");
 
 	@EventHandler
-	public static void onDamage(EntityDamageEvent e)
+	public void onDamage(EntityDamageEvent e)
 	{
 		if (!(e.getEntity() instanceof Player))
 			return;
@@ -70,7 +70,7 @@ public class DDamage implements Listener
 	}
 
 	@EventHandler
-	public static void onRespawn(PlayerRespawnEvent e)
+	public void onRespawn(PlayerRespawnEvent e)
 	{
 		if (DUtil.isFullParticipant(e.getPlayer()))
 		{
@@ -79,7 +79,7 @@ public class DDamage implements Listener
 	}
 
 	@EventHandler
-	public static void onHeal(EntityRegainHealthEvent e)
+	public void onHeal(EntityRegainHealthEvent e)
 	{
 		if (!(e.getEntity() instanceof Player))
 			return;

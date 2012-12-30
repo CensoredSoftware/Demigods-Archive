@@ -38,7 +38,7 @@ public class DShrines implements Listener
 	public static int RADIUS = 8;
 	
 	@EventHandler
-	public static void createShrine(PlayerInteractEvent e)
+	public void createShrine(PlayerInteractEvent e)
 	{
 		if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 		if (!DSettings.getEnabledWorlds().contains(e.getClickedBlock().getWorld())) return;
@@ -129,7 +129,7 @@ public class DShrines implements Listener
 	}
 	
 	@EventHandler
-	public static void stopShrineDamage(BlockDamageEvent e)
+	public void stopShrineDamage(BlockDamageEvent e)
 	{
 		if (!DSettings.getEnabledWorlds().contains(e.getBlock().getWorld())) return;
 		for (WriteLocation center : DUtil.getAllShrines())
@@ -142,7 +142,7 @@ public class DShrines implements Listener
 	}
 	
 	@EventHandler
-	public static void stopShrineIgnite(BlockIgniteEvent e)
+	public void stopShrineIgnite(BlockIgniteEvent e)
 	{
 		if (!DSettings.getEnabledWorlds().contains(e.getBlock().getWorld())) return;
 		for (WriteLocation center : DUtil.getAllShrines())
@@ -155,7 +155,7 @@ public class DShrines implements Listener
 	}
 	
 	@EventHandler
-	public static void stopShrineBurn(BlockBurnEvent e)
+	public void stopShrineBurn(BlockBurnEvent e)
 	{
 		if (!DSettings.getEnabledWorlds().contains(e.getBlock().getWorld())) return;
 		for (WriteLocation center : DUtil.getAllShrines())
@@ -168,7 +168,7 @@ public class DShrines implements Listener
 	}
 	
 	@EventHandler
-	public static void stopShrinePistonExtend(BlockPistonExtendEvent e)
+	public void stopShrinePistonExtend(BlockPistonExtendEvent e)
 	{
 		List<Block> blocks = e.getBlocks();
 		
@@ -191,7 +191,7 @@ public class DShrines implements Listener
 	}
 	
 	@EventHandler
-	public static void stopShrinePistonRetract(BlockPistonRetractEvent e)
+	public void stopShrinePistonRetract(BlockPistonRetractEvent e)
 	{
 		// Define variables
 		final Block b = e.getBlock().getRelative(e.getDirection(), 2);
@@ -207,7 +207,7 @@ public class DShrines implements Listener
 	}
 	
 	@EventHandler
-	public static void shrineExplode(final EntityExplodeEvent e)
+	public void shrineExplode(final EntityExplodeEvent e)
 	{
 		if (!DSettings.getEnabledWorlds().contains(e.getLocation().getWorld())) return;
 		try {
@@ -227,7 +227,7 @@ public class DShrines implements Listener
 	}
 	
 	@EventHandler
-	public static void playerTribute(PlayerInteractEvent e)
+	public void playerTribute(PlayerInteractEvent e)
 	{
 		if (e.getAction() != Action.RIGHT_CLICK_BLOCK)
 			return;
@@ -256,7 +256,7 @@ public class DShrines implements Listener
 	}
 	
 	@EventHandler
-	public static void shrineAlerts(PlayerMoveEvent e)
+	public void shrineAlerts(PlayerMoveEvent e)
 	{
 		if (e.getFrom().distance(e.getTo()) < 0.1)
 			return;
@@ -292,7 +292,7 @@ public class DShrines implements Listener
 	}
 	
 	@EventHandler
-	public static void tributeSuccess(InventoryCloseEvent e)
+	public void tributeSuccess(InventoryCloseEvent e)
 	{
 		if (!DSettings.getEnabledWorlds().contains(e.getPlayer().getWorld()))
 			return;

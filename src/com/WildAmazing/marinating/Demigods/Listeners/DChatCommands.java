@@ -17,7 +17,7 @@ import com.WildAmazing.marinating.Demigods.Deities.Deity;
 public class DChatCommands implements Listener
 {
 	@EventHandler
-	public static void onChatCommand(AsyncPlayerChatEvent e)
+	public void onChatCommand(AsyncPlayerChatEvent e)
 	{
 		// Define variables
 		Player p = e.getPlayer();
@@ -27,7 +27,7 @@ public class DChatCommands implements Listener
 		else if (e.getMessage().equals("dg")) dg(p,e);
 	}
 	
-	private static void qd(Player p, AsyncPlayerChatEvent e)
+	private void qd(Player p, AsyncPlayerChatEvent e)
 	{
 		if ((e.getMessage().charAt(0) == 'q') && (e.getMessage().charAt(1) == 'd')){
 			String str;
@@ -72,7 +72,7 @@ public class DChatCommands implements Listener
 		}
 	}
 	
-	private static void dg(Player p, AsyncPlayerChatEvent e)
+	private void dg(Player p, AsyncPlayerChatEvent e)
 	{
 		HashMap<String, ArrayList<String>> alliances = new HashMap<String, ArrayList<String>>();
 		for (Player pl : DUtil.getPlugin().getServer().getOnlinePlayers()) {

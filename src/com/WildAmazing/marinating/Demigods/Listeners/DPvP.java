@@ -17,7 +17,7 @@ public class DPvP implements Listener
 	static int pvpkillreward = 1500; //Devotion
 	
 	@EventHandler
-	public static void pvpDamage(EntityDamageByEntityEvent e) {
+	public void pvpDamage(EntityDamageByEntityEvent e) {
 		if (!(e.getDamager() instanceof Player))
 			return;
 		if (!(e.getEntity() instanceof Player))
@@ -40,7 +40,7 @@ public class DPvP implements Listener
 	}
 	
 	@EventHandler
-	public static void playerDeath(EntityDeathEvent e1) {
+	public void playerDeath(EntityDeathEvent e1) {
 		if (!(e1.getEntity() instanceof Player))
 			return;
 		Player attacked = (Player)e1.getEntity();
