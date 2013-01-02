@@ -122,6 +122,11 @@ commands:
         description: Warps the user to the shrine.
         permission: demigods.shrinewarp
         alias: warpshrine
+    forceshrinewarp:
+        usage: /forceshrinewarp <deity> or /forceshrinewarp <player> <deity> or /forceshrinewarp <shrine name>
+        description: Warps the user to the shrine, even if it is blocked.
+        permission: demigods.shrinewarp
+        alias: forcewarpshrine
     shrineowner:
         usage: /shrineowner add <name> or /shrineowner remove <name> or /shrineowner set <name>  
         description: Gives information about shrines.

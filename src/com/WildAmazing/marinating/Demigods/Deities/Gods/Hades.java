@@ -283,15 +283,10 @@ public class Hades implements Deity {
 		return true;
 	}
 	private boolean entomb(Player p) {
-		if (!DUtil.canPVP(p.getLocation()))
-			return false;
-		if (!DUtil.canPVP(p.getLocation())) {
-			return false;
-		}
-		int duration = (int)Math.round(2.18678*Math.pow(DUtil.getDevotion(p, "Hades"), 0.24723)); //seconds
 		LivingEntity le = DUtil.getTargetLivingEntity(p, 2);
-		if (le == null)
-			return false;
+		if (le == null) return false;
+		if (!DUtil.canPVP(p.getLocation()) || !DUtil.canPVP(le.getLocation())) return false;
+		int duration = (int)Math.round(2.18678*Math.pow(DUtil.getDevotion(p, "Hades"), 0.24723)); //seconds
 		final ArrayList<Block> tochange = new ArrayList<Block>();
 		for (int x=-3;x<=3;x++) {
 			for (int y=-3;y<=3;y++) {

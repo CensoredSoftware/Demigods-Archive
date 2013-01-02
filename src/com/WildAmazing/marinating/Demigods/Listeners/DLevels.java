@@ -141,7 +141,8 @@ public class DLevels implements Listener
 			DUtil.setMaxHP(p, DUtil.getMaxHP(p)+10);
 			DUtil.setHP(p, DUtil.getMaxHP(p));
 			DUtil.setAscensions(p, DUtil.getAscensions(p)+1);
-			if (DUtil.getOnlinePlayer(p) != null) {
+			
+			if (DUtil.getOnlinePlayer(p) != null) {				
 				DUtil.getOnlinePlayer(p).sendMessage(ChatColor.AQUA+"Congratulations! Your Ascensions increased to "+DUtil.getAscensions(p)+".");
 				DUtil.getOnlinePlayer(p).sendMessage(ChatColor.YELLOW+"Your maximum HP has increased to "+DUtil.getMaxHP(p)+".");
 			}

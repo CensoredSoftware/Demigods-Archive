@@ -101,6 +101,7 @@ public class DCommandExecutor implements CommandExecutor
 			else if (c.getName().equalsIgnoreCase("checkplayer")) return checkPlayer(p,args);
 			else if (c.getName().equalsIgnoreCase("shrine")) return shrine(p,args);
 			else if (c.getName().equalsIgnoreCase("shrinewarp")) return shrineWarp(p,args);
+			else if (c.getName().equalsIgnoreCase("forceshrinewarp")) return forceShrineWarp(p,args);
 			else if (c.getName().equalsIgnoreCase("shrineowner")) return shrineOwner(p,args);
 			else if (c.getName().equalsIgnoreCase("fixshrine")) return fixShrine(p);
 			else if (c.getName().equalsIgnoreCase("listshrines")) return listShrines(p);
@@ -125,6 +126,8 @@ public class DCommandExecutor implements CommandExecutor
 			else if (c.getName().equalsIgnoreCase("value")) return value(p);
 			else if (c.getName().equalsIgnoreCase("bindings")) return bindings(p);
 			else if (c.getName().equalsIgnoreCase("assemble")) return assemble(p);
+			
+			//else if (c.getName().equalsIgnoreCase("setlore")) return setLore(p);
 			
 			
 			else if (c.isRegistered())
@@ -1362,6 +1365,209 @@ public class DCommandExecutor implements CommandExecutor
 		return true;
 	}
 	
+	private boolean forceShrineWarp(Player p, String[] args)
+	{
+		if (!(DUtil.hasPermission(p, "demigods.shrinewarp") || DUtil.hasPermission(p, "demigods.admin")))
+			return true;
+		WriteLocation target = null;
+		if ((args.length != 1) && (args.length != 2))
+			return false;
+		if (args.length == 1)
+			//try matching the name to deities the player has
+			target = DUtil.getShrine(p.getName(), args[0]);
+		//try matching the name to another player's warp
+		if ((target == null) && (args.length == 2)) {
+			if (DUtil.isFullParticipant(DUtil.getDemigodsPlayer(args[0]))) {
+				target = DUtil.getShrine(DUtil.getDemigodsPlayer(args[0]), args[1]);
+			}
+		}
+		if ((target == null) && (args.length == 1))
+			target = DUtil.getShrineByKey("#"+args[0]);
+		if (target == null) {
+			p.sendMessage(ChatColor.YELLOW+"Target shrine not found. Shrine names are case sensitive.");
+			return true;
+		}
+		//check for permission
+		if (!DUtil.isGuest(target, p.getName()) && !DUtil.getOwnerOfShrine(target).equals(p.getName())) {
+			p.sendMessage(ChatColor.YELLOW+"You do not have permission for that warp.");
+			return true;
+		}
+		//check if warp is valid
+		if (!DSettings.getEnabledWorlds().contains(p.getWorld())) {
+			return true;
+		}
+		if (!DSettings.getEnabledWorlds().contains(DUtil.toLocation(target).getWorld())) {
+			p.sendMessage(ChatColor.YELLOW+"Demigods is not enabled in the target world.");
+			return true;
+		}
+		//check if warp is clear
+		Block b = DUtil.toLocation(target).getBlock();
+		if ((b.getRelative(BlockFace.UP).getType() != Material.AIR) || (b.getRelative(BlockFace.UP).getRelative(BlockFace.UP).getType() != Material.AIR)) {
+			p.sendMessage(ChatColor.YELLOW+"The target location is blocked, warping anyways.");
+		}
+		//warp code
+		target = DUtil.toWriteLocation(b.getRelative(BlockFace.UP).getLocation());
+		final WriteLocation current = DUtil.toWriteLocation(p.getLocation());
+		final int hp = DUtil.getHP(p);
+		final float pitch = p.getLocation().getPitch();
+		final float yaw = p.getLocation().getYaw();
+		final Player pt = p;
+		final WriteLocation TARGET = target;
+		DUtil.addActiveEffect(p.getName(), "Warping", 1000);
+		p.sendMessage(ChatColor.YELLOW+"Don't move, warping in progress...");
+		DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable() {
+			@Override
+			public void run() {
+				if (DUtil.getActiveEffectsList(pt.getName()).contains("Warping")) {
+					if (!current.equalsApprox(DUtil.toWriteLocation(pt.getLocation()))) {
+						pt.sendMessage(ChatColor.RED+"Warp cancelled due to movement.");
+						DUtil.removeActiveEffect(pt.getName(), "Warping");
+					}
+					if (DUtil.getHP(pt) < hp) {
+						pt.sendMessage(ChatColor.RED+"Warp cancelled due to loss of health.");
+						DUtil.removeActiveEffect(pt.getName(), "Warping");
+					}
+				}
+			}
+		}, 20);
+		DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable() {
+			@Override
+			public void run() {
+				if (DUtil.getActiveEffectsList(pt.getName()).contains("Warping")) {
+					if (!current.equalsApprox(DUtil.toWriteLocation(pt.getLocation()))) {
+						pt.sendMessage(ChatColor.RED+"Warp cancelled due to movement.");
+						DUtil.removeActiveEffect(pt.getName(), "Warping");
+					}
+					if (DUtil.getHP(pt) < hp) {
+						pt.sendMessage(ChatColor.RED+"Warp cancelled due to loss of health.");
+						DUtil.removeActiveEffect(pt.getName(), "Warping");
+					}
+				}
+			}
+		}, 40);
+		DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable() {
+			@Override
+			public void run() {
+				if (DUtil.getActiveEffectsList(pt.getName()).contains("Warping")) {
+					if (!current.equalsApprox(DUtil.toWriteLocation(pt.getLocation()))) {
+						pt.sendMessage(ChatColor.RED+"Warp cancelled due to movement.");
+						DUtil.removeActiveEffect(pt.getName(), "Warping");
+					}
+					if (DUtil.getHP(pt) < hp) {
+						pt.sendMessage(ChatColor.RED+"Warp cancelled due to loss of health.");
+						DUtil.removeActiveEffect(pt.getName(), "Warping");
+					}
+				}
+			}
+		}, 60);
+		DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable() {
+			@Override
+			public void run() {
+				if (DUtil.getActiveEffectsList(pt.getName()).contains("Warping")) {
+					if (!current.equalsApprox(DUtil.toWriteLocation(pt.getLocation()))) {
+						pt.sendMessage(ChatColor.RED+"Warp cancelled due to movement.");
+						DUtil.removeActiveEffect(pt.getName(), "Warping");
+					}
+					if (DUtil.getHP(pt) < hp) {
+						pt.sendMessage(ChatColor.RED+"Warp cancelled due to loss of health.");
+						DUtil.removeActiveEffect(pt.getName(), "Warping");
+					}
+				}
+			}
+		}, 80);
+		DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable() {
+			@Override
+			public void run() {
+				if (DUtil.getActiveEffectsList(pt.getName()).contains("Warping")) {
+					if (!current.equalsApprox(DUtil.toWriteLocation(pt.getLocation()))) {
+						pt.sendMessage(ChatColor.RED+"Warp cancelled due to movement.");
+						DUtil.removeActiveEffect(pt.getName(), "Warping");
+					}
+					if (DUtil.getHP(pt) < hp) {
+						pt.sendMessage(ChatColor.RED+"Warp cancelled due to loss of health.");
+						DUtil.removeActiveEffect(pt.getName(), "Warping");
+					}
+				}
+			}
+		}, 100);
+		DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable() {
+			@Override
+			public void run() {
+				if (DUtil.getActiveEffectsList(pt.getName()).contains("Warping")) {
+					if (!current.equalsApprox(DUtil.toWriteLocation(pt.getLocation()))) {
+						pt.sendMessage(ChatColor.RED+"Warp cancelled due to movement.");
+						DUtil.removeActiveEffect(pt.getName(), "Warping");
+					}
+					if (DUtil.getHP(pt) < hp) {
+						pt.sendMessage(ChatColor.RED+"Warp cancelled due to loss of health.");
+						DUtil.removeActiveEffect(pt.getName(), "Warping");
+					}
+				}
+			}
+		}, 120);
+		DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable() {
+			@Override
+			public void run() {
+				if (DUtil.getActiveEffectsList(pt.getName()).contains("Warping")) {
+					if (!current.equalsApprox(DUtil.toWriteLocation(pt.getLocation()))) {
+						pt.sendMessage(ChatColor.RED+"Warp cancelled due to movement.");
+						DUtil.removeActiveEffect(pt.getName(), "Warping");
+					}
+					if (DUtil.getHP(pt) < hp) {
+						pt.sendMessage(ChatColor.RED+"Warp cancelled due to loss of health.");
+						DUtil.removeActiveEffect(pt.getName(), "Warping");
+					}
+				}
+			}
+		}, 140);
+		DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable() {
+			@Override
+			public void run() {
+				if (DUtil.getActiveEffectsList(pt.getName()).contains("Warping")) {
+					if (!current.equalsApprox(DUtil.toWriteLocation(pt.getLocation()))) {
+						pt.sendMessage(ChatColor.RED+"Warp cancelled due to movement.");
+						DUtil.removeActiveEffect(pt.getName(), "Warping");
+					}
+					if (DUtil.getHP(pt) < hp) {
+						pt.sendMessage(ChatColor.RED+"Warp cancelled due to loss of health.");
+						DUtil.removeActiveEffect(pt.getName(), "Warping");
+					}
+				}
+			}
+		}, 160);
+		DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable() {
+			@Override
+			public void run() {
+				if (DUtil.getActiveEffectsList(pt.getName()).contains("Warping")) {
+					if (!current.equalsApprox(DUtil.toWriteLocation(pt.getLocation()))) {
+						pt.sendMessage(ChatColor.RED+"Warp cancelled due to movement.");
+						DUtil.removeActiveEffect(pt.getName(), "Warping");
+					}
+					if (DUtil.getHP(pt) < hp) {
+						pt.sendMessage(ChatColor.RED+"Warp cancelled due to loss of health.");
+						DUtil.removeActiveEffect(pt.getName(), "Warping");
+					}
+				}
+			}
+		}, 180);
+		DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable() {
+			@Override
+			public void run() {
+				if (DUtil.getActiveEffectsList(pt.getName()).contains("Warping")) {
+					Location newloc = DUtil.toLocation(TARGET);
+					newloc.setPitch(pitch);
+					newloc.setYaw(yaw);
+					newloc.setX(newloc.getX()+0.5);
+					newloc.setZ(newloc.getZ()+0.5);
+					pt.teleport(newloc);
+					pt.sendMessage(ChatColor.YELLOW+"Shrine warp successful.");
+					DUtil.removeActiveEffect(pt.getName(), "Warping");
+				}
+			}
+		}, 190);
+		return true;
+	}
+	
 	private boolean shrineOwner(Player p, String[] args)
 	{
 		if (!(DUtil.hasPermission(p, "demigods.shrineowner") || DUtil.hasPermission(p, "demigods.admin")))
@@ -1900,7 +2106,7 @@ public class DCommandExecutor implements CommandExecutor
 			case CLAY_BALL: choice = new Prometheus(p.getName()); break;
 			case VINE: choice = new Rhea(p.getName()); break;
 			//
-			//case SULPHUR: choice = new Typhon(p.getName()); break; //TODO Not accessible in stable release.
+			case SULPHUR: choice = new Typhon(p.getName()); break; //TODO Not accessible in stable release.
 			}
 			if (choice != null) {
 				if (!DUtil.hasPermission(p, choice.getDefaultAlliance().toLowerCase() + "." + choice.getName().toLowerCase())
@@ -1955,7 +2161,7 @@ public class DCommandExecutor implements CommandExecutor
 		case GLOWSTONE: choice = new Hyperion(p.getName()); break;
 		case COMPASS: choice = new Themis(p.getName()); break;
 		//
-		//case SULPHUR: choice = new Typhon(p.getName()); break; //TODO Not accessible in stable release.
+		case SULPHUR: choice = new Typhon(p.getName()); break; //TODO Not accessible in stable release.
 		}
 		if (choice == null) {
 			p.sendMessage(ChatColor.YELLOW+"That is not a valid selection item.");
@@ -2036,4 +2242,25 @@ public class DCommandExecutor implements CommandExecutor
 		p.sendMessage(ChatColor.YELLOW+"Unable to reach the congregation's location.");
 		return true;
 	}
+	/*
+	private boolean setLore(Player p) //TODO TEMP
+	{
+		// Define variables
+		ItemStack health = new ItemStack(Material.GOLD_NUGGET, 1);
+		
+		String name = "Extra Life";
+		List<String> lore = new ArrayList<String>();
+		lore.add("Gain back a life!");
+		
+		ItemMeta item = health.getItemMeta();
+		item.setDisplayName(name);
+		item.setLore(lore);
+		
+		health.setItemMeta(item);
+		
+		p.getInventory().addItem(health);
+		p.sendMessage(ChatColor.GREEN + "1 UP!");
+		return true;
+	}
+	*/
 }

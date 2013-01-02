@@ -66,7 +66,7 @@ public class Hyperion implements Deity {
 			 * Calculate special values first
 			 */
 			//starfall
-			int damage = (int)(Math.round(1.4*Math.pow(devotion, 0.8)));
+			int damage = (int)(Math.round(1.4*Math.pow(devotion, 0.3)));
 			int range = (int)(Math.ceil(8*Math.pow(devotion, 0.08)));
 			//ult
 			int numtargets = (int)Math.round(10*Math.pow(devotion, 0.11));
@@ -185,7 +185,7 @@ public class Hyperion implements Deity {
 			Player p = DUtil.getOnlinePlayer(getPlayerName());
 			if ((p != null) && p.isOnline()) {
 				if (p.getLocation().getBlock().getLightLevel() > 12) {
-					p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 110, 0));
+					p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 0, false));
 				}
 			}
 		}
@@ -195,7 +195,7 @@ public class Hyperion implements Deity {
 			p.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
 			return 0;
 		}
-		int damage = (int)(Math.round(1.4*Math.pow(DUtil.getDevotion(p, getName()), 0.1)));
+		int damage = (int)(Math.round(1.4*Math.pow(DUtil.getDevotion(p, getName()), 0.3)));
 		int range = (int)(Math.ceil(8*Math.pow(DUtil.getDevotion(p, getName()), 0.08)));
 		ArrayList<LivingEntity> entitylist = new ArrayList<LivingEntity>();
 		Vector ploc = p.getLocation().toVector();

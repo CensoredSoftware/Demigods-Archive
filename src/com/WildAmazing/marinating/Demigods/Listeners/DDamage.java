@@ -1,5 +1,9 @@
 package com.WildAmazing.marinating.Demigods.Listeners;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -11,9 +15,12 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.WildAmazing.marinating.Demigods.DSettings;
 import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
 public class DDamage implements Listener
 {
@@ -43,6 +50,7 @@ public class DDamage implements Listener
 		{
 			return;
 		}
+		
 		if (e instanceof EntityDamageByEntityEvent)
 		{
 			EntityDamageByEntityEvent ee = (EntityDamageByEntityEvent)e;
@@ -51,7 +59,7 @@ public class DDamage implements Listener
 				if (!FRIENDLYFIRE) {
 					if (DUtil.areAllied(p, (Player)ee.getDamager()))
 					{
-						e.setDamage(0);
+						e.setCancelled(true);
 						return;
 					}
 				}
@@ -62,11 +70,12 @@ public class DDamage implements Listener
 		if (e.getCause() == DamageCause.LAVA)
 		{			
 			e.setDamage(0); // Disable lava damage, fire damage does enough for Demigods.
+			e.setCancelled(true);
 		}
 				
 		if ((e.getCause() != DamageCause.ENTITY_ATTACK) && (e.getCause() != DamageCause.PROJECTILE))
 		{
-			DUtil.damageDemigodsNonCombat(p, e.getDamage());
+			DUtil.damageDemigodsNonCombat(p, e.getDamage(), e.getCause());
 		}
 	}
 
@@ -93,10 +102,7 @@ public class DDamage implements Listener
 	{
 		int current = DUtil.getHP(p);
 		if (current < 1) { //if player should be dead
-			EntityDamageEvent e = p.getLastDamageCause();
 			p.setHealth(0);
-			//p.damage(100);
-			p.setLastDamageCause(e);
 			return;
 		}
 		double ratio = ((double)current)/DUtil.getMaxHP(p);
@@ -184,5 +190,188 @@ public class DDamage implements Listener
 			amount *= 0;
 		}
 		return amount;
+	}
+	
+	public static ItemStack getBestSoul(Player p)
+	{
+		// Define Immortal Soul Fragment
+		ItemStack health = new ItemStack(Material.GOLD_NUGGET);
+		
+		String name = "Immortal Soul Fragment";
+		List<String> lore = new ArrayList<String>();
+		lore.add("Brings you back to life.");
+		lore.add("You regain full heath!");
+		
+		ItemMeta item = health.getItemMeta();
+		item.setDisplayName(name);
+		item.setLore(lore);
+		
+		health.setItemMeta(item);
+		
+		// Define Immortal Soul Dust
+		ItemStack halfHealth = new ItemStack(Material.GLOWSTONE_DUST);
+		
+		String halfName = "Immortal Soul Dust";
+		List<String> halfLore = new ArrayList<String>();
+		halfLore.add("Brings you back to life.");
+		halfLore.add("You regain half heath!");
+		
+		ItemMeta halfItem = halfHealth.getItemMeta();
+		halfItem.setDisplayName(halfName);
+		halfItem.setLore(halfLore);
+		
+		halfHealth.setItemMeta(halfItem);
+		
+		// Define Mortal Soul
+		ItemStack mortalHealth = new ItemStack(Material.GOLD_NUGGET);
+		
+		String mortalName = "Mortal Soul";
+		List<String> mortalLore = new ArrayList<String>();
+		mortalLore.add("Brings you back to life.");
+		mortalLore.add("You regain 20 health.");
+		
+		ItemMeta mortalItem = mortalHealth.getItemMeta();
+		mortalItem.setDisplayName(mortalName);
+		mortalItem.setLore(mortalLore);
+		
+		mortalHealth.setItemMeta(mortalItem);
+		
+		// Player inventory
+		ItemStack[] invItems = p.getInventory().getContents();
+		
+		// Has soul?
+		boolean hasFull = false;
+		boolean hasHalf = false;
+		boolean hasMortal = false;
+		
+		for (ItemStack invItem : invItems)
+		{
+			if (invItem == null) continue;
+			if (!invItem.hasItemMeta()) continue;
+			
+			if (invItem.isSimilar(health))
+			{
+				hasFull = true;
+			}
+			else if (invItem.isSimilar(halfHealth))
+			{
+				hasHalf = true;
+			}
+			else if (invItem.isSimilar(mortalHealth))
+			{
+				hasMortal = true;
+			}
+		}
+		
+		if (hasFull) return health;
+		else if (hasHalf) return halfHealth;
+		else if (hasMortal) return mortalHealth;
+		else return null;
+	}
+	
+	public static Boolean cancelSoulDamage(Player p, int damage)
+	{
+		if (damage >= DUtil.getHP(p))
+		{
+			// Define Immortal Soul Fragment
+			ItemStack health = new ItemStack(Material.GOLD_NUGGET);
+			
+			String name = "Immortal Soul Fragment";
+			List<String> lore = new ArrayList<String>();
+			lore.add("Brings you back to life.");
+			lore.add("You regain full heath!");
+			
+			ItemMeta item = health.getItemMeta();
+			item.setDisplayName(name);
+			item.setLore(lore);
+			
+			health.setItemMeta(item);
+			
+			// Define Immortal Soul Dust
+			ItemStack halfHealth = new ItemStack(Material.GLOWSTONE_DUST);
+			
+			String halfName = "Immortal Soul Dust";
+			List<String> halfLore = new ArrayList<String>();
+			halfLore.add("Brings you back to life.");
+			halfLore.add("You regain half heath!");
+			
+			ItemMeta halfItem = halfHealth.getItemMeta();
+			halfItem.setDisplayName(halfName);
+			halfItem.setLore(halfLore);
+			
+			halfHealth.setItemMeta(halfItem);
+			
+			// Define Mortal Soul
+			ItemStack mortalHealth = new ItemStack(Material.GOLD_NUGGET);
+			
+			String mortalName = "Mortal Soul";
+			List<String> mortalLore = new ArrayList<String>();
+			mortalLore.add("Brings you back to life.");
+			mortalLore.add("You regain 20 health.");
+			
+			ItemMeta mortalItem = mortalHealth.getItemMeta();
+			mortalItem.setDisplayName(mortalName);
+			mortalItem.setLore(mortalLore);
+			
+			mortalHealth.setItemMeta(mortalItem);
+			
+			ItemStack[] invItems = p.getInventory().getContents();
+			
+			if (getBestSoul(p) == null) return false;
+			
+			for (ItemStack invItem : invItems)
+			{
+				if (invItem == null) continue;
+				if (!invItem.hasItemMeta()) continue;
+				
+				if (invItem.isSimilar(getBestSoul(p)))
+				{
+					int amount = invItem.getAmount();
+					p.getInventory().removeItem(invItem);
+					invItem.setAmount(amount - 1);
+					p.getInventory().addItem(invItem);
+					
+					if (getBestSoul(p) == health) hasFull(p);
+					else if (getBestSoul(p) == halfHealth) hasHalf(p);
+					else if (getBestSoul(p) == mortalHealth) hasMortal(p);
+					
+					fakeDeath(p);
+					
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public static void hasFull(Player p)
+	{
+		DUtil.setHP(p, DUtil.getMaxHP(p));
+	}
+	
+	public static void hasHalf(Player p)
+	{
+		DUtil.setHP(p, (DUtil.getMaxHP(p) / 2));
+	}
+	
+	public static void hasMortal(Player p)
+	{
+		DUtil.setHP(p, 20);
+	}
+	
+	public static void fakeDeath(Player p)
+	{
+		double reduced = 0.1; //TODO
+		long before = DUtil.getDevotion(p);
+		for (Deity d : DUtil.getDeities(p)) {
+			int reduceamt = (int)Math.round(DUtil.getDevotion(p, d)*reduced*DLevels.MULTIPLIER);
+			if (reduceamt > DLevels.LOSSLIMIT)
+				reduceamt = DLevels.LOSSLIMIT;
+			DUtil.setDevotion(p, d, DUtil.getDevotion(p, d)-reduceamt);
+		}
+		if (DUtil.getDeities(p).size() < 2)
+			p.sendMessage(ChatColor.DARK_RED+"You have failed in your service to "+DUtil.getDeities(p).get(0).getName()+".");
+		else p.sendMessage(ChatColor.DARK_RED+"You have failed in your service to your deities.");
+		p.sendMessage(ChatColor.DARK_RED+"Your Devotion has been reduced by "+(before-DUtil.getDevotion(p))+".");
 	}
 }

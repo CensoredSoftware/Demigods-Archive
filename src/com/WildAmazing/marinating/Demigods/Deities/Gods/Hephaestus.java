@@ -90,6 +90,7 @@ public class Hephaestus implements Deity, Listener {
 				{
 					p.setFireTicks(0);
 					e.setDamage(0);
+					e.setCancelled(true);
 				}
 			}
 		}

@@ -292,7 +292,7 @@ public class Cronus implements Deity {
 		int duration = (int)Math.round(9.9155621 * Math.pow(DUtil.getAscensions(p), 0.459019));
 		int count = 0;
 		for (Player pl : p.getWorld().getPlayers()) {
-			if (pl.getLocation().toVector().isInSphere(p.getLocation().toVector(), 70));
+			if (!(pl.getLocation().toVector().isInSphere(p.getLocation().toVector(), 70))) continue;
 			if (DUtil.isFullParticipant(pl)) {
 				if (DUtil.getAllegiance(pl).equalsIgnoreCase(DUtil.getAllegiance(p)))
 					continue;

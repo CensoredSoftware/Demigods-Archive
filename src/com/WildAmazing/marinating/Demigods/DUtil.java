@@ -16,6 +16,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -1509,6 +1510,8 @@ public class DUtil {
 				return;
 			if (!canPVP(target.getLocation()))
 				return;
+			if (DDamage.cancelSoulDamage((Player)target, amount))
+				return;
 			if (!canWorldGuardDamage(target.getLocation()))
 				return;
 			int hp = getHP((Player)target);
@@ -1517,17 +1520,20 @@ public class DUtil {
 			amount = DDamage.specialReduction((Player)target, amount);
 			if (amount < 1) return;
 			setHP(((Player)target), hp-amount);
-			if (source instanceof Player) {
+			if (source instanceof Player)
+			{
 				target.setLastDamageCause(new EntityDamageByEntityEvent(source, target, cause, amount));
 			}
 			DDamage.syncHealth(((Player)target));
 		} else target.damage(amount);
 	}
-	public static void damageDemigodsNonCombat(Player target, int amount)
+	public static void damageDemigodsNonCombat(Player target, int amount, DamageCause cause)
 	{
 		if ((target).getGameMode() == GameMode.CREATIVE)
 			return;
 		if (!canWorldGuardDamage(target.getLocation()))
+			return;
+		if (DDamage.cancelSoulDamage((Player)target, amount))
 			return;
 		int hp = getHP(target);
 		if (amount < 1) return;
@@ -1535,6 +1541,7 @@ public class DUtil {
 		amount = DDamage.specialReduction(target, amount);
 		if (amount < 1) return;
 		setHP((target), hp-amount);
+		target.setLastDamageCause(new EntityDamageEvent(target, cause, amount));
 		if (target.getHealth() > 1)
 			target.damage(1);
 	}
@@ -1544,6 +1551,8 @@ public class DUtil {
 		if (!canPVP(target.getLocation()))
 			return;
 		if (!canWorldGuardDamage(target.getLocation()))
+			return;
+		if (DDamage.cancelSoulDamage((Player)target, amount))
 			return;
 		int hp = getHP(target);
 		if (amount < 1) return;

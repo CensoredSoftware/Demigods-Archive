@@ -43,6 +43,7 @@ import com.clashnia.Demigods.Deities.Giants.Otus;
 import com.clashnia.Demigods.Deities.Giants.Typhon;
 
 import com.WildAmazing.marinating.Demigods.Listeners.DChatCommands;
+import com.WildAmazing.marinating.Demigods.Listeners.DCrafting;
 import com.WildAmazing.marinating.Demigods.Listeners.DDamage;
 import com.WildAmazing.marinating.Demigods.Listeners.DDeities;
 import com.WildAmazing.marinating.Demigods.Listeners.DLevels;
@@ -277,12 +278,15 @@ public class Demigods extends JavaPlugin implements Listener
 		getCommand("addascensions").setExecutor(ce);
 		getCommand("setkills").setExecutor(ce);
 		getCommand("setdeaths").setExecutor(ce);
+		
+		//getCommand("setlore").setExecutor(ce);
 
 		/*
 		 *  Shrine commands
 		 */
 		getCommand("shrine").setExecutor(ce);
 		getCommand("shrinewarp").setExecutor(ce);
+		getCommand("forceshrinewarp").setExecutor(ce);
 		getCommand("shrineowner").setExecutor(ce);
 		getCommand("removeshrine").setExecutor(ce);
 		getCommand("fixshrine").setExecutor(ce);
@@ -366,6 +370,7 @@ public class Demigods extends JavaPlugin implements Listener
 		getServer().getPluginManager().registerEvents(new DPvP(), this);
 		getServer().getPluginManager().registerEvents(new DShrines(), this);
 		getServer().getPluginManager().registerEvents(new DDeities(), this);
+		getServer().getPluginManager().registerEvents(new DCrafting(), this);
 		getServer().getPluginManager().registerEvents(new Hephaestus("LISTENER"), this);
 	}
 

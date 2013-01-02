@@ -1,12 +1,18 @@
 package com.WildAmazing.marinating.Demigods.Listeners;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.WildAmazing.marinating.Demigods.DUtil;
 import com.WildAmazing.marinating.Demigods.DSettings;
@@ -47,6 +53,7 @@ public class DPvP implements Listener
 		Player attacked = (Player)e1.getEntity();
 		if (!DSettings.getEnabledWorlds().contains(attacked.getWorld()))
 			return;
+		
 		if ((attacked.getLastDamageCause() != null) && (attacked.getLastDamageCause() instanceof EntityDamageByEntityEvent)) {
 			EntityDamageByEntityEvent e = (EntityDamageByEntityEvent)attacked.getLastDamageCause();
 			if (!(e.getDamager() instanceof Player))
@@ -68,6 +75,49 @@ public class DPvP implements Listener
 					DUtil.getPlugin().getServer().broadcastMessage(ChatColor.YELLOW+attacked.getName()+ChatColor.GRAY+" of the "+
 							DUtil.getAllegiance(attacked)+ " alliance was slain by "+ChatColor.YELLOW+attacker.getName()+
 							ChatColor.GRAY+" of the "+DUtil.getAllegiance(attacker)+" alliance.");
+
+					// Define Immortal Soul Fragment
+					ItemStack health = new ItemStack(Material.GOLD_NUGGET, 1);
+					
+					String name = "Immortal Soul Fragment";
+					List<String> lore = new ArrayList<String>();
+					lore.add("Brings you back to life.");
+					lore.add("You regain full heath!");
+					
+					ItemMeta item = health.getItemMeta();
+					item.setDisplayName(name);
+					item.setLore(lore);
+					
+					health.setItemMeta(item);
+					
+					// Define Immortal Soul Dust
+					ItemStack halfHealth = new ItemStack(Material.GLOWSTONE_DUST, 1);
+					
+					String halfName = "Immortal Soul Dust";
+					List<String> halfLore = new ArrayList<String>();
+					halfLore.add("Brings you back to life.");
+					halfLore.add("You regain half heath!");
+					
+					ItemMeta halfItem = halfHealth.getItemMeta();
+					halfItem.setDisplayName(halfName);
+					halfItem.setLore(halfLore);
+					
+					halfHealth.setItemMeta(halfItem);
+					
+					if (DUtil.getAscensions(attacked) > DUtil.getAscensions(attacker))
+					{
+						attacker.getInventory().addItem(health);
+						attacker.sendMessage(ChatColor.GRAY + "One stronger than you has been slain by your hand.");
+						attacker.sendMessage(ChatColor.GOLD + "You have captured an Immortal Soul Fragment.");
+					}
+					
+					if (DUtil.getAscensions(attacker) >= DUtil.getAscensions(attacked))
+					{
+						attacker.getInventory().addItem(halfHealth);
+						attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
+						attacker.sendMessage(ChatColor.RED + "You have captured some Immortal Soul Dust.");
+					}
+					
 					double adjusted = DUtil.getKills(attacked)*1.0/DUtil.getDeaths(attacked);
 					if (adjusted > 5) adjusted = 5;
 					if (adjusted < 0.2) adjusted = 0.2;
@@ -78,6 +128,24 @@ public class DPvP implements Listener
 			} else { //regular player
 				DUtil.getPlugin().getServer().broadcastMessage(ChatColor.YELLOW+attacked.getName()+ChatColor.GRAY+" was slain by "+
 						ChatColor.YELLOW+attacker.getName()+ChatColor.GRAY+" of the "+DUtil.getAllegiance(attacker)+" alliance.");
+				
+				// Define Mortal Soul
+				ItemStack mortalHealth = new ItemStack(Material.GOLD_NUGGET, 1);
+				
+				String mortalName = "Mortal Soul";
+				List<String> mortalLore = new ArrayList<String>();
+				mortalLore.add("Brings you back to life.");
+				mortalLore.add("You regain 20 health.");
+				
+				ItemMeta mortalItem = mortalHealth.getItemMeta();
+				mortalItem.setDisplayName(mortalName);
+				mortalItem.setLore(mortalLore);
+				
+				mortalHealth.setItemMeta(mortalItem);
+				
+				attacker.getInventory().addItem(mortalHealth);
+				attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
+				attacker.sendMessage(ChatColor.DARK_RED + "You have captured a Mortal Soul.");
 			}
 		}
 	}
