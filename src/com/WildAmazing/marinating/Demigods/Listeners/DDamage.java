@@ -195,7 +195,7 @@ public class DDamage implements Listener
 	public static ItemStack getBestSoul(Player p)
 	{
 		// Define Immortal Soul Fragment
-		ItemStack health = new ItemStack(Material.GOLD_NUGGET);
+		ItemStack health = new ItemStack(Material.GHAST_TEAR);
 		
 		String name = "Immortal Soul Fragment";
 		List<String> lore = new ArrayList<String>();
@@ -274,7 +274,7 @@ public class DDamage implements Listener
 		if (damage >= DUtil.getHP(p))
 		{
 			// Define Immortal Soul Fragment
-			ItemStack health = new ItemStack(Material.GOLD_NUGGET);
+			ItemStack health = new ItemStack(Material.GHAST_TEAR);
 			
 			String name = "Immortal Soul Fragment";
 			List<String> lore = new ArrayList<String>();

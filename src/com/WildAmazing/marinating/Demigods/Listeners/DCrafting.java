@@ -20,7 +20,7 @@ public class DCrafting implements Listener
 	public void onPlayerCraft(CraftItemEvent e)
     {
 		// Define Immortal Soul Fragment
-		ItemStack health = new ItemStack(Material.GOLD_NUGGET);
+		ItemStack health = new ItemStack(Material.GHAST_TEAR);
 		
 		String name = "Immortal Soul Fragment";
 		List<String> lore = new ArrayList<String>();

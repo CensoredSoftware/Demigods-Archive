@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -47,7 +49,35 @@ public class DPvP implements Listener
 	}
 	
 	@EventHandler (priority = EventPriority.HIGHEST)
-	public void playerDeath(EntityDeathEvent e1) {
+	public void playerDeath(EntityDeathEvent e1)
+	{
+		if (e1.getEntity().getType().equals(EntityType.VILLAGER))
+		{
+			LivingEntity villager = (LivingEntity)e1.getEntity();
+			if (villager.getLastDamageCause() instanceof EntityDamageByEntityEvent)
+			{
+				EntityDamageByEntityEvent e = (EntityDamageByEntityEvent)villager.getLastDamageCause();
+				Player attacker = (Player)e.getDamager();
+				
+				// Define Mortal Soul
+				ItemStack mortalHealth = new ItemStack(Material.GOLD_NUGGET, 1);
+				
+				String mortalName = "Mortal Soul";
+				List<String> mortalLore = new ArrayList<String>();
+				mortalLore.add("Brings you back to life.");
+				mortalLore.add("You regain 20 health.");
+				
+				ItemMeta mortalItem = mortalHealth.getItemMeta();
+				mortalItem.setDisplayName(mortalName);
+				mortalItem.setLore(mortalLore);
+				
+				mortalHealth.setItemMeta(mortalItem);
+				
+				villager.getLocation().getWorld().dropItemNaturally(villager.getLocation(), mortalHealth);
+				attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
+			}
+		}		
+		
 		if (!(e1.getEntity() instanceof Player))
 			return;
 		Player attacked = (Player)e1.getEntity();
@@ -77,7 +107,7 @@ public class DPvP implements Listener
 							ChatColor.GRAY+" of the "+DUtil.getAllegiance(attacker)+" alliance.");
 
 					// Define Immortal Soul Fragment
-					ItemStack health = new ItemStack(Material.GOLD_NUGGET, 1);
+					ItemStack health = new ItemStack(Material.GHAST_TEAR, 1);
 					
 					String name = "Immortal Soul Fragment";
 					List<String> lore = new ArrayList<String>();
@@ -106,16 +136,14 @@ public class DPvP implements Listener
 					
 					if (DUtil.getAscensions(attacked) > DUtil.getAscensions(attacker))
 					{
-						attacker.getInventory().addItem(health);
+						attacked.getLocation().getWorld().dropItemNaturally(attacked.getLocation(), health);
 						attacker.sendMessage(ChatColor.GRAY + "One stronger than you has been slain by your hand.");
-						attacker.sendMessage(ChatColor.GOLD + "You have captured an Immortal Soul Fragment.");
 					}
 					
 					if (DUtil.getAscensions(attacker) >= DUtil.getAscensions(attacked))
 					{
-						attacker.getInventory().addItem(halfHealth);
+						attacked.getLocation().getWorld().dropItemNaturally(attacked.getLocation(), halfHealth);
 						attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
-						attacker.sendMessage(ChatColor.RED + "You have captured some Immortal Soul Dust.");
 					}
 					
 					double adjusted = DUtil.getKills(attacked)*1.0/DUtil.getDeaths(attacked);
@@ -143,9 +171,8 @@ public class DPvP implements Listener
 				
 				mortalHealth.setItemMeta(mortalItem);
 				
-				attacker.getInventory().addItem(mortalHealth);
+				attacked.getLocation().getWorld().dropItemNaturally(attacked.getLocation(), mortalHealth);
 				attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
-				attacker.sendMessage(ChatColor.DARK_RED + "You have captured a Mortal Soul.");
 			}
 		}
 	}
