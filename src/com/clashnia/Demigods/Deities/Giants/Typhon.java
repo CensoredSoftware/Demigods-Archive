@@ -220,12 +220,17 @@ public class Typhon implements Deity {
 						ExtraDamage = ChatColor.AQUA + " * ";
 					}
 					
-					if (FAKEDAMAGE * ITEMDAMAGE > 1025)
+					int TOTALFAKEDAMAGE = FAKEDAMAGE * ITEMDAMAGE;
+					
+					if (TOTALFAKEDAMAGE > 1025)
 					{
 						FAKEDAMAGE = (1025 / ITEMDAMAGE);
+						TOTALFAKEDAMAGE = 1025;
 					}
 					
-					p.sendMessage(ChatColor.DARK_GREEN + "Charged Damage: " + ChatColor.RED + FAKEDAMAGE + ExtraDamage + ITEMDAMAGE);
+					
+					
+					p.sendMessage(ChatColor.DARK_GREEN + "Charged Damage: " + ChatColor.RED + FAKEDAMAGE + ExtraDamage + ITEMDAMAGE + ChatColor.DARK_GREEN + " = " + ChatColor.DARK_RED + TOTALFAKEDAMAGE);
 				}
 				return;
 			} 
