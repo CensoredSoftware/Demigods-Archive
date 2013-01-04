@@ -10,8 +10,10 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import com.WildAmazing.marinating.Demigods.DSave;
 import com.WildAmazing.marinating.Demigods.DUtil;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
@@ -22,25 +24,17 @@ public class Typhon implements Deity {
 
 	private static final int SKILLCOST = 120;
 	private static final int SKILLDELAY = 1250; //milliseconds
-	private static final int ULTIMATECOST = 10000;
-	private static final int ULTIMATECOOLDOWNMAX = 180; //seconds
-	private static final int ULTIMATECOOLDOWNMIN = 60;
 	private static final int EXPLOSIONSIZE = 4;
-	private static final double PLAYERPUSH = 0.8;
-
-	private static final String skillname = "";
-	private static final String ult = "";
-
 	private boolean SKILL = false;
+	
 	private Material SKILLBIND = null;
 	private long SKILLTIME;
-	private long ULTIMATETIME;
 	private long LASTCHECK;
 
-	public Typhon(String name) {
+	public Typhon(String name)
+	{
 		PLAYER = name;
 		SKILLTIME = System.currentTimeMillis();
-		ULTIMATETIME = System.currentTimeMillis();
 		LASTCHECK = System.currentTimeMillis();
 	}
 	@Override
@@ -67,9 +61,7 @@ public class Typhon implements Deity {
 		}
 		p.sendMessage("--"+getName());
 		p.sendMessage("Passive: Explodes on death caused by PvP.");
-		p.sendMessage("Passive: Knockback largely increased.");
-		p.sendMessage("Active: "); //TODO
-		//p.sendMessage("Ultimate: ");
+		p.sendMessage("Active: /CHARGE - Knockback increased.");
 		p.sendMessage(ChatColor.YELLOW+"Select item: gunpowder");
 	}
 
@@ -124,69 +116,104 @@ public class Typhon implements Deity {
 				LivingEntity le = (LivingEntity)e.getEntity();
 				Vector v = p.getLocation().toVector();
 				Vector victor = le.getLocation().toVector().subtract(v);
-				victor.multiply(PLAYERPUSH);
-				if (le instanceof Player)
+				
+				if (DSave.hasData(p, "CHARGE"));
 				{
-					Player pl = (Player)le;
-					if (DUtil.isFullParticipant(pl))
+					long STARTTIME = (Long) DSave.getData(p, "CHARGE");
+					long ENDTIME = System.currentTimeMillis();
+					double PLAYERPUSH = (double)((ENDTIME - STARTTIME)/5000);
+					int ITEMDAMAGE = 1;
+					ItemStack hand = p.getItemInHand();
+					if (hand == null) ITEMDAMAGE = 1;
+					else if (hand.getType() == Material.WOOD_SWORD || hand.getType() == Material.GOLD_SWORD) ITEMDAMAGE = 4;
+					else if (hand.getType() == Material.STONE_SWORD) ITEMDAMAGE = 5;
+					else if (hand.getType() == Material.IRON_SWORD) ITEMDAMAGE = 6;
+					else if (hand.getType() == Material.DIAMOND_SWORD) ITEMDAMAGE = 7;
+					int DAMAGE = (int)(ITEMDAMAGE * PLAYERPUSH);
+					if (DAMAGE > 1025) DAMAGE = 1025;
+					victor.multiply(PLAYERPUSH);
+					if (le instanceof Player)
 					{
-						if (e.getEntity().isDead()) return;
+						Player pl = (Player)le;
+						if (DUtil.isFullParticipant(pl))
+						{
+							if (e.getEntity().isDead()) return;
+						}
 					}
+					le.setVelocity(victor); //super kb
+					DUtil.damageDemigods(p, le, DAMAGE, DamageCause.CUSTOM);
+					DSave.removeData(p, "CHARGE");
+					p.sendMessage(ChatColor.YELLOW + "You're charge has dealt " + ChatColor.DARK_RED + DAMAGE + ChatColor.YELLOW + " damage.");
 				}
-				le.setVelocity(victor); //super kb
 			}
 		}
 	}
 
 	@Override
-	public void onCommand(Player P, String str, String[] args, boolean bind) {
+	public void onCommand(Player P, String str, String[] args, boolean bind)
+	{
 		final Player p = P;
-		if (DUtil.hasDeity(p, getName())) {
-			if (str.equalsIgnoreCase(skillname)) {
-				if (bind) {
-					if (SKILLBIND == null) {
-						if (DUtil.isBound(p, p.getItemInHand().getType()))
-							p.sendMessage(ChatColor.YELLOW+"That item is already bound to a skill.");
-						if (p.getItemInHand().getType() == Material.AIR)
-							p.sendMessage(ChatColor.YELLOW+"You cannot bind a skill to air.");
-						else {
-							DUtil.registerBind(p, p.getItemInHand().getType());
-							SKILLBIND = p.getItemInHand().getType();
-							p.sendMessage(ChatColor.YELLOW+""+skillname+" is now bound to "+p.getItemInHand().getType().name()+".");
+		if (DUtil.hasDeity(p, getName()))
+		{
+			if (str.equalsIgnoreCase("charge"))
+			{
+				if (args.length >= 1)
+				{
+					// STOP CHARGE
+					if (args[0].equals("stop"))
+					{
+						if (DSave.hasData(p, "CHARGE"))
+						{
+							DSave.removeData(p, "CHARGE");
+							p.sendMessage(ChatColor.YELLOW + "You are no longer charging.");
 						}
-					} else {
-						DUtil.removeBind(p, SKILLBIND);
-						p.sendMessage(ChatColor.YELLOW+""+skillname+" is no longer bound to "+SKILLBIND.name()+".");
-						SKILLBIND = null;
+						return;
 					}
-					return;
 				}
-				if (SKILL) {
-					SKILL = false;
-					p.sendMessage(ChatColor.YELLOW+""+skillname+" is no longer active.");
-				} else {
-					SKILL = true;
-					p.sendMessage(ChatColor.YELLOW+""+skillname+" is now active.");
+				if (!DSave.hasData(p, "CHARGE"))
+				{
+					DSave.saveData(p, "CHARGE", System.currentTimeMillis());
+					p.sendMessage(ChatColor.YELLOW + "You are now charging your attack.");
 				}
-			} else if (str.equalsIgnoreCase(ult)) {
-				long TIME = ULTIMATETIME;
-				if (System.currentTimeMillis() < TIME){
-					p.sendMessage(ChatColor.YELLOW+"You cannot use "+ult+" again for "+((((TIME)/1000)-
-							(System.currentTimeMillis()/1000)))/60+" minutes");
-					p.sendMessage(ChatColor.YELLOW+"and "+((((TIME)/1000)-(System.currentTimeMillis()/1000))%60)+" seconds.");
-					return;
+				else
+				{
+					long STARTTIME = (Long) DSave.getData(p, "CHARGE");
+					double FAKEPLAYERPUSH = (double)((System.currentTimeMillis() - STARTTIME)/10000);
+					int ITEMDAMAGE = 1;
+					String ExtraDamage = "";
+					ItemStack hand = p.getItemInHand();
+					if (hand == null) ITEMDAMAGE = 1;
+					else if (hand.getType() == Material.WOOD_SWORD)
+					{
+						ITEMDAMAGE = 4;
+						ExtraDamage = ChatColor.YELLOW + " * ";
+					}
+					else if (hand.getType() == Material.GOLD_SWORD)
+					{
+						ITEMDAMAGE = 4;
+						ExtraDamage = ChatColor.GOLD + " * ";
+					}
+					else if (hand.getType() == Material.STONE_SWORD)
+					{
+						ITEMDAMAGE = 5;
+						ExtraDamage = ChatColor.DARK_GRAY + " * ";
+					}
+					else if (hand.getType() == Material.IRON_SWORD)
+					{
+						ITEMDAMAGE = 6;
+						ExtraDamage = ChatColor.GRAY + " * ";
+					}
+					else if (hand.getType() == Material.DIAMOND_SWORD)
+					{
+						ITEMDAMAGE = 7;
+						ExtraDamage = ChatColor.AQUA + " * ";
+					}
+					int FAKEDAMAGE = (int)(FAKEPLAYERPUSH);
+					if (FAKEDAMAGE > 1025) FAKEDAMAGE = 1025;
+					p.sendMessage(ChatColor.DARK_GREEN + "Charged Damage: " + ChatColor.RED + FAKEDAMAGE + ExtraDamage + ITEMDAMAGE);
 				}
-				if (DUtil.getFavor(p)>=ULTIMATECOST) {
-					int t = (int)(ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN)*
-							((double)DUtil.getAscensions(p)/100)));
-					ULTIMATETIME = System.currentTimeMillis()+(t*1000);
-					/*
-					 * Ultimate code
-					 */
-					DUtil.setFavor(p, DUtil.getFavor(p)-ULTIMATECOST);
-				} else p.sendMessage(ChatColor.YELLOW+""+ult+" requires "+ULTIMATECOST+" Favor.");
 				return;
-			}
+			} 
 		}
 	}
 

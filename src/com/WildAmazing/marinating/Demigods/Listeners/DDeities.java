@@ -116,11 +116,24 @@ public class DDeities implements Listener
 			p.sendMessage("This server is running Demigods v"+ChatColor.YELLOW+DUtil.getPlugin().getDescription().getVersion()+ChatColor.WHITE+".");
 			p.sendMessage(ChatColor.GRAY+"Type "+ChatColor.GREEN+"/dg"+ChatColor.GRAY+" for more info.");
 		}
-		if ((!DSettings.getSettingBoolean("update")) && (DemigodsUpdate.shouldUpdate()) && DUtil.hasPermissionOrOP(p, "demigods.admin")) {
+	
+		/*
+		 *  Update Notify
+		 */
+		if (DemigodsUpdate.checker.getVersion().startsWith("3") && DUtil.hasPermissionOrOP(p, "demigods.admin"))
+		{
+			p.sendMessage(ChatColor.RED + "There is a new, stable" + ChatColor.DARK_GREEN + " upgrade release " + ChatColor.RED + "for Demigods.");
+			if (DSettings.getSettingBoolean("update")) p.sendMessage(ChatColor.RED + "You cannot automatically upgrade to version " + DemigodsUpdate.checker.getVersion() + ".");
+			p.sendMessage(ChatColor.RED + "Visit BukkitDev and download Demigods after reading the special instructions.");
+			p.sendMessage(ChatColor.RED + "BukkitDev: " + ChatColor.GREEN + "dev.bukkit.org/server-mods/demigods");
+		}
+		else if ((!DSettings.getSettingBoolean("update")) && (DemigodsUpdate.shouldUpdate()) )
+		{
 			p.sendMessage(ChatColor.RED + "There is a new, stable release for Demigods.");
 			p.sendMessage(ChatColor.RED + "Please update ASAP.");
 			p.sendMessage(ChatColor.RED + "Latest: " + ChatColor.GREEN + "dev.bukkit.org/server-mods/demigods");
 		}
+		
 		if (!DSave.hasPlayer(p)) {
 			Logger.getLogger("Minecraft").info("[Demigods] "+p.getName()+" joined and no save was detected. Creating new file.");
 			DSave.addPlayer(p);

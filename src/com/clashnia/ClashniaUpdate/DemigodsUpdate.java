@@ -43,6 +43,13 @@ public class DemigodsUpdate
 	{
 		try
 		{
+			if (checker.getVersion().startsWith("3"))
+			{
+				DUtil.consoleMSG("warning","You cannot automatically upgrade to version " + DemigodsUpdate.checker.getVersion() + ".");
+				DUtil.consoleMSG("info","Visit the BukkitDev page and download it after reading the special instructions.");
+				return;
+			}
+			
 			// Disable the plugin so it's all safe and sound while we update it
 			Bukkit.getServer().getPluginManager().disablePlugin(Bukkit.getPluginManager().getPlugin("Demigods"));
 			

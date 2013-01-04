@@ -64,6 +64,7 @@ public class DDamage implements Listener
 					}
 				}
 				DUtil.damageDemigods((LivingEntity)ee.getDamager(), p, e.getDamage(), e.getCause());
+				e.setCancelled(true);
 			}
 		}
 		
@@ -76,6 +77,7 @@ public class DDamage implements Listener
 		if ((e.getCause() != DamageCause.ENTITY_ATTACK) && (e.getCause() != DamageCause.PROJECTILE))
 		{
 			DUtil.damageDemigodsNonCombat(p, e.getDamage(), e.getCause());
+			e.setCancelled(true);
 		}
 	}
 
@@ -331,11 +333,17 @@ public class DDamage implements Listener
 					invItem.setAmount(amount - 1);
 					p.getInventory().addItem(invItem);
 					
-					if (getBestSoul(p) == health) hasFull(p);
-					else if (getBestSoul(p) == halfHealth) hasHalf(p);
-					else if (getBestSoul(p) == mortalHealth) hasMortal(p);
-					
-					fakeDeath(p);
+					if (getBestSoul(p) == health)hasFull(p);
+					else if (getBestSoul(p) == halfHealth)
+					{
+						hasHalf(p);
+						lessFakeDeath(p);
+					}
+					else if (getBestSoul(p) == mortalHealth)
+					{
+						hasMortal(p);
+						fakeDeath(p);
+					}
 					
 					return true;
 				}
@@ -362,6 +370,22 @@ public class DDamage implements Listener
 	public static void fakeDeath(Player p)
 	{
 		double reduced = 0.1; //TODO
+		long before = DUtil.getDevotion(p);
+		for (Deity d : DUtil.getDeities(p)) {
+			int reduceamt = (int)Math.round(DUtil.getDevotion(p, d)*reduced*DLevels.MULTIPLIER);
+			if (reduceamt > DLevels.LOSSLIMIT)
+				reduceamt = DLevels.LOSSLIMIT;
+			DUtil.setDevotion(p, d, DUtil.getDevotion(p, d)-reduceamt);
+		}
+		if (DUtil.getDeities(p).size() < 2)
+			p.sendMessage(ChatColor.DARK_RED+"You have failed in your service to "+DUtil.getDeities(p).get(0).getName()+".");
+		else p.sendMessage(ChatColor.DARK_RED+"You have failed in your service to your deities.");
+		p.sendMessage(ChatColor.DARK_RED+"Your Devotion has been reduced by "+(before-DUtil.getDevotion(p))+".");
+	}
+	
+	public static void lessFakeDeath(Player p)
+	{
+		double reduced = 0.025; //TODO
 		long before = DUtil.getDevotion(p);
 		for (Deity d : DUtil.getDeities(p)) {
 			int reduceamt = (int)Math.round(DUtil.getDevotion(p, d)*reduced*DLevels.MULTIPLIER);

@@ -360,6 +360,9 @@ public class Demigods extends JavaPlugin implements Listener
 		getCommand("swap").setExecutor(ce);
 		getCommand("congregate").setExecutor(ce);
 		getCommand("assemble").setExecutor(ce);
+		
+		// Typhon
+		getCommand("charge").setExecutor(ce);
 	}
 
 	public void loadListeners()

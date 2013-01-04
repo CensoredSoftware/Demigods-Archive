@@ -122,10 +122,8 @@ public class Poseidon implements Deity {
 			if (e.getEntity() instanceof Player) {
 				if (e.getCause() == DamageCause.DROWNING) {
 					Player p = (Player)e.getEntity();
-					if (!DUtil.isFullParticipant(p))
-						return;
-					if (!DUtil.hasDeity(p, "Poseidon"))
-						return;
+					if (!DUtil.isFullParticipant(p)) return;
+					if (!DUtil.hasDeity(p, "Poseidon")) return;
 					e.setDamage(0);
 					e.setCancelled(true);
 				}

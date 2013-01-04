@@ -81,14 +81,10 @@ public class UpdateChecker
 
 			reader.close();
 			input.close();
-
 			
 			PluginDescriptionFile pdf = DUtil.getPlugin().getDescription();	  	
 			String currentVersion = pdf.getVersion();
-			if (!currentVersion.equals(this.version))
-			{
-				return true;
-			}
+			if (!currentVersion.equals(this.version)) return true;
 		}
 		catch (Exception e)
 		{
