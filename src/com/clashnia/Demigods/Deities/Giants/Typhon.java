@@ -121,7 +121,7 @@ public class Typhon implements Deity {
 				{
 					long STARTTIME = (Long) DSave.getData(p, "CHARGE");
 					long ENDTIME = System.currentTimeMillis();
-					double PLAYERPUSH = (double)((ENDTIME - STARTTIME)/5000);
+					int PLAYERPUSH = (int)((ENDTIME - STARTTIME)/5000);
 					int ITEMDAMAGE = 1;
 					ItemStack hand = p.getItemInHand();
 					if (hand == null) ITEMDAMAGE = 1;
@@ -129,7 +129,7 @@ public class Typhon implements Deity {
 					else if (hand.getType() == Material.STONE_SWORD) ITEMDAMAGE = 5;
 					else if (hand.getType() == Material.IRON_SWORD) ITEMDAMAGE = 6;
 					else if (hand.getType() == Material.DIAMOND_SWORD) ITEMDAMAGE = 7;
-					int DAMAGE = (int)(ITEMDAMAGE * PLAYERPUSH);
+					int DAMAGE = (ITEMDAMAGE * PLAYERPUSH);
 					if (DAMAGE > 1025) DAMAGE = 1025;
 					victor.multiply(PLAYERPUSH);
 					if (le instanceof Player)
@@ -178,11 +178,15 @@ public class Typhon implements Deity {
 				else
 				{
 					long STARTTIME = (Long) DSave.getData(p, "CHARGE");
-					double FAKEPLAYERPUSH = (double)((System.currentTimeMillis() - STARTTIME)/10000);
+					int FAKEDAMAGE = (int)((System.currentTimeMillis() - STARTTIME)/5000);
 					int ITEMDAMAGE = 1;
 					String ExtraDamage = "";
 					ItemStack hand = p.getItemInHand();
-					if (hand == null) ITEMDAMAGE = 1;
+					if (hand == null)
+					{
+						ITEMDAMAGE = 1;
+						ExtraDamage = ChatColor.DARK_GREEN + " * ";
+					}
 					else if (hand.getType() == Material.WOOD_SWORD)
 					{
 						ITEMDAMAGE = 4;
@@ -208,7 +212,6 @@ public class Typhon implements Deity {
 						ITEMDAMAGE = 7;
 						ExtraDamage = ChatColor.AQUA + " * ";
 					}
-					int FAKEDAMAGE = (int)(FAKEPLAYERPUSH);
 					if (FAKEDAMAGE > 1025) FAKEDAMAGE = 1025;
 					p.sendMessage(ChatColor.DARK_GREEN + "Charged Damage: " + ChatColor.RED + FAKEDAMAGE + ExtraDamage + ITEMDAMAGE);
 				}
