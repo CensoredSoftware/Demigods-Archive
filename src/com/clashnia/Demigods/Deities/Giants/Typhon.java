@@ -180,12 +180,11 @@ public class Typhon implements Deity {
 					long STARTTIME = (Long) DSave.getData(p, "CHARGE");
 					int FAKEDAMAGE = (int)((System.currentTimeMillis() - STARTTIME)/5000);
 					int ITEMDAMAGE = 1;
-					String ExtraDamage = "";
+					String ExtraDamage = ChatColor.DARK_GREEN + " * ";
 					ItemStack hand = p.getItemInHand();
 					if (hand == null)
 					{
-						ITEMDAMAGE = 1;
-						ExtraDamage = ChatColor.DARK_GREEN + " * ";
+						// Prevents NullPointerException.
 					}
 					else if (hand.getType() == Material.WOOD_SWORD)
 					{
@@ -212,7 +211,12 @@ public class Typhon implements Deity {
 						ITEMDAMAGE = 7;
 						ExtraDamage = ChatColor.AQUA + " * ";
 					}
-					if (FAKEDAMAGE > 1025) FAKEDAMAGE = 1025;
+					
+					if (FAKEDAMAGE * ITEMDAMAGE > 1025)
+					{
+						FAKEDAMAGE = (1025 / ITEMDAMAGE);
+					}
+					
 					p.sendMessage(ChatColor.DARK_GREEN + "Charged Damage: " + ChatColor.RED + FAKEDAMAGE + ExtraDamage + ITEMDAMAGE);
 				}
 				return;
