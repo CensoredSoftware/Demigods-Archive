@@ -119,31 +119,39 @@ public class Typhon implements Deity {
 				
 				if (DSave.hasData(p, "CHARGE"));
 				{
-					long STARTTIME = (Long) DSave.getData(p, "CHARGE");
-					long ENDTIME = System.currentTimeMillis();
-					int PLAYERPUSH = (int)((ENDTIME - STARTTIME)/5000);
-					int ITEMDAMAGE = 1;
-					ItemStack hand = p.getItemInHand();
-					if (hand == null) ITEMDAMAGE = 1;
-					else if (hand.getType() == Material.WOOD_SWORD || hand.getType() == Material.GOLD_SWORD) ITEMDAMAGE = 4;
-					else if (hand.getType() == Material.STONE_SWORD) ITEMDAMAGE = 5;
-					else if (hand.getType() == Material.IRON_SWORD) ITEMDAMAGE = 6;
-					else if (hand.getType() == Material.DIAMOND_SWORD) ITEMDAMAGE = 7;
-					int DAMAGE = (ITEMDAMAGE * PLAYERPUSH);
-					if (DAMAGE > 1025) DAMAGE = 1025;
-					victor.multiply(PLAYERPUSH);
-					if (le instanceof Player)
+					if (DSave.getData(p, "CHARGE") != null)
 					{
-						Player pl = (Player)le;
-						if (DUtil.isFullParticipant(pl))
+						long STARTTIME = (Long) DSave.getData(p, "CHARGE");
+						long ENDTIME = System.currentTimeMillis();
+						int PLAYERPUSH = (int)((ENDTIME - STARTTIME)/5000);
+						int ITEMDAMAGE = 1;
+						ItemStack hand = p.getItemInHand();
+						if (hand == null) ITEMDAMAGE = 1;
+						else if (hand.getType() == Material.WOOD_SWORD || hand.getType() == Material.GOLD_SWORD) ITEMDAMAGE = 4;
+						else if (hand.getType() == Material.STONE_SWORD) ITEMDAMAGE = 5;
+						else if (hand.getType() == Material.IRON_SWORD) ITEMDAMAGE = 6;
+						else if (hand.getType() == Material.DIAMOND_SWORD) ITEMDAMAGE = 7;
+						int DAMAGE = (ITEMDAMAGE * PLAYERPUSH);
+						if (DAMAGE > 1025) DAMAGE = 1025;
+						victor.multiply(PLAYERPUSH);
+						if (le instanceof Player)
 						{
-							if (e.getEntity().isDead()) return;
+							Player pl = (Player)le;
+							if (DUtil.isFullParticipant(pl))
+							{
+								if (e.getEntity().isDead()) return;
+							}
 						}
+						le.setVelocity(victor); //super kb
+						DUtil.damageDemigods(p, le, DAMAGE, DamageCause.CUSTOM);
+						DSave.removeData(p, "CHARGE");
+						p.sendMessage(ChatColor.YELLOW + "Your charged attack has dealt " + ChatColor.DARK_RED + DAMAGE + ChatColor.YELLOW + " damage.");
 					}
-					le.setVelocity(victor); //super kb
-					DUtil.damageDemigods(p, le, DAMAGE, DamageCause.CUSTOM);
-					DSave.removeData(p, "CHARGE");
-					p.sendMessage(ChatColor.YELLOW + "You're charge has dealt " + ChatColor.DARK_RED + DAMAGE + ChatColor.YELLOW + " damage.");
+					else
+					{
+						DSave.removeData(p, "CHARGE");
+						p.sendMessage("Something went wrong when saving your charge time, sorry.");
+					}
 				}
 			}
 		}
