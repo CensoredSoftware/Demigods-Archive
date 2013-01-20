@@ -422,6 +422,7 @@ public class Demigods extends JavaPlugin implements Listener
 		{
 			@Override
 			public void run() {
+				if (DSettings.getEnabledWorlds() == null) return;
 				for (World w : DSettings.getEnabledWorlds())
 				{
 					for (Player p : w.getPlayers())
