@@ -33,7 +33,6 @@ import com.WildAmazing.marinating.Demigods.Deities.Titans.Rhea;
 import com.WildAmazing.marinating.Demigods.Deities.Titans.Themis;
 import com.WildAmazing.marinating.Demigods.Listeners.DLevels;
 import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
-import com.clashnia.Demigods.Deities.Giants.Typhon;
 
 public class DCommandExecutor implements CommandExecutor
 {
@@ -83,6 +82,7 @@ public class DCommandExecutor implements CommandExecutor
 			else if (c.getName().equalsIgnoreCase("adddevotion")) return addDevotion(args);
 			else if (c.getName().equalsIgnoreCase("addunclaimeddevotion")) return addUnclaimedDevotion(args);
 			else if (c.getName().equalsIgnoreCase("debugplayer")) return debugPlayer(args);
+			else if (c.getName().equalsIgnoreCase("exportdata")) return debugEveryPlayer();
 			
 			return false;
 		}
@@ -437,6 +437,24 @@ public class DCommandExecutor implements CommandExecutor
 			}
 		}
 		return false;
+	}
+	
+	private boolean debugEveryPlayer()
+	{
+		int count = 0;
+		DUtil.consoleMSG("info","Exporting Legacy data...");
+		for (String player : DSave.getCompleteData().keySet()) {
+			try {
+				DDebug.writeLegacyData(player);
+				count++;
+			} catch (IOException e) {
+				Logger.getLogger("Minecraft").warning("[Demigods] Error writing debug for "+player+".");
+				e.printStackTrace();
+				Logger.getLogger("Minecraft").warning("[Demigods] End stack trace for debug.");
+			}
+		}
+		DUtil.consoleMSG("info","Finished exporting Legacy data for " + count + " players.");
+		return true;
 	}
 	
 	private boolean infoDG(Player p, String[] args)
@@ -2105,8 +2123,6 @@ public class DCommandExecutor implements CommandExecutor
 			case SOUL_SAND: choice = new Cronus(p.getName()); break;
 			case CLAY_BALL: choice = new Prometheus(p.getName()); break;
 			case VINE: choice = new Rhea(p.getName()); break;
-			//
-			case SULPHUR: choice = new Typhon(p.getName()); break; //TODO Not accessible in stable release.
 			}
 			if (choice != null) {
 				if (!DUtil.hasPermission(p, choice.getDefaultAlliance().toLowerCase() + "." + choice.getName().toLowerCase())
@@ -2118,7 +2134,7 @@ public class DCommandExecutor implements CommandExecutor
 				p.sendMessage(ChatColor.YELLOW+"The Fates ponder your decision...");
 				final Deity fchoice = choice;
 				final Player pl = p;
-				if (BALANCETEAMS && DUtil.hasAdvantage(fchoice.getDefaultAlliance(), ADVANTAGEPERCENT) && (choice != new Typhon(p.getName()))) // TODO Temp fix for Typhon.
+				if (BALANCETEAMS && DUtil.hasAdvantage(fchoice.getDefaultAlliance(), ADVANTAGEPERCENT)) // TODO Temp fix for Typhon.
 				{
 					pl.sendMessage(ChatColor.RED+"The Fates have determined that your selection would");
 					pl.sendMessage(ChatColor.RED+"unbalance the order of the universe. Try again");
@@ -2160,8 +2176,6 @@ public class DCommandExecutor implements CommandExecutor
 		case INK_SACK: choice = new Oceanus(p.getName()); break;
 		case GLOWSTONE: choice = new Hyperion(p.getName()); break;
 		case COMPASS: choice = new Themis(p.getName()); break;
-		//
-		case SULPHUR: choice = new Typhon(p.getName()); break; //TODO Not accessible in stable release.
 		}
 		if (choice == null) {
 			p.sendMessage(ChatColor.YELLOW+"That is not a valid selection item.");
@@ -2173,13 +2187,16 @@ public class DCommandExecutor implements CommandExecutor
 			p.sendMessage(ChatColor.RED+"You do not have permission to claim this deity.");
 			return true;
 		}
-		if (DUtil.getAllegiance(p).contains("ant"))
-		{
-			p.sendMessage(ChatColor.YELLOW+choice.getName()+" has offered you power in exchange for loyalty."); //TODO Only for testing on IRPG.
-		}
-		else if (!choice.getDefaultAlliance().equalsIgnoreCase(DUtil.getAllegiance(p))) {
-			p.sendMessage(ChatColor.RED+"That deity is not of your alliance.");
-			return true;
+		if (!choice.getDefaultAlliance().equalsIgnoreCase(DUtil.getAllegiance(p))) {
+			if (DUtil.hasPermission(p, "demigods.bypassclaim"))
+			{
+				p.sendMessage(ChatColor.YELLOW+choice.getName()+" has offered you power in exchange for loyalty.");
+			}
+			else
+			{
+				p.sendMessage(ChatColor.RED+"That deity is not of your alliance.");
+				return true;
+			}
 		}
 		if (DUtil.hasDeity(p, choice.getName())) {
 			p.sendMessage(ChatColor.RED+"You are already allianced to "+choice.getName()+".");

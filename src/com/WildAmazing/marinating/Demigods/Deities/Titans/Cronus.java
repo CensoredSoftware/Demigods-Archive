@@ -1,7 +1,5 @@
 package com.WildAmazing.marinating.Demigods.Deities.Titans;
 
-
-
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;

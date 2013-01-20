@@ -15,6 +15,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
 import com.WildAmazing.marinating.Demigods.DUtil;
@@ -28,22 +29,22 @@ public class Poseidon implements Deity {
 	private final int REELDELAY = 1100;
 	private final int drownCOST = 240;
 	private final int DROWNDELAY = 15000;
-	private final int ULTIMATECOST = 5000;
-	private final int ULTIMATECOOLDOWNMAX = 800;
-	private final int ULTIMATECOOLDOWNMIN = 220;
+	//private final int ULTIMATECOST = 5000;
+	//private final int ULTIMATECOOLDOWNMAX = 800;
+	//private final int ULTIMATECOOLDOWNMIN = 220;
 
 	/* Specific to player */
 	private String PLAYER;
 	public boolean REEL = false;
 	private boolean drown = false;
-	private long REELTIME, drownTIME, ULTIMATETIME, LASTCHECK;
+	private long REELTIME, drownTIME, LASTCHECK;
 	private Material drownBIND = null;
 
 	public Poseidon(String name) {
 		PLAYER = name;
 		REELTIME = System.currentTimeMillis();
 		drownTIME = System.currentTimeMillis();
-		ULTIMATETIME = System.currentTimeMillis();
+		//ULTIMATETIME = System.currentTimeMillis();
 		LASTCHECK = System.currentTimeMillis();
 	}
 	@Override
@@ -79,16 +80,16 @@ public class Poseidon implements Deity {
 			//reel
 			int damage = (int)Math.ceil(0.37286*Math.pow(devotion, 0.371238));
 			//ult
-			int numtargets = (int)Math.round(5*Math.pow(devotion, 0.15));
-			int ultduration = (int)Math.round(30*Math.pow(devotion, 0.09));
-			int t = (int)(ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN)*
-					((double)DUtil.getAscensions(p)/100)));
+			//int numtargets = (int)Math.round(5*Math.pow(devotion, 0.15));
+			//int ultduration = (int)Math.round(30*Math.pow(devotion, 0.09));
+			//int t = (int)(ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN)*
+					//((double)DUtil.getAscensions(p)/100)));
 			/*
 			 * The printed text
 			 */
 			p.sendMessage("--"+ChatColor.GOLD+"Poseidon"+ChatColor.GRAY+" ["+devotion+"]");
 			p.sendMessage(":Heal "+healamt+" every "+healinterval+" seconds while in contact with water.");
-			p.sendMessage("Immune to drowning.");
+			p.sendMessage("Immune to drowning, sneak while in water to swim very fast!");
 			p.sendMessage(":Deal "+damage+" damage and soak an enemy from a distance. "+ChatColor.GREEN+"/reel");
 			p.sendMessage(ChatColor.YELLOW+"Costs "+REELCOST+" Favor. Must have fishing rod in hand.");
 			if (((Poseidon)(DUtil.getDeity(p, "Poseidon"))).REEL)
@@ -99,19 +100,15 @@ public class Poseidon implements Deity {
 			if (((Poseidon)(DUtil.getDeity(p, "Poseidon"))).drownBIND != null)
 				p.sendMessage(ChatColor.AQUA+"    drown bound to "+(((Poseidon)(DUtil.getDeity(p, "Poseidon"))).drownBIND).name());
 			else p.sendMessage(ChatColor.AQUA+"    Use /bind to bind this skill to an item.");
-			p.sendMessage(":Trap nearby enemies in a cascade of water.");
-			p.sendMessage("Max targets: "+numtargets+". Duration: "+ultduration+ChatColor.GREEN+" /waterfall");
-			p.sendMessage(ChatColor.YELLOW+"Costs "+ULTIMATECOST+" Favor. Cooldown time: "+t+" seconds.");
 			return;
 		}
 		p.sendMessage("--"+ChatColor.GOLD+"Poseidon");
 		p.sendMessage("Passive: Immune to drowning, with increased healing while in water.");
+		p.sendMessage("Passive: Fast swim, sneak while in water to swim very fast!");
 		p.sendMessage("Active: Deal damage and soak an enemy with a fishing rod. "+ChatColor.GREEN+"/reel");
 		p.sendMessage(ChatColor.YELLOW+"Costs "+REELCOST+" Favor.");
 		p.sendMessage("Active: Create a temporary flood of water.");
 		p.sendMessage(ChatColor.GREEN+"/drown "+ChatColor.YELLOW+"Costs "+drownCOST+" Favor. Can bind.");
-		p.sendMessage("Ultimate: Trap nearby enemies in a cascade of water.");
-		p.sendMessage(ChatColor.GREEN+"/waterfall "+ChatColor.YELLOW+"Costs "+ULTIMATECOST+" Favor. Has cooldown.");
 		p.sendMessage(ChatColor.YELLOW+"Select item: water bucket");
 	}
 
@@ -127,6 +124,20 @@ public class Poseidon implements Deity {
 					e.setDamage(0);
 					e.setCancelled(true);
 				}
+			}
+		} else if (ee instanceof PlayerMoveEvent) {
+			PlayerMoveEvent move = (PlayerMoveEvent)ee;
+			Player p = move.getPlayer();
+			if (!DUtil.isFullParticipant(p))
+				return;
+			if (!DUtil.hasDeity(p, "Poseidon"))
+				return;
+			// PHELPS SWIMMING
+			if(p.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || p.getLocation().getBlock().getType().equals(Material.WATER))
+			{
+				Vector dir = p.getLocation().getDirection().normalize().multiply(1.3D);
+				Vector vec = new Vector(dir.getX(), dir.getY(), dir.getZ());
+				if(p.isSneaking()) p.setVelocity(vec);
 			}
 		} else if (ee instanceof PlayerInteractEvent) {
 			PlayerInteractEvent e = (PlayerInteractEvent)ee;
@@ -165,7 +176,7 @@ public class Poseidon implements Deity {
 					drown = false;
 				}
 			}
-		}
+		} 
 	}
 
 	@Override
@@ -210,6 +221,7 @@ public class Poseidon implements Deity {
 				drown = true;
 				p.sendMessage(ChatColor.YELLOW+"Drown is now active.");
 			}
+		/*
 		} else if (str.equalsIgnoreCase("waterfall")) {
 			long TIME = ULTIMATETIME;
 			if (System.currentTimeMillis() < TIME){
@@ -241,7 +253,9 @@ public class Poseidon implements Deity {
 				} else p.sendMessage(ChatColor.YELLOW+"There are no targets nearby.");
 			} else p.sendMessage(ChatColor.YELLOW+"Waterfall requires "+ULTIMATECOST+" Favor.");
 			return;
+			*/
 		}
+		
 	}
 	@Override
 	public void onTick(long timeSent) {
@@ -328,6 +342,7 @@ public class Poseidon implements Deity {
 			}
 		}, duration);
 	}
+	/*
 	private int waterfall(Player p) {
 		int numtargets = (int)Math.round(15*Math.pow(DUtil.getDevotion(p, getName()), 0.15));
 		final int ultduration = (int)Math.round(30*Math.pow(DUtil.getDevotion(p, getName()), 0.09)*20);
@@ -359,4 +374,5 @@ public class Poseidon implements Deity {
 		}
 		return entitylist.size();
 	}
+	*/
 }

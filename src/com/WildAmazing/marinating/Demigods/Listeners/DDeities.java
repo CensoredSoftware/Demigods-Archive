@@ -15,6 +15,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
@@ -108,6 +109,16 @@ public class DDeities implements Listener
 		}
 	}
 	@EventHandler
+	public void onPlayerMove(PlayerMoveEvent e){
+		if (!DSettings.getEnabledWorlds().contains(e.getPlayer().getWorld()))
+			return;
+		Player p = e.getPlayer();
+		if ((DUtil.getDeities(p)!=null) && (DUtil.getDeities(p).size()>0)) {
+			for (Deity d : DUtil.getDeities(p))
+				d.onEvent(e);
+		}
+	}
+	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e){ //sync to master file
 		final Player p = e.getPlayer();
 		if (!DSettings.getEnabledWorlds().contains(p.getWorld()))
@@ -138,6 +149,12 @@ public class DDeities implements Listener
 			Logger.getLogger("Minecraft").info("[Demigods] "+p.getName()+" joined and no save was detected. Creating new file.");
 			DSave.addPlayer(p);
 		}
+		if (DSave.hasData(p, "CHARGE"))
+		{
+			DSave.saveData(p, "CHARGE", System.currentTimeMillis());
+			p.sendMessage(ChatColor.YELLOW + "Your charging attack has been reset.");
+		}
+		
 		DSave.saveData(p, "LASTLOGINTIME", System.currentTimeMillis());
 	}
 	@EventHandler

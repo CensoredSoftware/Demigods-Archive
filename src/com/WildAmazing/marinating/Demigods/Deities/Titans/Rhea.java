@@ -403,6 +403,8 @@ public class Rhea implements Deity {
 		int range = (int)(10.84198*Math.pow(1.01926, DUtil.getAscensions(p)));
 		int duration = (int)(4.95778*Math.pow(DUtil.getAscensions(p), 0.459019));
 		int count = 0;
+		if (!DUtil.canPVP(p.getLocation())) return count;
+		
 		for (LivingEntity le : p.getWorld().getLivingEntities()) {
 			if (le.getLocation().distance(p.getLocation()) < range) {
 				if (le instanceof Player) {

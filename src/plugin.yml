@@ -54,6 +54,9 @@ commands:
     debugplayer:
         description: Console command to debug player files.
         usage: debugplayer <player> <print|write|load>
+    exportdata:
+        description: Exports all data for importing into Demigods 3 or higher.
+        usage: exportdata
     givedeity:
         description: Gives a deity to a player.
         usage: /givedeity <player> <deity>
@@ -191,8 +194,6 @@ commands:
         description: One of Poseidon's abilities.
     drown:
         description: One of Poseidon's abilities.
-    waterfall:
-        description: Poseidon's ultimate.
     unburden:
         description: One of Atlas' abilities.
     invincible:
@@ -225,3 +226,6 @@ commands:
         description: Used with Themis' ultimate.
     charge:
         description: Used by Typhon.
+permissions:
+    demigods.bypassclaim:
+        default: false

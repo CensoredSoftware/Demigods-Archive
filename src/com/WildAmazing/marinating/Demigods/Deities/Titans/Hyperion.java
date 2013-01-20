@@ -6,13 +6,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
 import com.WildAmazing.marinating.Demigods.DUtil;
@@ -119,6 +120,21 @@ public class Hyperion implements Deity {
 					SKILL = false;
 				}
 			}
+		} else if (ee instanceof PlayerMoveEvent) {
+			PlayerMoveEvent move = (PlayerMoveEvent)ee;
+			Player p = move.getPlayer();
+			if (!DUtil.isFullParticipant(p))
+				return;
+			if (!DUtil.hasDeity(p, "Poseidon"))
+				return;
+			// PHELPS RUNNING
+			Block playerBlock = p.getLocation().getBlock();
+			if(!playerBlock.getType().equals(Material.STATIONARY_WATER) && !playerBlock.getType().equals(Material.WATER) && !playerBlock.getType().equals(Material.STATIONARY_LAVA) && !playerBlock.getType().equals(Material.LAVA) && !playerBlock.getRelative(BlockFace.DOWN).getType().equals(Material.AIR))
+			{
+				Vector dir = p.getLocation().getDirection().normalize().multiply(1.3D);
+				Vector vec = new Vector(dir.getX(), dir.getY(), dir.getZ());
+				if(p.isSneaking() && playerBlock.getLightLevel() > 12) p.setVelocity(vec);
+			}
 		}
 	}
 
@@ -182,12 +198,6 @@ public class Hyperion implements Deity {
 	public void onTick(long timeSent) {
 		if (timeSent > LASTCHECK+1000) {
 			LASTCHECK = timeSent;
-			Player p = DUtil.getOnlinePlayer(getPlayerName());
-			if ((p != null) && p.isOnline()) {
-				if (p.getLocation().getBlock().getLightLevel() > 12) {
-					p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 0, false));
-				}
-			}
 		}
 	}
 	private int starfall(final Player p) {

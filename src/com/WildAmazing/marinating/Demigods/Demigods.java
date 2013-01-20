@@ -38,10 +38,6 @@ import com.WildAmazing.marinating.Demigods.Deities.Titans.Prometheus;
 import com.WildAmazing.marinating.Demigods.Deities.Titans.Rhea;
 import com.WildAmazing.marinating.Demigods.Deities.Titans.Themis;
 
-import com.clashnia.Demigods.Deities.Giants.Ephialtes;
-import com.clashnia.Demigods.Deities.Giants.Otus;
-import com.clashnia.Demigods.Deities.Giants.Typhon;
-
 import com.WildAmazing.marinating.Demigods.Listeners.DChatCommands;
 import com.WildAmazing.marinating.Demigods.Listeners.DCrafting;
 import com.WildAmazing.marinating.Demigods.Listeners.DDamage;
@@ -95,16 +91,7 @@ public class Demigods extends JavaPlugin implements Listener
 		new Ares("ADMIN"),
 		new Athena("ADMIN"),
 		new Apollo("ADMIN"),
-		new Hephaestus("ADMIN"),
-		
-		/*
-		 *  Giants
-		 */
-		new Typhon("ADMIN"),
-		
-		// The Aloadae
-		new Otus("ADMIN"),
-		new Ephialtes("ADMIN")
+		new Hephaestus("ADMIN")
 	};
 
 	public Demigods()
@@ -177,7 +164,7 @@ public class Demigods extends JavaPlugin implements Listener
 		for (BukkitTask bt : getServer().getScheduler().getPendingTasks())
 			if (bt.getOwner().equals(this))
 				c++;
-		this.getServer().getScheduler().cancelTasks(this);
+		this.getServer().getScheduler().cancelAllTasks();
 		
 		log.info("[Demigods] Save completed and "+c+" tasks cancelled.");
 	}
@@ -278,6 +265,7 @@ public class Demigods extends JavaPlugin implements Listener
 		getCommand("addascensions").setExecutor(ce);
 		getCommand("setkills").setExecutor(ce);
 		getCommand("setdeaths").setExecutor(ce);
+		getCommand("exportdata").setExecutor(ce);
 		
 		//getCommand("setlore").setExecutor(ce);
 
@@ -330,7 +318,7 @@ public class Demigods extends JavaPlugin implements Listener
 		// Poseidon
 		getCommand("reel").setExecutor(ce);
 		getCommand("drown").setExecutor(ce);
-		getCommand("waterfall").setExecutor(ce);
+		//getCommand("waterfall").setExecutor(ce);
 		
 		// Atlas
 		getCommand("unburden").setExecutor(ce);

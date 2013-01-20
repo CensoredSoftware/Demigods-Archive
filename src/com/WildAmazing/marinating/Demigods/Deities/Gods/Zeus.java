@@ -341,12 +341,12 @@ public class Zeus implements Deity {
 			return;
 		if (!DUtil.canPVP(target))
 			return;
-		p.getWorld().strikeLightning(target);
+		p.getWorld().strikeLightningEffect(target);
 		for (Entity e : target.getBlock().getChunk().getEntities()) {
 			if (e instanceof LivingEntity) {
 				LivingEntity le = (LivingEntity)e;
 				if (le.getLocation().distance(target) < 1.5)
-					DUtil.damageDemigods(p, le, DUtil.getAscensions(p)*2, DamageCause.CUSTOM);
+					DUtil.damageDemigods(p, le, DUtil.getAscensions(p)*2, DamageCause.LIGHTNING);
 			}
 		}
 	}
