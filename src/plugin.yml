@@ -224,8 +224,6 @@ commands:
         description: Themis' ultimate.
     assemble:
         description: Used with Themis' ultimate.
-    charge:
-        description: Used by Typhon.
 permissions:
     demigods.bypassclaim:
         default: false
