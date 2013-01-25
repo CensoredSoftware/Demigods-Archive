@@ -285,7 +285,7 @@ public class Rhea implements Deity {
 				return;
 			}
 			if (DUtil.getFavor(p)>=RHEAULTIMATECOST) {
-				if (!DUtil.canPVP(p.getLocation())) {
+				if (!DUtil.canTarget(p, p.getLocation())) {
 					p.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
 					return;
 				}
@@ -306,7 +306,7 @@ public class Rhea implements Deity {
 
 	}
 	private boolean poison(Player p) {
-		if (!DUtil.canPVP(p.getLocation())) {
+		if (!DUtil.canTarget(p, p.getLocation())) {
 			p.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
 			return false;
 		}
@@ -336,13 +336,13 @@ public class Rhea implements Deity {
 		}
 	}
 	private boolean plant(Player player){
-		if (!DUtil.canPVP(player.getLocation())) {
+		if (!DUtil.canTarget(player, player.getLocation())) {
 			player.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
 			return false;
 		}
 		Block b = player.getTargetBlock(null, 200);
 		if (b!=null) {
-			if (!DUtil.canPVP(b.getLocation())) {
+			if (!DUtil.canLocationPVP(b.getLocation())) {
 				player.sendMessage(ChatColor.YELLOW+"That is a protected area.");
 				return false;
 			}
@@ -403,7 +403,7 @@ public class Rhea implements Deity {
 		int range = (int)(10.84198*Math.pow(1.01926, DUtil.getAscensions(p)));
 		int duration = (int)(4.95778*Math.pow(DUtil.getAscensions(p), 0.459019));
 		int count = 0;
-		if (!DUtil.canPVP(p.getLocation())) return count;
+		if (!DUtil.canTarget(p, p.getLocation())) return count;
 		
 		for (LivingEntity le : p.getWorld().getLivingEntities()) {
 			if (le.getLocation().distance(p.getLocation()) < range) {
@@ -416,7 +416,7 @@ public class Rhea implements Deity {
 						} else continue;
 					}
 				}
-				if (DUtil.canPVP(le.getLocation())) {
+				if (DUtil.canTarget(le, le.getLocation())) {
 					count++;
 					trap(le, duration, p);
 				}

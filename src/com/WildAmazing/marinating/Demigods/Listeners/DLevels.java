@@ -88,7 +88,7 @@ public class DLevels implements Listener
 				return;
 			if (!DSettings.getEnabledWorlds().contains(p.getWorld()))
 				return;
-			if (!DUtil.canPVP(e.getEntity().getLocation())) {
+			if (!DUtil.canTarget(e.getEntity(), e.getEntity().getLocation())) {
 				return;
 			}
 			/*

@@ -1,6 +1,6 @@
 name: Demigods
 main: com.WildAmazing.marinating.Demigods.Demigods
-version: 2.3.3
+version: 2.3.5
 description: Ally yourself with mythical deities and battle in the name of the Gods or Titans.
 author: marinating, Clashnia
 softdepend: [WorldGuard, WorldEdit, Factions]
@@ -224,6 +224,8 @@ commands:
         description: Themis' ultimate.
     assemble:
         description: Used with Themis' ultimate.
+    charge:
+        description: One of Typhon's abilities.
 permissions:
     demigods.bypassclaim:
         default: false

@@ -33,6 +33,7 @@ import com.WildAmazing.marinating.Demigods.Deities.Titans.Rhea;
 import com.WildAmazing.marinating.Demigods.Deities.Titans.Themis;
 import com.WildAmazing.marinating.Demigods.Listeners.DLevels;
 import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
+import com.clashnia.Demigods.Deities.Giants.Typhon;
 
 public class DCommandExecutor implements CommandExecutor
 {
@@ -2123,6 +2124,8 @@ public class DCommandExecutor implements CommandExecutor
 			case SOUL_SAND: choice = new Cronus(p.getName()); break;
 			case CLAY_BALL: choice = new Prometheus(p.getName()); break;
 			case VINE: choice = new Rhea(p.getName()); break;
+			//
+			case SULPHUR: choice = new Typhon(p.getName()); break; //TODO
 			}
 			if (choice != null) {
 				if (!DUtil.hasPermission(p, choice.getDefaultAlliance().toLowerCase() + "." + choice.getName().toLowerCase())
@@ -2176,6 +2179,8 @@ public class DCommandExecutor implements CommandExecutor
 		case INK_SACK: choice = new Oceanus(p.getName()); break;
 		case GLOWSTONE: choice = new Hyperion(p.getName()); break;
 		case COMPASS: choice = new Themis(p.getName()); break;
+		//
+		case SULPHUR: choice = new Typhon(p.getName()); break; //TODO
 		}
 		if (choice == null) {
 			p.sendMessage(ChatColor.YELLOW+"That is not a valid selection item.");

@@ -217,7 +217,7 @@ public class DShrines implements Listener
 			while (i.hasNext())
 			{
 				Block b = i.next();
-				if (!DUtil.canPVP(b.getLocation()))	i.remove();
+				if (!DUtil.canLocationPVP(b.getLocation()))	i.remove();
 				for (WriteLocation center : DUtil.getAllShrines())
 				{
 					if ((DUtil.toWriteLocation(b.getLocation())).equalsApprox(center)) i.remove();

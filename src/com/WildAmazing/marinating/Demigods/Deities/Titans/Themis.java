@@ -170,12 +170,12 @@ public class Themis implements Deity {
 	}
 	private boolean swap() {
 		Player p = DUtil.getOnlinePlayer(getPlayerName());
-		if (!DUtil.canPVP(p.getLocation()))
+		if (!DUtil.canTarget(p, p.getLocation()))
 			return false;
 		LivingEntity target = DUtil.getTargetLivingEntity(p, 4);
 		if (target == null)
 			return false;
-		if (!DUtil.canPVP(target.getLocation()))
+		if (!DUtil.canTarget(target, target.getLocation()))
 			return false;
 		Location between = p.getLocation();
 		p.teleport(target.getLocation());

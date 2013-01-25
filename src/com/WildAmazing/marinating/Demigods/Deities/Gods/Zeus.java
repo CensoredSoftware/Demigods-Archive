@@ -237,7 +237,7 @@ public class Zeus implements Deity {
 				return;
 			}
 			if (DUtil.getFavor(p)>=ZEUSULTIMATECOST) {
-				if (!DUtil.canPVP(p.getLocation())) {
+				if (!DUtil.canTarget(p, p.getLocation())) {
 					p.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
 					return;
 				}
@@ -261,7 +261,7 @@ public class Zeus implements Deity {
 	 * ---------------
 	 */
 	private void shove(Player p) {
-		if (!DUtil.canPVP(p.getLocation())) {
+		if (!DUtil.canTarget(p, p.getLocation())) {
 			p.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
 			return;
 		}
@@ -278,7 +278,7 @@ public class Zeus implements Deity {
 						continue;
 				}
 				if ((le.getLocation().distance(b.getLocation()) <= 5) && !hit.contains(le))
-					if (DUtil.canPVP(le.getLocation()))
+					if (DUtil.canTarget(le, le.getLocation()))
 						hit.add(le);
 			}
 		}
@@ -292,7 +292,7 @@ public class Zeus implements Deity {
 		}
 	}
 	private void lightning(Player p) {
-		if (!DUtil.canPVP(p.getLocation())) {
+		if (!DUtil.canTarget(p, p.getLocation())) {
 			p.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
 			return;
 		}
@@ -339,7 +339,7 @@ public class Zeus implements Deity {
 	private void strikeLightning(Player p, Location target) {
 		if (!p.getWorld().equals(target.getWorld()))
 			return;
-		if (!DUtil.canPVP(target))
+		if (!DUtil.canLocationPVP(target))
 			return;
 		p.getWorld().strikeLightningEffect(target);
 		for (Entity e : target.getBlock().getChunk().getEntities()) {

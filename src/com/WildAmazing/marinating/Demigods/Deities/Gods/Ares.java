@@ -195,7 +195,7 @@ public class Ares implements Deity {
 					return;
 				}
 				if (DUtil.getFavor(p)>=ARESULTIMATECOST) {
-					if (!DUtil.canPVP(p.getLocation())) {
+					if (!DUtil.canTarget(p, p.getLocation())) {
 						p.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
 						return;
 					}
@@ -229,7 +229,7 @@ public class Ares implements Deity {
 			p.sendMessage(ChatColor.YELLOW+"No target found.");
 			return false;
 		}
-		if (!DUtil.canPVP(target.getLocation()) || !DUtil.canPVP(p.getLocation())) {
+		if (!DUtil.canTarget(target, target.getLocation()) || !DUtil.canTarget(p, p.getLocation())) {
 			p.sendMessage(ChatColor.YELLOW+"Can't attack in a no-PVP zone.");
 			return false;
 		}
@@ -269,7 +269,7 @@ public class Ares implements Deity {
 					Player pt = (Player)le;
 					if (DUtil.getAllegiance(pt).equals(DUtil.getAllegiance(p)) || pt.equals(p))
 						continue;
-					if (!DUtil.canPVP(le.getLocation()))
+					if (!DUtil.canTarget(le, le.getLocation()))
 						continue;
 					targets.add(le);
 					confuse.add(pt);

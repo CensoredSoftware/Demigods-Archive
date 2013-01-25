@@ -249,7 +249,7 @@ public class Hades implements Deity {
 				return;
 			}
 			if (DUtil.getFavor(p)>=ULTIMATECOST) {
-				if (!DUtil.canPVP(p.getLocation())) {
+				if (!DUtil.canTarget(p, p.getLocation())) {
 					p.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
 					return;
 				}
@@ -268,9 +268,9 @@ public class Hades implements Deity {
 	}
 
 	private boolean chain(Player p, int damage, int blindpower, int blindduration) {
-		if (!DUtil.canPVP(p.getLocation()))
+		if (!DUtil.canTarget(p, p.getLocation()))
 			return false;
-		if (!DUtil.canPVP(p.getLocation())) {
+		if (!DUtil.canTarget(p, p.getLocation())) {
 			return false;
 		}
 		LivingEntity target = DUtil.getTargetLivingEntity(p, 3);
@@ -285,7 +285,7 @@ public class Hades implements Deity {
 	private boolean entomb(Player p) {
 		LivingEntity le = DUtil.getTargetLivingEntity(p, 2);
 		if (le == null) return false;
-		if (!DUtil.canPVP(p.getLocation()) || !DUtil.canPVP(le.getLocation())) return false;
+		if (!DUtil.canTarget(p, p.getLocation()) || !DUtil.canTarget(le, le.getLocation())) return false;
 		int duration = (int)Math.round(2.18678*Math.pow(DUtil.getDevotion(p, "Hades"), 0.24723)); //seconds
 		final ArrayList<Block> tochange = new ArrayList<Block>();
 		for (int x=-3;x<=3;x++) {

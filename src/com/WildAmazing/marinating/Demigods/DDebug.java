@@ -28,6 +28,7 @@ import com.WildAmazing.marinating.Demigods.Deities.Titans.Oceanus;
 import com.WildAmazing.marinating.Demigods.Deities.Titans.Prometheus;
 import com.WildAmazing.marinating.Demigods.Deities.Titans.Rhea;
 import com.WildAmazing.marinating.Demigods.Deities.Titans.Themis;
+import com.clashnia.Demigods.Deities.Giants.Typhon;
 
 public class DDebug {
 
@@ -557,6 +558,8 @@ public class DDebug {
 						DUtil.giveDeitySilent(p, new Rhea(p));
 					else if (info[0].equalsIgnoreCase("themis"))
 						DUtil.giveDeitySilent(p, new Themis(p));
+					else if (info[0].equalsIgnoreCase("typhon"))
+						DUtil.giveDeitySilent(p, new Typhon(p));
 					DUtil.setDevotion(p, info[0], Integer.parseInt(info[1]));
 				}
 			}

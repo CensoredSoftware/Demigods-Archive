@@ -177,7 +177,7 @@ public class Hyperion implements Deity {
 					return;
 				}
 				if (DUtil.getFavor(p)>=ULTIMATECOST) {
-					if (!DUtil.canPVP(p.getLocation())) {
+					if (!DUtil.canTarget(p, p.getLocation())) {
 						p.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
 						return;
 					}
@@ -201,7 +201,7 @@ public class Hyperion implements Deity {
 		}
 	}
 	private int starfall(final Player p) {
-		if (!DUtil.canPVP(p.getLocation())) {
+		if (!DUtil.canTarget(p, p.getLocation())) {
 			p.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
 			return 0;
 		}
@@ -214,7 +214,7 @@ public class Hyperion implements Deity {
 				if (DUtil.isFullParticipant((Player)anEntity))
 					if (DUtil.getAllegiance((Player)anEntity).equalsIgnoreCase(getDefaultAlliance()))
 						continue;
-			if (!DUtil.canPVP(anEntity.getLocation()))
+			if (!DUtil.canTarget(anEntity, anEntity.getLocation()))
 				continue;
 			if (anEntity.getLocation().toVector().isInSphere(ploc, range))
 				entitylist.add(anEntity);
@@ -244,7 +244,7 @@ public class Hyperion implements Deity {
 				if (DUtil.isFullParticipant((Player)anEntity))
 					if (DUtil.getAllegiance((Player)anEntity).equalsIgnoreCase(getDefaultAlliance()))
 						continue;
-			if (!DUtil.canPVP(anEntity.getLocation()))
+			if (!DUtil.canTarget(anEntity, anEntity.getLocation()))
 				continue;
 			if (anEntity.getLocation().toVector().isInSphere(ploc, ultrange) && (entitylist.size() < numtargets))
 				entitylist.add(anEntity);

@@ -125,7 +125,7 @@ public class Hephaestus implements Deity, Listener {
 					return;
 				}
 				if (DUtil.getFavor(p)>=ULTIMATECOST) {
-					if (!DUtil.canPVP(p.getLocation())) {
+					if (!DUtil.canTarget(p, p.getLocation())) {
 						p.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
 						return;
 					}
@@ -174,7 +174,7 @@ public class Hephaestus implements Deity, Listener {
 		int i=0;
 		for (Player pl : p.getWorld().getPlayers()) {
 			if (pl.getLocation().distance(p.getLocation()) <= ultrange) {
-				if (!DUtil.canPVP(pl.getLocation()))
+				if (!DUtil.canTarget(pl, pl.getLocation()))
 					continue;
 				if (DUtil.isFullParticipant(pl)) {
 					if (DUtil.getAllegiance(pl).equalsIgnoreCase(getDefaultAlliance())) {

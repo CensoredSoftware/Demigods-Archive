@@ -47,6 +47,7 @@ import com.WildAmazing.marinating.Demigods.Listeners.DPvP;
 import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
 
 import com.clashnia.ClashniaUpdate.DemigodsUpdate;
+import com.clashnia.Demigods.Deities.Giants.Typhon;
 
 
 import com.massivecraft.factions.P;
@@ -91,7 +92,13 @@ public class Demigods extends JavaPlugin implements Listener
 		new Ares("ADMIN"),
 		new Athena("ADMIN"),
 		new Apollo("ADMIN"),
-		new Hephaestus("ADMIN")
+		new Hephaestus("ADMIN"),
+		
+		/* 	
+		 *  Giants
+		 */
+		// Only Giant for Demigods 2
+		new Typhon("ADMIN")
 	};
 
 	public Demigods()

@@ -31,6 +31,7 @@ import com.massivecraft.factions.Faction;
 
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 public class DUtil {
 	private static Demigods plugin; //obviously needed
 	private static int dist = DSettings.getSettingInt("max_target_range"); //maximum range on targeting
@@ -1400,8 +1401,12 @@ public class DUtil {
 				return true;
 			if (plugin.WORLDGUARD == null)
 				return true;
-			ApplicableRegionSet set = plugin.WORLDGUARD.getRegionManager(l.getWorld()).getApplicableRegions(l);
-			return set.allows(DefaultFlag.PVP);
+		    ApplicableRegionSet set = plugin.WORLDGUARD.getRegionManager(l.getWorld()).getApplicableRegions(l);
+		    for (ProtectedRegion region : set)
+			{
+		    	if(region.getId().toLowerCase().contains("nopvp")) return false;
+			}
+		    return true;
 		}
 		
 		@SuppressWarnings("static-access")
@@ -1431,11 +1436,22 @@ public class DUtil {
 		Faction faction = Board.getFactionAt(new FLocation(l.getBlock()));
 		return !(faction.isPeaceful() || faction.isSafeZone());
 	}
-	public static boolean canPVP(Location l) {
+	public static boolean canLocationPVP(Location l) {
 		if (ALLOWPVPEVERYWHERE)
 			return true;
 		return (canWorldGuardPVP(l)&&canFactionsPVP(l));
 	}
+	
+	/*
+	 *  canTarget() : Checks if PVP is allowed in (Location)location.
+	 */
+    public static boolean canTarget(Entity player, Location location)
+    {      
+    	if(!(player instanceof Player)) return true;
+    	else if(DSave.hasData((Player) player, "temp_was_PVP")) return true;
+    	else return canLocationPVP(location);
+    }
+    
 	/**
 	 * For fancy effects
 	 */
@@ -1508,7 +1524,7 @@ public class DUtil {
 		if (target instanceof Player) {
 			if (((Player)target).getGameMode() == GameMode.CREATIVE)
 				return;
-			if (!canPVP(target.getLocation()))
+			if (!canTarget(target, target.getLocation()))
 				return;
 			if (DDamage.cancelSoulDamage((Player)target, amount))
 				return;
@@ -1548,7 +1564,7 @@ public class DUtil {
 	public static void damageDemigods(Player target, int amount) {
 		if ((target).getGameMode() == GameMode.CREATIVE)
 			return;
-		if (!canPVP(target.getLocation()))
+		if (!canTarget(target, target.getLocation()))
 			return;
 		if (!canWorldGuardDamage(target.getLocation()))
 			return;

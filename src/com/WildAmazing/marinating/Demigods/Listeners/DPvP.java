@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -13,9 +14,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.WildAmazing.marinating.Demigods.DSave;
 import com.WildAmazing.marinating.Demigods.DUtil;
 import com.WildAmazing.marinating.Demigods.DSettings;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
@@ -39,7 +44,7 @@ public class DPvP implements Listener
 			return;
 		if (DUtil.getAllegiance(attacker).equalsIgnoreCase(DUtil.getAllegiance(target)))
 			return;
-		if (!DUtil.canPVP(target.getLocation())) {
+		if (!DUtil.canTarget(target, target.getLocation())) {
 			attacker.sendMessage(ChatColor.YELLOW+"This is a no-PvP zone.");
 			return;
 		}
@@ -175,5 +180,59 @@ public class DPvP implements Listener
 				attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
 			}
 		}
+	}
+	
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPlayerMove(PlayerMoveEvent event)
+	{
+		onPlayerLineJump(event);
+	}
+	
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPlayerTeleport(PlayerTeleportEvent event)
+	{
+		onPlayerLineJump(event);
+	}
+	
+	public void onPlayerLineJump(PlayerEvent event)
+	{
+		// Define variables
+		final Player player = (Player) event.getPlayer();
+		final int pvp_area_delay_time = DSettings.getSettingInt("pvp_area_delay_time");
+		Location to = null;
+		Location from = null;
+		
+		if(event instanceof PlayerMoveEvent)
+		{
+			to = ((PlayerMoveEvent) event).getTo();
+			from = ((PlayerMoveEvent) event).getFrom();
+		}
+		else if(event instanceof PlayerTeleportEvent)
+		{
+			to = ((PlayerTeleportEvent) event).getTo();
+			from = ((PlayerTeleportEvent) event).getFrom();
+		}
+		
+		// NullPointer Check
+		if(to == null || from == null) return;
+			
+		// No Spawn Line-Jumping
+		if(!DUtil.canLocationPVP(to) && DUtil.canLocationPVP(from))
+		{
+			DSave.saveData(player, "temp_was_PVP", true);
+			
+			DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					DSave.removeData(player, "temp_was_PVP");
+					player.sendMessage(ChatColor.YELLOW + "You are now safe from all PVP!");
+				}
+			}, (pvp_area_delay_time * 20));
+		}
+		
+		// Let players know where they can PVP
+		if(!DUtil.canLocationPVP(from) && DUtil.canLocationPVP(to)) player.sendMessage(ChatColor.YELLOW + "You can now PVP!");
 	}
 }

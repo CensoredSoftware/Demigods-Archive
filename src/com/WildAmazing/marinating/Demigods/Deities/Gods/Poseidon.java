@@ -275,13 +275,13 @@ public class Poseidon implements Deity {
 		}
 	}
 	private boolean reel(Player p) {
-		if (!DUtil.canPVP(p.getLocation())) {
+		if (!DUtil.canTarget(p, p.getLocation())) {
 			return false;
 		}
 		LivingEntity le = DUtil.getTargetLivingEntity(p, 3);
 		if ((le == null) || le.isDead())
 			return false;
-		if (!DUtil.canPVP(le.getLocation()))
+		if (!DUtil.canTarget(le, le.getLocation()))
 			return false;
 		if (le.getLocation().getBlock().getType() == Material.AIR) {
 			le.getLocation().getBlock().setType(Material.WATER);
@@ -298,7 +298,7 @@ public class Poseidon implements Deity {
 		return true;
 	}
 	private boolean drown(Player p) {
-		if (!DUtil.canPVP(p.getLocation())) {
+		if (!DUtil.canTarget(p, p.getLocation())) {
 			p.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
 			return false;
 		}
@@ -308,7 +308,7 @@ public class Poseidon implements Deity {
 		int duration = (int)Math.ceil(2.80488*Math.pow(devotion, 0.2689)); //seconds
 		//
 		Location target = DUtil.getTargetLocation(p);
-		if (!DUtil.canPVP(target)) {
+		if (!DUtil.canLocationPVP(target)) {
 			p.sendMessage(ChatColor.YELLOW+"That is a no-PVP zone.");
 			return false;
 		}
@@ -323,7 +323,7 @@ public class Poseidon implements Deity {
 				for (int z=-radius; z<=radius;z++) {
 					Block block = target.getWorld().getBlockAt(target.getBlockX()+x, target.getBlockY()+y, target.getBlockZ()+z);
 					if (block.getLocation().distance(target) <= radius) {
-						if (DUtil.canPVP(block.getLocation()))
+						if (DUtil.canLocationPVP(block.getLocation()))
 							if (block.getType() == Material.AIR) {
 								block.setType(Material.WATER);
 								block.setData((byte)(0x8));

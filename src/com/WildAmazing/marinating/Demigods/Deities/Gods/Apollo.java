@@ -201,7 +201,7 @@ public class Apollo implements Deity {
 					return;
 				}
 				if (DUtil.getFavor(p)>=ULTIMATECOST) {
-					if (!DUtil.canPVP(p.getLocation())) {
+					if (!DUtil.canTarget(p, p.getLocation())) {
 						p.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
 						return;
 					}
@@ -299,7 +299,7 @@ public class Apollo implements Deity {
 				if (DUtil.isFullParticipant((Player)anEntity))
 					if (DUtil.getAllegiance((Player)anEntity).equalsIgnoreCase(DUtil.getAllegiance(p)))
 						continue;
-			if (!DUtil.canPVP(anEntity.getLocation()))
+			if (!DUtil.canTarget(anEntity, anEntity.getLocation()))
 				continue;
 			if (anEntity.getLocation().toVector().isInSphere(ploc, ultrange))
 				entitylist.add(anEntity);

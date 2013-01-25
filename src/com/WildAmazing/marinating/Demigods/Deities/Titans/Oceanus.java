@@ -178,14 +178,14 @@ public class Oceanus implements Deity {
 		}
 	}
 	private boolean squidfire(Player p) {
-		if (!DUtil.canPVP(p.getLocation())) {
+		if (!DUtil.canTarget(p, p.getLocation())) {
 			p.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
 			return false;
 		}
 		Location target = DUtil.getTargetLocation(p);
 		if (target == null)
 			return false;
-		if (!DUtil.canPVP(target))
+		if (!DUtil.canLocationPVP(target))
 			return false;
 		Squid squid = p.getWorld().spawn(p.getLocation(), Squid.class);
 		Vector v = p.getLocation().toVector();

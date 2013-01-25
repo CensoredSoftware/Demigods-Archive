@@ -137,7 +137,7 @@ public class Cronus implements Deity {
 									return;
 								if (System.currentTimeMillis() < CLEAVETIME+100)
 									return;
-								if (!DUtil.canPVP(e.getEntity().getLocation()))
+								if (!DUtil.canTarget(e.getEntity(), e.getEntity().getLocation()))
 									return;
 								DUtil.setFavor(p, DUtil.getFavor(p) - CLEAVECOST);
 								for (int i=1;i<=31;i+=4)
@@ -243,7 +243,7 @@ public class Cronus implements Deity {
 				return;
 			}
 			if (DUtil.getFavor(p)>=CRONUSULTIMATECOST) {
-				if (!DUtil.canPVP(p.getLocation())) {
+				if (!DUtil.canTarget(p, p.getLocation())) {
 					p.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
 					return;
 				}
@@ -268,7 +268,7 @@ public class Cronus implements Deity {
 		Block b = p.getTargetBlock(null, 200);
 		for (Player pl : b.getWorld().getPlayers()) {
 			if (pl.getLocation().distance(b.getLocation()) < 4) {
-				if (!DUtil.areAllied(pl, p) && DUtil.canPVP(pl.getLocation())){
+				if (!DUtil.areAllied(pl, p) && DUtil.canTarget(pl, pl.getLocation())){
 					target = pl;
 					break;
 				}
@@ -294,7 +294,7 @@ public class Cronus implements Deity {
 			if (DUtil.isFullParticipant(pl)) {
 				if (DUtil.getAllegiance(pl).equalsIgnoreCase(DUtil.getAllegiance(p)))
 					continue;
-				if (!DUtil.canPVP(pl.getLocation()))
+				if (!DUtil.canTarget(pl, pl.getLocation()))
 					continue;
 			}
 			pl.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration*20, slowamount));
