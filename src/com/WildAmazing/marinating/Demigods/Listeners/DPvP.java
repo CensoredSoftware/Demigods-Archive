@@ -235,6 +235,9 @@ public class DPvP implements Listener
 		}
 		
 		// Let players know where they can PVP
-		if(!DUtil.canLocationPVP(from) && DUtil.canLocationPVP(to)) player.sendMessage(ChatColor.YELLOW + "You can now PVP!");
+		if(!DSave.hasData((Player) player, "temp_was_PVP"))
+		{
+			if(!DUtil.canLocationPVP(from) && DUtil.canLocationPVP(to)) player.sendMessage(ChatColor.YELLOW + "You can now PVP!");
+		}
 	}
 }

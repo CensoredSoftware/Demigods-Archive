@@ -1442,9 +1442,6 @@ public class DUtil {
 		return (canWorldGuardPVP(l)&&canFactionsPVP(l));
 	}
 	
-	/*
-	 *  canTarget() : Checks if PVP is allowed in (Location)location.
-	 */
     public static boolean canTarget(Entity player, Location location)
     {      
     	if(!(player instanceof Player)) return true;
