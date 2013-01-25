@@ -211,6 +211,7 @@ public class DPvP implements Listener
 			DSave.removeData(player, "temp_was_PVP");
 			player.sendMessage(ChatColor.YELLOW + "You are now safe from all PVP!");
 		}
+		else if(!DUtil.canLocationPVP(from) && DUtil.canLocationPVP(to)) player.sendMessage(ChatColor.YELLOW + "You can now PVP!");
 	}
 	
 	public void onPlayerLineJump(final Player player, Location to, Location from, int delayTime)
