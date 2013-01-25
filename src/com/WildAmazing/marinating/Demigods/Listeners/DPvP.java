@@ -199,7 +199,7 @@ public class DPvP implements Listener
 	{
 		// Define variables
 		final Player player = (Player) event.getPlayer();
-		final int pvp_area_delay_time = DSettings.getSettingInt("pvp_area_delay_time");
+		int pvp_area_delay_time = -1; 
 		Location to = null;
 		Location from = null;
 		
@@ -207,11 +207,13 @@ public class DPvP implements Listener
 		{
 			to = ((PlayerMoveEvent) event).getTo();
 			from = ((PlayerMoveEvent) event).getFrom();
+			pvp_area_delay_time = DSettings.getSettingInt("pvp_area_delay_time");
 		}
 		else if(event instanceof PlayerTeleportEvent)
 		{
 			to = ((PlayerTeleportEvent) event).getTo();
 			from = ((PlayerTeleportEvent) event).getFrom();
+			pvp_area_delay_time = DSettings.getSettingInt("pvp_area_delay_time_teleport");
 		}
 		
 		// NullPointer Check

@@ -51,6 +51,11 @@ public class DDamage implements Listener
 			return;
 		}
 		
+		if (!DUtil.canTarget(p, p.getLocation())) {
+			e.setCancelled(true);
+			return;
+		}
+		
 		if (e instanceof EntityDamageByEntityEvent)
 		{
 			EntityDamageByEntityEvent ee = (EntityDamageByEntityEvent)e;
