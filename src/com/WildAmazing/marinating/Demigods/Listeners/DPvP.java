@@ -203,8 +203,14 @@ public class DPvP implements Listener
 	{
 		// Define variables
 		final Player player = (Player) event.getPlayer();
-		DSave.removeData(player, "temp_was_PVP");
-		player.sendMessage(ChatColor.YELLOW + "You are now safe from all PVP!");
+		Location to = ((PlayerTeleportEvent) event).getTo();
+		Location from = ((PlayerTeleportEvent) event).getFrom();
+		
+		if(!DUtil.canLocationPVP(to) && DUtil.canLocationPVP(from))
+		{
+			DSave.removeData(player, "temp_was_PVP");
+			player.sendMessage(ChatColor.YELLOW + "You are now safe from all PVP!");
+		}
 	}
 	
 	public void onPlayerLineJump(final Player player, Location to, Location from, int delayTime)
