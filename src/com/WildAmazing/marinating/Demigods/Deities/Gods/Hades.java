@@ -270,11 +270,11 @@ public class Hades implements Deity {
 	private boolean chain(Player p, int damage, int blindpower, int blindduration) {
 		if (!DUtil.canTarget(p, p.getLocation()))
 			return false;
-		if (!DUtil.canTarget(p, p.getLocation())) {
-			return false;
-		}
 		LivingEntity target = DUtil.getTargetLivingEntity(p, 3);
 		if (target == null) return false;
+		if (!DUtil.canTarget(target, target.getLocation())) {
+			return false;
+		}
 		target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, blindduration, blindpower));
 		DUtil.damageDemigods(p, target, damage, DamageCause.CUSTOM);
 		for (BlockFace bf : BlockFace.values()) {

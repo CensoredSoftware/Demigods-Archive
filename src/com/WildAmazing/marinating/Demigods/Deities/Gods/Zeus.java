@@ -301,7 +301,11 @@ public class Zeus implements Deity {
 		target = b.getLocation();
 		if (p.getLocation().distance(target) > 2){
 			try {
-				strikeLightning(p, target);
+				if (!p.getWorld().equals(target.getWorld()))
+					return;
+				if (!DUtil.canLocationPVP(target))
+					return;
+				p.getWorld().strikeLightningEffect(target);
 			} catch (Exception nullpointer){} //ignore it if something went wrong
 		} else
 			p.sendMessage(ChatColor.YELLOW+"Your target is too far away, or too close to you.");
@@ -320,32 +324,32 @@ public class Zeus implements Deity {
 				if (e1 instanceof Player){
 					Player ptemp = (Player)e1;
 					if (!DUtil.areAllied(p, ptemp)&&!ptemp.equals(p)){
-						strikeLightning(p, ptemp.getLocation());
-						strikeLightning(p, ptemp.getLocation());
-						strikeLightning(p, ptemp.getLocation());
+						strikeLightning(p, ptemp);
+						strikeLightning(p, ptemp);
+						strikeLightning(p, ptemp);
 						count++;
 					}
 				}
 				else{
 					count++;
-					strikeLightning(p, e1.getLocation());
-					strikeLightning(p, e1.getLocation());
-					strikeLightning(p, e1.getLocation());
+					strikeLightning(p, e1);
+					strikeLightning(p, e1);
+					strikeLightning(p, e1);
 				}
 			}catch (Exception notAlive){} //ignore stuff like minecarts
 		}
 		return count;
 	}
-	private void strikeLightning(Player p, Location target) {
+	private void strikeLightning(Player p, Entity target) {
 		if (!p.getWorld().equals(target.getWorld()))
 			return;
-		if (!DUtil.canLocationPVP(target))
+		if (!DUtil.canTarget(target, target.getLocation()))
 			return;
-		p.getWorld().strikeLightningEffect(target);
-		for (Entity e : target.getBlock().getChunk().getEntities()) {
+		p.getWorld().strikeLightningEffect(target.getLocation());
+		for (Entity e : target.getLocation().getBlock().getChunk().getEntities()) {
 			if (e instanceof LivingEntity) {
 				LivingEntity le = (LivingEntity)e;
-				if (le.getLocation().distance(target) < 1.5)
+				if (le.getLocation().distance(target.getLocation()) < 1.5)
 					DUtil.damageDemigods(p, le, DUtil.getAscensions(p)*2, DamageCause.LIGHTNING);
 			}
 		}
