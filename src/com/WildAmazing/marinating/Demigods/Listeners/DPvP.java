@@ -203,16 +203,17 @@ public class DPvP implements Listener
 	{
 		// Define variables
 		final Player player = (Player) event.getPlayer();
-		Location to = ((PlayerMoveEvent) event).getTo();
-		Location from = ((PlayerMoveEvent) event).getFrom();
-		onPlayerLineJump(player, to, from, 0);
+		DSave.removeData(player, "temp_was_PVP");
+		player.sendMessage(ChatColor.YELLOW + "You are now safe from all PVP!");
 	}
 	
 	public void onPlayerLineJump(final Player player, Location to, Location from, int delayTime)
 	{
 		// NullPointer Check
 		if(to == null || from == null) return;
-			
+		
+		if(DSave.hasData((Player) player, "temp_was_PVP")) return;
+		
 		// No Spawn Line-Jumping
 		if(!DUtil.canLocationPVP(to) && DUtil.canLocationPVP(from) && delayTime > 0)
 		{
@@ -227,11 +228,6 @@ public class DPvP implements Listener
 					player.sendMessage(ChatColor.YELLOW + "You are now safe from all PVP!");
 				}
 			}, (delayTime * 20));
-		}
-		else if(!DUtil.canLocationPVP(to) && DUtil.canLocationPVP(from))
-		{
-			DSave.removeData(player, "temp_was_PVP");
-			player.sendMessage(ChatColor.YELLOW + "You are now safe from all PVP!");
 		}
 		
 		// Let players know where they can PVP
