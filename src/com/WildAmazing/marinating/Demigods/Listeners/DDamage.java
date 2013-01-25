@@ -51,11 +51,6 @@ public class DDamage implements Listener
 			return;
 		}
 		
-		if (!DUtil.canTarget(p, p.getLocation())) {
-			e.setCancelled(true);
-			return;
-		}
-		
 		if (e instanceof EntityDamageByEntityEvent)
 		{
 			EntityDamageByEntityEvent ee = (EntityDamageByEntityEvent)e;
@@ -67,6 +62,16 @@ public class DDamage implements Listener
 						e.setCancelled(true);
 						return;
 					}
+					
+					if (!DUtil.canTarget(p, p.getLocation())) {
+						e.setCancelled(true);
+						return;
+					}
+					
+					if (!DUtil.canTarget((Player)ee.getDamager(), ((Player)ee.getDamager()).getLocation())) {
+						e.setCancelled(true);
+						return;
+					}					
 				}
 				DUtil.damageDemigods((LivingEntity)ee.getDamager(), p, e.getDamage(), e.getCause());
 				e.setCancelled(true);
