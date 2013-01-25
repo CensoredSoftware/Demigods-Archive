@@ -46,6 +46,7 @@ public class DPvP implements Listener
 			return;
 		if (!DUtil.canTarget(target, target.getLocation())) {
 			attacker.sendMessage(ChatColor.YELLOW+"This is a no-PvP zone.");
+			e.setCancelled(true);
 			return;
 		}
 		Deity d = DUtil.getDeities(attacker).get((int)Math.floor(Math.random()*DUtil.getDeities(attacker).size()));
