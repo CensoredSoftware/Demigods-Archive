@@ -14,7 +14,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
@@ -186,41 +185,31 @@ public class DPvP implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
-		onPlayerLineJump(event);
+		// Define variables
+		final Player player = (Player) event.getPlayer();
+		Location to = ((PlayerMoveEvent) event).getTo();
+		Location from = ((PlayerMoveEvent) event).getFrom();
+		int delayTime = DSettings.getSettingInt("pvp_area_delay_time");
+		onPlayerLineJump(player, to, from, delayTime);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerTeleport(PlayerTeleportEvent event)
 	{
-		onPlayerLineJump(event);
-	}
-	
-	public void onPlayerLineJump(PlayerEvent event)
-	{
 		// Define variables
 		final Player player = (Player) event.getPlayer();
-		int pvp_area_delay_time = -1; 
-		Location to = null;
-		Location from = null;
-		
-		if(event instanceof PlayerMoveEvent)
-		{
-			to = ((PlayerMoveEvent) event).getTo();
-			from = ((PlayerMoveEvent) event).getFrom();
-			pvp_area_delay_time = DSettings.getSettingInt("pvp_area_delay_time");
-		}
-		else if(event instanceof PlayerTeleportEvent)
-		{
-			to = ((PlayerTeleportEvent) event).getTo();
-			from = ((PlayerTeleportEvent) event).getFrom();
-			pvp_area_delay_time = DSettings.getSettingInt("pvp_area_delay_time_teleport");
-		}
-		
+		Location to = ((PlayerMoveEvent) event).getTo();
+		Location from = ((PlayerMoveEvent) event).getFrom();
+		onPlayerLineJump(player, to, from, 0);
+	}
+	
+	public void onPlayerLineJump(final Player player, Location to, Location from, int delayTime)
+	{
 		// NullPointer Check
 		if(to == null || from == null) return;
 			
 		// No Spawn Line-Jumping
-		if(!DUtil.canLocationPVP(to) && DUtil.canLocationPVP(from))
+		if(!DUtil.canLocationPVP(to) && DUtil.canLocationPVP(from) && delayTime > 0)
 		{
 			DSave.saveData(player, "temp_was_PVP", true);
 			
@@ -232,7 +221,12 @@ public class DPvP implements Listener
 					DSave.removeData(player, "temp_was_PVP");
 					player.sendMessage(ChatColor.YELLOW + "You are now safe from all PVP!");
 				}
-			}, (pvp_area_delay_time * 20));
+			}, (delayTime * 20));
+		}
+		else if(!DUtil.canLocationPVP(to) && DUtil.canLocationPVP(from))
+		{
+			DSave.removeData(player, "temp_was_PVP");
+			player.sendMessage(ChatColor.YELLOW + "You are now safe from all PVP!");
 		}
 		
 		// Let players know where they can PVP
