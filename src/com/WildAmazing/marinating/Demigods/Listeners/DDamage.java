@@ -78,6 +78,11 @@ public class DDamage implements Listener
 			}
 		}
 		
+		if (!DUtil.canTarget(p, p.getLocation())) {
+			e.setCancelled(true);
+			return;
+		}
+		
 		if (e.getCause() == DamageCause.LAVA)
 		{			
 			e.setDamage(0); // Disable lava damage, fire damage does enough for Demigods.
