@@ -118,11 +118,16 @@ public class Cronus implements Deity {
 							return;
 						if (!p.getItemInHand().getType().name().contains("_HOE"))
 							return;
+						if (!DUtil.canTarget(p, p.getLocation()))
+							return;
+						
 						/*
 						 * Passive ability (stop movement)
 						 */
 						if (e.getEntity() instanceof Player) {
 							Player attacked = (Player)e.getEntity();
+							if (!DUtil.canTarget(attacked, attacked.getLocation()))
+								return;
 							if (!DUtil.isFullParticipant(attacked) ||
 									(DUtil.isFullParticipant(attacked) && !(DUtil.getAllegiance(p).equalsIgnoreCase(DUtil.getAllegiance(attacked))))) {
 								attacked.setVelocity(new Vector(0,0,0));
