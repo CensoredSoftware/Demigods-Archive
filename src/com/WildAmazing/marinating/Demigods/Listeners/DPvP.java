@@ -232,7 +232,7 @@ public class DPvP implements Listener
 				public void run()
 				{
 					DSave.removeData(player, "temp_was_PVP");
-					player.sendMessage(ChatColor.YELLOW + "You are now safe from all PVP!");
+					if(!DUtil.canLocationPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You are now safe from all PVP!");
 				}
 			}, (delayTime * 20));
 		}
