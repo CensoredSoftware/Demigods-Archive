@@ -2,6 +2,7 @@ package com.clashnia.Demigods.Deities.Giants;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -111,7 +112,9 @@ public class Typhon implements Deity {
 			if (e.getDamager() instanceof Player)
 			{
 				Player p = (Player)e.getDamager();
-				if (!DUtil.canWorldGuardPVP(p.getLocation()) || !DUtil.canFactionsPVP(p.getLocation())) return;
+				Entity attacked = e.getEntity();
+				if (!DUtil.canTarget(p, p.getLocation())) return;
+				if (!DUtil.canTarget(attacked, attacked.getLocation())) return;
 				if (!DUtil.hasDeity(p, "Typhon")) return;
 				LivingEntity le = (LivingEntity)e.getEntity();
 				Vector v = p.getLocation().toVector();
