@@ -520,9 +520,8 @@ public class DCommandExecutor implements CommandExecutor
 			p.sendMessage(ChatColor.GRAY+"/dg stats");
 			p.sendMessage(ChatColor.GRAY+"/dg rankings");
 			p.sendMessage("To see your own information, use "+ChatColor.YELLOW+"/check");
-			p.sendMessage(ChatColor.DARK_AQUA+"Source: https://github.com/marinating/Demigods in compliance");
+			p.sendMessage(ChatColor.DARK_AQUA+"Source: https://github.com/Clashnia/Demigods in compliance");
 			p.sendMessage(ChatColor.DARK_AQUA+"with GNU Affero General Public License.");
-			p.sendMessage(ChatColor.DARK_AQUA+"Support this plugin with a donation at http://bit.ly/helpdemigods");
 		}
 		if (args.length == 1) {
 			if (args[0].equalsIgnoreCase("check"))
@@ -2117,15 +2116,15 @@ public class DCommandExecutor implements CommandExecutor
 		if ((DUtil.getDeities(p) == null) || (DUtil.getDeities(p).size() == 0)) {
 			Deity choice = null;
 			switch (p.getItemInHand().getType()) {
-			case IRON_INGOT: choice = new Zeus(p.getName()); break;
-			case WATER_BUCKET: choice = new Poseidon(p.getName()); break;
-			case BONE: choice = new Hades(p.getName()); break;
-			//
-			case SOUL_SAND: choice = new Cronus(p.getName()); break;
-			case CLAY_BALL: choice = new Prometheus(p.getName()); break;
-			case VINE: choice = new Rhea(p.getName()); break;
-			//
-			case SULPHUR: choice = new Typhon(p.getName()); break; //TODO
+				case IRON_INGOT: choice = new Zeus(p.getName()); break;
+				case WATER_BUCKET: choice = new Poseidon(p.getName()); break;
+				case BONE: choice = new Hades(p.getName()); break;
+				//
+				case SOUL_SAND: choice = new Cronus(p.getName()); break;
+				case CLAY_BALL: choice = new Prometheus(p.getName()); break;
+				case VINE: choice = new Rhea(p.getName()); break;
+				//
+				case SULPHUR: choice = new Typhon(p.getName()); break; //TODO
 			}
 			if (choice != null) {
 				if (!DUtil.hasPermission(p, choice.getDefaultAlliance().toLowerCase() + "." + choice.getName().toLowerCase())
@@ -2164,23 +2163,23 @@ public class DCommandExecutor implements CommandExecutor
 		}
 		Deity choice = null;
 		switch (p.getItemInHand().getType()) {
-		case IRON_INGOT: choice = new Zeus(p.getName()); break;
-		case WATER_BUCKET: choice = new Poseidon(p.getName()); break;
-		case BONE: choice = new Hades(p.getName()); break;
-		case GOLD_SWORD: choice = new Ares(p.getName()); break;
-		case BOOK: choice = new Athena(p.getName()); break;
-		case FURNACE: choice = new Hephaestus(p.getName()); break;
-		case JUKEBOX: choice = new Apollo(p.getName()); break;
-		//
-		case SOUL_SAND: choice = new Cronus(p.getName()); break;
-		case CLAY_BALL: choice = new Prometheus(p.getName()); break;
-		case VINE: choice = new Rhea(p.getName()); break;
-		case OBSIDIAN: choice = new Atlas(p.getName()); break;
-		case INK_SACK: choice = new Oceanus(p.getName()); break;
-		case GLOWSTONE: choice = new Hyperion(p.getName()); break;
-		case COMPASS: choice = new Themis(p.getName()); break;
-		//
-		case SULPHUR: choice = new Typhon(p.getName()); break; //TODO
+			case IRON_INGOT: choice = new Zeus(p.getName()); break;
+			case WATER_BUCKET: choice = new Poseidon(p.getName()); break;
+			case BONE: choice = new Hades(p.getName()); break;
+			case GOLD_SWORD: choice = new Ares(p.getName()); break;
+			case BOOK: choice = new Athena(p.getName()); break;
+			case FURNACE: choice = new Hephaestus(p.getName()); break;
+			case JUKEBOX: choice = new Apollo(p.getName()); break;
+			//
+			case SOUL_SAND: choice = new Cronus(p.getName()); break;
+			case CLAY_BALL: choice = new Prometheus(p.getName()); break;
+			case VINE: choice = new Rhea(p.getName()); break;
+			case OBSIDIAN: choice = new Atlas(p.getName()); break;
+			case INK_SACK: choice = new Oceanus(p.getName()); break;
+			case GLOWSTONE: choice = new Hyperion(p.getName()); break;
+			case COMPASS: choice = new Themis(p.getName()); break;
+			//
+			case SULPHUR: choice = new Typhon(p.getName()); break; //TODO
 		}
 		if (choice == null) {
 			p.sendMessage(ChatColor.YELLOW+"That is not a valid selection item.");
