@@ -205,8 +205,13 @@ public class DPvP implements Listener
 		final Player player = (Player) event.getPlayer();
 		Location to = ((PlayerTeleportEvent) event).getTo();
 		Location from = ((PlayerTeleportEvent) event).getFrom();
+		int delayTime = DSettings.getSettingInt("pvp_area_delay_time");
 		
-		if(!DUtil.canLocationPVP(to) && DUtil.canLocationPVP(from))
+		if(DSave.hasData(player, "temp_flash"))
+		{
+			onPlayerLineJump(player, to, from, delayTime);
+		}
+		else if(!DUtil.canLocationPVP(to) && DUtil.canLocationPVP(from))
 		{
 			DSave.removeData(player, "temp_was_PVP");
 			player.sendMessage(ChatColor.YELLOW + "You are now safe from all PVP!");
@@ -219,12 +224,13 @@ public class DPvP implements Listener
 		// NullPointer Check
 		if(to == null || from == null) return;
 		
-		if(DSave.hasData((Player) player, "temp_was_PVP")) return;
+		if(DSave.hasData((Player) player, "temp_was_PVP") || !DUtil.isFullParticipant((Player) player)) return;
 		
 		// No Spawn Line-Jumping
 		if(!DUtil.canLocationPVP(to) && DUtil.canLocationPVP(from) && delayTime > 0)
 		{
 			DSave.saveData(player, "temp_was_PVP", true);
+			if(DSave.hasData(player, "temp_flash")) DSave.removeData(player, "temp_flash");
 			
 			DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable()
 			{

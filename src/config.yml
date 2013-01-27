@@ -22,6 +22,7 @@ save_interval_seconds: 300
 balance_teams: true
 ascension_cap: 100
 allow_skills_everywhere: false
+use_new_pvp_zones: true
 friendly_fire: false
 #Deity specific
 #Ares

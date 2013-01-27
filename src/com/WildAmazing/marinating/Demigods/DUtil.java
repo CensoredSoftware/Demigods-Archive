@@ -40,6 +40,7 @@ public class DUtil {
 	private static int FAVORCAP = DSettings.getSettingInt("globalfavorcap"); //max favor
 	private static boolean BROADCASTNEWDEITY = DSettings.getSettingBoolean("broadcast_new_deities"); //tell server when a player gets a deity
 	private static boolean ALLOWPVPEVERYWHERE = DSettings.getSettingBoolean("allow_skills_everywhere");
+	private static boolean USENEWPVP = DSettings.getSettingBoolean("use_new_pvp_zones");
 
 	public DUtil(Demigods d) {
 		plugin = d;
@@ -1410,6 +1411,16 @@ public class DUtil {
 		}
 		
 		@SuppressWarnings("static-access")
+		public static boolean canWorldGuardLegacyPVP(Location l) {
+			if (ALLOWPVPEVERYWHERE)
+				return true;
+			if (plugin.WORLDGUARD == null)
+				return true;
+			ApplicableRegionSet set = plugin.WORLDGUARD.getRegionManager(l.getWorld()).getApplicableRegions(l);
+			return !set.allows(DefaultFlag.PVP);
+		}
+		
+		@SuppressWarnings("static-access")
 		public static boolean canWorldGuardBuild(Player player, Location location) {
 			if (plugin.WORLDGUARD == null)
 				return true;
@@ -1439,12 +1450,15 @@ public class DUtil {
 	public static boolean canLocationPVP(Location l) {
 		if (ALLOWPVPEVERYWHERE)
 			return true;
-		return (canWorldGuardPVP(l)&&canFactionsPVP(l));
+		if (USENEWPVP) return (canWorldGuardPVP(l));
+		else return (canWorldGuardLegacyPVP(l)&&canFactionsPVP(l));
 	}
 	
     public static boolean canTarget(Entity player, Location location)
     {      
     	if(!(player instanceof Player)) return true;
+    	else if (!USENEWPVP) return canLocationPVP(location);
+    	else if (!isFullParticipant((Player) player)) return canLocationPVP(location);
     	else if(DSave.hasData((Player) player, "temp_was_PVP")) return true;
     	else return canLocationPVP(location);
     }
@@ -1585,16 +1599,4 @@ public class DUtil {
         }
         return null;
     }
-	
-	public static Boolean checkDemigodsExpansion()
-	{
-		if (!(getPlugin("DemigodsExpansion") == null))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
 }

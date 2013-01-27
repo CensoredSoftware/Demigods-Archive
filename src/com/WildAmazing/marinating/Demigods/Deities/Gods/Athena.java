@@ -13,6 +13,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import com.WildAmazing.marinating.Demigods.DSave;
 import com.WildAmazing.marinating.Demigods.DUtil;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
@@ -111,6 +112,7 @@ public class Athena implements Deity {
 					go.setPitch(pitch);
 					go.setYaw(yaw);
 					if (go.getBlock().isLiquid() || go.getBlock().isEmpty()) {
+						DSave.saveData(p, "temp_flash", true);
 						p.teleport(go);
 						DUtil.setFavor(p, DUtil.getFavor(p) - SKILLCOST);
 					}

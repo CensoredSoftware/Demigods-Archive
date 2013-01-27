@@ -125,9 +125,6 @@ public class Demigods extends JavaPlugin implements Listener
 		invalidShrines(); // #9
 		levelPlayers(); // #10
 		
-		if (DUtil.checkDemigodsExpansion()) log.info("[Demigods] Found DemigodsExpansion...");
-		else log.info("[Demigods] DemigodsExpansion not found...");
-		
 		log.info("[Demigods] Attempting to load Metrics.");
 		
 		loadMetrics(); // #11

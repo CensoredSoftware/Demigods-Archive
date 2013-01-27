@@ -131,6 +131,8 @@ public class Rhea implements Deity {
 				return;
 			if (!DUtil.hasDeity(p, "Rhea"))
 				return;
+			if (!DUtil.canTarget(p, p.getLocation()))
+				return;
 			if (POISON || ((POISONBIND != null) && (p.getItemInHand().getType() == POISONBIND))) {
 				if (POISONTIME > System.currentTimeMillis())
 					return;
@@ -318,7 +320,7 @@ public class Rhea implements Deity {
 		Block b = p.getTargetBlock(null, 200);
 		for (Player pl : b.getWorld().getPlayers()) {
 			if (pl.getLocation().distance(b.getLocation()) < 4) {
-				if (!DUtil.areAllied(p, pl)){
+				if (!DUtil.areAllied(p, pl) && DUtil.canTarget(pl, pl.getLocation())){
 					target = pl;
 					break;
 				}
@@ -380,6 +382,8 @@ public class Rhea implements Deity {
 		}
 	}
 	private void grow(Block b, int run){
+		if (!DUtil.canLocationPVP(b.getLocation()))
+			return;
 		if (((b.getType()==Material.AIR) && (b.getRelative(BlockFace.DOWN).getType()==Material.GRASS)) && (run > 0)) {
 			switch ((int)(Math.random()*50)){
 			case 0: case 1: case 2: b.setType(Material.RED_ROSE); break;
@@ -410,7 +414,7 @@ public class Rhea implements Deity {
 				if (le instanceof Player) {
 					Player pl = (Player)le;
 					if (DUtil.isFullParticipant(pl)) {
-						if (!DUtil.areAllied(p, pl)) {
+						if (!DUtil.areAllied(p, pl) && DUtil.canTarget(le, le.getLocation())) {
 							trap(le, duration, p);
 							count++;
 						} else continue;
