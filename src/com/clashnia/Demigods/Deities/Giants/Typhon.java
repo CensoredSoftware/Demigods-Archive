@@ -153,7 +153,6 @@ public class Typhon implements Deity {
 					else
 					{
 						DSave.removeData(p, "CHARGE");
-						p.sendMessage("Something went wrong when saving your charge time, sorry.");
 					}
 				}
 			}
