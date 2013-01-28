@@ -38,7 +38,14 @@ public class DPvP implements Listener
 		Player attacker = (Player)e.getDamager();
 		Player target = (Player)e.getEntity();
 		if (!(DUtil.isFullParticipant(attacker) && DUtil.isFullParticipant(target)))
-			return;
+		{
+			if (!DUtil.canTarget(target, target.getLocation()))
+			{
+				attacker.sendMessage(ChatColor.YELLOW+"This is a no-PvP zone.");
+				e.setCancelled(true);
+				return;
+			}
+		}
 		if (!DSettings.getEnabledWorlds().contains(attacker.getWorld()))
 			return;
 		if (DUtil.getAllegiance(attacker).equalsIgnoreCase(DUtil.getAllegiance(target)))
