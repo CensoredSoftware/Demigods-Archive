@@ -18,6 +18,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
+import com.WildAmazing.marinating.Demigods.DSave;
 import com.WildAmazing.marinating.Demigods.DUtil;
 import com.WildAmazing.marinating.Demigods.WriteLocation;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
@@ -493,11 +494,18 @@ public class Rhea implements Deity {
 			DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable() {
 				@Override
 				public void run() {
-					if (le.getLocation().distance(originalloc) > 0.5) {
-						if (le.isDead())
-							return;
+					if (le.isDead() && le instanceof Player)
+					{
+						DSave.saveData((Player)le, "temp_trap_died", true);
+						return;
+					}
+					else if (le.getLocation().distance(originalloc) > 0.5)
+					{
 						if (le instanceof Player)
+						{
+							if (DSave.hasData((Player)le, "temp_trap_died")) return;
 							((Player)le).sendMessage(ChatColor.YELLOW+"You take damage from moving while entangled!");
+						}
 						DUtil.damageDemigods(p, le, 5, DamageCause.CUSTOM);
 					}
 					le.teleport(originalloc);
@@ -509,6 +517,11 @@ public class Rhea implements Deity {
 			public void run() {
 				for (Location l : toreset)
 					l.getBlock().setType(Material.AIR);
+				
+				if (le instanceof Player)
+				{
+					if(DSave.hasData((Player)le, "temp_trap_died")) DSave.removeData((Player)le, "temp_trap_died");
+				}
 			}
 		}, durationseconds*20);
 	}
