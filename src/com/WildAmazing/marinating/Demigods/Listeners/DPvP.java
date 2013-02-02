@@ -6,7 +6,6 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -15,9 +14,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -216,7 +215,7 @@ public class DPvP implements Listener
 		Location from = ((PlayerTeleportEvent) event).getFrom();
 		int delayTime = DSettings.getSettingInt("pvp_area_delay_time");
 		
-		if(DSave.hasData(player, "temp_flash"))
+		if(DSave.hasData(player, "temp_flash") || event.getCause() == TeleportCause.ENDER_PEARL)
 		{
 			onPlayerLineJump(player, to, from, delayTime);
 		}
@@ -256,20 +255,6 @@ public class DPvP implements Listener
 		if(!DSave.hasData((Player) player, "temp_was_PVP"))
 		{
 			if(!DUtil.canLocationPVP(from) && DUtil.canLocationPVP(to)) player.sendMessage(ChatColor.YELLOW + "You can now PVP!");
-		}
-	}
-	
-	public void onEnderPearlHit(ProjectileHitEvent event)
-	{
-		if(event.getEntity() instanceof EnderPearl)
-		{
-			EnderPearl pearl = (EnderPearl)event.getEntity();
-			
-			if(pearl.getShooter() instanceof Player)
-			{
-				Player player = (Player)pearl.getShooter();
-				DSave.saveData(player, "temp_flash", true);
-			}
 		}
 	}
 }
