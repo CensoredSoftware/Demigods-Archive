@@ -30,11 +30,13 @@ public class Hyperion implements Deity {
 	private static final int ULTIMATECOOLDOWNMIN = 300;
 
 	private static final String skillname = "Starfall";
+	private static final String passivename = "Sprint";
 	private static final String ult = "Smite";
 
 	private boolean SKILL = false;
 	private Material SKILLBIND = null;
 	private long SKILLTIME;
+	private boolean PASSIVE = false;
 	private long ULTIMATETIME;
 	private long LASTCHECK;
 
@@ -80,7 +82,7 @@ public class Hyperion implements Deity {
 			 * The printed text
 			 */
 			p.sendMessage("--"+ChatColor.GOLD+getName()+ChatColor.GRAY+"["+devotion+"]");
-			p.sendMessage(":Move with increased speed while in a well-lit area.");
+			p.sendMessage(":Move with increased speed while in a well-lit area (use"+ChatColor.GREEN+" /sprint "+ChatColor.YELLOW+"to toggle).");
 			p.sendMessage(":Left-click to call down an attack dealing "+damage+" in radius "+range+"."+ChatColor.GREEN+" /starfall "+ChatColor.YELLOW+"Costs "+SKILLCOST+" Favor.");
 			if (((Hyperion)DUtil.getDeity(p, getName())).SKILLBIND != null)
 				p.sendMessage(ChatColor.AQUA+"    Bound to "+((Hyperion)DUtil.getDeity(p, getName())).SKILLBIND.name());
@@ -125,15 +127,18 @@ public class Hyperion implements Deity {
 			Player p = move.getPlayer();
 			if (!DUtil.isFullParticipant(p))
 				return;
-			if (!DUtil.hasDeity(p, "Poseidon"))
+			if (!DUtil.hasDeity(p, "Hyperion"))
 				return;
-			// PHELPS RUNNING
-			Block playerBlock = p.getLocation().getBlock();
-			if(!playerBlock.getType().equals(Material.STATIONARY_WATER) && !playerBlock.getType().equals(Material.WATER) && !playerBlock.getType().equals(Material.STATIONARY_LAVA) && !playerBlock.getType().equals(Material.LAVA) && !playerBlock.getRelative(BlockFace.DOWN).getType().equals(Material.AIR))
+			// KENYANS
+			if (PASSIVE)
 			{
-				Vector dir = p.getLocation().getDirection().normalize().multiply(1.3D);
-				Vector vec = new Vector(dir.getX(), dir.getY(), dir.getZ());
-				if(p.isSneaking() && playerBlock.getLightLevel() > 12) p.setVelocity(vec);
+				Block playerBlock = p.getLocation().getBlock();
+				if(!playerBlock.getType().equals(Material.STATIONARY_WATER) && !playerBlock.getType().equals(Material.WATER) && !playerBlock.getType().equals(Material.STATIONARY_LAVA) && !playerBlock.getType().equals(Material.LAVA) && !playerBlock.getRelative(BlockFace.DOWN).getType().equals(Material.AIR))
+				{
+					Vector dir = p.getLocation().getDirection().normalize().multiply(1.3D);
+					Vector vec = new Vector(dir.getX(), dir.getY(), dir.getZ());
+					if(p.isSneaking() && playerBlock.getLightLevel() > 12) p.setVelocity(vec);
+				}
 			}
 		}
 	}
@@ -167,6 +172,14 @@ public class Hyperion implements Deity {
 				} else {
 					SKILL = true;
 					p.sendMessage(ChatColor.YELLOW+""+skillname+" is now active.");
+				}
+			} else if (str.equalsIgnoreCase(passivename)) {
+				if (PASSIVE) {
+					PASSIVE = false;
+					p.sendMessage(ChatColor.YELLOW+""+passivename+" is no longer active.");
+				} else {
+					PASSIVE = true;
+					p.sendMessage(ChatColor.YELLOW+""+passivename+" is now active.");
 				}
 			} else if (str.equalsIgnoreCase(ult)) {
 				long TIME = ULTIMATETIME;

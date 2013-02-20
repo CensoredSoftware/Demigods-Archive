@@ -130,7 +130,8 @@ public class Demigods extends JavaPlugin implements Listener
 		loadMetrics(); // #11
 		unstickFireball(); // #12
 		
-		// Check for updates, and then update if need be		
+		/* Check for updates, and then update if need be	
+		 */	
 		new DemigodsUpdate(this);
 		Boolean shouldUpdate = DemigodsUpdate.shouldUpdate();
 		if(shouldUpdate && DSettings.getSettingBoolean("update"))
@@ -338,6 +339,7 @@ public class Demigods extends JavaPlugin implements Listener
 		
 		// Hyperion
 		getCommand("starfall").setExecutor(ce);
+		getCommand("sprint").setExecutor(ce);
 		getCommand("smite").setExecutor(ce);
 		
 		// Hephaestus

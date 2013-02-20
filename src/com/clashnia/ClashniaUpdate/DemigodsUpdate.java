@@ -18,10 +18,6 @@ import com.WildAmazing.marinating.Demigods.Demigods;
 public class DemigodsUpdate
 {
 	static Demigods plugin;
-	
-	/*
-	 *  (String)OLD_DOWNLOAD_LINK : The download link for what should be this exact jar, or the last stable jar if this is a development build.
-	 */
 
 	public static UpdateChecker checker = new UpdateChecker("http://dev.bukkit.org/server-mods/demigods/files.rss");
 	

@@ -208,6 +208,8 @@ commands:
         description: Oceanus' ultimate.
     starfall:
         description: One of Hyperion's abilities.
+    sprint:
+        description: One of Hyperion's abilities.
     smite:
         description: Hyperion's ultimate.
     reforge:
