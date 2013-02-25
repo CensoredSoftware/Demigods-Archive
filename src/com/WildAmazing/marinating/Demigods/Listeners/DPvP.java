@@ -36,15 +36,10 @@ public class DPvP implements Listener
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void launchProjectile(ProjectileLaunchEvent e) {
 		Entity entity = e.getEntity();
-		if (entity instanceof Arrow)
+		if(entity instanceof Arrow && !DUtil.canLocationPVP(entity.getLocation()))
 		{
-			Arrow arrow = (Arrow)entity;
-			
-			if(!DUtil.canTarget(arrow, arrow.getLocation()))
-			{
-				arrow.remove();
-				e.setCancelled(true);
-			}
+			entity.remove();
+			e.setCancelled(true);
 		}
 	}
 	
