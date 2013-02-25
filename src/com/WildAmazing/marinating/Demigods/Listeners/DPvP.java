@@ -6,6 +6,8 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -14,6 +16,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -29,6 +32,21 @@ public class DPvP implements Listener
 {
 	static double MULTIPLIER = DSettings.getSettingDouble("pvp_exp_bonus"); //bonus for dealing damage
 	static int pvpkillreward = 1500; //Devotion
+	
+	@EventHandler (priority = EventPriority.HIGHEST)
+	public void launchProjectile(ProjectileLaunchEvent e) {
+		Entity entity = e.getEntity();
+		if (entity instanceof Arrow)
+		{
+			Arrow arrow = (Arrow)entity;
+			
+			if(!DUtil.canTarget(arrow, arrow.getLocation()))
+			{
+				arrow.remove();
+				e.setCancelled(true);
+			}
+		}
+	}
 	
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void pvpDamage(EntityDamageByEntityEvent e) {

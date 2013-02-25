@@ -46,7 +46,6 @@ import com.WildAmazing.marinating.Demigods.Listeners.DLevels;
 import com.WildAmazing.marinating.Demigods.Listeners.DPvP;
 import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
 
-import com.clashnia.ClashniaUpdate.DemigodsUpdate;
 import com.clashnia.Demigods.Deities.Giants.Typhon;
 
 
@@ -131,13 +130,13 @@ public class Demigods extends JavaPlugin implements Listener
 		unstickFireball(); // #12
 		
 		/* Check for updates, and then update if need be	
-		 */	
 		new DemigodsUpdate(this);
 		Boolean shouldUpdate = DemigodsUpdate.shouldUpdate();
 		if(shouldUpdate && DSettings.getSettingBoolean("update"))
 		{
 			DemigodsUpdate.demigodsUpdate();
 		}
+		*/	
 		
 		log.info("[Demigods] Preparation completed in "+((double)(System.currentTimeMillis()-firstTime)/1000)+" seconds.");
 	}

@@ -154,7 +154,7 @@ public class Zeus implements Deity {
 					return;
 				ZEUSLIGHTNINGTIME = System.currentTimeMillis()+LIGHTNINGDELAY;
 				if (DUtil.getFavor(p) >= LIGHTNINGCOST) {
-					lightning(p);
+					lightning(p, e.getClickedBlock());
 					DUtil.setFavor(p, DUtil.getFavor(p)-LIGHTNINGCOST);
 					return;
 				} else {
@@ -291,21 +291,29 @@ public class Zeus implements Deity {
 			}
 		}
 	}
-	private void lightning(Player p) {
+	private void lightning(Player p, Block b) {
 		if (!DUtil.canTarget(p, p.getLocation())) {
 			p.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
 			return;
 		}
 		Location target = null;
-		Block b = p.getTargetBlock(null, 200);
 		target = b.getLocation();
+		p.getWorld().strikeLightningEffect(target);
 		if (p.getLocation().distance(target) > 2){
 			try {
 				if (!p.getWorld().equals(target.getWorld()))
 					return;
 				if (!DUtil.canLocationPVP(target))
 					return;
-				p.getWorld().strikeLightningEffect(target);
+				for (Entity e : b.getLocation().getChunk().getEntities()) {
+					if (e.getLocation().distance(target) > 1) continue;
+					if (e instanceof LivingEntity) {
+						LivingEntity le = (LivingEntity)e;
+						if(le instanceof Player && (Player)le == p) continue;
+						if (le.getLocation().distance(target) < 1.5)
+							DUtil.damageDemigods(p, le, DUtil.getAscensions(p)*2, DamageCause.LIGHTNING);
+					}
+				}
 			} catch (Exception nullpointer){} //ignore it if something went wrong
 		} else
 			p.sendMessage(ChatColor.YELLOW+"Your target is too far away, or too close to you.");
@@ -349,6 +357,7 @@ public class Zeus implements Deity {
 		for (Entity e : target.getLocation().getBlock().getChunk().getEntities()) {
 			if (e instanceof LivingEntity) {
 				LivingEntity le = (LivingEntity)e;
+				if(le instanceof Player && (Player)le == p) continue;
 				if (le.getLocation().distance(target.getLocation()) < 1.5)
 					DUtil.damageDemigods(p, le, DUtil.getAscensions(p)*2, DamageCause.LIGHTNING);
 			}
