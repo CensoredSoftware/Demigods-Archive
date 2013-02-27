@@ -17,19 +17,19 @@ import com.WildAmazing.marinating.Demigods.DUtil;
 
 public class UpdateChecker
 {
-	private URL filesFeed;
+	private URL    filesFeed;
 
 	private String version;
 	private String link;
 	private String jarLink;
-	
+
 	public UpdateChecker(String url)
 	{
 		try
 		{
 			this.filesFeed = new URL(url);
 		}
-		catch (MalformedURLException e)
+		catch(MalformedURLException e)
 		{
 			e.printStackTrace();
 		}
@@ -48,31 +48,31 @@ public class UpdateChecker
 			this.version = children.item(1).getTextContent().replaceAll("[a-zA-Z ]", "");
 			try
 			{
-			this.link = children.item(3).getTextContent();
+				this.link = children.item(3).getTextContent();
 			}
-			catch (Exception e)
+			catch(Exception e)
 			{
-				DUtil.consoleMSG("warning","Failed to find download page.");
+				DUtil.consoleMSG("warning", "Failed to find download page.");
 				e.printStackTrace();
 			}
 			input.close();
 
 			try
 			{
-			input = (new URL(this.link)).openConnection().getInputStream();
+				input = (new URL(this.link)).openConnection().getInputStream();
 			}
-			catch (Exception e)
+			catch(Exception e)
 			{
-				DUtil.consoleMSG("warning","Failed to open connection with download page.");
+				DUtil.consoleMSG("warning", "Failed to open connection with download page.");
 				e.printStackTrace();
 			}
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 			String line;
 
-			while ((line = reader.readLine()) != null)
+			while((line = reader.readLine()) != null)
 			{
-				if (line.trim().startsWith("<li class=\"user-action user-action-download\">"))
+				if(line.trim().startsWith("<li class=\"user-action user-action-download\">"))
 				{
 					this.jarLink = line.substring(line.indexOf("href=\"") + 6, line.lastIndexOf("\""));
 					break;
@@ -81,14 +81,14 @@ public class UpdateChecker
 
 			reader.close();
 			input.close();
-			
-			PluginDescriptionFile pdf = DUtil.getPlugin().getDescription();	  	
+
+			PluginDescriptionFile pdf = DUtil.getPlugin().getDescription();
 			String currentVersion = pdf.getVersion();
-			if (!currentVersion.equals(this.version)) return true;
+			if(!currentVersion.equals(this.version)) return true;
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
-			DUtil.consoleMSG("warning","Failed to read download page.");
+			DUtil.consoleMSG("warning", "Failed to read download page.");
 			e.printStackTrace();
 		}
 
@@ -109,5 +109,5 @@ public class UpdateChecker
 	{
 		return this.jarLink;
 	}
-	
+
 }
