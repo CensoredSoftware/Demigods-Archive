@@ -1,7 +1,8 @@
 package com.WildAmazing.marinating.Demigods.Deities.Gods;
 
-import java.util.List;
-
+import com.WildAmazing.marinating.Demigods.DSave;
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,25 +14,23 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.WildAmazing.marinating.Demigods.DSave;
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.util.List;
 
 public class Athena implements Deity
 {
-	private static final long serialVersionUID    = -9039521341663053625L;
-	private String            PLAYER;
+	private static final long serialVersionUID = -9039521341663053625L;
+	private String PLAYER;
 
-	private static final int  SKILLCOST           = 100;
-	private static final int  SKILLDELAY          = 3600;                 // milliseconds
-	private static final int  ULTIMATECOST        = 4000;
-	private static final int  ULTIMATECOOLDOWNMAX = 500;                  // seconds
-	private static final int  ULTIMATECOOLDOWNMIN = 300;
+	private static final int SKILLCOST = 100;
+	private static final int SKILLDELAY = 3600; // milliseconds
+	private static final int ULTIMATECOST = 4000;
+	private static final int ULTIMATECOOLDOWNMAX = 500; // seconds
+	private static final int ULTIMATECOOLDOWNMIN = 300;
 
-	private boolean           SKILL               = false;
-	public Material           SKILLBIND           = null;
-	private long              SKILLTIME;
-	private long              ULTIMATETIME;
+	private boolean SKILL = false;
+	public Material SKILLBIND = null;
+	private long SKILLTIME;
+	private long ULTIMATETIME;
 
 	public Athena(String player)
 	{
@@ -122,8 +121,7 @@ public class Athena implements Deity
 						p.teleport(go);
 						DUtil.setFavor(p, DUtil.getFavor(p) - SKILLCOST);
 					}
-					return;
-				}
+                }
 				else
 				{
 					p.sendMessage(ChatColor.YELLOW + "You do not have enough Favor.");
@@ -168,9 +166,8 @@ public class Athena implements Deity
 	}
 
 	@Override
-	public void onCommand(Player P, String str, String[] args, boolean bind)
+	public void onCommand(final Player p, String str, String[] args, boolean bind)
 	{
-		final Player p = P;
 		if(DUtil.hasDeity(p, getName()))
 		{
 			if(str.equalsIgnoreCase("flash"))
@@ -224,9 +221,9 @@ public class Athena implements Deity
 					int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DUtil.getAscensions(p) / DUtil.ASCENSIONCAP)));
 					ULTIMATETIME = System.currentTimeMillis() + (t * 1000);
 					p.sendMessage("In exchange for " + ChatColor.AQUA + ULTIMATECOST + ChatColor.WHITE + " Favor, ");
-					for(Player pl : P.getWorld().getPlayers())
+					for(Player pl : p.getWorld().getPlayers())
 					{
-						if(pl.getLocation().distance(P.getLocation()) <= crange)
+						if(pl.getLocation().distance(p.getLocation()) <= crange)
 						{
 							if(DUtil.isFullParticipant(pl))
 							{
@@ -238,8 +235,7 @@ public class Athena implements Deity
 					DUtil.setFavor(p, DUtil.getFavor(p) - ULTIMATECOST);
 				}
 				else p.sendMessage(ChatColor.YELLOW + "Ceasefire requires " + ULTIMATECOST + " Favor.");
-				return;
-			}
+            }
 		}
 	}
 

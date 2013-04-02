@@ -1,5 +1,13 @@
 package com.WildAmazing.marinating.Demigods;
 
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Deities.Gods.*;
+import com.WildAmazing.marinating.Demigods.Deities.Titans.*;
+import com.clashnia.Demigods.Deities.Giants.Typhon;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -8,27 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.logging.Logger;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Deities.Gods.Apollo;
-import com.WildAmazing.marinating.Demigods.Deities.Gods.Ares;
-import com.WildAmazing.marinating.Demigods.Deities.Gods.Athena;
-import com.WildAmazing.marinating.Demigods.Deities.Gods.Hades;
-import com.WildAmazing.marinating.Demigods.Deities.Gods.Hephaestus;
-import com.WildAmazing.marinating.Demigods.Deities.Gods.Poseidon;
-import com.WildAmazing.marinating.Demigods.Deities.Gods.Zeus;
-import com.WildAmazing.marinating.Demigods.Deities.Titans.Atlas;
-import com.WildAmazing.marinating.Demigods.Deities.Titans.Cronus;
-import com.WildAmazing.marinating.Demigods.Deities.Titans.Hyperion;
-import com.WildAmazing.marinating.Demigods.Deities.Titans.Oceanus;
-import com.WildAmazing.marinating.Demigods.Deities.Titans.Prometheus;
-import com.WildAmazing.marinating.Demigods.Deities.Titans.Rhea;
-import com.WildAmazing.marinating.Demigods.Deities.Titans.Themis;
-import com.clashnia.Demigods.Deities.Giants.Typhon;
 
 public class DDebug
 {

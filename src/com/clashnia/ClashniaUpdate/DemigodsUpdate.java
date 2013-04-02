@@ -1,23 +1,17 @@
 package com.clashnia.ClashniaUpdate;
 
-import java.io.FileNotFoundException;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Demigods;
+import org.bukkit.Bukkit;
+
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.bukkit.Bukkit;
-
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Demigods;
-
 public class DemigodsUpdate
 {
-	static Demigods             plugin;
+	static Demigods plugin;
 
 	public static UpdateChecker checker = new UpdateChecker("http://dev.bukkit.org/server-mods/demigods/files.rss");
 
@@ -114,8 +108,6 @@ public class DemigodsUpdate
 
 	private static String getDownloadLink() throws IOException
 	{
-		String downloadLink = checker.getJarLink();
-
-		return downloadLink;
+		return checker.getJarLink();
 	}
 }

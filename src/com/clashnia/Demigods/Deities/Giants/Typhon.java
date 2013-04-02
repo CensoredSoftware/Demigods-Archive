@@ -1,5 +1,8 @@
 package com.clashnia.Demigods.Deities.Giants;
 
+import com.WildAmazing.marinating.Demigods.DSave;
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -14,24 +17,20 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import com.WildAmazing.marinating.Demigods.DSave;
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-
 public class Typhon implements Deity
 {
 	private static final long serialVersionUID = -7376781567872708495L;
 
-	private String            PLAYER;
+	private String PLAYER;
 
-	private static final int  SKILLCOST        = 120;
-	private static final int  SKILLDELAY       = 1250;                 // milliseconds
-	private static final int  EXPLOSIONSIZE    = 4;
-	private boolean           SKILL            = false;
+	private static final int SKILLCOST = 120;
+	private static final int SKILLDELAY = 1250; // milliseconds
+	private static final int EXPLOSIONSIZE = 4;
+	private boolean SKILL = false;
 
-	private Material          SKILLBIND        = null;
-	private long              SKILLTIME;
-	private long              LASTCHECK;
+	private Material SKILLBIND = null;
+	private long SKILLTIME;
+	private long LASTCHECK;
 
 	public Typhon(String name)
 	{
@@ -91,8 +90,7 @@ public class Typhon implements Deity
 					 * Skill
 					 */
 					DUtil.setFavor(p, DUtil.getFavor(p) - SKILLCOST);
-					return;
-				}
+                }
 				else
 				{
 					p.sendMessage(ChatColor.YELLOW + "You do not have enough Favor.");
@@ -111,7 +109,7 @@ public class Typhon implements Deity
 				{
 					Player p = (Player) e.getEntity();
 					if(!DUtil.hasDeity(p, "Typhon")) return;
-					if((DUtil.canWorldGuardPVP(p.getLocation()) || DUtil.canFactionsPVP(p.getLocation())) && (DUtil.getNearbyShrine(e.getEntity().getLocation()) == null || DUtil.getDeityAtShrine(DUtil.getNearbyShrine(e.getEntity().getLocation())) != "Typhon")) p.getWorld().createExplosion(p.getLocation(), EXPLOSIONSIZE);
+					if((DUtil.canWorldGuardPVP(p.getLocation()) || DUtil.canFactionsPVP(p.getLocation())) && (DUtil.getNearbyShrine(e.getEntity().getLocation()) == null || !DUtil.getDeityAtShrine(DUtil.getNearbyShrine(e.getEntity().getLocation())).equals("Typhon"))) p.getWorld().createExplosion(p.getLocation(), EXPLOSIONSIZE);
 				}
 			}
 		}
@@ -129,7 +127,7 @@ public class Typhon implements Deity
 				Vector v = p.getLocation().toVector();
 				Vector victor = le.getLocation().toVector().subtract(v);
 
-				if(DSave.hasData(p, "CHARGE")) ;
+				if(DSave.hasData(p, "CHARGE"))
 				{
 					if(DSave.getData(p, "CHARGE") != null)
 					{
@@ -241,8 +239,7 @@ public class Typhon implements Deity
 
 					p.sendMessage(ChatColor.DARK_GREEN + "Charged Damage: " + ChatColor.RED + FAKEDAMAGE + ExtraDamage + ITEMDAMAGE + ChatColor.DARK_GREEN + " = " + ChatColor.DARK_RED + TOTALFAKEDAMAGE);
 				}
-				return;
-			}
+            }
 		}
 	}
 

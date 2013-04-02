@@ -1,12 +1,13 @@
 package com.WildAmazing.marinating.Demigods;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.logging.Logger;
-
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Deities.Gods.*;
+import com.WildAmazing.marinating.Demigods.Deities.Titans.*;
+import com.WildAmazing.marinating.Demigods.Listeners.*;
+import com.clashnia.ClashniaUpdate.DemigodsUpdate;
+import com.clashnia.Demigods.Deities.Giants.Typhon;
+import com.massivecraft.factions.P;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -21,49 +22,26 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scheduler.BukkitWorker;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Deities.Gods.Apollo;
-import com.WildAmazing.marinating.Demigods.Deities.Gods.Ares;
-import com.WildAmazing.marinating.Demigods.Deities.Gods.Athena;
-import com.WildAmazing.marinating.Demigods.Deities.Gods.Hades;
-import com.WildAmazing.marinating.Demigods.Deities.Gods.Hephaestus;
-import com.WildAmazing.marinating.Demigods.Deities.Gods.Poseidon;
-import com.WildAmazing.marinating.Demigods.Deities.Gods.Zeus;
-
-import com.WildAmazing.marinating.Demigods.Deities.Titans.Atlas;
-import com.WildAmazing.marinating.Demigods.Deities.Titans.Cronus;
-import com.WildAmazing.marinating.Demigods.Deities.Titans.Hyperion;
-import com.WildAmazing.marinating.Demigods.Deities.Titans.Oceanus;
-import com.WildAmazing.marinating.Demigods.Deities.Titans.Prometheus;
-import com.WildAmazing.marinating.Demigods.Deities.Titans.Rhea;
-import com.WildAmazing.marinating.Demigods.Deities.Titans.Themis;
-
-import com.WildAmazing.marinating.Demigods.Listeners.DChatCommands;
-import com.WildAmazing.marinating.Demigods.Listeners.DCrafting;
-import com.WildAmazing.marinating.Demigods.Listeners.DDamage;
-import com.WildAmazing.marinating.Demigods.Listeners.DDeities;
-import com.WildAmazing.marinating.Demigods.Listeners.DLevels;
-import com.WildAmazing.marinating.Demigods.Listeners.DPvP;
-import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
-
-import com.clashnia.Demigods.Deities.Giants.Typhon;
-
-import com.massivecraft.factions.P;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.logging.Logger;
 
 public class Demigods extends JavaPlugin implements Listener
 {
 	// Soft dependencies
-	protected static WorldGuardPlugin WORLDGUARD    = null;
-	protected static P                FACTIONS      = null;
+	protected static WorldGuardPlugin WORLDGUARD = null;
+	protected static P FACTIONS = null;
 
 	// Define variables
-	public static Logger              log           = Logger.getLogger("Minecraft");
-	static String                     mainDirectory = "plugins/Demigods/";
-	DUtil                             initialize;
-	DSave                             SAVE;
+	public static Logger log = Logger.getLogger("Minecraft");
+	static String mainDirectory = "plugins/Demigods/";
+	DUtil initialize;
+	DSave SAVE;
 
-	public static Deity[]             deities       = { new Cronus("ADMIN"), new Rhea("ADMIN"), new Prometheus("ADMIN"), new Atlas("ADMIN"), new Oceanus("ADMIN"), new Hyperion("ADMIN"), new Themis("ADMIN"), new Zeus("ADMIN"), new Poseidon("ADMIN"), new Hades("ADMIN"), new Ares("ADMIN"), new Athena("ADMIN"), new Apollo("ADMIN"), new Hephaestus("ADMIN"), new Typhon("ADMIN") };
+	public static Deity[] deities = { new Cronus("ADMIN"), new Rhea("ADMIN"), new Prometheus("ADMIN"), new Atlas("ADMIN"), new Oceanus("ADMIN"), new Hyperion("ADMIN"), new Themis("ADMIN"), new Zeus("ADMIN"), new Poseidon("ADMIN"), new Hades("ADMIN"), new Ares("ADMIN"), new Athena("ADMIN"), new Apollo("ADMIN"), new Hephaestus("ADMIN"), new Typhon("ADMIN") };
 
 	public Demigods()
 	{
@@ -98,13 +76,13 @@ public class Demigods extends JavaPlugin implements Listener
 
 		/*
 		 * Check for updates, and then update if need be
-		 * new DemigodsUpdate(this);
-		 * Boolean shouldUpdate = DemigodsUpdate.shouldUpdate();
-		 * if(shouldUpdate && DSettings.getSettingBoolean("update"))
-		 * {
-		 * DemigodsUpdate.demigodsUpdate();
-		 * }
 		 */
+		 new DemigodsUpdate(this);
+		 Boolean shouldUpdate = DemigodsUpdate.shouldUpdate();
+		 if(shouldUpdate && DSettings.getSettingBoolean("update"))
+		 {
+		    DemigodsUpdate.demigodsUpdate();
+		 }
 
 		log.info("[Demigods] Preparation completed in " + ((double) (System.currentTimeMillis() - firstTime) / 1000) + " seconds.");
 	}
@@ -223,7 +201,7 @@ public class Demigods extends JavaPlugin implements Listener
 		getCommand("removedeity").setExecutor(ce);
 		getCommand("addunclaimeddevotion").setExecutor(ce);
 		getCommand("getdevotion").setExecutor(ce);
-		getCommand("setdevotion").setExecutor(ce);;
+		getCommand("setdevotion").setExecutor(ce);
 		getCommand("addhp").setExecutor(ce);
 		getCommand("sethp").setExecutor(ce);
 		getCommand("setmaxhp").setExecutor(ce);

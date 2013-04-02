@@ -1,7 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Gods;
 
-import java.util.ArrayList;
-
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -14,8 +14,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.util.ArrayList;
 
 /*
  * Affected by level:
@@ -27,21 +26,21 @@ import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
 public class Ares implements Deity
 {
-	private static final long serialVersionUID        = -5825867521620334951L;
-	private String            PLAYER;
+	private static final long serialVersionUID = -5825867521620334951L;
+	private String PLAYER;
 	/*
 	 * Needs to be loaded out of config
 	 */
-	private static final int  STRIKECOST              = 120;
-	private static final int  STRIKEDELAY             = 1250;                 // milliseconds
-	private static final int  ARESULTIMATECOST        = 5000;
-	private static final int  ARESULTIMATECOOLDOWNMAX = 180;                  // seconds
-	private static final int  ARESULTIMATECOOLDOWNMIN = 60;
+	private static final int STRIKECOST = 120;
+	private static final int STRIKEDELAY = 1250; // milliseconds
+	private static final int ARESULTIMATECOST = 5000;
+	private static final int ARESULTIMATECOOLDOWNMAX = 180; // seconds
+	private static final int ARESULTIMATECOOLDOWNMIN = 60;
 
-	private boolean           STRIKE                  = false;
-	public Material           STRIKEBIND              = null;
-	private long              STRIKETIME;
-	private long              ARESULTIMATETIME;
+	private boolean STRIKE = false;
+	public Material STRIKEBIND = null;
+	private long STRIKETIME;
+	private long ARESULTIMATETIME;
 
 	public Ares(String player)
 	{
@@ -129,8 +128,7 @@ public class Ares implements Deity
 					{
 						strike(p);
 						DUtil.setFavor(p, DUtil.getFavor(p) - STRIKECOST);
-						return;
-					}
+                    }
 					else
 					{
 						p.sendMessage(ChatColor.YELLOW + "You do not have enough Favor.");
@@ -162,11 +160,11 @@ public class Ares implements Deity
 							}
 						}
 					}
-					catch(Exception notliving)
+					catch(Exception ignored)
 					{}
 				}
 			}
-			catch(Exception notthatevent)
+			catch(Exception ignored)
 			{}
 		}
 	}
@@ -177,9 +175,8 @@ public class Ares implements Deity
 	 * ---------------
 	 */
 	@Override
-	public void onCommand(Player P, String str, String[] args, boolean bind)
+	public void onCommand(final Player p, String str, String[] args, boolean bind)
 	{
-		final Player p = P;
 		if(DUtil.hasDeity(p, "Ares"))
 		{
 			if(str.equalsIgnoreCase("strike"))
@@ -246,8 +243,7 @@ public class Ares implements Deity
 					DUtil.setFavor(p, DUtil.getFavor(p) - ARESULTIMATECOST);
 				}
 				else p.sendMessage(ChatColor.YELLOW + "Power crash requires " + ARESULTIMATECOST + " Favor.");
-				return;
-			}
+            }
 		}
 	}
 

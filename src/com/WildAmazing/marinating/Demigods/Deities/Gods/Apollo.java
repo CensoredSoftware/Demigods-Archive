@@ -1,7 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Gods;
 
-import java.util.ArrayList;
-
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,29 +15,28 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.util.ArrayList;
 
 public class Apollo implements Deity
 {
-	private static final long   serialVersionUID    = -5219841682574911103L;
+	private static final long serialVersionUID = -5219841682574911103L;
 
-	private String              PLAYER;
+	private String PLAYER;
 
-	private static final int    SKILLCOST           = 150;
-	private static final int    SKILLDELAY          = 3000;                 // milliseconds
-	private static final int    ULTIMATECOST        = 6300;
-	private static final int    ULTIMATECOOLDOWNMAX = 600;                  // seconds
-	private static final int    ULTIMATECOOLDOWNMIN = 120;
+	private static final int SKILLCOST = 150;
+	private static final int SKILLDELAY = 3000; // milliseconds
+	private static final int ULTIMATECOST = 6300;
+	private static final int ULTIMATECOOLDOWNMAX = 600; // seconds
+	private static final int ULTIMATECOOLDOWNMIN = 120;
 
-	private static final String skillname           = "Cure";
-	private static final String ult                 = "Finale";
+	private static final String skillname = "Cure";
+	private static final String ult = "Finale";
 
-	private boolean             SKILL               = false;
-	private Material            SKILLBIND           = null;
-	private long                SKILLTIME;
-	private long                ULTIMATETIME;
-	private long                LASTCHECK;
+	private boolean SKILL = false;
+	private Material SKILLBIND = null;
+	private long SKILLTIME;
+	private long ULTIMATETIME;
+	private long LASTCHECK;
 
 	public Apollo(String player)
 	{
@@ -161,8 +160,7 @@ public class Apollo implements Deity
 				{
 					cure();
 					DUtil.setFavor(p, DUtil.getFavor(p) - SKILLCOST);
-					return;
-				}
+                }
 				else
 				{
 					p.sendMessage(ChatColor.YELLOW + "You do not have enough Favor.");
@@ -173,9 +171,8 @@ public class Apollo implements Deity
 	}
 
 	@Override
-	public void onCommand(Player P, String str, String[] args, boolean bind)
+	public void onCommand(final Player p, String str, String[] args, boolean bind)
 	{
-		final Player p = P;
 		if(DUtil.hasDeity(p, getName()))
 		{
 			if(str.equalsIgnoreCase(skillname))
@@ -239,8 +236,7 @@ public class Apollo implements Deity
 					else p.sendMessage(ChatColor.YELLOW + "No targets for Finale were found.");
 				}
 				else p.sendMessage(ChatColor.YELLOW + "" + ult + " requires " + ULTIMATECOST + " Favor.");
-				return;
-			}
+            }
 		}
 	}
 
@@ -353,10 +349,8 @@ public class Apollo implements Deity
 					public void run()
 					{
 						if(target.isDead()) return;
-						Location targ = target.getLocation();
-						Location start = targ;
-						start.setY(start.getBlockY() + 50);
-						Arrow ar = target.getWorld().spawnArrow(start, new Vector(0, -5, 0), 5, (float) 0.2);
+                        target.getLocation().setY(target.getLocation().getBlockY() + 50);
+						Arrow ar = target.getWorld().spawnArrow(target.getLocation(), new Vector(0, -5, 0), 5, (float) 0.2);
 						ar.setVelocity(new Vector(0, -5, 0));
 						if(Math.random() > 0.7) ar.setFireTicks(500);
 					}

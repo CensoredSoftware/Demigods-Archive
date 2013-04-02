@@ -1,8 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Listeners;
 
-import java.util.Iterator;
-import java.util.List;
-
+import com.WildAmazing.marinating.Demigods.*;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -11,13 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockBurnEvent;
-import org.bukkit.event.block.BlockDamageEvent;
-import org.bukkit.event.block.BlockIgniteEvent;
-import org.bukkit.event.block.BlockPistonExtendEvent;
-import org.bukkit.event.block.BlockPistonRetractEvent;
+import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -25,18 +18,14 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.WildAmazing.marinating.Demigods.DSave;
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Demigods;
-import com.WildAmazing.marinating.Demigods.DSettings;
-import com.WildAmazing.marinating.Demigods.WriteLocation;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.util.Iterator;
+import java.util.List;
 
 public class DShrines implements Listener
 {
 	// Define variables
 	public static double FAVORMULTIPLIER = DSettings.getSettingDouble("globalfavormultiplier");
-	public static int    RADIUS          = 8;
+	public static int RADIUS = 8;
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void createShrine(PlayerInteractEvent e)
@@ -226,7 +215,7 @@ public class DShrines implements Listener
 				}
 			}
 		}
-		catch(Exception er)
+		catch(Exception ignored)
 		{}
 	}
 

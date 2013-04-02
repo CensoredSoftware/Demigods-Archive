@@ -1,8 +1,8 @@
 package com.WildAmazing.marinating.Demigods.Listeners;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.WildAmazing.marinating.Demigods.DSettings;
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -18,9 +18,8 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.WildAmazing.marinating.Demigods.DSettings;
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DDamage implements Listener
 {
@@ -69,7 +68,7 @@ public class DDamage implements Listener
 						return;
 					}
 
-					if(!DUtil.canTarget((Player) ee.getDamager(), ((Player) ee.getDamager()).getLocation()))
+					if(!DUtil.canTarget(ee.getDamager(), ee.getDamager().getLocation()))
 					{
 						e.setCancelled(true);
 						return;

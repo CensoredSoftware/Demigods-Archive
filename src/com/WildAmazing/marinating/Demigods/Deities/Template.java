@@ -1,32 +1,31 @@
 package com.WildAmazing.marinating.Demigods.Deities;
 
+import com.WildAmazing.marinating.Demigods.DUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.WildAmazing.marinating.Demigods.DUtil;
-
 public class Template implements Deity
 {
-	private static final long   serialVersionUID    = -2472769863144336856L;
-	private String              PLAYER;
+	private static final long serialVersionUID = -2472769863144336856L;
+	private String PLAYER;
 
-	private static final int    SKILLCOST           = 120;
-	private static final int    SKILLDELAY          = 1250;                 // milliseconds
-	private static final int    ULTIMATECOST        = 10000;
-	private static final int    ULTIMATECOOLDOWNMAX = 180;                  // seconds
-	private static final int    ULTIMATECOOLDOWNMIN = 60;
+	private static final int SKILLCOST = 120;
+	private static final int SKILLDELAY = 1250; // milliseconds
+	private static final int ULTIMATECOST = 10000;
+	private static final int ULTIMATECOOLDOWNMAX = 180; // seconds
+	private static final int ULTIMATECOOLDOWNMIN = 60;
 
-	private static final String skillname           = "";
-	private static final String ult                 = "";
+	private static final String skillname = "";
+	private static final String ult = "";
 
-	private boolean             SKILL               = false;
-	private Material            SKILLBIND           = null;
-	private long                SKILLTIME;
-	private long                ULTIMATETIME;
-	private long                LASTCHECK;
+	private boolean SKILL = false;
+	private Material SKILLBIND = null;
+	private long SKILLTIME;
+	private long ULTIMATETIME;
+	private long LASTCHECK;
 
 	public Template(String player)
 	{
@@ -88,8 +87,7 @@ public class Template implements Deity
 					 * Skill
 					 */
 					DUtil.setFavor(p, DUtil.getFavor(p) - SKILLCOST);
-					return;
-				}
+                }
 				else
 				{
 					p.sendMessage(ChatColor.YELLOW + "You do not have enough Favor.");
@@ -158,8 +156,7 @@ public class Template implements Deity
 					DUtil.setFavor(p, DUtil.getFavor(p) - ULTIMATECOST);
 				}
 				else p.sendMessage(ChatColor.YELLOW + "" + ult + " requires " + ULTIMATECOST + " Favor.");
-				return;
-			}
+            }
 		}
 	}
 

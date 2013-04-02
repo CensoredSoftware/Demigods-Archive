@@ -1,7 +1,9 @@
 package com.WildAmazing.marinating.Demigods.Deities.Titans;
 
-import java.util.ArrayList;
-
+import com.WildAmazing.marinating.Demigods.DSave;
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.WriteLocation;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,32 +20,29 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.WildAmazing.marinating.Demigods.DSave;
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.WriteLocation;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.util.ArrayList;
 
 public class Rhea implements Deity
 {
 	/* Generalized things */
-	private static final long        serialVersionUID        = 4917938727569988533L;
-	private final int                POISONCOST              = 50;
-	private final int                PLANTCOST               = 100;
-	private final int                RHEAULTIMATECOST        = 5500;
-	private final int                RHEAULTIMATECOOLDOWNMAX = 500;
-	private final int                RHEAULTIMATECOOLDOWNMIN = 120;
-	private final int                POISONDELAY             = 1500;                // milliseconds
-	private final int                PLANTDELAY              = 2000;
+	private static final long serialVersionUID = 4917938727569988533L;
+	private final int POISONCOST = 50;
+	private final int PLANTCOST = 100;
+	private final int RHEAULTIMATECOST = 5500;
+	private final int RHEAULTIMATECOOLDOWNMAX = 500;
+	private final int RHEAULTIMATECOOLDOWNMIN = 120;
+	private final int POISONDELAY = 1500; // milliseconds
+	private final int PLANTDELAY = 2000;
 
 	/* Specific to owner */
-	private String                   PLAYER;
+	private String PLAYER;
 	private ArrayList<WriteLocation> TREES;
-	private boolean                  PLANT                   = false;
-	private boolean                  POISON                  = false;
-	private long                     PLANTTIME, POISONTIME, RHEAULTIMATETIME;
-	private Material                 PLANTBIND               = null;
-	private Material                 DETONATEBIND            = null;
-	private Material                 POISONBIND              = null;
+	private boolean PLANT = false;
+	private boolean POISON = false;
+	private long PLANTTIME, POISONTIME, RHEAULTIMATETIME;
+	private Material PLANTBIND = null;
+	private Material DETONATEBIND = null;
+	private Material POISONBIND = null;
 
 	public Rhea(String name)
 	{
@@ -362,8 +361,7 @@ public class Rhea implements Deity
 				else p.sendMessage(ChatColor.YELLOW + "No targets found.");
 			}
 			else p.sendMessage(ChatColor.YELLOW + "Entangle requires " + RHEAULTIMATECOST + " Favor.");
-			return;
-		}
+        }
 	}
 
 	@Override

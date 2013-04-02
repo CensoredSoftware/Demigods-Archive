@@ -1,5 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Gods;
 
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -10,23 +12,20 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-
 public class Hephaestus implements Deity, Listener
 {
-	private static final long   serialVersionUID    = -2472769863144336856L;
-	private String              PLAYER;
+	private static final long serialVersionUID = -2472769863144336856L;
+	private String PLAYER;
 
-	private static final int    SKILLCOST           = 200;
-	private static final int    ULTIMATECOST        = 9000;
-	private static final int    ULTIMATECOOLDOWNMAX = 1800;                 // seconds
-	private static final int    ULTIMATECOOLDOWNMIN = 900;
+	private static final int SKILLCOST = 200;
+	private static final int ULTIMATECOST = 9000;
+	private static final int ULTIMATECOOLDOWNMAX = 1800; // seconds
+	private static final int ULTIMATECOOLDOWNMIN = 900;
 
-	private static final String skillname           = "Reforge";
-	private static final String ult                 = "Shatter";
+	private static final String skillname = "Reforge";
+	private static final String ult = "Shatter";
 
-	private long                ULTIMATETIME;
+	private long ULTIMATETIME;
 
 	public Hephaestus(String player)
 	{
@@ -157,8 +156,7 @@ public class Hephaestus implements Deity, Listener
 					else p.sendMessage(ChatColor.YELLOW + "No targets found.");
 				}
 				else p.sendMessage(ChatColor.YELLOW + "" + ult + " requires " + ULTIMATECOST + " Favor.");
-				return;
-			}
+            }
 		}
 	}
 

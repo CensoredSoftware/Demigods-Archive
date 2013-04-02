@@ -1,7 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Titans;
 
-import java.util.ArrayList;
-
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -16,30 +16,29 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.util.ArrayList;
 
 public class Hyperion implements Deity
 {
-	private static final long   serialVersionUID    = -2472769863144336856L;
-	private String              PLAYER;
+	private static final long serialVersionUID = -2472769863144336856L;
+	private String PLAYER;
 
-	private static final int    SKILLCOST           = 200;
-	private static final int    SKILLDELAY          = 1250;                 // milliseconds
-	private static final int    ULTIMATECOST        = 6500;
-	private static final int    ULTIMATECOOLDOWNMAX = 600;                  // seconds
-	private static final int    ULTIMATECOOLDOWNMIN = 300;
+	private static final int SKILLCOST = 200;
+	private static final int SKILLDELAY = 1250; // milliseconds
+	private static final int ULTIMATECOST = 6500;
+	private static final int ULTIMATECOOLDOWNMAX = 600; // seconds
+	private static final int ULTIMATECOOLDOWNMIN = 300;
 
-	private static final String skillname           = "Starfall";
-	private static final String passivename         = "Sprint";
-	private static final String ult                 = "Smite";
+	private static final String skillname = "Starfall";
+	private static final String passivename = "Sprint";
+	private static final String ult = "Smite";
 
-	private boolean             SKILL               = false;
-	private Material            SKILLBIND           = null;
-	private long                SKILLTIME;
-	private boolean             PASSIVE             = false;
-	private long                ULTIMATETIME;
-	private long                LASTCHECK;
+	private boolean SKILL = false;
+	private Material SKILLBIND = null;
+	private long SKILLTIME;
+	private boolean PASSIVE = false;
+	private long ULTIMATETIME;
+	private long LASTCHECK;
 
 	public Hyperion(String player)
 	{
@@ -123,8 +122,7 @@ public class Hyperion implements Deity
 				{
 					if(starfall(p) > 0) DUtil.setFavor(p, DUtil.getFavor(p) - SKILLCOST);
 					else p.sendMessage(ChatColor.YELLOW + "No targets found.");
-					return;
-				}
+                }
 				else
 				{
 					p.sendMessage(ChatColor.YELLOW + "You do not have enough Favor.");
@@ -232,8 +230,7 @@ public class Hyperion implements Deity
 					else p.sendMessage(ChatColor.YELLOW + "No targets found.");
 				}
 				else p.sendMessage(ChatColor.YELLOW + "" + ult + " requires " + ULTIMATECOST + " Favor.");
-				return;
-			}
+            }
 		}
 	}
 

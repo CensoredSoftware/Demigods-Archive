@@ -1,16 +1,13 @@
 package com.WildAmazing.marinating.Demigods.Listeners;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.WildAmazing.marinating.Demigods.DSave;
+import com.WildAmazing.marinating.Demigods.DSettings;
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -24,25 +21,23 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.WildAmazing.marinating.Demigods.DSave;
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.DSettings;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DPvP implements Listener
 {
-	static double         MULTIPLIER          = DSettings.getSettingDouble("pvp_exp_bonus");             // bonus for dealing damage
-	static int            pvpkillreward       = 1500;                                                    // Devotion
-	static String         genericReason       = ChatColor.YELLOW + " has lost connection to the game for a generic reason.";
-	static String         endOfStream         = ChatColor.YELLOW + " has lost connection to the game.";
-	static String         overflow            = ChatColor.YELLOW + " has disconnected due to overload.";
-	static String         quitting            = ChatColor.YELLOW + " has left the game.";
-	static String         timeout             = ChatColor.YELLOW + " has disconnected due to timeout.";
-	public static boolean filterCheckGeneric  = false;
-	public static boolean filterCheckStream   = false;
+	static double MULTIPLIER = DSettings.getSettingDouble("pvp_exp_bonus"); // bonus for dealing damage
+	static int pvpkillreward = 1500; // Devotion
+	static String genericReason = ChatColor.YELLOW + " has lost connection to the game for a generic reason.";
+	static String endOfStream = ChatColor.YELLOW + " has lost connection to the game.";
+	static String overflow = ChatColor.YELLOW + " has disconnected due to overload.";
+	static String quitting = ChatColor.YELLOW + " has left the game.";
+	static String timeout = ChatColor.YELLOW + " has disconnected due to timeout.";
+	public static boolean filterCheckGeneric = false;
+	public static boolean filterCheckStream = false;
 	public static boolean filterCheckOverflow = false;
 	public static boolean filterCheckQuitting = false;
-	public static boolean filterCheckTimeout  = false;
+	public static boolean filterCheckTimeout = false;
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void launchProjectile(ProjectileLaunchEvent e)
@@ -95,7 +90,7 @@ public class DPvP implements Listener
 	{
 		if(e1.getEntity().getType().equals(EntityType.VILLAGER))
 		{
-			LivingEntity villager = (LivingEntity) e1.getEntity();
+			LivingEntity villager = e1.getEntity();
 			if(villager.getLastDamageCause() instanceof EntityDamageByEntityEvent)
 			{
 				EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) villager.getLastDamageCause();
@@ -224,9 +219,9 @@ public class DPvP implements Listener
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
 		// Define variables
-		final Player player = (Player) event.getPlayer();
-		Location to = ((PlayerMoveEvent) event).getTo();
-		Location from = ((PlayerMoveEvent) event).getFrom();
+		final Player player = event.getPlayer();
+		Location to = event.getTo();
+		Location from = event.getFrom();
 		int delayTime = DSettings.getSettingInt("pvp_area_delay_time");
 		onPlayerLineJump(player, to, from, delayTime);
 	}
@@ -235,9 +230,9 @@ public class DPvP implements Listener
 	public void onPlayerTeleport(PlayerTeleportEvent event)
 	{
 		// Define variables
-		final Player player = (Player) event.getPlayer();
-		Location to = ((PlayerTeleportEvent) event).getTo();
-		Location from = ((PlayerTeleportEvent) event).getFrom();
+		final Player player = event.getPlayer();
+		Location to = event.getTo();
+		Location from = event.getFrom();
 		int delayTime = DSettings.getSettingInt("pvp_area_delay_time");
 
 		if(DSave.hasData(player, "temp_flash") || event.getCause() == TeleportCause.ENDER_PEARL)
@@ -257,7 +252,7 @@ public class DPvP implements Listener
 		// NullPointer Check
 		if(to == null || from == null) return;
 
-		if(DSave.hasData((Player) player, "temp_was_PVP") || !DUtil.isFullParticipant((Player) player)) return;
+		if(DSave.hasData(player, "temp_was_PVP") || !DUtil.isFullParticipant(player)) return;
 
 		// No Spawn Line-Jumping
 		if(!DUtil.canLocationPVP(to) && DUtil.canLocationPVP(from) && delayTime > 0)
@@ -277,7 +272,7 @@ public class DPvP implements Listener
 		}
 
 		// Let players know where they can PVP
-		if(!DSave.hasData((Player) player, "temp_was_PVP"))
+		if(!DSave.hasData(player, "temp_was_PVP"))
 		{
 			if(!DUtil.canLocationPVP(from) && DUtil.canLocationPVP(to)) player.sendMessage(ChatColor.YELLOW + "You can now PVP!");
 		}
@@ -291,31 +286,26 @@ public class DPvP implements Listener
 		{
 			String message = ChatColor.YELLOW + displayName + genericReason;
 			e.setQuitMessage(message);
-			return;
-		}
+        }
 		else if(filterCheckStream)
 		{
 			String message = ChatColor.YELLOW + displayName + endOfStream;
 			e.setQuitMessage(message);
-			return;
-		}
+        }
 		else if(filterCheckOverflow)
 		{
 			String message = ChatColor.YELLOW + displayName + overflow;
 			e.setQuitMessage(message);
-			return;
-		}
+        }
 		else if(filterCheckQuitting)
 		{
 			String message = ChatColor.YELLOW + displayName + quitting;
 			e.setQuitMessage(message);
-			return;
-		}
+        }
 		else if(filterCheckTimeout)
 		{
 			String message = ChatColor.YELLOW + displayName + timeout;
 			e.setQuitMessage(message);
-			return;
-		}
+        }
 	}
 }

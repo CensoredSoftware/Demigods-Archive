@@ -1,5 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Titans;
 
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -15,29 +17,26 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-
 public class Cronus implements Deity
 {
 
-	private static final long serialVersionUID          = -6160291350540472542L;
+	private static final long serialVersionUID = -6160291350540472542L;
 
 	// global vars
-	private static final int  CLEAVECOST                = 100;
-	private static final int  SLOWCOST                  = 180;
-	private static final int  CRONUSULTIMATECOST        = 5000;
-	private static final int  CRONUSULTIMATECOOLDOWNMAX = 500;
-	private static final int  CRONUSULTIMATECOOLDOWNMIN = 120;
+	private static final int CLEAVECOST = 100;
+	private static final int SLOWCOST = 180;
+	private static final int CRONUSULTIMATECOST = 5000;
+	private static final int CRONUSULTIMATECOOLDOWNMAX = 500;
+	private static final int CRONUSULTIMATECOOLDOWNMIN = 120;
 
 	// per player
-	String                    PLAYER;
-	boolean                   CLEAVE                    = false;
-	Material                  CLEAVEITEM                = null;
-	boolean                   SLOW                      = false;
-	Material                  SLOWITEM                  = null;
-	long                      CRONUSULTIMATETIME;
-	private long              CLEAVETIME;
+	String PLAYER;
+	boolean CLEAVE = false;
+	Material CLEAVEITEM = null;
+	boolean SLOW = false;
+	Material SLOWITEM = null;
+	long CRONUSULTIMATETIME;
+	private long CLEAVETIME;
 
 	public Cronus(String player)
 	{
@@ -160,7 +159,7 @@ public class Cronus implements Deity
 								CLEAVETIME = System.currentTimeMillis();
 								if((LivingEntity) e.getEntity() instanceof Player)
 								{
-									Player otherP = (Player) ((LivingEntity) e.getEntity());
+									Player otherP = (Player) e.getEntity();
 									otherP.setFoodLevel(otherP.getFoodLevel() - (e.getDamage() / 2));
 									if(otherP.getFoodLevel() < 0) otherP.setFoodLevel(0);
 								}
@@ -196,9 +195,8 @@ public class Cronus implements Deity
 	}
 
 	@Override
-	public void onCommand(Player P, String str, String[] args, boolean bind)
+	public void onCommand(final Player p, String str, String[] args, boolean bind)
 	{
-		final Player p = P;
 		if(!DUtil.hasDeity(p, "Cronus")) return;
 		if(str.equalsIgnoreCase("cleave"))
 		{
@@ -291,8 +289,7 @@ public class Cronus implements Deity
 				DUtil.setFavor(p, DUtil.getFavor(p) - CRONUSULTIMATECOST);
 			}
 			else p.sendMessage(ChatColor.YELLOW + "Stopping time requires " + CRONUSULTIMATECOST + " Favor.");
-			return;
-		}
+        }
 	}
 
 	@Override

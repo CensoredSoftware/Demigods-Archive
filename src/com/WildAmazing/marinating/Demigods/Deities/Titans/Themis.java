@@ -1,5 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Titans;
 
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -8,28 +10,25 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-
 public class Themis implements Deity
 {
-	private static final long   serialVersionUID    = -2472769863144336856L;
-	private String              PLAYER;
+	private static final long serialVersionUID = -2472769863144336856L;
+	private String PLAYER;
 
-	private static final int    SKILLCOST           = 310;
-	private static final int    SKILLDELAY          = 2400;                 // milliseconds
-	private static final int    ULTIMATECOST        = 6000;
-	private static final int    ULTIMATECOOLDOWNMAX = 1200;                 // seconds
-	private static final int    ULTIMATECOOLDOWNMIN = 500;
+	private static final int SKILLCOST = 310;
+	private static final int SKILLDELAY = 2400; // milliseconds
+	private static final int ULTIMATECOST = 6000;
+	private static final int ULTIMATECOOLDOWNMAX = 1200; // seconds
+	private static final int ULTIMATECOOLDOWNMIN = 500;
 
-	private static final String skillname           = "Swap";
-	private static final String ult                 = "Congregate";
+	private static final String skillname = "Swap";
+	private static final String ult = "Congregate";
 
-	private boolean             SKILL               = false;
-	private Material            SKILLBIND           = null;
-	private long                SKILLTIME;
-	private long                ULTIMATETIME;
-	private long                LASTCHECK;
+	private boolean SKILL = false;
+	private Material SKILLBIND = null;
+	private long SKILLTIME;
+	private long ULTIMATETIME;
+	private long LASTCHECK;
 
 	public Themis(String player)
 	{
@@ -104,8 +103,7 @@ public class Themis implements Deity
 						DUtil.setFavor(p, DUtil.getFavor(p) - SKILLCOST);
 					}
 					else p.sendMessage(ChatColor.YELLOW + "No target found, or you are in a no-PVP zone.");
-					return;
-				}
+                }
 				else
 				{
 					p.sendMessage(ChatColor.YELLOW + "You do not have enough Favor.");
@@ -185,8 +183,7 @@ public class Themis implements Deity
 					else p.sendMessage(ChatColor.YELLOW + "There are no players to assemble.");
 				}
 				else p.sendMessage(ChatColor.YELLOW + "" + ult + " requires " + ULTIMATECOST + " Favor.");
-				return;
-			}
+            }
 		}
 	}
 

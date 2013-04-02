@@ -1,9 +1,9 @@
 package com.WildAmazing.marinating.Demigods;
 
+import com.WildAmazing.marinating.Demigods.Listeners.DPvP;
+
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;
-
-import com.WildAmazing.marinating.Demigods.Listeners.DPvP;
 
 public class DLogFilter implements Filter
 {

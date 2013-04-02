@@ -4,7 +4,8 @@ package com.WildAmazing.marinating.Demigods.Deities.Gods;
  * This style/format of code is now deprecated.
  */
 
-import java.util.ArrayList;
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,28 +19,27 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.util.ArrayList;
 
 public class Poseidon implements Deity
 {
 
 	/* General */
 	private static final long serialVersionUID = 2319323778421842381L;
-	private final int         REELCOST         = 120;
-	private final int         REELDELAY        = 1100;
-	private final int         drownCOST        = 240;
-	private final int         DROWNDELAY       = 15000;
+	private final int REELCOST = 120;
+	private final int REELDELAY = 1100;
+	private final int drownCOST = 240;
+	private final int DROWNDELAY = 15000;
 	// private final int ULTIMATECOST = 5000;
 	// private final int ULTIMATECOOLDOWNMAX = 800;
 	// private final int ULTIMATECOOLDOWNMIN = 220;
 
 	/* Specific to player */
-	private String            PLAYER;
-	public boolean            REEL             = false;
-	private boolean           drown            = false;
-	private long              REELTIME, drownTIME, LASTCHECK;
-	private Material          drownBIND        = null;
+	private String PLAYER;
+	public boolean REEL = false;
+	private boolean drown = false;
+	private long REELTIME, drownTIME, LASTCHECK;
+	private Material drownBIND = null;
 
 	public Poseidon(String name)
 	{

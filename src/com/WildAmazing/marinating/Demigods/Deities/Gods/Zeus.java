@@ -1,7 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Gods;
 
-import java.util.ArrayList;
-
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,8 +15,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.util.ArrayList;
 
 /*
  * Affected by level:
@@ -30,24 +29,24 @@ public class Zeus implements Deity
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID        = 2242753324910371936L;
+	private static final long serialVersionUID = 2242753324910371936L;
 
-	private String            PLAYER;
-	private static final int  SHOVECOST               = 170;
-	private static final int  SHOVEDELAY              = 1500;                // milliseconds
-	private static final int  LIGHTNINGCOST           = 140;
-	private static final int  LIGHTNINGDELAY          = 1000;                // milliseconds
-	private static final int  ZEUSULTIMATECOST        = 3700;
-	private static final int  ZEUSULTIMATECOOLDOWNMAX = 600;                 // seconds
-	private static final int  ZEUSULTIMATECOOLDOWNMIN = 60;
+	private String PLAYER;
+	private static final int SHOVECOST = 170;
+	private static final int SHOVEDELAY = 1500; // milliseconds
+	private static final int LIGHTNINGCOST = 140;
+	private static final int LIGHTNINGDELAY = 1000; // milliseconds
+	private static final int ZEUSULTIMATECOST = 3700;
+	private static final int ZEUSULTIMATECOOLDOWNMAX = 600; // seconds
+	private static final int ZEUSULTIMATECOOLDOWNMIN = 60;
 
-	private long              ZEUSULTIMATETIME;
-	private long              ZEUSSHOVETIME;
-	private long              ZEUSLIGHTNINGTIME;
-	private boolean           SHOVE                   = false;
-	private boolean           LIGHTNING               = false;
-	private Material          SHOVEBIND               = null;
-	private Material          LIGHTNINGBIND           = null;
+	private long ZEUSULTIMATETIME;
+	private long ZEUSSHOVETIME;
+	private long ZEUSLIGHTNINGTIME;
+	private boolean SHOVE = false;
+	private boolean LIGHTNING = false;
+	private Material SHOVEBIND = null;
+	private Material LIGHTNINGBIND = null;
 
 	public Zeus(String player)
 	{
@@ -133,13 +132,11 @@ public class Zeus implements Deity
 				if(e.getCause() == DamageCause.FALL)
 				{
 					e.setDamage(0);
-					return;
-				}
+                }
 				else if(e.getCause() == DamageCause.LIGHTNING)
 				{
 					e.setDamage(0);
-					return;
-				}
+                }
 			}
 		}
 		else if(ee instanceof PlayerInteractEvent)
@@ -171,8 +168,7 @@ public class Zeus implements Deity
 				{
 					lightning(p, e.getClickedBlock());
 					DUtil.setFavor(p, DUtil.getFavor(p) - LIGHTNINGCOST);
-					return;
-				}
+                }
 				else
 				{
 					p.sendMessage(ChatColor.YELLOW + "You do not have enough Favor.");
@@ -290,8 +286,7 @@ public class Zeus implements Deity
 				else p.sendMessage(ChatColor.YELLOW + "There are no targets nearby.");
 			}
 			else p.sendMessage(ChatColor.YELLOW + "Lightning storm requires " + ZEUSULTIMATECOST + " Favor.");
-			return;
-		}
+        }
 	}
 
 	/*
@@ -356,12 +351,12 @@ public class Zeus implements Deity
 					if(e instanceof LivingEntity)
 					{
 						LivingEntity le = (LivingEntity) e;
-						if(le instanceof Player && (Player) le == p) continue;
+						if(le instanceof Player && le == p) continue;
 						if(le.getLocation().distance(target) < 1.5) DUtil.damageDemigods(p, le, DUtil.getAscensions(p) * 2, DamageCause.LIGHTNING);
 					}
 				}
 			}
-			catch(Exception nullpointer)
+			catch(Exception ignored)
 			{} // ignore it if something went wrong
 		}
 		else p.sendMessage(ChatColor.YELLOW + "Your target is too far away, or too close to you.");
@@ -400,7 +395,7 @@ public class Zeus implements Deity
 					strikeLightning(p, e1);
 				}
 			}
-			catch(Exception notAlive)
+			catch(Exception ignored)
 			{} // ignore stuff like minecarts
 		}
 		return count;
@@ -416,7 +411,7 @@ public class Zeus implements Deity
 			if(e instanceof LivingEntity)
 			{
 				LivingEntity le = (LivingEntity) e;
-				if(le instanceof Player && (Player) le == p) continue;
+				if(le instanceof Player && le == p) continue;
 				if(le.getLocation().distance(target.getLocation()) < 1.5) DUtil.damageDemigods(p, le, DUtil.getAscensions(p) * 2, DamageCause.LIGHTNING);
 			}
 		}

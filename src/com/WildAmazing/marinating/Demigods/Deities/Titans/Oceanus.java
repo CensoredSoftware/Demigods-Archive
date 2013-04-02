@@ -1,5 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Titans;
 
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -9,26 +11,23 @@ import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-
 public class Oceanus implements Deity
 {
-	private static final long   serialVersionUID    = -2472769863144336856L;
-	private String              PLAYER;
+	private static final long serialVersionUID = -2472769863144336856L;
+	private String PLAYER;
 
-	private static final String skillname           = "Squid";
-	private static final int    SKILLCOST           = 225;
-	private static final int    SKILLDELAY          = 2000;                 // milliseconds
-	private static final int    ULTIMATECOST        = 2000;
-	private static final int    ULTIMATECOOLDOWNMAX = 700;                  // seconds
-	private static final int    ULTIMATECOOLDOWNMIN = 400;
+	private static final String skillname = "Squid";
+	private static final int SKILLCOST = 225;
+	private static final int SKILLDELAY = 2000; // milliseconds
+	private static final int ULTIMATECOST = 2000;
+	private static final int ULTIMATECOOLDOWNMAX = 700; // seconds
+	private static final int ULTIMATECOOLDOWNMIN = 400;
 
-	private boolean             SKILL               = false;
-	private Material            SKILLBIND           = null;
-	private long                SKILLTIME;
-	private long                ULTIMATETIME;
-	private long                LASTCHECK;
+	private boolean SKILL = false;
+	private Material SKILLBIND = null;
+	private long SKILLTIME;
+	private long ULTIMATETIME;
+	private long LASTCHECK;
 
 	public Oceanus(String player)
 	{
@@ -107,8 +106,7 @@ public class Oceanus implements Deity
 				if(DUtil.getFavor(p) >= SKILLCOST)
 				{
 					if(squidfire(p)) DUtil.setFavor(p, DUtil.getFavor(p) - SKILLCOST);
-					return;
-				}
+                }
 				else
 				{
 					p.sendMessage(ChatColor.YELLOW + "You do not have enough Favor.");
@@ -179,8 +177,7 @@ public class Oceanus implements Deity
 					DUtil.setFavor(p, DUtil.getFavor(p) - ULTIMATECOST);
 				}
 				else p.sendMessage(ChatColor.YELLOW + "Ceasefire requires " + ULTIMATECOST + " Favor.");
-				return;
-			}
+            }
 		}
 	}
 

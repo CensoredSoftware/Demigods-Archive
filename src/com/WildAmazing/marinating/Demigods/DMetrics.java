@@ -1,9 +1,9 @@
 package com.WildAmazing.marinating.Demigods;
 
+import com.WildAmazing.marinating.Demigods.Metrics.Graph;
+
 import java.io.IOException;
 import java.util.ArrayList;
-
-import com.WildAmazing.marinating.Demigods.Metrics.Graph;
 
 public class DMetrics
 {

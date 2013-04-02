@@ -1,11 +1,14 @@
 package com.WildAmazing.marinating.Demigods;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Logger;
-
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Listeners.DDamage;
+import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.Faction;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -21,28 +24,22 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Listeners.DDamage;
-import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
-
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.Faction;
-
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class DUtil
 {
-	private static Demigods plugin;                                                                     // obviously needed
-	private static int      dist               = DSettings.getSettingInt("max_target_range");           // maximum range on targeting
-	private static int      MAXIMUMHP          = DSettings.getSettingInt("max_hp");                     // max hp a player can have
-	public static int       ASCENSIONCAP       = DSettings.getSettingInt("ascension_cap");              // max levels
-	private static int      FAVORCAP           = DSettings.getSettingInt("globalfavorcap");             // max favor
-	private static boolean  BROADCASTNEWDEITY  = DSettings.getSettingBoolean("broadcast_new_deities");  // tell server when a player gets a deity
-	private static boolean  ALLOWPVPEVERYWHERE = DSettings.getSettingBoolean("allow_skills_everywhere");
-	private static boolean  USENEWPVP          = DSettings.getSettingBoolean("use_new_pvp_zones");
+	private static Demigods plugin; // obviously needed
+	private static int dist = DSettings.getSettingInt("max_target_range"); // maximum range on targeting
+	private static int MAXIMUMHP = DSettings.getSettingInt("max_hp"); // max hp a player can have
+	public static int ASCENSIONCAP = DSettings.getSettingInt("ascension_cap"); // max levels
+	private static int FAVORCAP = DSettings.getSettingInt("globalfavorcap"); // max favor
+	private static boolean BROADCASTNEWDEITY = DSettings.getSettingBoolean("broadcast_new_deities"); // tell server when a player gets a deity
+	private static boolean ALLOWPVPEVERYWHERE = DSettings.getSettingBoolean("allow_skills_everywhere");
+	private static boolean USENEWPVP = DSettings.getSettingBoolean("use_new_pvp_zones");
 
 	public DUtil(Demigods d)
 	{
@@ -198,7 +195,7 @@ public class DUtil
 			{
 				al.add(new Location(plugin.getServer().getWorld(l.getWorld()), l.getX(), l.getY(), l.getZ()));
 			}
-			catch(Exception er)
+			catch(Exception ignored)
 			{
 
 			}
@@ -233,9 +230,8 @@ public class DUtil
 	 */
 	public static boolean hasPermissionOrOP(Player p, String pe)
 	{// convenience method for permissions
-		if(p.isOp()) return true;
-		return p.hasPermission(pe);
-	}
+        return p.isOp() || p.hasPermission(pe);
+    }
 
 	/**
 	 * Checks is a player has the given permission.
@@ -317,12 +313,8 @@ public class DUtil
 
 	public static boolean areAllied(String p1, String p2)
 	{
-		if(isFullParticipant(p1) && isFullParticipant(p2))
-		{
-			return getAllegiance(p1).equalsIgnoreCase(getAllegiance(p2));
-		}
-		return false;
-	}
+        return isFullParticipant(p1) && isFullParticipant(p2) && getAllegiance(p1).equalsIgnoreCase(getAllegiance(p2));
+    }
 
 	/**
 	 * Gets the String representation of a player's allegiance.
@@ -356,9 +348,8 @@ public class DUtil
 	 */
 	public static boolean is(Player p, String type)
 	{
-		if(DSave.hasData(p, "ALLEGIANCE")) return ((String) DSave.getData(p, "ALLEGIANCE")).equals(type);
-		return false;
-	}
+        return DSave.hasData(p, "ALLEGIANCE") && DSave.getData(p, "ALLEGIANCE").equals(type);
+    }
 
 	/**
 	 * Gives a player a deity, even if they have none.
@@ -501,9 +492,7 @@ public class DUtil
 	{
 		if(DSave.hasData(p, "DEITIES"))
 		{
-			@SuppressWarnings("unchecked")
-			ArrayList<Deity> returnit = (ArrayList<Deity>) DSave.getData(p, "DEITIES");
-			return returnit;
+			return (ArrayList<Deity>) DSave.getData(p, "DEITIES");
 		}
 		return null;
 	}
@@ -548,7 +537,7 @@ public class DUtil
 	{
 		if(amt > getFavorCap(p)) amt = getFavorCap(p);
 		int c = amt - getFavor(p);
-		DSave.saveData(p, "FAVOR", new Integer(amt));
+		DSave.saveData(p, "FAVOR", amt);
 		if((c != 0) && (DUtil.getOnlinePlayer(p) != null))
 		{
 			String disp = "";
@@ -562,7 +551,7 @@ public class DUtil
 	public static void setFavorQuiet(String p, int amt)
 	{
 		if(amt > getFavorCap(p)) amt = getFavorCap(p);
-		DSave.saveData(p, "FAVOR", new Integer(amt));
+		DSave.saveData(p, "FAVOR", amt);
 	}
 
 	/**
@@ -610,7 +599,7 @@ public class DUtil
 		if(amt > getMaxHP(p)) amt = getMaxHP(p);
 		if(amt < 0) amt = 0;
 		int c = amt - getHP(p);
-		DSave.saveData(p, "dHP", new Integer(amt));
+		DSave.saveData(p, "dHP", amt);
 		if((c != 0) && (DUtil.getOnlinePlayer(p) != null))
 		{
 			ChatColor color = ChatColor.GREEN;
@@ -627,7 +616,7 @@ public class DUtil
 	public static void setHPQuiet(String p, int amt)
 	{
 		if(amt > getMaxHP(p)) amt = getMaxHP(p);
-		DSave.saveData(p, "dHP", new Integer(amt));
+		DSave.saveData(p, "dHP", amt);
 	}
 
 	/**
@@ -650,7 +639,7 @@ public class DUtil
 	public static void setMaxHP(String p, int amt)
 	{
 		if(amt > MAXIMUMHP) amt = MAXIMUMHP;
-		DSave.saveData(p, "dmaxHP", new Integer(amt));
+		DSave.saveData(p, "dmaxHP", amt);
 	}
 
 	/**
@@ -808,7 +797,7 @@ public class DUtil
 	{
 		if(!DSave.hasData(p, "U_DVT"))
 		{
-			DSave.saveData(p, "U_DVT", new Integer(0));
+			DSave.saveData(p, "U_DVT", 0);
 		}
 		try
 		{
@@ -845,7 +834,7 @@ public class DUtil
 	public static void setAscensions(String p, int amt)
 	{
 		if(amt > ASCENSIONCAP) amt = ASCENSIONCAP;
-		DSave.saveData(p, "ASCENSIONS", new Integer(amt));
+		DSave.saveData(p, "ASCENSIONS", amt);
 	}
 
 	public static void setAscensions(Player p, int amt)
@@ -1023,7 +1012,7 @@ public class DUtil
 	public static void setFavorCap(String p, int amt)
 	{
 		if(amt > FAVORCAP) amt = FAVORCAP;
-		DSave.saveData(p, "FAVORCAP", new Integer(amt));
+		DSave.saveData(p, "FAVORCAP", amt);
 	}
 
 	public static void setFavorCap(Player p, int amt)
@@ -1141,12 +1130,8 @@ public class DUtil
 	@SuppressWarnings("unchecked")
 	public static boolean isBound(Player p, Material material)
 	{
-		if(DSave.hasData(p, "BINDINGS"))
-		{
-			return ((ArrayList<Material>) DSave.getData(p, "BINDINGS")).contains(material);
-		}
-		return false;
-	}
+        return DSave.hasData(p, "BINDINGS") && ((ArrayList<Material>) DSave.getData(p, "BINDINGS")).contains(material);
+    }
 
 	@SuppressWarnings("unchecked")
 	public static ArrayList<Material> getBindings(Player p)
@@ -1229,9 +1214,8 @@ public class DUtil
 		if(getAscensions(p) == -1) return false;
 		if(getMaxHP(p) == -1) return false;
 		if(getFavor(p) == -1) return false;
-		if(getFavorCap(p) == -1) return false;
-		return true;
-	}
+        return getFavorCap(p) != -1;
+    }
 
 	/**
 	 * Checks if one team has an advantage over the other by greater than the given %.
@@ -1256,8 +1240,7 @@ public class DUtil
 			}
 		}
 		@SuppressWarnings("unchecked")
-		HashMap<String, Integer> clone = (HashMap<String, Integer>) alliances.clone();
-		HashMap<String, Integer> talliances = clone;
+		HashMap<String, Integer> talliances = (HashMap<String, Integer>) alliances.clone();
 		ArrayList<String> alliancerank = new ArrayList<String>();
 		Logger.getLogger("Minecraft").info("Total alliances: " + alliances.size());
 		Logger.getLogger("Minecraft").info(alliances + "");
@@ -1315,7 +1298,7 @@ public class DUtil
 				val += ii.getAmount() * 0.1;
 				break;
 			case LOG:
-				val += ii.getAmount() * 1;
+				val += ii.getAmount();
 				break;
 			case WOOD:
 				val += ii.getAmount() * 0.23;
@@ -1659,7 +1642,6 @@ public class DUtil
 	 * Remove a shrine that a player created
 	 * 
 	 * @param shrine
-	 * @param player
 	 * @return the shrine that was removed
 	 */
 	public static void removeShrine(WriteLocation shrine)
@@ -1668,7 +1650,7 @@ public class DUtil
 		{
 			toLocation(shrine).getBlock().setType(Material.AIR);
 		}
-		catch(NullPointerException invalid)
+		catch(NullPointerException ignored)
 		{}
 		for(String p : getFullParticipants())
 		{
@@ -1927,9 +1909,8 @@ public class DUtil
 	@SuppressWarnings("static-access")
 	public static boolean canWorldGuardBuild(Player player, Location location)
 	{
-		if(plugin.WORLDGUARD == null) return true;
-		return plugin.WORLDGUARD.canBuild(player, location);
-	}
+        return plugin.WORLDGUARD == null || plugin.WORLDGUARD.canBuild(player, location);
+    }
 
 	@SuppressWarnings("static-access")
 	public static boolean canWorldGuardDamage(Location l)
@@ -1964,8 +1945,7 @@ public class DUtil
 		if(!(player instanceof Player)) return true;
 		else if(!USENEWPVP) return canLocationPVP(location);
 		else if(!isFullParticipant((Player) player)) return canLocationPVP(location);
-		else if(DSave.hasData((Player) player, "temp_was_PVP")) return true;
-		else return canLocationPVP(location);
+		else return DSave.hasData((Player) player, "temp_was_PVP") || canLocationPVP(location);
 	}
 
 	/**
@@ -2006,13 +1986,13 @@ public class DUtil
 	 * @param entity
 	 * @param color
 	 * @param duration
-	 *            Originally by nisovin
-	 *            public static void playEffect(LivingEntity entity, int color, int duration) {
-	 *            final EntityLiving el = ((CraftLivingEntity)entity).getHandle();
-	 *            final DataWatcher dw = el.getDataWatcher();
-	 *            dw.watch(8, Integer.valueOf(color));
+	 *        Originally by nisovin
+	 *        public static void playEffect(LivingEntity entity, int color, int duration) {
+	 *        final EntityLiving el = ((CraftLivingEntity)entity).getHandle();
+	 *        final DataWatcher dw = el.getDataWatcher();
+	 *        dw.watch(8, Integer.valueOf(color));
 	 * 
-	 *            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+	 *        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 	 * @Override
 	 *           public void run() {
 	 *           int c = 0;
@@ -2067,7 +2047,7 @@ public class DUtil
 	{
 		if((target).getGameMode() == GameMode.CREATIVE) return;
 		if(!canWorldGuardDamage(target.getLocation())) return;
-		if(DDamage.cancelSoulDamage((Player) target, amount)) return;
+		if(DDamage.cancelSoulDamage(target, amount)) return;
 		int hp = getHP(target);
 		if(amount < 1) return;
 		amount -= DDamage.armorReduction(target);
@@ -2083,7 +2063,7 @@ public class DUtil
 		if((target).getGameMode() == GameMode.CREATIVE) return;
 		if(!canTarget(target, target.getLocation())) return;
 		if(!canWorldGuardDamage(target.getLocation())) return;
-		if(DDamage.cancelSoulDamage((Player) target, amount)) return;
+		if(DDamage.cancelSoulDamage(target, amount)) return;
 		int hp = getHP(target);
 		if(amount < 1) return;
 		amount -= DDamage.armorReduction(target);

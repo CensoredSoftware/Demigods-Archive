@@ -1,18 +1,11 @@
 package com.WildAmazing.marinating.Demigods;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.HashMap;
-import java.util.logging.Logger;
-
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.entity.Player;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.io.*;
+import java.util.HashMap;
+import java.util.logging.Logger;
 
 /*
  * HASHMAP OF PLAYER'S NAMES
@@ -21,9 +14,9 @@ import com.WildAmazing.marinating.Demigods.Deities.Deity;
  */
 public class DSave
 {
-	Logger                                                  log = Logger.getLogger("Minecraft");
-	private static Deity[]                                  GLOBALLIST;
-	private static String                                   PATH;
+	Logger log = Logger.getLogger("Minecraft");
+	private static Deity[] GLOBALLIST;
+	private static String PATH;
 	private static HashMap<String, HashMap<String, Object>> SAVEDDATA;
 
 	public DSave(String path, Deity[] alldeities)
@@ -76,9 +69,8 @@ public class DSave
 	 */
 	public static boolean hasPlayer(Player p)
 	{
-		if(p != null) return hasPlayer(p.getName());
-		return false;
-	}
+        return p != null && hasPlayer(p.getName());
+    }
 
 	public static boolean hasPlayer(String p)
 	{

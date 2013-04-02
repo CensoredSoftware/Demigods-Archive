@@ -1,6 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Gods;
 
-import java.util.ArrayList;
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -12,36 +13,35 @@ import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.util.ArrayList;
 
 public class Hades implements Deity
 {
 
 	/* General */
-	private static final long serialVersionUID    = 3647481847975286534L;
-	private final int         CHAINCOST           = 250;
-	private final int         CHAINDELAY          = 1500;
-	private final int         ENTOMBCOST          = 470;
-	private final int         ENTOMBDELAY         = 2000;
-	private final int         ULTIMATECOST        = 4000;
-	private final int         ULTIMATECOOLDOWNMAX = 600;
-	private final int         ULTIMATECOOLDOWNMIN = 320;
+	private static final long serialVersionUID = 3647481847975286534L;
+	private final int CHAINCOST = 250;
+	private final int CHAINDELAY = 1500;
+	private final int ENTOMBCOST = 470;
+	private final int ENTOMBDELAY = 2000;
+	private final int ULTIMATECOST = 4000;
+	private final int ULTIMATECOOLDOWNMAX = 600;
+	private final int ULTIMATECOOLDOWNMIN = 320;
 
 	/* Specific to player */
-	private String            PLAYER;
-	private boolean           CHAIN               = false;
-	private boolean           ENTOMB              = false;
-	private long              CHAINTIME, ENTOMBTIME, ULTIMATETIME;
-	private Material          CHAINBIND           = null;
-	private Material          ENTOMBBIND          = null;
+	private String PLAYER;
+	private boolean CHAIN = false;
+	private boolean ENTOMB = false;
+	private long CHAINTIME, ENTOMBTIME, ULTIMATETIME;
+	private Material CHAINBIND = null;
+	private Material ENTOMBBIND = null;
 
 	public Hades(String name)
 	{
@@ -298,8 +298,7 @@ public class Hades implements Deity
 				else p.sendMessage(ChatColor.YELLOW + "There were no valid targets or the ultimate could not be used.");
 			}
 			else p.sendMessage(ChatColor.YELLOW + "Tartarus requires " + ULTIMATECOST + " Favor.");
-			return;
-		}
+        }
 	}
 
 	private boolean chain(Player p, int damage, int blindpower, int blindduration)

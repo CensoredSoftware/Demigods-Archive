@@ -1,23 +1,21 @@
 package com.clashnia.ClashniaUpdate;
 
+import com.WildAmazing.marinating.Demigods.DUtil;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import com.WildAmazing.marinating.Demigods.DUtil;
-
 public class UpdateChecker
 {
-	private URL    filesFeed;
+	private URL filesFeed;
 
 	private String version;
 	private String link;

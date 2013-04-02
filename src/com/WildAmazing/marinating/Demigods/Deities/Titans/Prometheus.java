@@ -1,7 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Titans;
 
-import java.util.ArrayList;
-
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,30 +16,29 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.util.ArrayList;
 
 //TODO better replacement for BLAZE
 public class Prometheus implements Deity
 {
-	private static final long serialVersionUID              = -6437607905225500420L;
-	private String            PLAYER;
-	private final int         FIREBALLCOST                  = 100;
-	private final int         PROMETHEUSULTIMATECOST        = 5500;
-	private final int         PROMETHEUSULTIMATECOOLDOWNMAX = 600;                  // seconds
-	private final int         PROMETHEUSULTIMATECOOLDOWNMIN = 60;
-	private final int         BLAZECOST                     = 400;
-	private final double      FIREBALLDELAY                 = 0.5;                  // seconds
-	private final double      BLAZEDELAY                    = 15;
+	private static final long serialVersionUID = -6437607905225500420L;
+	private String PLAYER;
+	private final int FIREBALLCOST = 100;
+	private final int PROMETHEUSULTIMATECOST = 5500;
+	private final int PROMETHEUSULTIMATECOOLDOWNMAX = 600; // seconds
+	private final int PROMETHEUSULTIMATECOOLDOWNMIN = 60;
+	private final int BLAZECOST = 400;
+	private final double FIREBALLDELAY = 0.5; // seconds
+	private final double BLAZEDELAY = 15;
 
-	public Material           FIREBALLITEM                  = null;
-	public Material           BLAZEITEM                     = null;
-	private boolean           FIREBALL                      = false;
-	private boolean           BLAZE                         = false;
-	private long              FIRESTORMTIME;
-	private long              BLAZETIME;
-	private long              FIREBALLTIME;
-	public String             DISPLAYNAME;
+	public Material FIREBALLITEM = null;
+	public Material BLAZEITEM = null;
+	private boolean FIREBALL = false;
+	private boolean BLAZE = false;
+	private long FIRESTORMTIME;
+	private long BLAZETIME;
+	private long FIREBALLTIME;
+	public String DISPLAYNAME;
 
 	public Prometheus(String name)
 	{
@@ -286,8 +285,7 @@ public class Prometheus implements Deity
 				DUtil.setFavor(p, DUtil.getFavor(p) - PROMETHEUSULTIMATECOST);
 			}
 			else p.sendMessage("Firestorm requires " + PROMETHEUSULTIMATECOST + " Favor.");
-			return;
-		}
+        }
 	}
 
 	@Override

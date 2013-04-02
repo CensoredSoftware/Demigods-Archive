@@ -1,5 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Titans;
 
+import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -8,23 +10,20 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-
 public class Atlas implements Deity
 {
 
 	/* General */
-	private static final long serialVersionUID    = 1898032566168889851L;
-	private final int         SKILLCOST           = 95;
-	private final int         ULTIMATECOST        = 6000;
-	private final int         ULTIMATECOOLDOWNMAX = 400;
-	private final int         ULTIMATECOOLDOWNMIN = 300;
+	private static final long serialVersionUID = 1898032566168889851L;
+	private final int SKILLCOST = 95;
+	private final int ULTIMATECOST = 6000;
+	private final int ULTIMATECOOLDOWNMAX = 400;
+	private final int ULTIMATECOOLDOWNMIN = 300;
 
 	/* Specific to player */
-	private String            PLAYER;
-	private boolean           SKILL               = false;
-	private long              ULTIMATETIME;
+	private String PLAYER;
+	private boolean SKILL = false;
+	private long ULTIMATETIME;
 
 	public Atlas(String name)
 	{
@@ -116,9 +115,8 @@ public class Atlas implements Deity
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void onCommand(Player P, String str, String[] args, boolean bind)
+	public void onCommand(final Player p, String str, String[] args, boolean bind)
 	{
-		final Player p = P;
 		if(!DUtil.isFullParticipant(p)) return;
 		if(!DUtil.hasDeity(p, "Atlas")) return;
 		if(str.equalsIgnoreCase("unburden"))
@@ -199,8 +197,7 @@ public class Atlas implements Deity
 				ULTIMATETIME = System.currentTimeMillis() + t * 1000;
 			}
 			else p.sendMessage(ChatColor.YELLOW + "Invincible requires " + ULTIMATECOST + " Favor.");
-			return;
-		}
+        }
 	}
 
 	@Override

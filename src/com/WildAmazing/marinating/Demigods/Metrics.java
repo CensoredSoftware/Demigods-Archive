@@ -29,28 +29,18 @@
 package com.WildAmazing.marinating.Demigods;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -72,43 +62,43 @@ public class Metrics
 	/**
 	 * The current revision number
 	 */
-	private final static int        REVISION              = 6;
+	private final static int REVISION = 6;
 
 	/**
 	 * The base url of the metrics domain
 	 */
-	private static final String     BASE_URL              = "http://mcstats.org";
+	private static final String BASE_URL = "http://mcstats.org";
 
 	/**
 	 * The url used to report a server's status
 	 */
-	private static final String     REPORT_URL            = "/report/%s";
+	private static final String REPORT_URL = "/report/%s";
 
 	/**
 	 * The separator to use for custom data. This MUST NOT change unless you are hosting your own
 	 * version of metrics and want to change it.
 	 */
-	private static final String     CUSTOM_DATA_SEPARATOR = "~~";
+	private static final String CUSTOM_DATA_SEPARATOR = "~~";
 
 	/**
 	 * Interval of time to ping (in minutes)
 	 */
-	private static final int        PING_INTERVAL         = 10;
+	private static final int PING_INTERVAL = 10;
 
 	/**
 	 * The plugin this metrics submits for
 	 */
-	private final Plugin            plugin;
+	private final Plugin plugin;
 
 	/**
 	 * All of the custom graphs to submit to metrics
 	 */
-	private final Set<Graph>        graphs                = Collections.synchronizedSet(new HashSet<Graph>());
+	private final Set<Graph> graphs = Collections.synchronizedSet(new HashSet<Graph>());
 
 	/**
 	 * The default graph, used for addCustomData when you don't want a specific graph
 	 */
-	private final Graph             defaultGraph          = new Graph("Default");
+	private final Graph defaultGraph = new Graph("Default");
 
 	/**
 	 * The plugin configuration file
@@ -118,27 +108,27 @@ public class Metrics
 	/**
 	 * The plugin configuration file
 	 */
-	private final File              configurationFile;
+	private final File configurationFile;
 
 	/**
 	 * Unique server id
 	 */
-	private final String            guid;
+	private final String guid;
 
 	/**
 	 * Debug mode
 	 */
-	private final boolean           debug;
+	private final boolean debug;
 
 	/**
 	 * Lock for synchronization
 	 */
-	private final Object            optOutLock            = new Object();
+	private final Object optOutLock = new Object();
 
 	/**
 	 * The scheduled task
 	 */
-	private volatile BukkitTask     task                  = null;
+	private volatile BukkitTask task = null;
 
 	public Metrics(final Plugin plugin) throws IOException
 	{
@@ -175,7 +165,7 @@ public class Metrics
 	 * on the metrics website. Plotters can be added to the graph object returned.
 	 * 
 	 * @param name
-	 *            The name of the graph
+	 *        The name of the graph
 	 * @return Graph object created. Will never return NULL under normal circumstances unless bad parameters are given
 	 */
 	public Graph createGraph(final String name)
@@ -199,7 +189,7 @@ public class Metrics
 	 * Add a Graph object to Metrics that represents data for the plugin that should be sent to the backend
 	 * 
 	 * @param graph
-	 *            The name of the graph
+	 *        The name of the graph
 	 */
 	public void addGraph(final Graph graph)
 	{
@@ -215,7 +205,7 @@ public class Metrics
 	 * Adds a custom data plotter to the default graph
 	 * 
 	 * @param plotter
-	 *            The plotter to use to plot custom data
+	 *        The plotter to use to plot custom data
 	 */
 	public void addCustomData(final Plotter plotter)
 	{
@@ -461,27 +451,22 @@ public class Metrics
 		// inside of the graph (e.g plotters)
 		synchronized(graphs)
 		{
-			final Iterator<Graph> iter = graphs.iterator();
 
-			while(iter.hasNext())
-			{
-				final Graph graph = iter.next();
+            for (Graph graph : graphs) {
+                for (Plotter plotter : graph.getPlotters()) {
+                    // The key name to send to the metrics server
+                    // The format is C-GRAPHNAME-PLOTTERNAME where separator - is defined at the top
+                    // Legacy (R4) submitters use the format Custom%s, or CustomPLOTTERNAME
+                    final String key = String.format("C%s%s%s%s", CUSTOM_DATA_SEPARATOR, graph.getName(), CUSTOM_DATA_SEPARATOR, plotter.getColumnName());
 
-				for(Plotter plotter : graph.getPlotters())
-				{
-					// The key name to send to the metrics server
-					// The format is C-GRAPHNAME-PLOTTERNAME where separator - is defined at the top
-					// Legacy (R4) submitters use the format Custom%s, or CustomPLOTTERNAME
-					final String key = String.format("C%s%s%s%s", CUSTOM_DATA_SEPARATOR, graph.getName(), CUSTOM_DATA_SEPARATOR, plotter.getColumnName());
+                    // The value to send, which for the foreseeable future is just the string
+                    // value of plotter.getValue()
+                    final String value = Integer.toString(plotter.getValue());
 
-					// The value to send, which for the foreseeable future is just the string
-					// value of plotter.getValue()
-					final String value = Integer.toString(plotter.getValue());
-
-					// Add it to the http post data :)
-					encodeDataPair(data, key, value);
-				}
-			}
+                    // Add it to the http post data :)
+                    encodeDataPair(data, key, value);
+                }
+            }
 		}
 
 		// Create the url
@@ -527,17 +512,12 @@ public class Metrics
 			{
 				synchronized(graphs)
 				{
-					final Iterator<Graph> iter = graphs.iterator();
 
-					while(iter.hasNext())
-					{
-						final Graph graph = iter.next();
-
-						for(Plotter plotter : graph.getPlotters())
-						{
-							plotter.reset();
-						}
-					}
+                    for (Graph graph : graphs) {
+                        for (Plotter plotter : graph.getPlotters()) {
+                            plotter.reset();
+                        }
+                    }
 				}
 			}
 		}
@@ -572,11 +552,11 @@ public class Metrics
 	 * </code>
 	 * 
 	 * @param buffer
-	 *            the stringbuilder to append the data pair onto
+	 *        the stringbuilder to append the data pair onto
 	 * @param key
-	 *            the key value
+	 *        the key value
 	 * @param value
-	 *            the value
+	 *        the value
 	 */
 	private static void encodeDataPair(final StringBuilder buffer, final String key, final String value) throws UnsupportedEncodingException
 	{
@@ -587,7 +567,7 @@ public class Metrics
 	 * Encode text as UTF-8
 	 * 
 	 * @param text
-	 *            the text to encode
+	 *        the text to encode
 	 * @return the encoded text, as UTF-8
 	 */
 	private static String encode(final String text) throws UnsupportedEncodingException
@@ -605,7 +585,7 @@ public class Metrics
 		 * The graph's name, alphanumeric and spaces only :)
 		 * If it does not comply to the above when submitted, it is rejected
 		 */
-		private final String       name;
+		private final String name;
 
 		/**
 		 * The set of plotters that are contained within this graph
@@ -631,7 +611,7 @@ public class Metrics
 		 * Add a plotter to the graph, which will be used to plot entries
 		 * 
 		 * @param plotter
-		 *            the plotter to add to the graph
+		 *        the plotter to add to the graph
 		 */
 		public void addPlotter(final Plotter plotter)
 		{
@@ -642,7 +622,7 @@ public class Metrics
 		 * Remove a plotter from the graph
 		 * 
 		 * @param plotter
-		 *            the plotter to remove from the graph
+		 *        the plotter to remove from the graph
 		 */
 		public void removePlotter(final Plotter plotter)
 		{
@@ -708,7 +688,7 @@ public class Metrics
 		 * Construct a plotter with a specific plot name
 		 * 
 		 * @param name
-		 *            the name of the plotter to use, which will show up on the website
+		 *        the name of the plotter to use, which will show up on the website
 		 */
 		public Plotter(final String name)
 		{
