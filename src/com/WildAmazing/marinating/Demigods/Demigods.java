@@ -1,13 +1,12 @@
 package com.WildAmazing.marinating.Demigods;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Deities.Gods.*;
-import com.WildAmazing.marinating.Demigods.Deities.Titans.*;
-import com.WildAmazing.marinating.Demigods.Listeners.*;
-import com.clashnia.ClashniaUpdate.DemigodsUpdate;
-import com.clashnia.Demigods.Deities.Giants.Typhon;
-import com.massivecraft.factions.P;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.logging.Logger;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -22,12 +21,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scheduler.BukkitWorker;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.logging.Logger;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Deities.Gods.*;
+import com.WildAmazing.marinating.Demigods.Deities.Titans.*;
+import com.WildAmazing.marinating.Demigods.Listeners.*;
+import com.clashnia.ClashniaUpdate.DemigodsUpdate;
+import com.clashnia.Demigods.Deities.Giants.Typhon;
+import com.massivecraft.factions.P;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class Demigods extends JavaPlugin implements Listener
 {
@@ -77,12 +78,11 @@ public class Demigods extends JavaPlugin implements Listener
 		/*
 		 * Check for updates, and then update if need be
 		 */
-		 new DemigodsUpdate(this);
-		 Boolean shouldUpdate = DemigodsUpdate.shouldUpdate();
-		 if(shouldUpdate && DSettings.getSettingBoolean("update"))
-		 {
-		    DemigodsUpdate.demigodsUpdate();
-		 }
+		if(DSettings.getSettingBoolean("update"))
+		{
+			new DemigodsUpdate(this);
+			if(DemigodsUpdate.shouldUpdate()) DemigodsUpdate.demigodsUpdate();
+		}
 
 		log.info("[Demigods] Preparation completed in " + ((double) (System.currentTimeMillis() - firstTime) / 1000) + " seconds.");
 	}
