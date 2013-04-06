@@ -1,7 +1,5 @@
 package com.WildAmazing.marinating.Demigods.Deities.Titans;
 
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -9,6 +7,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import com.WildAmazing.marinating.Demigods.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
 public class Atlas implements Deity
 {
@@ -52,9 +53,9 @@ public class Atlas implements Deity
 	@Override
 	public void printInfo(Player p)
 	{
-		if(DUtil.hasDeity(p, "Atlas") && DUtil.isFullParticipant(p))
+		if(DMiscUtil.hasDeity(p, "Atlas") && DMiscUtil.isFullParticipant(p))
 		{
-			int devotion = DUtil.getDevotion(p, getName());
+			int devotion = DMiscUtil.getDevotion(p, getName());
 			/*
 			 * Calculate special values first
 			 */
@@ -63,9 +64,9 @@ public class Atlas implements Deity
 			int jump = (int) Math.ceil(0.85 * Math.pow(devotion, 0.08));
 			int length = (int) Math.ceil(4 * Math.pow(devotion, 0.2475));
 			//
-			int duration = (int) (Math.ceil(35.819821 * Math.pow(DUtil.getAscensions(p), 0.26798863))); // seconds
-			int radius = (int) (Math.ceil(4.957781 * Math.pow(DUtil.getAscensions(p), 0.45901927)));
-			int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DUtil.getAscensions(p) / 100)));
+			int duration = (int) (Math.ceil(35.819821 * Math.pow(DMiscUtil.getAscensions(p), 0.26798863))); // seconds
+			int radius = (int) (Math.ceil(4.957781 * Math.pow(DMiscUtil.getAscensions(p), 0.45901927)));
+			int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
 			/*
 			 * The printed text
 			 */
@@ -73,7 +74,7 @@ public class Atlas implements Deity
 			p.sendMessage(":Reduce incoming combat damage by " + reduction + ".");
 			p.sendMessage(":Temporarily increase jump height.");
 			p.sendMessage("Duration: " + length + " Jump multiplier: " + jump + ChatColor.GREEN + " /unburden " + ChatColor.YELLOW + "Costs " + SKILLCOST + " Favor.");
-			if(((Atlas) DUtil.getDeity(p, "Atlas")).SKILL) p.sendMessage(ChatColor.AQUA + "    Skill is active.");
+			if(((Atlas) DMiscUtil.getDeity(p, "Atlas")).SKILL) p.sendMessage(ChatColor.AQUA + "    Skill is active.");
 			p.sendMessage(":Atlas shields you and nearby allies from harm.");
 			p.sendMessage("50% damage reduction with range " + radius + " for " + duration + " seconds.");
 			p.sendMessage(ChatColor.GREEN + " /invincible" + ChatColor.YELLOW + " Costs " + ULTIMATECOST + " Favor. Cooldown time: " + t + " seconds.");
@@ -96,18 +97,18 @@ public class Atlas implements Deity
 			EntityDamageEvent e = (EntityDamageEvent) ee;
 			if(!(e.getEntity() instanceof Player)) return;
 			Player p = (Player) e.getEntity();
-			if(!DUtil.isFullParticipant(p)) return;
-			if(DUtil.hasDeity(p, "Atlas"))
+			if(!DMiscUtil.isFullParticipant(p)) return;
+			if(DMiscUtil.hasDeity(p, "Atlas"))
 			{
 				if(e.getCause() == DamageCause.ENTITY_ATTACK)
 				{
-					int reduction = (int) Math.round(Math.pow(DUtil.getDevotion(p, getName()), 0.115));
+					int reduction = (int) Math.round(Math.pow(DMiscUtil.getDevotion(p, getName()), 0.115));
 					if(reduction > e.getDamage()) reduction = e.getDamage();
 					e.setDamage(e.getDamage() - reduction);
 				}
 				else if(e.getCause() == DamageCause.FALL)
 				{
-					if(DUtil.getActiveEffectsList(p.getName()).contains("Unburden")) e.setDamage(e.getDamage() / 3);
+					if(DMiscUtil.getActiveEffectsList(p.getName()).contains("Unburden")) e.setDamage(e.getDamage() / 3);
 				}
 			}
 		}
@@ -117,29 +118,29 @@ public class Atlas implements Deity
 	@Override
 	public void onCommand(final Player p, String str, String[] args, boolean bind)
 	{
-		if(!DUtil.isFullParticipant(p)) return;
-		if(!DUtil.hasDeity(p, "Atlas")) return;
+		if(!DMiscUtil.isFullParticipant(p)) return;
+		if(!DMiscUtil.hasDeity(p, "Atlas")) return;
 		if(str.equalsIgnoreCase("unburden"))
 		{
-			if(DUtil.getActiveEffects(p.getName()).containsKey("Unburden"))
+			if(DMiscUtil.getActiveEffects(p.getName()).containsKey("Unburden"))
 			{
 				SKILL = false;
 				p.sendMessage(ChatColor.YELLOW + "Unburden is already active.");
 			}
 			else
 			{
-				if(DUtil.getFavor(p) < SKILLCOST)
+				if(DMiscUtil.getFavor(p) < SKILLCOST)
 				{
 					p.sendMessage(ChatColor.YELLOW + "Unburden costs " + SKILLCOST + " Favor.");
 					return;
 				}
-				int devotion = DUtil.getDevotion(p, getName());
+				int devotion = DMiscUtil.getDevotion(p, getName());
 				int jump = (int) Math.ceil(0.85 * Math.pow(devotion, 0.28));
 				int length = (int) Math.ceil(4 * Math.pow(devotion, 0.2475));
 				p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, length * 20, jump));
-				DUtil.addActiveEffect(p.getName(), "Unburden", length);
+				DMiscUtil.addActiveEffect(p.getName(), "Unburden", length);
 				SKILL = true;
-				DUtil.getPlugin().getServer().getScheduler().scheduleAsyncDelayedTask(DUtil.getPlugin(), new Runnable()
+				DMiscUtil.getPlugin().getServer().getScheduler().scheduleAsyncDelayedTask(DMiscUtil.getPlugin(), new Runnable()
 				{
 					@Override
 					public void run()
@@ -147,7 +148,7 @@ public class Atlas implements Deity
 						SKILL = false;
 					}
 				}, length * 20);
-				DUtil.setFavor(p, DUtil.getFavor(p) - SKILLCOST);
+				DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - SKILLCOST);
 				p.sendMessage(ChatColor.YELLOW + "Unburden is now active.");
 				p.sendMessage(ChatColor.YELLOW + "You will jump higher for " + length + " seconds.");
 			}
@@ -161,20 +162,20 @@ public class Atlas implements Deity
 				p.sendMessage(ChatColor.YELLOW + "and " + ((((TIME) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
 				return;
 			}
-			if(DUtil.getFavor(p) >= ULTIMATECOST)
+			if(DMiscUtil.getFavor(p) >= ULTIMATECOST)
 			{
-				int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DUtil.getAscensions(p) / 100)));
+				int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
 				//
-				final int seconds = (int) (Math.ceil(35.819821 * Math.pow(DUtil.getAscensions(p), 0.26798863)));
-				int INVINCIBLERANGE = (int) (Math.ceil(4.957781 * Math.pow(DUtil.getAscensions(p), 0.45901927)));
-				for(String s : DUtil.getFullParticipants())
+				final int seconds = (int) (Math.ceil(35.819821 * Math.pow(DMiscUtil.getAscensions(p), 0.26798863)));
+				int INVINCIBLERANGE = (int) (Math.ceil(4.957781 * Math.pow(DMiscUtil.getAscensions(p), 0.45901927)));
+				for(String s : DMiscUtil.getFullParticipants())
 				{
-					final Player pl = DUtil.getOnlinePlayer(s);
+					final Player pl = DMiscUtil.getOnlinePlayer(s);
 					if((pl != null) && !pl.isDead() && (pl.getLocation().toVector().isInSphere(p.getLocation().toVector(), INVINCIBLERANGE)))
 					{
 						pl.sendMessage(ChatColor.DARK_AQUA + "Atlas" + ChatColor.GRAY + " shields you and your allies from harm.");
-						DUtil.addActiveEffect(pl.getName(), "Invincible", seconds);
-						DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable()
+						DMiscUtil.addActiveEffect(pl.getName(), "Invincible", seconds);
+						DMiscUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DMiscUtil.getPlugin(), new Runnable()
 						{
 							@Override
 							public void run()
@@ -182,7 +183,7 @@ public class Atlas implements Deity
 								pl.sendMessage(ChatColor.YELLOW + "Invincible will be in effect for " + seconds / 2 + " more seconds.");
 							}
 						}, seconds * 10);
-						DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable()
+						DMiscUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DMiscUtil.getPlugin(), new Runnable()
 						{
 							@Override
 							public void run()
@@ -193,11 +194,11 @@ public class Atlas implements Deity
 					}
 				}
 				//
-				DUtil.setFavor(p, DUtil.getFavor(p) - ULTIMATECOST);
+				DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - ULTIMATECOST);
 				ULTIMATETIME = System.currentTimeMillis() + t * 1000;
 			}
 			else p.sendMessage(ChatColor.YELLOW + "Invincible requires " + ULTIMATECOST + " Favor.");
-        }
+		}
 	}
 
 	@Override

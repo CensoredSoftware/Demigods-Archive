@@ -1,9 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Titans;
 
-import com.WildAmazing.marinating.Demigods.DSave;
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.WriteLocation;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,7 +18,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
+import com.WildAmazing.marinating.Demigods.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.DSave;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.WriteLocation;
 
 public class Rhea implements Deity
 {
@@ -74,9 +75,9 @@ public class Rhea implements Deity
 	@Override
 	public void printInfo(Player p)
 	{
-		if(DUtil.hasDeity(p, "Rhea") && DUtil.isFullParticipant(p))
+		if(DMiscUtil.hasDeity(p, "Rhea") && DMiscUtil.isFullParticipant(p))
 		{
-			int devotion = DUtil.getDevotion(p, getName());
+			int devotion = DMiscUtil.getDevotion(p, getName());
 			/*
 			 * Calculate special values first
 			 */
@@ -87,9 +88,9 @@ public class Rhea implements Deity
 			// explosion
 			float explosionsize = (float) (Math.ceil(3 * Math.pow(devotion, 0.09)));
 			// ultimate
-			int range = (int) (10.84198 * Math.pow(1.01926, DUtil.getAscensions(p)));
-			int ultimateduration = (int) (4.95778 * Math.pow(DUtil.getAscensions(p), 0.459019));
-			int t = (int) (RHEAULTIMATECOOLDOWNMAX - ((RHEAULTIMATECOOLDOWNMAX - RHEAULTIMATECOOLDOWNMIN) * ((double) DUtil.getAscensions(p) / 100)));
+			int range = (int) (10.84198 * Math.pow(1.01926, DMiscUtil.getAscensions(p)));
+			int ultimateduration = (int) (4.95778 * Math.pow(DMiscUtil.getAscensions(p), 0.459019));
+			int t = (int) (RHEAULTIMATECOOLDOWNMAX - ((RHEAULTIMATECOOLDOWNMAX - RHEAULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
 			/*
 			 * The printed text
 			 */
@@ -98,14 +99,14 @@ public class Rhea implements Deity
 			p.sendMessage(":Poison a target player. " + ChatColor.GREEN + "/poison");
 			p.sendMessage(ChatColor.YELLOW + "Costs " + POISONCOST + " Favor.");
 			p.sendMessage("Poison power: " + strength + " for " + duration + " seconds.");
-			if(((Rhea) (DUtil.getDeity(p, "Rhea"))).POISONBIND != null) p.sendMessage(ChatColor.AQUA + "    Bound to " + (((Rhea) (DUtil.getDeity(p, "Rhea"))).POISONBIND).name());
+			if(((Rhea) (DMiscUtil.getDeity(p, "Rhea"))).POISONBIND != null) p.sendMessage(ChatColor.AQUA + "    Bound to " + (((Rhea) (DMiscUtil.getDeity(p, "Rhea"))).POISONBIND).name());
 			else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
 			p.sendMessage(":Plant and detonate exploding trees. " + ChatColor.GREEN + "/plant, /detonate");
 			p.sendMessage(ChatColor.YELLOW + "Costs " + PLANTCOST + " Favor.");
-			p.sendMessage("Explosion radius: " + explosionsize + ". Maximum trees: " + (DUtil.getAscensions(p) + 1));
-			if(((Rhea) (DUtil.getDeity(p, "Rhea"))).PLANTBIND != null) p.sendMessage(ChatColor.AQUA + "    Plant bound to " + (((Rhea) (DUtil.getDeity(p, "Rhea"))).PLANTBIND).name());
+			p.sendMessage("Explosion radius: " + explosionsize + ". Maximum trees: " + (DMiscUtil.getAscensions(p) + 1));
+			if(((Rhea) (DMiscUtil.getDeity(p, "Rhea"))).PLANTBIND != null) p.sendMessage(ChatColor.AQUA + "    Plant bound to " + (((Rhea) (DMiscUtil.getDeity(p, "Rhea"))).PLANTBIND).name());
 			else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind plant to an item.");
-			if(((Rhea) (DUtil.getDeity(p, "Rhea"))).DETONATEBIND != null) p.sendMessage(ChatColor.AQUA + "    Detonate bound to " + (((Rhea) (DUtil.getDeity(p, "Rhea"))).DETONATEBIND).name());
+			if(((Rhea) (DMiscUtil.getDeity(p, "Rhea"))).DETONATEBIND != null) p.sendMessage(ChatColor.AQUA + "    Detonate bound to " + (((Rhea) (DMiscUtil.getDeity(p, "Rhea"))).DETONATEBIND).name());
 			else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind detonate to an item.");
 			p.sendMessage(":Rhea entangles nearby enemies, damaging them if they move.");
 			p.sendMessage("Range: " + range + " for " + ultimateduration + " seconds. " + ChatColor.GREEN + "/entangle");
@@ -131,17 +132,17 @@ public class Rhea implements Deity
 		{
 			PlayerInteractEvent e = (PlayerInteractEvent) ee;
 			Player p = e.getPlayer();
-			if(!DUtil.isFullParticipant(p)) return;
-			if(!DUtil.hasDeity(p, "Rhea")) return;
-			if(!DUtil.canTarget(p, p.getLocation())) return;
+			if(!DMiscUtil.isFullParticipant(p)) return;
+			if(!DMiscUtil.hasDeity(p, "Rhea")) return;
+			if(!DMiscUtil.canTarget(p, p.getLocation())) return;
 			if(POISON || ((POISONBIND != null) && (p.getItemInHand().getType() == POISONBIND)))
 			{
 				if(POISONTIME > System.currentTimeMillis()) return;
-				if(DUtil.getFavor(p) >= POISONCOST)
+				if(DMiscUtil.getFavor(p) >= POISONCOST)
 				{
 					if(poison(p))
 					{
-						DUtil.setFavor(p, DUtil.getFavor(p) - POISONCOST);
+						DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - POISONCOST);
 						POISONTIME = System.currentTimeMillis() + POISONDELAY;
 					}
 				}
@@ -154,11 +155,11 @@ public class Rhea implements Deity
 			if(PLANT || ((PLANTBIND != null) && (p.getItemInHand().getType() == PLANTBIND)))
 			{
 				if(PLANTTIME > System.currentTimeMillis()) return;
-				if(DUtil.getFavor(p) >= PLANTCOST)
+				if(DMiscUtil.getFavor(p) >= PLANTCOST)
 				{
 					if(plant(p))
 					{
-						DUtil.setFavor(p, DUtil.getFavor(p) - PLANTCOST);
+						DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - PLANTCOST);
 						PLANTTIME = System.currentTimeMillis() + PLANTDELAY;
 					}
 				}
@@ -239,26 +240,26 @@ public class Rhea implements Deity
 	public void onCommand(Player P, String str, String[] args, boolean bind)
 	{
 		final Player p = P;
-		if(!DUtil.isFullParticipant(p)) return;
-		if(!DUtil.hasDeity(p, "Rhea")) return;
+		if(!DMiscUtil.isFullParticipant(p)) return;
+		if(!DMiscUtil.hasDeity(p, "Rhea")) return;
 		if(str.equalsIgnoreCase("poison"))
 		{
 			if(bind)
 			{
 				if(POISONBIND == null)
 				{
-					if(DUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
+					if(DMiscUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
 					if(p.getItemInHand().getType() == Material.AIR) p.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
 					else
 					{
-						DUtil.registerBind(p, p.getItemInHand().getType());
+						DMiscUtil.registerBind(p, p.getItemInHand().getType());
 						POISONBIND = p.getItemInHand().getType();
 						p.sendMessage(ChatColor.YELLOW + "Poison is now bound to " + p.getItemInHand().getType().name() + ".");
 					}
 				}
 				else
 				{
-					DUtil.removeBind(p, POISONBIND);
+					DMiscUtil.removeBind(p, POISONBIND);
 					p.sendMessage(ChatColor.YELLOW + "Poison is no longer bound to " + POISONBIND.name() + ".");
 					POISONBIND = null;
 				}
@@ -281,18 +282,18 @@ public class Rhea implements Deity
 			{
 				if(PLANTBIND == null)
 				{
-					if(DUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
+					if(DMiscUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
 					if(p.getItemInHand().getType() == Material.AIR) p.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
 					else
 					{
-						DUtil.registerBind(p, p.getItemInHand().getType());
+						DMiscUtil.registerBind(p, p.getItemInHand().getType());
 						PLANTBIND = p.getItemInHand().getType();
 						p.sendMessage(ChatColor.YELLOW + "Plant is now bound to " + p.getItemInHand().getType().name() + ".");
 					}
 				}
 				else
 				{
-					DUtil.removeBind(p, PLANTBIND);
+					DMiscUtil.removeBind(p, PLANTBIND);
 					p.sendMessage(ChatColor.YELLOW + "Plant is no longer bound to " + PLANTBIND.name() + ".");
 					PLANTBIND = null;
 				}
@@ -316,18 +317,18 @@ public class Rhea implements Deity
 			{
 				if(DETONATEBIND == null)
 				{
-					if(DUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
+					if(DMiscUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
 					if(p.getItemInHand().getType() == Material.AIR) p.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
 					else
 					{
-						DUtil.registerBind(p, p.getItemInHand().getType());
+						DMiscUtil.registerBind(p, p.getItemInHand().getType());
 						DETONATEBIND = p.getItemInHand().getType();
 						p.sendMessage(ChatColor.YELLOW + "Detonate is now bound to " + p.getItemInHand().getType().name() + ".");
 					}
 				}
 				else
 				{
-					DUtil.removeBind(p, DETONATEBIND);
+					DMiscUtil.removeBind(p, DETONATEBIND);
 					p.sendMessage(ChatColor.YELLOW + "Detonate is no longer bound to " + DETONATEBIND.name() + ".");
 					DETONATEBIND = null;
 				}
@@ -343,25 +344,25 @@ public class Rhea implements Deity
 				p.sendMessage(ChatColor.YELLOW + "and " + ((((RHEAULTIMATETIME) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
 				return;
 			}
-			if(DUtil.getFavor(p) >= RHEAULTIMATECOST)
+			if(DMiscUtil.getFavor(p) >= RHEAULTIMATECOST)
 			{
-				if(!DUtil.canTarget(p, p.getLocation()))
+				if(!DMiscUtil.canTarget(p, p.getLocation()))
 				{
 					p.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 					return;
 				}
-				int t = (int) (RHEAULTIMATECOOLDOWNMAX - ((RHEAULTIMATECOOLDOWNMAX - RHEAULTIMATECOOLDOWNMIN) * ((double) DUtil.getAscensions(p) / 100)));
+				int t = (int) (RHEAULTIMATECOOLDOWNMAX - ((RHEAULTIMATECOOLDOWNMAX - RHEAULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
 				int hit = entangle(p);
 				if(hit > 0)
 				{
 					p.sendMessage(ChatColor.YELLOW + "Rhea has entangled " + hit + " enemies.");
-					DUtil.setFavor(p, DUtil.getFavor(p) - RHEAULTIMATECOST);
+					DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - RHEAULTIMATECOST);
 					RHEAULTIMATETIME = System.currentTimeMillis() + (t * 1000);
 				}
 				else p.sendMessage(ChatColor.YELLOW + "No targets found.");
 			}
 			else p.sendMessage(ChatColor.YELLOW + "Entangle requires " + RHEAULTIMATECOST + " Favor.");
-        }
+		}
 	}
 
 	@Override
@@ -372,12 +373,12 @@ public class Rhea implements Deity
 
 	private boolean poison(Player p)
 	{
-		if(!DUtil.canTarget(p, p.getLocation()))
+		if(!DMiscUtil.canTarget(p, p.getLocation()))
 		{
 			p.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 			return false;
 		}
-		int devotion = DUtil.getDevotion(p, getName());
+		int devotion = DMiscUtil.getDevotion(p, getName());
 		int duration = (int) Math.ceil(2.4063 * Math.pow(devotion, 0.11)); // seconds
 		if(duration < 1) duration = 1;
 		int strength = (int) Math.ceil(1 * Math.pow(devotion, 0.09));
@@ -387,7 +388,7 @@ public class Rhea implements Deity
 		{
 			if(pl.getLocation().distance(b.getLocation()) < 4)
 			{
-				if(!DUtil.areAllied(p, pl) && DUtil.canTarget(pl, pl.getLocation()))
+				if(!DMiscUtil.areAllied(p, pl) && DMiscUtil.canTarget(pl, pl.getLocation()))
 				{
 					target = pl;
 					break;
@@ -397,7 +398,7 @@ public class Rhea implements Deity
 		if(target != null)
 		{
 			target.addPotionEffect(new PotionEffect(PotionEffectType.POISON, duration * 20, strength));
-			DUtil.addActiveEffect(target.getName(), "Poison", duration);
+			DMiscUtil.addActiveEffect(target.getName(), "Poison", duration);
 			p.sendMessage(ChatColor.YELLOW + target.getName() + " has been poisoned for " + duration + " seconds.");
 			target.sendMessage(ChatColor.RED + "You have been poisoned for " + duration + " seconds.");
 			return true;
@@ -411,7 +412,7 @@ public class Rhea implements Deity
 
 	private boolean plant(Player player)
 	{
-		if(!DUtil.canTarget(player, player.getLocation()))
+		if(!DMiscUtil.canTarget(player, player.getLocation()))
 		{
 			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 			return false;
@@ -419,12 +420,12 @@ public class Rhea implements Deity
 		Block b = player.getTargetBlock(null, 200);
 		if(b != null)
 		{
-			if(!DUtil.canLocationPVP(b.getLocation()))
+			if(!DMiscUtil.canLocationPVP(b.getLocation()))
 			{
 				player.sendMessage(ChatColor.YELLOW + "That is a protected area.");
 				return false;
 			}
-			if(TREES.size() == (DUtil.getAscensions(player) + 1))
+			if(TREES.size() == (DMiscUtil.getAscensions(player) + 1))
 			{
 				player.sendMessage(ChatColor.YELLOW + "You have reached your maximum of " + (TREES.size()) + " trees.");
 				return false;
@@ -432,7 +433,7 @@ public class Rhea implements Deity
 			if(player.getWorld().generateTree(b.getRelative(BlockFace.UP).getLocation(), TreeType.TREE))
 			{
 				player.sendMessage(ChatColor.YELLOW + "Use /detonate to create an explosion at this tree.");
-				TREES.add(DUtil.toWriteLocation(b.getRelative(BlockFace.UP).getLocation()));
+				TREES.add(DMiscUtil.toWriteLocation(b.getRelative(BlockFace.UP).getLocation()));
 				return true;
 			}
 			else player.sendMessage(ChatColor.YELLOW + "A tree cannot be placed there.");
@@ -443,12 +444,12 @@ public class Rhea implements Deity
 
 	private void detonate(Player player)
 	{
-		float explosionsize = (float) (Math.ceil(3 * Math.pow(DUtil.getDevotion(player.getName(), getName()), 0.09)));
+		float explosionsize = (float) (Math.ceil(3 * Math.pow(DMiscUtil.getDevotion(player.getName(), getName()), 0.09)));
 		if(TREES.size() > 0)
 		{
 			for(WriteLocation w : TREES)
 			{
-				Location l = DUtil.toLocation(w);
+				Location l = DMiscUtil.toLocation(w);
 				if(l.getBlock().getType() == Material.LOG)
 				{
 					removelogs(l);
@@ -472,7 +473,7 @@ public class Rhea implements Deity
 
 	private void grow(Block b, int run)
 	{
-		if(!DUtil.canLocationPVP(b.getLocation())) return;
+		if(!DMiscUtil.canLocationPVP(b.getLocation())) return;
 		if(((b.getType() == Material.AIR) && (b.getRelative(BlockFace.DOWN).getType() == Material.GRASS)) && (run > 0))
 		{
 			switch((int) (Math.random() * 50))
@@ -523,10 +524,10 @@ public class Rhea implements Deity
 
 	private int entangle(Player p)
 	{
-		int range = (int) (10.84198 * Math.pow(1.01926, DUtil.getAscensions(p)));
-		int duration = (int) (4.95778 * Math.pow(DUtil.getAscensions(p), 0.459019));
+		int range = (int) (10.84198 * Math.pow(1.01926, DMiscUtil.getAscensions(p)));
+		int duration = (int) (4.95778 * Math.pow(DMiscUtil.getAscensions(p), 0.459019));
 		int count = 0;
-		if(!DUtil.canTarget(p, p.getLocation())) return count;
+		if(!DMiscUtil.canTarget(p, p.getLocation())) return count;
 
 		for(LivingEntity le : p.getWorld().getLivingEntities())
 		{
@@ -535,9 +536,9 @@ public class Rhea implements Deity
 				if(le instanceof Player)
 				{
 					Player pl = (Player) le;
-					if(DUtil.isFullParticipant(pl))
+					if(DMiscUtil.isFullParticipant(pl))
 					{
-						if(!DUtil.areAllied(p, pl) && DUtil.canTarget(le, le.getLocation()))
+						if(!DMiscUtil.areAllied(p, pl) && DMiscUtil.canTarget(le, le.getLocation()))
 						{
 							trap(le, duration, p);
 							count++;
@@ -545,7 +546,7 @@ public class Rhea implements Deity
 						else continue;
 					}
 				}
-				if(DUtil.canTarget(le, le.getLocation()))
+				if(DMiscUtil.canTarget(le, le.getLocation()))
 				{
 					count++;
 					trap(le, duration, p);
@@ -636,7 +637,7 @@ public class Rhea implements Deity
 		}
 		for(int i = 0; i < durationseconds * 20; i += 10)
 		{
-			DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable()
+			DMiscUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DMiscUtil.getPlugin(), new Runnable()
 			{
 				@Override
 				public void run()
@@ -653,13 +654,13 @@ public class Rhea implements Deity
 							if(DSave.hasData((Player) le, "temp_trap_died")) return;
 							((Player) le).sendMessage(ChatColor.YELLOW + "You take damage from moving while entangled!");
 						}
-						DUtil.damageDemigods(p, le, 5, DamageCause.CUSTOM);
+						DMiscUtil.damageDemigods(p, le, 5, DamageCause.CUSTOM);
 					}
 					le.teleport(originalloc);
 				}
 			}, i);
 		}
-		DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable()
+		DMiscUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DMiscUtil.getPlugin(), new Runnable()
 		{
 			@Override
 			public void run()

@@ -1,11 +1,12 @@
 package com.WildAmazing.marinating.Demigods.Deities;
 
-import com.WildAmazing.marinating.Demigods.DUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerInteractEvent;
+
+import com.WildAmazing.marinating.Demigods.DMiscUtil;
 
 public class Template implements Deity
 {
@@ -56,9 +57,9 @@ public class Template implements Deity
 	@Override
 	public void printInfo(Player p)
 	{
-		if(DUtil.isFullParticipant(p) && DUtil.hasDeity(p, getName()))
+		if(DMiscUtil.isFullParticipant(p) && DMiscUtil.hasDeity(p, getName()))
 		{
-			int devotion = DUtil.getDevotion(p, getName());
+			int devotion = DMiscUtil.getDevotion(p, getName());
 			p.sendMessage("--" + ChatColor.GOLD + getName() + ChatColor.GRAY + "[" + devotion + "]");
 			return;
 		}
@@ -76,18 +77,18 @@ public class Template implements Deity
 		{
 			PlayerInteractEvent e = (PlayerInteractEvent) ee;
 			Player p = e.getPlayer();
-			if(!DUtil.isFullParticipant(p) || !DUtil.hasDeity(p, getName())) return;
+			if(!DMiscUtil.isFullParticipant(p) || !DMiscUtil.hasDeity(p, getName())) return;
 			if(SKILL || ((p.getItemInHand() != null) && (p.getItemInHand().getType() == SKILLBIND)))
 			{
 				if(SKILLTIME > System.currentTimeMillis()) return;
 				SKILLTIME = System.currentTimeMillis() + SKILLDELAY;
-				if(DUtil.getFavor(p) >= SKILLCOST)
+				if(DMiscUtil.getFavor(p) >= SKILLCOST)
 				{
 					/*
 					 * Skill
 					 */
-					DUtil.setFavor(p, DUtil.getFavor(p) - SKILLCOST);
-                }
+					DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - SKILLCOST);
+				}
 				else
 				{
 					p.sendMessage(ChatColor.YELLOW + "You do not have enough Favor.");
@@ -101,7 +102,7 @@ public class Template implements Deity
 	public void onCommand(Player P, String str, String[] args, boolean bind)
 	{
 		final Player p = P;
-		if(DUtil.hasDeity(p, getName()))
+		if(DMiscUtil.hasDeity(p, getName()))
 		{
 			if(str.equalsIgnoreCase(skillname))
 			{
@@ -109,18 +110,18 @@ public class Template implements Deity
 				{
 					if(SKILLBIND == null)
 					{
-						if(DUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
+						if(DMiscUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
 						if(p.getItemInHand().getType() == Material.AIR) p.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
 						else
 						{
-							DUtil.registerBind(p, p.getItemInHand().getType());
+							DMiscUtil.registerBind(p, p.getItemInHand().getType());
 							SKILLBIND = p.getItemInHand().getType();
 							p.sendMessage(ChatColor.YELLOW + "" + skillname + " is now bound to " + p.getItemInHand().getType().name() + ".");
 						}
 					}
 					else
 					{
-						DUtil.removeBind(p, SKILLBIND);
+						DMiscUtil.removeBind(p, SKILLBIND);
 						p.sendMessage(ChatColor.YELLOW + "" + skillname + " is no longer bound to " + SKILLBIND.name() + ".");
 						SKILLBIND = null;
 					}
@@ -146,17 +147,17 @@ public class Template implements Deity
 					p.sendMessage(ChatColor.YELLOW + "and " + ((((TIME) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
 					return;
 				}
-				if(DUtil.getFavor(p) >= ULTIMATECOST)
+				if(DMiscUtil.getFavor(p) >= ULTIMATECOST)
 				{
-					int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DUtil.getAscensions(p) / 100)));
+					int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
 					ULTIMATETIME = System.currentTimeMillis() + (t * 1000);
 					/*
 					 * Ultimate code
 					 */
-					DUtil.setFavor(p, DUtil.getFavor(p) - ULTIMATECOST);
+					DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - ULTIMATECOST);
 				}
 				else p.sendMessage(ChatColor.YELLOW + "" + ult + " requires " + ULTIMATECOST + " Favor.");
-            }
+			}
 		}
 	}
 

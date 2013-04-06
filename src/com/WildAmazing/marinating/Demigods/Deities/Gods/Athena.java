@@ -1,8 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Gods;
 
-import com.WildAmazing.marinating.Demigods.DSave;
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,7 +13,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.List;
+import com.WildAmazing.marinating.Demigods.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.DSave;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
 public class Athena implements Deity
 {
@@ -58,22 +59,22 @@ public class Athena implements Deity
 	@Override
 	public void printInfo(Player p)
 	{
-		if(DUtil.isFullParticipant(p) && DUtil.hasDeity(p, getName()))
+		if(DMiscUtil.isFullParticipant(p) && DMiscUtil.hasDeity(p, getName()))
 		{
-			int devotion = DUtil.getDevotion(p, getName());
+			int devotion = DMiscUtil.getDevotion(p, getName());
 			// flash range
 			int range = (int) Math.ceil(3 * Math.pow(devotion, 0.2));
 			// ceasefire range
 			int crange = (int) Math.floor(15 * Math.pow(devotion, 0.275));
 			// ceasefire duration
 			int duration = (int) Math.ceil(10 * Math.pow(devotion, 0.194));
-			int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DUtil.getAscensions(p) / DUtil.ASCENSIONCAP)));
+			int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / DMiscUtil.ASCENSIONCAP)));
 			// print
 			p.sendMessage("--" + ChatColor.GOLD + getName() + ChatColor.GRAY + "[" + devotion + "]");
 			p.sendMessage(":Use " + ChatColor.YELLOW + "qd <name>" + ChatColor.WHITE + " for detailed information about any player");
 			p.sendMessage("you are looking at.");
 			p.sendMessage(":Left-click to teleport with range " + range + "." + ChatColor.GREEN + " /flash " + ChatColor.YELLOW + "Costs " + SKILLCOST + " Favor.");
-			if(((Athena) DUtil.getDeity(p, getName())).SKILLBIND != null) p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Athena) DUtil.getDeity(p, getName())).SKILLBIND.name());
+			if(((Athena) DMiscUtil.getDeity(p, getName())).SKILLBIND != null) p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Athena) DMiscUtil.getDeity(p, getName())).SKILLBIND.name());
 			else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
 			p.sendMessage(":Athena silences the battlefield, preventing all damage in range " + crange);
 			p.sendMessage("dealt by Gods and Titans alike for " + duration + " seconds." + ChatColor.GREEN + " /ceasefire");
@@ -97,16 +98,16 @@ public class Athena implements Deity
 		{
 			PlayerInteractEvent e = (PlayerInteractEvent) ee;
 			Player p = e.getPlayer();
-			if(!DUtil.isFullParticipant(p) || !DUtil.hasDeity(p, getName())) return;
+			if(!DMiscUtil.isFullParticipant(p) || !DMiscUtil.hasDeity(p, getName())) return;
 			if(SKILL || ((p.getItemInHand() != null) && (p.getItemInHand().getType() == SKILLBIND)))
 			{
 				if(SKILLTIME > System.currentTimeMillis()) return;
 				SKILLTIME = System.currentTimeMillis() + SKILLDELAY;
-				if(DUtil.getFavor(p) >= SKILLCOST)
+				if(DMiscUtil.getFavor(p) >= SKILLCOST)
 				{
 					float pitch = p.getLocation().getPitch();
 					float yaw = p.getLocation().getYaw();
-					int range = (int) Math.ceil(3 * Math.pow(DUtil.getDevotion(p, getName()), 0.2));
+					int range = (int) Math.ceil(3 * Math.pow(DMiscUtil.getDevotion(p, getName()), 0.2));
 					List<Block> los = p.getLineOfSight(null, 100);
 					Location go = null;
 					if(los.size() - 1 < range) go = los.get(los.size() - 1).getLocation();
@@ -119,9 +120,9 @@ public class Athena implements Deity
 					{
 						DSave.saveData(p, "temp_flash", true);
 						p.teleport(go);
-						DUtil.setFavor(p, DUtil.getFavor(p) - SKILLCOST);
+						DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - SKILLCOST);
 					}
-                }
+				}
 				else
 				{
 					p.sendMessage(ChatColor.YELLOW + "You do not have enough Favor.");
@@ -138,9 +139,9 @@ public class Athena implements Deity
 				if(e1.getDamager() instanceof Player)
 				{
 					Player p = (Player) e1.getDamager();
-					if(DUtil.isFullParticipant(p))
+					if(DMiscUtil.isFullParticipant(p))
 					{
-						if(DUtil.getActiveEffectsList(p.getName()).contains("Ceasefire"))
+						if(DMiscUtil.getActiveEffectsList(p.getName()).contains("Ceasefire"))
 						{
 							e.setDamage(0);
 							e.setCancelled(true);
@@ -153,9 +154,9 @@ public class Athena implements Deity
 			if(e.getEntity() instanceof Player)
 			{
 				Player p = (Player) e.getEntity();
-				if(DUtil.isFullParticipant(p))
+				if(DMiscUtil.isFullParticipant(p))
 				{
-					if(DUtil.getActiveEffectsList(p.getName()).contains("Ceasefire"))
+					if(DMiscUtil.getActiveEffectsList(p.getName()).contains("Ceasefire"))
 					{
 						e.setDamage(0);
 						e.setCancelled(true);
@@ -168,7 +169,7 @@ public class Athena implements Deity
 	@Override
 	public void onCommand(final Player p, String str, String[] args, boolean bind)
 	{
-		if(DUtil.hasDeity(p, getName()))
+		if(DMiscUtil.hasDeity(p, getName()))
 		{
 			if(str.equalsIgnoreCase("flash"))
 			{
@@ -176,18 +177,18 @@ public class Athena implements Deity
 				{
 					if(SKILLBIND == null)
 					{
-						if(DUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
+						if(DMiscUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
 						if(p.getItemInHand().getType() == Material.AIR) p.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
 						else
 						{
-							DUtil.registerBind(p, p.getItemInHand().getType());
+							DMiscUtil.registerBind(p, p.getItemInHand().getType());
 							SKILLBIND = p.getItemInHand().getType();
 							p.sendMessage(ChatColor.YELLOW + "Flash is now bound to " + p.getItemInHand().getType().name() + ".");
 						}
 					}
 					else
 					{
-						DUtil.removeBind(p, SKILLBIND);
+						DMiscUtil.removeBind(p, SKILLBIND);
 						p.sendMessage(ChatColor.YELLOW + "Flash is no longer bound to " + SKILLBIND.name() + ".");
 						SKILLBIND = null;
 					}
@@ -213,29 +214,29 @@ public class Athena implements Deity
 					p.sendMessage(ChatColor.YELLOW + "and " + ((((TIME) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
 					return;
 				}
-				if(DUtil.getFavor(p) >= ULTIMATECOST)
+				if(DMiscUtil.getFavor(p) >= ULTIMATECOST)
 				{
-					int devotion = DUtil.getDevotion(p, getName());
+					int devotion = DMiscUtil.getDevotion(p, getName());
 					int crange = (int) Math.floor(15 * Math.pow(devotion, 0.275));
 					int duration = (int) Math.ceil(10 * Math.pow(devotion, 0.194));
-					int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DUtil.getAscensions(p) / DUtil.ASCENSIONCAP)));
+					int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / DMiscUtil.ASCENSIONCAP)));
 					ULTIMATETIME = System.currentTimeMillis() + (t * 1000);
 					p.sendMessage("In exchange for " + ChatColor.AQUA + ULTIMATECOST + ChatColor.WHITE + " Favor, ");
 					for(Player pl : p.getWorld().getPlayers())
 					{
 						if(pl.getLocation().distance(p.getLocation()) <= crange)
 						{
-							if(DUtil.isFullParticipant(pl))
+							if(DMiscUtil.isFullParticipant(pl))
 							{
 								pl.sendMessage(ChatColor.GOLD + "Athena" + ChatColor.WHITE + " has mandated a ceasefire for " + duration + " seconds.");
-								DUtil.addActiveEffect(pl.getName(), "Ceasefire", duration);
+								DMiscUtil.addActiveEffect(pl.getName(), "Ceasefire", duration);
 							}
 						}
 					}
-					DUtil.setFavor(p, DUtil.getFavor(p) - ULTIMATECOST);
+					DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - ULTIMATECOST);
 				}
 				else p.sendMessage(ChatColor.YELLOW + "Ceasefire requires " + ULTIMATECOST + " Favor.");
-            }
+			}
 		}
 	}
 

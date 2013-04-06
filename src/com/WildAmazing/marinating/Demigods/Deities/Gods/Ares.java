@@ -1,7 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Gods;
 
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -14,7 +14,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
+import com.WildAmazing.marinating.Demigods.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
 /*
  * Affected by level:
@@ -58,9 +59,9 @@ public class Ares implements Deity
 	@Override
 	public void printInfo(Player p)
 	{
-		if(DUtil.hasDeity(p, "Ares") && DUtil.isFullParticipant(p))
+		if(DMiscUtil.hasDeity(p, "Ares") && DMiscUtil.isFullParticipant(p))
 		{
-			int devotion = DUtil.getDevotion(p, getName());
+			int devotion = DMiscUtil.getDevotion(p, getName());
 			/*
 			 * Calculate special values first
 			 */
@@ -68,19 +69,19 @@ public class Ares implements Deity
 			final int slowpower = (int) (Math.ceil(1.681539 * Math.pow(devotion, 0.11457)));
 			int duration = (int) (Math.ceil(2.9573 * Math.pow(devotion, 0.138428)));
 			// ultimate
-			int targets = (int) Math.ceil(3.08 * (Math.pow(1.05, DUtil.getAscensions(p))));
-			int range = (int) Math.ceil(7.17 * Math.pow(1.035, DUtil.getAscensions(p)));
-			int damage = (int) Math.ceil(10 * Math.pow(DUtil.getAscensions(p), 0.868));
-			int confuseduration = (int) (1.0354 * Math.pow(DUtil.getAscensions(p), 0.4177)) * 20;
-			int t = (int) (ARESULTIMATECOOLDOWNMAX - ((ARESULTIMATECOOLDOWNMAX - ARESULTIMATECOOLDOWNMIN) * ((double) DUtil.getAscensions(p) / 100)));
+			int targets = (int) Math.ceil(3.08 * (Math.pow(1.05, DMiscUtil.getAscensions(p))));
+			int range = (int) Math.ceil(7.17 * Math.pow(1.035, DMiscUtil.getAscensions(p)));
+			int damage = (int) Math.ceil(10 * Math.pow(DMiscUtil.getAscensions(p), 0.868));
+			int confuseduration = (int) (1.0354 * Math.pow(DMiscUtil.getAscensions(p), 0.4177)) * 20;
+			int t = (int) (ARESULTIMATECOOLDOWNMAX - ((ARESULTIMATECOOLDOWNMAX - ARESULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
 			/*
 			 * The printed text
 			 */
 			p.sendMessage("--" + ChatColor.GOLD + "Ares" + ChatColor.GRAY + " [" + devotion + "]");
-			p.sendMessage(":Up to " + DUtil.getAscensions(p) + " additional Favor per hit on overkill.");
+			p.sendMessage(":Up to " + DMiscUtil.getAscensions(p) + " additional Favor per hit on overkill.");
 			p.sendMessage(":Strike an enemy from afar with your sword, slowing them down.");
 			p.sendMessage("Slow: " + slowpower + " for " + duration + " seconds. Damage: " + dmg + ChatColor.GREEN + " /strike " + ChatColor.YELLOW + "Costs " + STRIKECOST + " Favor.");
-			if(((Ares) DUtil.getDeity(p, getName())).STRIKEBIND != null) p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Ares) DUtil.getDeity(p, getName())).STRIKEBIND.name());
+			if(((Ares) DMiscUtil.getDeity(p, getName())).STRIKEBIND != null) p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Ares) DMiscUtil.getDeity(p, getName())).STRIKEBIND.name());
 			else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
 			p.sendMessage(":Ares flings up to " + targets + " targets within range " + range + " to you, dealing");
 			p.sendMessage(damage + " damage to each and confusing them for " + confuseduration + " seconds." + ChatColor.GREEN + " /crash");
@@ -117,18 +118,18 @@ public class Ares implements Deity
 		{
 			PlayerInteractEvent e = (PlayerInteractEvent) ee;
 			Player p = e.getPlayer();
-			if(!DUtil.hasDeity(p, "Ares") || !DUtil.isFullParticipant(p)) return;
+			if(!DMiscUtil.hasDeity(p, "Ares") || !DMiscUtil.isFullParticipant(p)) return;
 			if((p.getItemInHand() != null) && p.getItemInHand().getType().name().contains("SWORD"))
 			{
 				if(STRIKE || ((p.getItemInHand() != null) && (p.getItemInHand().getType() == STRIKEBIND)))
 				{
 					if(STRIKETIME > System.currentTimeMillis()) return;
 					STRIKETIME = System.currentTimeMillis() + STRIKEDELAY;
-					if(DUtil.getFavor(p) >= STRIKECOST)
+					if(DMiscUtil.getFavor(p) >= STRIKECOST)
 					{
 						strike(p);
-						DUtil.setFavor(p, DUtil.getFavor(p) - STRIKECOST);
-                    }
+						DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - STRIKECOST);
+					}
 					else
 					{
 						p.sendMessage(ChatColor.YELLOW + "You do not have enough Favor.");
@@ -145,7 +146,7 @@ public class Ares implements Deity
 				if(e.getDamager() instanceof Player)
 				{
 					Player p = (Player) e.getDamager();
-					if(!DUtil.hasDeity(p, "Ares") || !DUtil.isFullParticipant(p)) return;
+					if(!DMiscUtil.hasDeity(p, "Ares") || !DMiscUtil.isFullParticipant(p)) return;
 					try
 					{
 						LivingEntity le = (LivingEntity) e.getEntity();
@@ -154,9 +155,9 @@ public class Ares implements Deity
 							//
 							if((int) (Math.random() * 3) == 1)
 							{
-								int reward = 1 + (int) (Math.random() * DUtil.getAscensions(p));
+								int reward = 1 + (int) (Math.random() * DMiscUtil.getAscensions(p));
 								p.sendMessage(ChatColor.RED + "Finishing bonus: +" + reward);
-								DUtil.setFavor(p, DUtil.getFavor(p) + reward);
+								DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) + reward);
 							}
 						}
 					}
@@ -177,7 +178,7 @@ public class Ares implements Deity
 	@Override
 	public void onCommand(final Player p, String str, String[] args, boolean bind)
 	{
-		if(DUtil.hasDeity(p, "Ares"))
+		if(DMiscUtil.hasDeity(p, "Ares"))
 		{
 			if(str.equalsIgnoreCase("strike"))
 			{
@@ -185,19 +186,19 @@ public class Ares implements Deity
 				{
 					if(STRIKEBIND == null)
 					{
-						if(DUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
+						if(DMiscUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
 						if(p.getItemInHand().getType() == Material.AIR) p.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
 						if(!p.getItemInHand().getType().name().contains("SWORD")) p.sendMessage(ChatColor.YELLOW + "You must bind this skill to a sword.");
 						else
 						{
-							DUtil.registerBind(p, p.getItemInHand().getType());
+							DMiscUtil.registerBind(p, p.getItemInHand().getType());
 							STRIKEBIND = p.getItemInHand().getType();
 							p.sendMessage(ChatColor.YELLOW + "Strike is now bound to " + p.getItemInHand().getType().name() + ".");
 						}
 					}
 					else
 					{
-						DUtil.removeBind(p, STRIKEBIND);
+						DMiscUtil.removeBind(p, STRIKEBIND);
 						p.sendMessage(ChatColor.YELLOW + "Strike is no longer bound to " + STRIKEBIND.name() + ".");
 						STRIKEBIND = null;
 					}
@@ -223,9 +224,9 @@ public class Ares implements Deity
 					p.sendMessage(ChatColor.YELLOW + "and " + ((((TIME) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
 					return;
 				}
-				if(DUtil.getFavor(p) >= ARESULTIMATECOST)
+				if(DMiscUtil.getFavor(p) >= ARESULTIMATECOST)
 				{
-					if(!DUtil.canTarget(p, p.getLocation()))
+					if(!DMiscUtil.canTarget(p, p.getLocation()))
 					{
 						p.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 						return;
@@ -236,14 +237,14 @@ public class Ares implements Deity
 						p.sendMessage(ChatColor.YELLOW + "No targets were found, or the skill could not be used.");
 						return;
 					}
-					int t = (int) (ARESULTIMATECOOLDOWNMAX - ((ARESULTIMATECOOLDOWNMAX - ARESULTIMATECOOLDOWNMIN) * ((double) DUtil.getAscensions(p) / 100)));
+					int t = (int) (ARESULTIMATECOOLDOWNMAX - ((ARESULTIMATECOOLDOWNMAX - ARESULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
 					ARESULTIMATETIME = System.currentTimeMillis() + (t * 1000);
 					p.sendMessage("In exchange for " + ChatColor.AQUA + ARESULTIMATECOST + ChatColor.WHITE + " Favor, ");
 					p.sendMessage(ChatColor.GOLD + "Ares" + ChatColor.WHITE + " has unleashed his powers on " + hits + " non-allied entities.");
-					DUtil.setFavor(p, DUtil.getFavor(p) - ARESULTIMATECOST);
+					DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - ARESULTIMATECOST);
 				}
 				else p.sendMessage(ChatColor.YELLOW + "Power crash requires " + ARESULTIMATECOST + " Favor.");
-            }
+			}
 		}
 	}
 
@@ -257,13 +258,13 @@ public class Ares implements Deity
 		/*
 		 * /
 		 */
-		LivingEntity target = DUtil.getTargetLivingEntity(p, 2);
+		LivingEntity target = DMiscUtil.getTargetLivingEntity(p, 2);
 		if(target == null)
 		{
 			p.sendMessage(ChatColor.YELLOW + "No target found.");
 			return false;
 		}
-		if(!DUtil.canTarget(target, target.getLocation()) || !DUtil.canTarget(p, p.getLocation()))
+		if(!DMiscUtil.canTarget(target, target.getLocation()) || !DMiscUtil.canTarget(p, p.getLocation()))
 		{
 			p.sendMessage(ChatColor.YELLOW + "Can't attack in a no-PVP zone.");
 			return false;
@@ -271,7 +272,7 @@ public class Ares implements Deity
 		/*
 		 * Calculate special values
 		 */
-		int devotion = DUtil.getDevotion(p, getName());
+		int devotion = DMiscUtil.getDevotion(p, getName());
 		int damage = (int) Math.round(0.9 * Math.pow(devotion, 0.34));
 		final int slowpower = (int) (Math.ceil(1.681539 * Math.pow(devotion, 0.11457)));
 		int duration = (int) (Math.ceil(2.9573 * Math.pow(devotion, 0.138428)));
@@ -279,7 +280,7 @@ public class Ares implements Deity
 		/*
 		 * Deal damage and slow if player
 		 */
-		DUtil.damageDemigods(p, target, damage, DamageCause.ENTITY_ATTACK);
+		DMiscUtil.damageDemigods(p, target, damage, DamageCause.ENTITY_ATTACK);
 		target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration, slowpower));
 		return true;
 	}
@@ -292,9 +293,9 @@ public class Ares implements Deity
 		 * Damage: done instantly
 		 * Confusion: how long players remain dizzied
 		 */
-		int range = (int) (7.17 * Math.pow(1.035, DUtil.getAscensions(p)));
-		int damage = (int) (1.929 * Math.pow(DUtil.getAscensions(p), 0.48028));
-		int confuseduration = (int) (1.0354 * Math.pow(DUtil.getAscensions(p), 0.4177)) * 20;
+		int range = (int) (7.17 * Math.pow(1.035, DMiscUtil.getAscensions(p)));
+		int damage = (int) (1.929 * Math.pow(DMiscUtil.getAscensions(p), 0.48028));
+		int confuseduration = (int) (1.0354 * Math.pow(DMiscUtil.getAscensions(p), 0.4177)) * 20;
 		/*
 		 * The ultimate
 		 */
@@ -307,8 +308,8 @@ public class Ares implements Deity
 				if(le instanceof Player)
 				{
 					Player pt = (Player) le;
-					if(DUtil.getAllegiance(pt).equals(DUtil.getAllegiance(p)) || pt.equals(p)) continue;
-					if(!DUtil.canTarget(le, le.getLocation())) continue;
+					if(DMiscUtil.getAllegiance(pt).equals(DMiscUtil.getAllegiance(p)) || pt.equals(p)) continue;
+					if(!DMiscUtil.canTarget(le, le.getLocation())) continue;
 					targets.add(le);
 					confuse.add(pt);
 				}
@@ -322,7 +323,7 @@ public class Ares implements Deity
 				Vector v = le.getLocation().toVector();
 				Vector victor = p.getLocation().toVector().subtract(v);
 				le.setVelocity(victor);
-				DUtil.damageDemigods(p, le, damage, DamageCause.CUSTOM);
+				DMiscUtil.damageDemigods(p, le, damage, DamageCause.CUSTOM);
 			}
 		}
 		if(confuse.size() > 0)

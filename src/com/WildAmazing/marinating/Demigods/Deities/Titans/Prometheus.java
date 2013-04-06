@@ -1,7 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Titans;
 
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,7 +16,8 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
+import com.WildAmazing.marinating.Demigods.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
 //TODO better replacement for BLAZE
 public class Prometheus implements Deity
@@ -75,16 +76,16 @@ public class Prometheus implements Deity
 	@Override
 	public void printInfo(Player p)
 	{
-		if(DUtil.hasDeity(p, "Prometheus") && DUtil.isFullParticipant(p))
+		if(DMiscUtil.hasDeity(p, "Prometheus") && DMiscUtil.isFullParticipant(p))
 		{
-			int devotion = DUtil.getDevotion(p, getName());
+			int devotion = DMiscUtil.getDevotion(p, getName());
 			/*
 			 * Calculate special values first
 			 */
-			int t = (int) (PROMETHEUSULTIMATECOOLDOWNMAX - ((PROMETHEUSULTIMATECOOLDOWNMAX - PROMETHEUSULTIMATECOOLDOWNMIN) * ((double) DUtil.getAscensions(p) / 100)));
+			int t = (int) (PROMETHEUSULTIMATECOOLDOWNMAX - ((PROMETHEUSULTIMATECOOLDOWNMAX - PROMETHEUSULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
 			int diameter = (int) Math.ceil(1.43 * Math.pow(devotion, 0.1527));
 			if(diameter > 12) diameter = 12;
-			int firestormshots = (int) Math.round(2 * Math.pow(DUtil.getDevotion(p, getName()), 0.15));
+			int firestormshots = (int) Math.round(2 * Math.pow(DMiscUtil.getDevotion(p, getName()), 0.15));
 			/*
 			 * The printed text
 			 */
@@ -92,11 +93,11 @@ public class Prometheus implements Deity
 			p.sendMessage(":Immune to fire damage.");
 			p.sendMessage(":Shoot a fireball at the cursor's location. " + ChatColor.GREEN + "/fireball");
 			p.sendMessage(ChatColor.YELLOW + "Costs " + FIREBALLCOST + " Favor.");
-			if(((Prometheus) (DUtil.getDeity(p, "Prometheus"))).FIREBALLITEM != null) p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Prometheus) (DUtil.getDeity(p, "Prometheus"))).FIREBALLITEM.name());
+			if(((Prometheus) (DMiscUtil.getDeity(p, "Prometheus"))).FIREBALLITEM != null) p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Prometheus) (DMiscUtil.getDeity(p, "Prometheus"))).FIREBALLITEM.name());
 			else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
 			p.sendMessage(":Ignite the ground at the target location with diameter " + diameter + ". " + ChatColor.GREEN + "/blaze");
 			p.sendMessage(ChatColor.YELLOW + "Costs " + BLAZECOST + " Favor. Cooldown time: " + BLAZEDELAY + " seconds.");
-			if(((Prometheus) (DUtil.getDeity(p, "Prometheus"))).BLAZEITEM != null) p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Prometheus) (DUtil.getDeity(p, "Prometheus"))).BLAZEITEM.name());
+			if(((Prometheus) (DMiscUtil.getDeity(p, "Prometheus"))).BLAZEITEM != null) p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Prometheus) (DMiscUtil.getDeity(p, "Prometheus"))).BLAZEITEM.name());
 			else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
 			p.sendMessage(":Prometheus rains fire on nearby enemies.");
 			p.sendMessage("Shoots " + firestormshots + " fireballs. " + ChatColor.GREEN + "/firestorm");
@@ -121,20 +122,20 @@ public class Prometheus implements Deity
 		{
 			PlayerInteractEvent e = (PlayerInteractEvent) ee;
 			Player p = e.getPlayer();
-			if(!DUtil.isFullParticipant(p)) return;
-			if(!DUtil.hasDeity(p, "Prometheus")) return;
+			if(!DMiscUtil.isFullParticipant(p)) return;
+			if(!DMiscUtil.hasDeity(p, "Prometheus")) return;
 			if(FIREBALL || ((p.getItemInHand() != null) && (p.getItemInHand().getType() == FIREBALLITEM)))
 			{
 				if(System.currentTimeMillis() < FIREBALLTIME) return;
-				if(DUtil.getFavor(p) >= FIREBALLCOST)
+				if(DMiscUtil.getFavor(p) >= FIREBALLCOST)
 				{
-					if(!DUtil.canTarget(p, p.getLocation()))
+					if(!DMiscUtil.canTarget(p, p.getLocation()))
 					{
 						p.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 						return;
 					}
-					DUtil.setFavor(p, DUtil.getFavor(p) - FIREBALLCOST);
-					shootFireball(p.getEyeLocation(), DUtil.getTargetLocation(p), p);
+					DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - FIREBALLCOST);
+					shootFireball(p.getEyeLocation(), DMiscUtil.getTargetLocation(p), p);
 					FIREBALLTIME = System.currentTimeMillis() + (long) (FIREBALLDELAY * 1000);
 				}
 				else
@@ -150,19 +151,19 @@ public class Prometheus implements Deity
 					p.sendMessage(ChatColor.YELLOW + "Blaze is on cooldown.");
 					return;
 				}
-				if(DUtil.getFavor(p) >= BLAZECOST)
+				if(DMiscUtil.getFavor(p) >= BLAZECOST)
 				{
-					if(!DUtil.canTarget(p, p.getLocation()))
+					if(!DMiscUtil.canTarget(p, p.getLocation()))
 					{
 						p.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 						return;
 					}
-					int diameter = (int) Math.ceil(1.43 * Math.pow(DUtil.getDevotion(p, getName()), 0.1527));
+					int diameter = (int) Math.ceil(1.43 * Math.pow(DMiscUtil.getDevotion(p, getName()), 0.1527));
 					if(diameter > 12) diameter = 12;
-					if(DUtil.canLocationPVP(DUtil.getTargetLocation(p)))
+					if(DMiscUtil.canLocationPVP(DMiscUtil.getTargetLocation(p)))
 					{
-						blaze(DUtil.getTargetLocation(p), diameter);
-						DUtil.setFavor(p, DUtil.getFavor(p) - BLAZECOST);
+						blaze(DMiscUtil.getTargetLocation(p), diameter);
+						DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - BLAZECOST);
 						BLAZETIME = System.currentTimeMillis() + (long) (BLAZEDELAY * 1000);
 					}
 					else p.sendMessage(ChatColor.YELLOW + "That is a protected area.");
@@ -181,8 +182,8 @@ public class Prometheus implements Deity
 			{
 				if(!(e1.getEntity() instanceof Player)) return;
 				Player p = (Player) e1.getEntity();
-				if(!DUtil.isFullParticipant(p)) return;
-				if(!DUtil.hasDeity(p, "Prometheus")) return;
+				if(!DMiscUtil.isFullParticipant(p)) return;
+				if(!DMiscUtil.hasDeity(p, "Prometheus")) return;
 				e1.setDamage(0);
 				e1.setCancelled(true);
 			}
@@ -193,26 +194,26 @@ public class Prometheus implements Deity
 	public void onCommand(Player P, String str, String[] args, boolean bind)
 	{
 		final Player p = P;
-		if(!DUtil.isFullParticipant(p)) return;
-		if(!DUtil.hasDeity(p, "Prometheus")) return;
+		if(!DMiscUtil.isFullParticipant(p)) return;
+		if(!DMiscUtil.hasDeity(p, "Prometheus")) return;
 		if(str.equalsIgnoreCase("fireball"))
 		{
 			if(bind)
 			{
 				if(FIREBALLITEM == null)
 				{
-					if(DUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
+					if(DMiscUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
 					if(p.getItemInHand() == null) p.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
 					else
 					{
-						DUtil.registerBind(p, p.getItemInHand().getType());
+						DMiscUtil.registerBind(p, p.getItemInHand().getType());
 						FIREBALLITEM = p.getItemInHand().getType();
 						p.sendMessage(ChatColor.YELLOW + "Fireball is now bound to " + p.getItemInHand().getType().name() + ".");
 					}
 				}
 				else
 				{
-					DUtil.removeBind(p, FIREBALLITEM);
+					DMiscUtil.removeBind(p, FIREBALLITEM);
 					p.sendMessage(ChatColor.YELLOW + "Fireball is no longer bound to " + FIREBALLITEM.name() + ".");
 					FIREBALLITEM = null;
 				}
@@ -235,18 +236,18 @@ public class Prometheus implements Deity
 			{
 				if(BLAZEITEM == null)
 				{
-					if(DUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
+					if(DMiscUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
 					if(p.getItemInHand() == null) p.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
 					else
 					{
-						DUtil.registerBind(p, p.getItemInHand().getType());
+						DMiscUtil.registerBind(p, p.getItemInHand().getType());
 						BLAZEITEM = p.getItemInHand().getType();
 						p.sendMessage(ChatColor.YELLOW + "Blaze is now bound to " + p.getItemInHand().getType().name() + ".");
 					}
 				}
 				else
 				{
-					DUtil.removeBind(p, BLAZEITEM);
+					DMiscUtil.removeBind(p, BLAZEITEM);
 					p.sendMessage(ChatColor.YELLOW + "Blaze is no longer bound to " + BLAZEITEM.name() + ".");
 					BLAZEITEM = null;
 				}
@@ -271,21 +272,21 @@ public class Prometheus implements Deity
 				p.sendMessage(ChatColor.YELLOW + "and " + ((((FIRESTORMTIME) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
 				return;
 			}
-			if(DUtil.getFavor(p) >= PROMETHEUSULTIMATECOST)
+			if(DMiscUtil.getFavor(p) >= PROMETHEUSULTIMATECOST)
 			{
-				if(!DUtil.canTarget(p, p.getLocation()))
+				if(!DMiscUtil.canTarget(p, p.getLocation()))
 				{
 					p.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 					return;
 				}
-				int t = (int) (PROMETHEUSULTIMATECOOLDOWNMAX - ((PROMETHEUSULTIMATECOOLDOWNMAX - PROMETHEUSULTIMATECOOLDOWNMIN) * ((double) DUtil.getAscensions(p) / 100)));
+				int t = (int) (PROMETHEUSULTIMATECOOLDOWNMAX - ((PROMETHEUSULTIMATECOOLDOWNMAX - PROMETHEUSULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
 				FIRESTORMTIME = System.currentTimeMillis() + (t * 1000);
 				p.sendMessage("In exchange for " + ChatColor.AQUA + PROMETHEUSULTIMATECOST + ChatColor.WHITE + " Favor, ");
 				p.sendMessage(ChatColor.GOLD + "Prometheus " + ChatColor.WHITE + " has unleashed his wrath on " + firestorm(p) + " non-allied entities.");
-				DUtil.setFavor(p, DUtil.getFavor(p) - PROMETHEUSULTIMATECOST);
+				DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - PROMETHEUSULTIMATECOST);
 			}
 			else p.sendMessage("Firestorm requires " + PROMETHEUSULTIMATECOST + " Favor.");
-        }
+		}
 	}
 
 	@Override
@@ -296,7 +297,7 @@ public class Prometheus implements Deity
 
 	private void shootFireball(Location from, Location to, Player player)
 	{
-		if(!DUtil.canLocationPVP(to) || !DUtil.canLocationPVP(from)) return;
+		if(!DMiscUtil.canLocationPVP(to) || !DMiscUtil.canLocationPVP(from)) return;
 
 		Vector path = to.toVector().subtract(from.toVector());
 		Location spawnLocation = new Location(player.getWorld(), path.getX(), path.getY(), path.getZ());
@@ -315,7 +316,7 @@ public class Prometheus implements Deity
 				for(int z = -diameter / 2; z <= diameter / 2; z++)
 				{
 					Block b = target.getWorld().getBlockAt(target.getBlockX() + x, target.getBlockY() + y, target.getBlockZ() + z);
-					if((b.getType() == Material.AIR) || (((b.getType() == Material.SNOW)) && DUtil.canLocationPVP(b.getLocation()))) b.setType(Material.FIRE);
+					if((b.getType() == Material.AIR) || (((b.getType() == Material.SNOW)) && DMiscUtil.canLocationPVP(b.getLocation()))) b.setType(Material.FIRE);
 				}
 			}
 		}
@@ -323,20 +324,20 @@ public class Prometheus implements Deity
 
 	private int firestorm(Player p)
 	{
-		int total = 20 * (int) Math.round(2 * Math.pow(DUtil.getDevotion(p, getName()), 0.15));
+		int total = 20 * (int) Math.round(2 * Math.pow(DMiscUtil.getDevotion(p, getName()), 0.15));
 		Vector ploc = p.getLocation().toVector();
 		ArrayList<LivingEntity> entitylist = new ArrayList<LivingEntity>();
 		for(LivingEntity anEntity : p.getWorld().getLivingEntities())
 		{
-			if(anEntity instanceof Player) if(DUtil.isFullParticipant((Player) anEntity)) if(DUtil.areAllied(p, (Player) anEntity)) continue;
-			if(!DUtil.canTarget(anEntity, anEntity.getLocation())) continue;
+			if(anEntity instanceof Player) if(DMiscUtil.isFullParticipant((Player) anEntity)) if(DMiscUtil.areAllied(p, (Player) anEntity)) continue;
+			if(!DMiscUtil.canTarget(anEntity, anEntity.getLocation())) continue;
 			if(anEntity.getLocation().toVector().isInSphere(ploc, 50)) entitylist.add(anEntity);
 		}
 		final Player pl = p;
 		final ArrayList<LivingEntity> enList = entitylist;
 		for(int i = 0; i <= total; i += 20)
 		{
-			DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable()
+			DMiscUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DMiscUtil.getPlugin(), new Runnable()
 			{
 				@Override
 				public void run()

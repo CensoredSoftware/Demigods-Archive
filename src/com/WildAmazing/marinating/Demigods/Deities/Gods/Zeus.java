@@ -1,7 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Gods;
 
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,7 +15,8 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
+import com.WildAmazing.marinating.Demigods.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
 /*
  * Affected by level:
@@ -65,9 +66,9 @@ public class Zeus implements Deity
 	@Override
 	public void printInfo(Player p)
 	{
-		if(DUtil.hasDeity(p, "Zeus") && DUtil.isFullParticipant(p))
+		if(DMiscUtil.hasDeity(p, "Zeus") && DMiscUtil.isFullParticipant(p))
 		{
-			int devotion = DUtil.getDevotion(p, getName());
+			int devotion = DMiscUtil.getDevotion(p, getName());
 			/*
 			 * Calculate special values first
 			 */
@@ -75,7 +76,7 @@ public class Zeus implements Deity
 			int targets = (int) Math.ceil(1.561 * Math.pow(devotion, 0.128424));
 			double multiply = 0.1753 * Math.pow(devotion, 0.322917);
 			// ultimate
-			int t = (int) (ZEUSULTIMATECOOLDOWNMAX - ((ZEUSULTIMATECOOLDOWNMAX - ZEUSULTIMATECOOLDOWNMIN) * ((double) DUtil.getAscensions(p) / 100)));
+			int t = (int) (ZEUSULTIMATECOOLDOWNMAX - ((ZEUSULTIMATECOOLDOWNMAX - ZEUSULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
 			/*
 			 * The printed text
 			 */
@@ -83,12 +84,12 @@ public class Zeus implements Deity
 			p.sendMessage(":Immune to fall damage.");
 			p.sendMessage(":Strike lightning at a target location. " + ChatColor.GREEN + "/lightning");
 			p.sendMessage(ChatColor.YELLOW + "Costs " + LIGHTNINGCOST + " Favor.");
-			if(((Zeus) (DUtil.getDeity(p, "Zeus"))).LIGHTNINGBIND != null) p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Zeus) (DUtil.getDeity(p, "Zeus"))).LIGHTNINGBIND.name());
+			if(((Zeus) (DMiscUtil.getDeity(p, "Zeus"))).LIGHTNINGBIND != null) p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Zeus) (DMiscUtil.getDeity(p, "Zeus"))).LIGHTNINGBIND.name());
 			else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
 			p.sendMessage(":Use the force of wind to knock back enemies. " + ChatColor.GREEN + "/shove");
 			p.sendMessage(ChatColor.YELLOW + "Costs " + SHOVECOST + " Favor.");
 			p.sendMessage("Affects up to " + targets + " targets with power " + (int) (Math.round(multiply * 10)) + ".");
-			if(((Zeus) (DUtil.getDeity(p, "Zeus"))).SHOVEBIND != null) p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Zeus) (DUtil.getDeity(p, "Zeus"))).SHOVEBIND.name());
+			if(((Zeus) (DMiscUtil.getDeity(p, "Zeus"))).SHOVEBIND != null) p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Zeus) (DMiscUtil.getDeity(p, "Zeus"))).SHOVEBIND.name());
 			else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
 			p.sendMessage(":Zeus strikes lightning on nearby enemies as they are");
 			p.sendMessage("raised in the air and dropped. " + ChatColor.GREEN + "/storm");
@@ -128,30 +129,30 @@ public class Zeus implements Deity
 			if(e.getEntity() instanceof Player)
 			{
 				Player p = (Player) e.getEntity();
-				if(!DUtil.hasDeity(p, "Zeus") || !DUtil.isFullParticipant(p)) return;
+				if(!DMiscUtil.hasDeity(p, "Zeus") || !DMiscUtil.isFullParticipant(p)) return;
 				if(e.getCause() == DamageCause.FALL)
 				{
 					e.setDamage(0);
-                }
+				}
 				else if(e.getCause() == DamageCause.LIGHTNING)
 				{
 					e.setDamage(0);
-                }
+				}
 			}
 		}
 		else if(ee instanceof PlayerInteractEvent)
 		{
 			PlayerInteractEvent e = (PlayerInteractEvent) ee;
 			Player p = e.getPlayer();
-			if(!DUtil.hasDeity(p, "Zeus") || !DUtil.isFullParticipant(p)) return;
+			if(!DMiscUtil.hasDeity(p, "Zeus") || !DMiscUtil.isFullParticipant(p)) return;
 			if(SHOVE || ((p.getItemInHand() != null) && (p.getItemInHand().getType() == SHOVEBIND)))
 			{
 				if(ZEUSSHOVETIME > System.currentTimeMillis()) return;
 				ZEUSSHOVETIME = System.currentTimeMillis() + SHOVEDELAY;
-				if(DUtil.getFavor(p) >= SHOVECOST)
+				if(DMiscUtil.getFavor(p) >= SHOVECOST)
 				{
 					shove(p);
-					DUtil.setFavor(p, DUtil.getFavor(p) - SHOVECOST);
+					DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - SHOVECOST);
 					return;
 				}
 				else
@@ -164,11 +165,11 @@ public class Zeus implements Deity
 			{
 				if(ZEUSLIGHTNINGTIME > System.currentTimeMillis()) return;
 				ZEUSLIGHTNINGTIME = System.currentTimeMillis() + LIGHTNINGDELAY;
-				if(DUtil.getFavor(p) >= LIGHTNINGCOST)
+				if(DMiscUtil.getFavor(p) >= LIGHTNINGCOST)
 				{
 					lightning(p, e.getClickedBlock());
-					DUtil.setFavor(p, DUtil.getFavor(p) - LIGHTNINGCOST);
-                }
+					DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - LIGHTNINGCOST);
+				}
 				else
 				{
 					p.sendMessage(ChatColor.YELLOW + "You do not have enough Favor.");
@@ -187,25 +188,25 @@ public class Zeus implements Deity
 	public void onCommand(Player P, String str, String[] args, boolean bind)
 	{
 		final Player p = P;
-		if(!DUtil.hasDeity(p, "Zeus")) return;
+		if(!DMiscUtil.hasDeity(p, "Zeus")) return;
 		if(str.equalsIgnoreCase("lightning"))
 		{
 			if(bind)
 			{
 				if(LIGHTNINGBIND == null)
 				{
-					if(DUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
+					if(DMiscUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
 					if(p.getItemInHand().getType() == Material.AIR) p.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
 					else
 					{
-						DUtil.registerBind(p, p.getItemInHand().getType());
+						DMiscUtil.registerBind(p, p.getItemInHand().getType());
 						LIGHTNINGBIND = p.getItemInHand().getType();
 						p.sendMessage(ChatColor.YELLOW + "Lightning is now bound to " + p.getItemInHand().getType().name() + ".");
 					}
 				}
 				else
 				{
-					DUtil.removeBind(p, LIGHTNINGBIND);
+					DMiscUtil.removeBind(p, LIGHTNINGBIND);
 					p.sendMessage(ChatColor.YELLOW + "Lightning is no longer bound to " + LIGHTNINGBIND.name() + ".");
 					LIGHTNINGBIND = null;
 				}
@@ -228,18 +229,18 @@ public class Zeus implements Deity
 			{
 				if(SHOVEBIND == null)
 				{
-					if(DUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
+					if(DMiscUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
 					if(p.getItemInHand().getType() == Material.AIR) p.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
 					else
 					{
-						DUtil.registerBind(p, p.getItemInHand().getType());
+						DMiscUtil.registerBind(p, p.getItemInHand().getType());
 						SHOVEBIND = p.getItemInHand().getType();
 						p.sendMessage(ChatColor.YELLOW + "Shove is now bound to " + p.getItemInHand().getType().name() + ".");
 					}
 				}
 				else
 				{
-					DUtil.removeBind(p, SHOVEBIND);
+					DMiscUtil.removeBind(p, SHOVEBIND);
 					p.sendMessage(ChatColor.YELLOW + "Shove is no longer bound to " + SHOVEBIND.name() + ".");
 					SHOVEBIND = null;
 				}
@@ -258,7 +259,7 @@ public class Zeus implements Deity
 		}
 		else if(str.equalsIgnoreCase("storm"))
 		{
-			if(!DUtil.hasDeity(p, "Zeus")) return;
+			if(!DMiscUtil.hasDeity(p, "Zeus")) return;
 			long TIME = ZEUSULTIMATETIME;
 			if(System.currentTimeMillis() < TIME)
 			{
@@ -266,27 +267,27 @@ public class Zeus implements Deity
 				p.sendMessage(ChatColor.YELLOW + "and " + ((((TIME) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
 				return;
 			}
-			if(DUtil.getFavor(p) >= ZEUSULTIMATECOST)
+			if(DMiscUtil.getFavor(p) >= ZEUSULTIMATECOST)
 			{
-				if(!DUtil.canTarget(p, p.getLocation()))
+				if(!DMiscUtil.canTarget(p, p.getLocation()))
 				{
 					p.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 					return;
 				}
-				int t = (int) (ZEUSULTIMATECOOLDOWNMAX - ((ZEUSULTIMATECOOLDOWNMAX - ZEUSULTIMATECOOLDOWNMIN) * ((double) DUtil.getAscensions(p) / 100)));
+				int t = (int) (ZEUSULTIMATECOOLDOWNMAX - ((ZEUSULTIMATECOOLDOWNMAX - ZEUSULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
 				int num = storm(p);
 				if(num > 0)
 				{
 					p.sendMessage("In exchange for " + ChatColor.AQUA + ZEUSULTIMATECOST + ChatColor.WHITE + " Favor, ");
 					p.sendMessage(ChatColor.GOLD + "Zeus" + ChatColor.WHITE + " has unloaded his wrath on " + num + " targets.");
-					DUtil.setFavor(p, DUtil.getFavor(p) - ZEUSULTIMATECOST);
+					DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - ZEUSULTIMATECOST);
 					p.setNoDamageTicks(1000);
 					ZEUSULTIMATETIME = System.currentTimeMillis() + t * 1000;
 				}
 				else p.sendMessage(ChatColor.YELLOW + "There are no targets nearby.");
 			}
 			else p.sendMessage(ChatColor.YELLOW + "Lightning storm requires " + ZEUSULTIMATECOST + " Favor.");
-        }
+		}
 	}
 
 	/*
@@ -296,13 +297,13 @@ public class Zeus implements Deity
 	 */
 	private void shove(Player p)
 	{
-		if(!DUtil.canTarget(p, p.getLocation()))
+		if(!DMiscUtil.canTarget(p, p.getLocation()))
 		{
 			p.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 			return;
 		}
 		ArrayList<LivingEntity> hit = new ArrayList<LivingEntity>();
-		int devotion = DUtil.getDevotion(p, getName());
+		int devotion = DMiscUtil.getDevotion(p, getName());
 		int targets = (int) Math.ceil(1.561 * Math.pow(devotion, 0.128424));
 		double multiply = 0.1753 * Math.pow(devotion, 0.322917);
 		for(Block b : p.getLineOfSight(null, 10))
@@ -312,9 +313,9 @@ public class Zeus implements Deity
 				if(targets == hit.size()) break;
 				if(le instanceof Player)
 				{
-					if(DUtil.areAllied(p, (Player) le)) continue;
+					if(DMiscUtil.areAllied(p, (Player) le)) continue;
 				}
-				if((le.getLocation().distance(b.getLocation()) <= 5) && !hit.contains(le)) if(DUtil.canTarget(le, le.getLocation())) hit.add(le);
+				if((le.getLocation().distance(b.getLocation()) <= 5) && !hit.contains(le)) if(DMiscUtil.canTarget(le, le.getLocation())) hit.add(le);
 			}
 		}
 		if(hit.size() > 0)
@@ -331,7 +332,7 @@ public class Zeus implements Deity
 
 	private void lightning(Player p, Block b)
 	{
-		if(!DUtil.canTarget(p, p.getLocation()))
+		if(!DMiscUtil.canTarget(p, p.getLocation()))
 		{
 			p.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 			return;
@@ -344,7 +345,7 @@ public class Zeus implements Deity
 			try
 			{
 				if(!p.getWorld().equals(target.getWorld())) return;
-				if(!DUtil.canLocationPVP(target)) return;
+				if(!DMiscUtil.canLocationPVP(target)) return;
 				for(Entity e : b.getLocation().getChunk().getEntities())
 				{
 					if(e.getLocation().distance(target) > 1) continue;
@@ -352,7 +353,7 @@ public class Zeus implements Deity
 					{
 						LivingEntity le = (LivingEntity) e;
 						if(le instanceof Player && le == p) continue;
-						if(le.getLocation().distance(target) < 1.5) DUtil.damageDemigods(p, le, DUtil.getAscensions(p) * 2, DamageCause.LIGHTNING);
+						if(le.getLocation().distance(target) < 1.5) DMiscUtil.damageDemigods(p, le, DMiscUtil.getAscensions(p) * 2, DamageCause.LIGHTNING);
 					}
 				}
 			}
@@ -379,7 +380,7 @@ public class Zeus implements Deity
 				if(e1 instanceof Player)
 				{
 					Player ptemp = (Player) e1;
-					if(!DUtil.areAllied(p, ptemp) && !ptemp.equals(p))
+					if(!DMiscUtil.areAllied(p, ptemp) && !ptemp.equals(p))
 					{
 						strikeLightning(p, ptemp);
 						strikeLightning(p, ptemp);
@@ -404,7 +405,7 @@ public class Zeus implements Deity
 	private void strikeLightning(Player p, Entity target)
 	{
 		if(!p.getWorld().equals(target.getWorld())) return;
-		if(!DUtil.canTarget(target, target.getLocation())) return;
+		if(!DMiscUtil.canTarget(target, target.getLocation())) return;
 		p.getWorld().strikeLightningEffect(target.getLocation());
 		for(Entity e : target.getLocation().getBlock().getChunk().getEntities())
 		{
@@ -412,7 +413,7 @@ public class Zeus implements Deity
 			{
 				LivingEntity le = (LivingEntity) e;
 				if(le instanceof Player && le == p) continue;
-				if(le.getLocation().distance(target.getLocation()) < 1.5) DUtil.damageDemigods(p, le, DUtil.getAscensions(p) * 2, DamageCause.LIGHTNING);
+				if(le.getLocation().distance(target.getLocation()) < 1.5) DMiscUtil.damageDemigods(p, le, DMiscUtil.getAscensions(p) * 2, DamageCause.LIGHTNING);
 			}
 		}
 	}

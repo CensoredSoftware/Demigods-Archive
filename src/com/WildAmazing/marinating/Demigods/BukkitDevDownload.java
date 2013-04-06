@@ -1,39 +1,42 @@
-package com.clashnia.ClashniaUpdate;
+/*
+ * Originally made by github user @betterphp, adapted for Demigods.  Used with permission.
+ * https://github.com/betterphp/UpdateChecker/blob/master/uk/co/jacekk/bukkit/updatechecker/UpdateChecker.java
+ */
 
-import com.WildAmazing.marinating.Demigods.DUtil;
+package com.WildAmazing.marinating.Demigods;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-public class UpdateChecker
+public class BukkitDevDownload
 {
 	private URL filesFeed;
-
 	private String version;
 	private String link;
 	private String jarLink;
 
-	public UpdateChecker(String url)
+	public BukkitDevDownload(String url)
 	{
 		try
 		{
 			this.filesFeed = new URL(url);
 		}
-		catch(MalformedURLException e)
+		catch(Exception e)
 		{
-			e.printStackTrace();
+			DMiscUtil.consoleMSG("severe", "Could not connect to BukkitDev.");
 		}
 	}
 
-	public boolean updateNeeded()
+	public synchronized boolean updateNeeded()
 	{
 		try
 		{
@@ -50,8 +53,7 @@ public class UpdateChecker
 			}
 			catch(Exception e)
 			{
-				DUtil.consoleMSG("warning", "Failed to find download page.");
-				e.printStackTrace();
+				DMiscUtil.consoleMSG("warning", "Failed to find download page.");
 			}
 			input.close();
 
@@ -61,8 +63,7 @@ public class UpdateChecker
 			}
 			catch(Exception e)
 			{
-				DUtil.consoleMSG("warning", "Failed to open connection with download page.");
-				e.printStackTrace();
+				DMiscUtil.consoleMSG("warning", "Failed to open connection with download page.");
 			}
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
@@ -80,14 +81,13 @@ public class UpdateChecker
 			reader.close();
 			input.close();
 
-			PluginDescriptionFile pdf = DUtil.getPlugin().getDescription();
+			PluginDescriptionFile pdf = DMiscUtil.getPlugin().getDescription();
 			String currentVersion = pdf.getVersion();
 			if(!currentVersion.equals(this.version)) return true;
 		}
 		catch(Exception e)
 		{
-			DUtil.consoleMSG("warning", "Failed to read download page.");
-			e.printStackTrace();
+			DMiscUtil.consoleMSG("warning", "Failed to read download page.");
 		}
 
 		return false;
@@ -107,5 +107,4 @@ public class UpdateChecker
 	{
 		return this.jarLink;
 	}
-
 }

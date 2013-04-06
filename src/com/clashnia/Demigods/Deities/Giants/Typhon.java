@@ -1,8 +1,5 @@
 package com.clashnia.Demigods.Deities.Giants;
 
-import com.WildAmazing.marinating.Demigods.DSave;
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -16,6 +13,10 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+
+import com.WildAmazing.marinating.Demigods.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.DSave;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
 public class Typhon implements Deity
 {
@@ -60,9 +61,9 @@ public class Typhon implements Deity
 	@Override
 	public void printInfo(Player p)
 	{
-		if(DUtil.isFullParticipant(p) && DUtil.hasDeity(p, getName()))
+		if(DMiscUtil.isFullParticipant(p) && DMiscUtil.hasDeity(p, getName()))
 		{
-			int devotion = DUtil.getDevotion(p, getName());
+			int devotion = DMiscUtil.getDevotion(p, getName());
 			p.sendMessage("--" + ChatColor.GOLD + getName() + ChatColor.GRAY + "[" + devotion + "]");
 			return;
 		}
@@ -79,18 +80,18 @@ public class Typhon implements Deity
 		{
 			PlayerInteractEvent e = (PlayerInteractEvent) ee;
 			Player p = e.getPlayer();
-			if(!DUtil.isFullParticipant(p) || !DUtil.hasDeity(p, getName())) return;
+			if(!DMiscUtil.isFullParticipant(p) || !DMiscUtil.hasDeity(p, getName())) return;
 			if(SKILL || ((p.getItemInHand() != null) && (p.getItemInHand().getType() == SKILLBIND)))
 			{
 				if(SKILLTIME > System.currentTimeMillis()) return;
 				SKILLTIME = System.currentTimeMillis() + SKILLDELAY;
-				if(DUtil.getFavor(p) >= SKILLCOST)
+				if(DMiscUtil.getFavor(p) >= SKILLCOST)
 				{
 					/*
 					 * Skill
 					 */
-					DUtil.setFavor(p, DUtil.getFavor(p) - SKILLCOST);
-                }
+					DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - SKILLCOST);
+				}
 				else
 				{
 					p.sendMessage(ChatColor.YELLOW + "You do not have enough Favor.");
@@ -108,8 +109,8 @@ public class Typhon implements Deity
 				if(dc == DamageCause.ENTITY_ATTACK || dc == DamageCause.SUICIDE)
 				{
 					Player p = (Player) e.getEntity();
-					if(!DUtil.hasDeity(p, "Typhon")) return;
-					if((DUtil.canWorldGuardPVP(p.getLocation()) || DUtil.canFactionsPVP(p.getLocation())) && (DUtil.getNearbyShrine(e.getEntity().getLocation()) == null || !DUtil.getDeityAtShrine(DUtil.getNearbyShrine(e.getEntity().getLocation())).equals("Typhon"))) p.getWorld().createExplosion(p.getLocation(), EXPLOSIONSIZE);
+					if(!DMiscUtil.hasDeity(p, "Typhon")) return;
+					if((DMiscUtil.canWorldGuardPVP(p.getLocation()) || DMiscUtil.canFactionsPVP(p.getLocation())) && (DMiscUtil.getNearbyShrine(e.getEntity().getLocation()) == null || !DMiscUtil.getDeityAtShrine(DMiscUtil.getNearbyShrine(e.getEntity().getLocation())).equals("Typhon"))) p.getWorld().createExplosion(p.getLocation(), EXPLOSIONSIZE);
 				}
 			}
 		}
@@ -120,9 +121,9 @@ public class Typhon implements Deity
 			{
 				Player p = (Player) e.getDamager();
 				Entity attacked = e.getEntity();
-				if(!DUtil.canTarget(p, p.getLocation())) return;
-				if(!DUtil.canTarget(attacked, attacked.getLocation())) return;
-				if(!DUtil.hasDeity(p, "Typhon")) return;
+				if(!DMiscUtil.canTarget(p, p.getLocation())) return;
+				if(!DMiscUtil.canTarget(attacked, attacked.getLocation())) return;
+				if(!DMiscUtil.hasDeity(p, "Typhon")) return;
 				LivingEntity le = (LivingEntity) e.getEntity();
 				Vector v = p.getLocation().toVector();
 				Vector victor = le.getLocation().toVector().subtract(v);
@@ -147,13 +148,13 @@ public class Typhon implements Deity
 						if(le instanceof Player)
 						{
 							Player pl = (Player) le;
-							if(DUtil.isFullParticipant(pl))
+							if(DMiscUtil.isFullParticipant(pl))
 							{
 								if(e.getEntity().isDead()) return;
 							}
 						}
 						le.setVelocity(victor); // super kb
-						DUtil.damageDemigods(p, le, DAMAGE, DamageCause.CUSTOM);
+						DMiscUtil.damageDemigods(p, le, DAMAGE, DamageCause.CUSTOM);
 						DSave.removeData(p, "CHARGE");
 						p.sendMessage(ChatColor.YELLOW + "Your charged attack has dealt " + ChatColor.DARK_RED + DAMAGE + ChatColor.YELLOW + " damage.");
 					}
@@ -170,7 +171,7 @@ public class Typhon implements Deity
 	public void onCommand(Player P, String str, String[] args, boolean bind)
 	{
 		final Player p = P;
-		if(DUtil.hasDeity(p, getName()))
+		if(DMiscUtil.hasDeity(p, getName()))
 		{
 			if(str.equalsIgnoreCase("charge"))
 			{
@@ -239,7 +240,7 @@ public class Typhon implements Deity
 
 					p.sendMessage(ChatColor.DARK_GREEN + "Charged Damage: " + ChatColor.RED + FAKEDAMAGE + ExtraDamage + ITEMDAMAGE + ChatColor.DARK_GREEN + " = " + ChatColor.DARK_RED + TOTALFAKEDAMAGE);
 				}
-            }
+			}
 		}
 	}
 

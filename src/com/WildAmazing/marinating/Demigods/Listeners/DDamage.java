@@ -1,8 +1,8 @@
 package com.WildAmazing.marinating.Demigods.Listeners;
 
-import com.WildAmazing.marinating.Demigods.DSettings;
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -18,13 +18,14 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.WildAmazing.marinating.Demigods.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.DSettings;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
 public class DDamage implements Listener
 {
 	/*
-	 * This handler deals with non-Demigods damage (all of that will go directly to DUtil's built in damage function) and converts it
+	 * This handler deals with non-Demigods damage (all of that will go directly to DMiscUtil's built in damage function) and converts it
 	 * to Demigods HP, using individual multipliers for balance purposes.
 	 * 
 	 * The adjusted value should be around/less than 1 to adjust for the increased health, but not ridiculous
@@ -36,7 +37,7 @@ public class DDamage implements Listener
 	{
 		if(!(e.getEntity() instanceof Player)) return;
 		Player p = (Player) e.getEntity();
-		if(!DUtil.isFullParticipant(p))
+		if(!DMiscUtil.isFullParticipant(p))
 		{
 			return;
 		}
@@ -44,7 +45,7 @@ public class DDamage implements Listener
 		{
 			return;
 		}
-		if(!DUtil.canWorldGuardDamage(p.getLocation()))
+		if(!DMiscUtil.canWorldGuardDamage(p.getLocation()))
 		{
 			return;
 		}
@@ -56,30 +57,30 @@ public class DDamage implements Listener
 			{
 				if(!FRIENDLYFIRE)
 				{
-					if(DUtil.areAllied(p, (Player) ee.getDamager()))
+					if(DMiscUtil.areAllied(p, (Player) ee.getDamager()))
 					{
 						e.setCancelled(true);
 						return;
 					}
 
-					if(!DUtil.canTarget(p, p.getLocation()))
+					if(!DMiscUtil.canTarget(p, p.getLocation()))
 					{
 						e.setCancelled(true);
 						return;
 					}
 
-					if(!DUtil.canTarget(ee.getDamager(), ee.getDamager().getLocation()))
+					if(!DMiscUtil.canTarget(ee.getDamager(), ee.getDamager().getLocation()))
 					{
 						e.setCancelled(true);
 						return;
 					}
 				}
-				DUtil.damageDemigods((LivingEntity) ee.getDamager(), p, e.getDamage(), e.getCause());
+				DMiscUtil.damageDemigods((LivingEntity) ee.getDamager(), p, e.getDamage(), e.getCause());
 				e.setCancelled(true);
 			}
 		}
 
-		if(!DUtil.canTarget(p, p.getLocation()))
+		if(!DMiscUtil.canTarget(p, p.getLocation()))
 		{
 			e.setCancelled(true);
 			return;
@@ -93,7 +94,7 @@ public class DDamage implements Listener
 
 		if((e.getCause() != DamageCause.ENTITY_ATTACK) && (e.getCause() != DamageCause.PROJECTILE))
 		{
-			DUtil.damageDemigodsNonCombat(p, e.getDamage(), e.getCause());
+			DMiscUtil.damageDemigodsNonCombat(p, e.getDamage(), e.getCause());
 			e.setCancelled(true);
 		}
 	}
@@ -101,9 +102,9 @@ public class DDamage implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onRespawn(PlayerRespawnEvent e)
 	{
-		if(DUtil.isFullParticipant(e.getPlayer()))
+		if(DMiscUtil.isFullParticipant(e.getPlayer()))
 		{
-			DUtil.setHP(e.getPlayer(), DUtil.getMaxHP(e.getPlayer()));
+			DMiscUtil.setHP(e.getPlayer(), DMiscUtil.getMaxHP(e.getPlayer()));
 		}
 	}
 
@@ -112,19 +113,19 @@ public class DDamage implements Listener
 	{
 		if(!(e.getEntity() instanceof Player)) return;
 		Player p = (Player) e.getEntity();
-		if(!DUtil.isFullParticipant(p)) return;
-		DUtil.setHP(p, DUtil.getHP(p) + e.getAmount());
+		if(!DMiscUtil.isFullParticipant(p)) return;
+		DMiscUtil.setHP(p, DMiscUtil.getHP(p) + e.getAmount());
 	}
 
 	public static void syncHealth(Player p)
 	{
-		int current = DUtil.getHP(p);
+		int current = DMiscUtil.getHP(p);
 		if(current < 1)
 		{ // if player should be dead
 			p.setHealth(0);
 			return;
 		}
-		double ratio = ((double) current) / DUtil.getMaxHP(p);
+		double ratio = ((double) current) / DMiscUtil.getMaxHP(p);
 		int disp = (int) Math.ceil(ratio * 20);
 		if(disp < 1) disp = 1;
 		p.setHealth(disp);
@@ -235,12 +236,12 @@ public class DDamage implements Listener
 
 	public static int specialReduction(Player p, int amount)
 	{
-		if(DUtil.getActiveEffectsList(p.getName()) == null) return amount;
-		if(DUtil.getActiveEffectsList(p.getName()).contains("Invincible"))
+		if(DMiscUtil.getActiveEffectsList(p.getName()) == null) return amount;
+		if(DMiscUtil.getActiveEffectsList(p.getName()).contains("Invincible"))
 		{
 			amount *= 0.5;
 		}
-		if(DUtil.getActiveEffectsList(p.getName()).contains("Ceasefire"))
+		if(DMiscUtil.getActiveEffectsList(p.getName()).contains("Ceasefire"))
 		{
 			amount *= 0;
 		}
@@ -326,7 +327,7 @@ public class DDamage implements Listener
 
 	public static Boolean cancelSoulDamage(Player p, int damage)
 	{
-		if(damage >= DUtil.getHP(p))
+		if(damage >= DMiscUtil.getHP(p))
 		{
 			// Define Immortal Soul Fragment
 			ItemStack health = new ItemStack(Material.GHAST_TEAR);
@@ -407,46 +408,46 @@ public class DDamage implements Listener
 
 	public static void hasFull(Player p)
 	{
-		DUtil.setHP(p, DUtil.getMaxHP(p));
+		DMiscUtil.setHP(p, DMiscUtil.getMaxHP(p));
 	}
 
 	public static void hasHalf(Player p)
 	{
-		DUtil.setHP(p, (DUtil.getMaxHP(p) / 2));
+		DMiscUtil.setHP(p, (DMiscUtil.getMaxHP(p) / 2));
 	}
 
 	public static void hasMortal(Player p)
 	{
-		DUtil.setHP(p, 20);
+		DMiscUtil.setHP(p, 20);
 	}
 
 	public static void fakeDeath(Player p)
 	{
 		double reduced = 0.1; // TODO
-		long before = DUtil.getDevotion(p);
-		for(Deity d : DUtil.getDeities(p))
+		long before = DMiscUtil.getDevotion(p);
+		for(Deity d : DMiscUtil.getDeities(p))
 		{
-			int reduceamt = (int) Math.round(DUtil.getDevotion(p, d) * reduced * DLevels.MULTIPLIER);
+			int reduceamt = (int) Math.round(DMiscUtil.getDevotion(p, d) * reduced * DLevels.MULTIPLIER);
 			if(reduceamt > DLevels.LOSSLIMIT) reduceamt = DLevels.LOSSLIMIT;
-			DUtil.setDevotion(p, d, DUtil.getDevotion(p, d) - reduceamt);
+			DMiscUtil.setDevotion(p, d, DMiscUtil.getDevotion(p, d) - reduceamt);
 		}
-		if(DUtil.getDeities(p).size() < 2) p.sendMessage(ChatColor.DARK_RED + "You have failed in your service to " + DUtil.getDeities(p).get(0).getName() + ".");
+		if(DMiscUtil.getDeities(p).size() < 2) p.sendMessage(ChatColor.DARK_RED + "You have failed in your service to " + DMiscUtil.getDeities(p).get(0).getName() + ".");
 		else p.sendMessage(ChatColor.DARK_RED + "You have failed in your service to your deities.");
-		p.sendMessage(ChatColor.DARK_RED + "Your Devotion has been reduced by " + (before - DUtil.getDevotion(p)) + ".");
+		p.sendMessage(ChatColor.DARK_RED + "Your Devotion has been reduced by " + (before - DMiscUtil.getDevotion(p)) + ".");
 	}
 
 	public static void lessFakeDeath(Player p)
 	{
 		double reduced = 0.025; // TODO
-		long before = DUtil.getDevotion(p);
-		for(Deity d : DUtil.getDeities(p))
+		long before = DMiscUtil.getDevotion(p);
+		for(Deity d : DMiscUtil.getDeities(p))
 		{
-			int reduceamt = (int) Math.round(DUtil.getDevotion(p, d) * reduced * DLevels.MULTIPLIER);
+			int reduceamt = (int) Math.round(DMiscUtil.getDevotion(p, d) * reduced * DLevels.MULTIPLIER);
 			if(reduceamt > DLevels.LOSSLIMIT) reduceamt = DLevels.LOSSLIMIT;
-			DUtil.setDevotion(p, d, DUtil.getDevotion(p, d) - reduceamt);
+			DMiscUtil.setDevotion(p, d, DMiscUtil.getDevotion(p, d) - reduceamt);
 		}
-		if(DUtil.getDeities(p).size() < 2) p.sendMessage(ChatColor.DARK_RED + "You have failed in your service to " + DUtil.getDeities(p).get(0).getName() + ".");
+		if(DMiscUtil.getDeities(p).size() < 2) p.sendMessage(ChatColor.DARK_RED + "You have failed in your service to " + DMiscUtil.getDeities(p).get(0).getName() + ".");
 		else p.sendMessage(ChatColor.DARK_RED + "You have failed in your service to your deities.");
-		p.sendMessage(ChatColor.DARK_RED + "Your Devotion has been reduced by " + (before - DUtil.getDevotion(p)) + ".");
+		p.sendMessage(ChatColor.DARK_RED + "Your Devotion has been reduced by " + (before - DMiscUtil.getDevotion(p)) + ".");
 	}
 }

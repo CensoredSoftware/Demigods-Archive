@@ -1,9 +1,8 @@
 package com.WildAmazing.marinating.Demigods.Deities.Gods;
 
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
@@ -15,7 +14,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
+import com.WildAmazing.marinating.Demigods.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
 public class Apollo implements Deity
 {
@@ -67,9 +67,9 @@ public class Apollo implements Deity
 	@Override
 	public void printInfo(Player p)
 	{
-		if(DUtil.isFullParticipant(p) && DUtil.hasDeity(p, getName()))
+		if(DMiscUtil.isFullParticipant(p) && DMiscUtil.hasDeity(p, getName()))
 		{
-			int devotion = DUtil.getDevotion(p, getName());
+			int devotion = DMiscUtil.getDevotion(p, getName());
 			/*
 			 * Special values
 			 */
@@ -81,13 +81,13 @@ public class Apollo implements Deity
 			int ultrange = (int) Math.round(20 * Math.pow(devotion, 0.15));
 			int ultslowduration = (int) Math.round(10 * Math.pow(devotion, 0.05)); // seconds
 			int ultattacks = (int) Math.round(4 * Math.pow(devotion, 0.08)); // number of arrow "waves"
-			int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DUtil.getAscensions(p) / DUtil.ASCENSIONCAP)));
+			int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / DMiscUtil.ASCENSIONCAP)));
 			// print
 			p.sendMessage("--" + ChatColor.GOLD + getName() + ChatColor.GRAY + "[" + devotion + "]");
 			p.sendMessage(":Play a music disc to receive a buff lasting " + duration + " seconds.");
 			p.sendMessage(":Left-click to heal yourself for " + (healamt / 2) + " and a target");
 			p.sendMessage("ally for " + healamt + " health." + ChatColor.GREEN + " /cure " + ChatColor.YELLOW + "Costs " + SKILLCOST + " Favor.");
-			if(((Apollo) DUtil.getDeity(p, getName())).SKILLBIND != null) p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Apollo) DUtil.getDeity(p, getName())).SKILLBIND.name());
+			if(((Apollo) DMiscUtil.getDeity(p, getName())).SKILLBIND != null) p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Apollo) DMiscUtil.getDeity(p, getName())).SKILLBIND.name());
 			else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
 			p.sendMessage("Slow enemies in range " + ultrange + " for " + ultslowduration + " seconds and strike");
 			p.sendMessage("them with " + ultattacks + " waves of arrows." + ChatColor.GREEN + " /finale");
@@ -111,7 +111,7 @@ public class Apollo implements Deity
 		{
 			PlayerInteractEvent e = (PlayerInteractEvent) ee;
 			Player p = e.getPlayer();
-			if(!DUtil.isFullParticipant(p) || !DUtil.hasDeity(p, getName())) return;
+			if(!DMiscUtil.isFullParticipant(p) || !DMiscUtil.hasDeity(p, getName())) return;
 			if(e.getAction() == Action.RIGHT_CLICK_BLOCK)
 			{
 				if(e.getClickedBlock().getType() != Material.JUKEBOX) return;
@@ -156,11 +156,11 @@ public class Apollo implements Deity
 			{
 				if(SKILLTIME > System.currentTimeMillis()) return;
 				SKILLTIME = System.currentTimeMillis() + SKILLDELAY;
-				if(DUtil.getFavor(p) >= SKILLCOST)
+				if(DMiscUtil.getFavor(p) >= SKILLCOST)
 				{
 					cure();
-					DUtil.setFavor(p, DUtil.getFavor(p) - SKILLCOST);
-                }
+					DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - SKILLCOST);
+				}
 				else
 				{
 					p.sendMessage(ChatColor.YELLOW + "You do not have enough Favor.");
@@ -173,7 +173,7 @@ public class Apollo implements Deity
 	@Override
 	public void onCommand(final Player p, String str, String[] args, boolean bind)
 	{
-		if(DUtil.hasDeity(p, getName()))
+		if(DMiscUtil.hasDeity(p, getName()))
 		{
 			if(str.equalsIgnoreCase(skillname))
 			{
@@ -181,18 +181,18 @@ public class Apollo implements Deity
 				{
 					if(SKILLBIND == null)
 					{
-						if(DUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
+						if(DMiscUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
 						if(p.getItemInHand().getType() == Material.AIR) p.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
 						else
 						{
-							DUtil.registerBind(p, p.getItemInHand().getType());
+							DMiscUtil.registerBind(p, p.getItemInHand().getType());
 							SKILLBIND = p.getItemInHand().getType();
 							p.sendMessage(ChatColor.YELLOW + "" + skillname + " is now bound to " + p.getItemInHand().getType().name() + ".");
 						}
 					}
 					else
 					{
-						DUtil.removeBind(p, SKILLBIND);
+						DMiscUtil.removeBind(p, SKILLBIND);
 						p.sendMessage(ChatColor.YELLOW + "" + skillname + " is no longer bound to " + SKILLBIND.name() + ".");
 						SKILLBIND = null;
 					}
@@ -218,25 +218,25 @@ public class Apollo implements Deity
 					p.sendMessage(ChatColor.YELLOW + "and " + ((((TIME) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
 					return;
 				}
-				if(DUtil.getFavor(p) >= ULTIMATECOST)
+				if(DMiscUtil.getFavor(p) >= ULTIMATECOST)
 				{
-					if(!DUtil.canTarget(p, p.getLocation()))
+					if(!DMiscUtil.canTarget(p, p.getLocation()))
 					{
 						p.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 						return;
 					}
-					int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DUtil.getAscensions(p) / DUtil.ASCENSIONCAP)));
+					int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / DMiscUtil.ASCENSIONCAP)));
 					int hit = finale(p);
 					if(hit > 0)
 					{
 						ULTIMATETIME = System.currentTimeMillis() + (t * 1000);
 						p.sendMessage(ChatColor.GOLD + "Apollo " + ChatColor.WHITE + " rains arrows on " + hit + " of your foes.");
-						DUtil.setFavor(p, DUtil.getFavor(p) - ULTIMATECOST);
+						DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - ULTIMATECOST);
 					}
 					else p.sendMessage(ChatColor.YELLOW + "No targets for Finale were found.");
 				}
 				else p.sendMessage(ChatColor.YELLOW + "" + ult + " requires " + ULTIMATECOST + " Favor.");
-            }
+			}
 		}
 	}
 
@@ -246,18 +246,18 @@ public class Apollo implements Deity
 		if(timeSent > LASTCHECK + 10000)
 		{
 			LASTCHECK = timeSent;
-			if((DUtil.getOnlinePlayer(getPlayerName()) != null) && !DUtil.getOnlinePlayer(getPlayerName()).isDead())
+			if((DMiscUtil.getOnlinePlayer(getPlayerName()) != null) && !DMiscUtil.getOnlinePlayer(getPlayerName()).isDead())
 			{
-				Player p = DUtil.getOnlinePlayer(getPlayerName());
-				if(DUtil.getActiveEffectsList(getPlayerName()).contains("Apollo health regeneration"))
+				Player p = DMiscUtil.getOnlinePlayer(getPlayerName());
+				if(DMiscUtil.getActiveEffectsList(getPlayerName()).contains("Apollo health regeneration"))
 				{
-					DUtil.setHP(p, DUtil.getHP(p) + 1);
-					if(DUtil.getHP(p) > DUtil.getMaxHP(p)) DUtil.setHP(p, DUtil.getMaxHP(p));
+					DMiscUtil.setHP(p, DMiscUtil.getHP(p) + 1);
+					if(DMiscUtil.getHP(p) > DMiscUtil.getMaxHP(p)) DMiscUtil.setHP(p, DMiscUtil.getMaxHP(p));
 				}
-				else if(DUtil.getActiveEffectsList(getPlayerName()).contains("Apollo Favor regeneration"))
+				else if(DMiscUtil.getActiveEffectsList(getPlayerName()).contains("Apollo Favor regeneration"))
 				{
-					DUtil.setFavor(p, DUtil.getFavor(p) + 5);
-					if(DUtil.getFavor(p) > DUtil.getFavorCap(p)) DUtil.setFavor(p, DUtil.getFavorCap(p));
+					DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) + 5);
+					if(DMiscUtil.getFavor(p) > DMiscUtil.getFavorCap(p)) DMiscUtil.setFavor(p, DMiscUtil.getFavorCap(p));
 				}
 			}
 		}
@@ -265,9 +265,9 @@ public class Apollo implements Deity
 
 	private void applyEffect(PotionEffectType e, String description)
 	{
-		int duration = (int) Math.round(60 * Math.pow(DUtil.getDevotion(getPlayerName(), getName()), 0.09));
-		Player p = DUtil.getOnlinePlayer(getPlayerName());
-		if(DUtil.getActiveEffectsList(p.getName()).contains("Music Buff"))
+		int duration = (int) Math.round(60 * Math.pow(DMiscUtil.getDevotion(getPlayerName(), getName()), 0.09));
+		Player p = DMiscUtil.getOnlinePlayer(getPlayerName());
+		if(DMiscUtil.getActiveEffectsList(p.getName()).contains("Music Buff"))
 		{
 			p.sendMessage(ChatColor.YELLOW + "You have already received a Music Buff from Apollo.");
 			return;
@@ -276,20 +276,20 @@ public class Apollo implements Deity
 		{
 			p.sendMessage(ChatColor.GOLD + "Apollo" + ChatColor.WHITE + " has granted you a " + description + " bonus for " + duration + " seconds.");
 			p.sendMessage(ChatColor.YELLOW + "NOTE: This bonus cannot be applied to your allies.");
-			DUtil.addActiveEffect(p.getName(), "Apollo " + description, duration);
-			DUtil.addActiveEffect(p.getName(), "Music Buff", duration);
+			DMiscUtil.addActiveEffect(p.getName(), "Apollo " + description, duration);
+			DMiscUtil.addActiveEffect(p.getName(), "Music Buff", duration);
 		}
 		else for(Player pl : p.getWorld().getPlayers())
 		{
 			if(pl.getLocation().toVector().isInSphere(p.getLocation().toVector(), 15))
 			{
-				if(DUtil.isFullParticipant(pl))
+				if(DMiscUtil.isFullParticipant(pl))
 				{
-					if(DUtil.getAllegiance(pl).equalsIgnoreCase(DUtil.getAllegiance(p)))
+					if(DMiscUtil.getAllegiance(pl).equalsIgnoreCase(DMiscUtil.getAllegiance(p)))
 					{
 						pl.sendMessage(ChatColor.GOLD + "Apollo" + ChatColor.WHITE + " has granted you a " + description + " bonus for " + duration + " seconds.");
 						pl.addPotionEffect(new PotionEffect(e, duration * 20, 0));
-						DUtil.addActiveEffect(pl.getName(), "Music Buff", duration);
+						DMiscUtil.addActiveEffect(pl.getName(), "Music Buff", duration);
 					}
 				}
 			}
@@ -298,26 +298,26 @@ public class Apollo implements Deity
 
 	private void cure()
 	{
-		Player p = DUtil.getOnlinePlayer(getPlayerName());
-		int healamt = DUtil.getMaxHP(p);
+		Player p = DMiscUtil.getOnlinePlayer(getPlayerName());
+		int healamt = DMiscUtil.getMaxHP(p);
 		int selfheal = healamt / 9;
-		if(DUtil.getHP(p) + selfheal > DUtil.getMaxHP(p))
+		if(DMiscUtil.getHP(p) + selfheal > DMiscUtil.getMaxHP(p))
 		{
-			selfheal = DUtil.getMaxHP(p) - DUtil.getHP(p);
+			selfheal = DMiscUtil.getMaxHP(p) - DMiscUtil.getHP(p);
 		}
-		DUtil.setHP(p, DUtil.getHP(p) + selfheal);
+		DMiscUtil.setHP(p, DMiscUtil.getHP(p) + selfheal);
 		p.sendMessage(ChatColor.GREEN + "Apollo has cured you for " + selfheal + " health.");
-		LivingEntity le = DUtil.getTargetLivingEntity(p, 3);
+		LivingEntity le = DMiscUtil.getTargetLivingEntity(p, 3);
 		if(le instanceof Player)
 		{
 			Player pl = (Player) le;
-			if(DUtil.isFullParticipant(pl) && DUtil.getAllegiance(pl).equalsIgnoreCase(DUtil.getAllegiance(pl)))
+			if(DMiscUtil.isFullParticipant(pl) && DMiscUtil.getAllegiance(pl).equalsIgnoreCase(DMiscUtil.getAllegiance(pl)))
 			{
-				if(DUtil.getHP(pl) + healamt > DUtil.getMaxHP(pl))
+				if(DMiscUtil.getHP(pl) + healamt > DMiscUtil.getMaxHP(pl))
 				{
-					healamt = DUtil.getMaxHP(pl) - DUtil.getHP(pl);
+					healamt = DMiscUtil.getMaxHP(pl) - DMiscUtil.getHP(pl);
 				}
-				DUtil.setHP(pl, DUtil.getHP(pl) + healamt);
+				DMiscUtil.setHP(pl, DMiscUtil.getHP(pl) + healamt);
 				pl.sendMessage(ChatColor.GREEN + "Apollo has cured you for " + healamt + " health.");
 				p.sendMessage(ChatColor.YELLOW + pl.getName() + " has been cured for " + healamt + " health.");
 			}
@@ -326,7 +326,7 @@ public class Apollo implements Deity
 
 	private int finale(final Player p)
 	{
-		int devotion = DUtil.getDevotion(p, getName());
+		int devotion = DMiscUtil.getDevotion(p, getName());
 		int ultrange = (int) Math.round(20 * Math.pow(devotion, 0.15));
 		int ultslowduration = (int) Math.round(10 * Math.pow(devotion, 0.05)); // seconds
 		int ultattacks = (int) Math.round(4 * Math.pow(devotion, 0.08)); // number of arrow "waves"
@@ -334,8 +334,8 @@ public class Apollo implements Deity
 		Vector ploc = p.getLocation().toVector();
 		for(LivingEntity anEntity : p.getWorld().getLivingEntities())
 		{
-			if(anEntity instanceof Player) if(DUtil.isFullParticipant((Player) anEntity)) if(DUtil.getAllegiance((Player) anEntity).equalsIgnoreCase(DUtil.getAllegiance(p))) continue;
-			if(!DUtil.canTarget(anEntity, anEntity.getLocation())) continue;
+			if(anEntity instanceof Player) if(DMiscUtil.isFullParticipant((Player) anEntity)) if(DMiscUtil.getAllegiance((Player) anEntity).equalsIgnoreCase(DMiscUtil.getAllegiance(p))) continue;
+			if(!DMiscUtil.canTarget(anEntity, anEntity.getLocation())) continue;
 			if(anEntity.getLocation().toVector().isInSphere(ploc, ultrange)) entitylist.add(anEntity);
 		}
 		for(final LivingEntity target : entitylist)
@@ -343,13 +343,13 @@ public class Apollo implements Deity
 			target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, ultslowduration * 20, 1));
 			for(int i = 0; i <= ultattacks * 20; i += 20)
 			{
-				DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable()
+				DMiscUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DMiscUtil.getPlugin(), new Runnable()
 				{
 					@Override
 					public void run()
 					{
 						if(target.isDead()) return;
-                        target.getLocation().setY(target.getLocation().getBlockY() + 50);
+						target.getLocation().setY(target.getLocation().getBlockY() + 50);
 						Arrow ar = target.getWorld().spawnArrow(target.getLocation(), new Vector(0, -5, 0), 5, (float) 0.2);
 						ar.setVelocity(new Vector(0, -5, 0));
 						if(Math.random() > 0.7) ar.setFireTicks(500);

@@ -1,16 +1,17 @@
 package com.WildAmazing.marinating.Demigods.Listeners;
 
-import com.WildAmazing.marinating.Demigods.DSettings;
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.WildAmazing.marinating.Demigods.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.DSettings;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
 public class DChatCommands implements Listener
 {
@@ -20,7 +21,7 @@ public class DChatCommands implements Listener
 		// Define variables
 		Player p = e.getPlayer();
 
-		if(!DUtil.isFullParticipant(p)) return;
+		if(!DMiscUtil.isFullParticipant(p)) return;
 		if(e.getMessage().contains("qd")) qd(p, e);
 		else if(e.getMessage().equals("dg")) dg(p, e);
 	}
@@ -33,12 +34,12 @@ public class DChatCommands implements Listener
 			if(p.getHealth() > 0)
 			{
 				ChatColor color = ChatColor.GREEN;
-				if((DUtil.getHP(p) / (double) DUtil.getMaxHP(p)) < 0.25) color = ChatColor.RED;
-				else if((DUtil.getHP(p) / (double) DUtil.getMaxHP(p)) < 0.5) color = ChatColor.YELLOW;
-				str = "-- Your HP " + color + "" + DUtil.getHP(p) + "/" + DUtil.getMaxHP(p) + ChatColor.YELLOW + " Favor " + DUtil.getFavor(p) + "/" + DUtil.getFavorCap(p);
-				if(DUtil.getActiveEffects(p.getName()).size() > 0)
+				if((DMiscUtil.getHP(p) / (double) DMiscUtil.getMaxHP(p)) < 0.25) color = ChatColor.RED;
+				else if((DMiscUtil.getHP(p) / (double) DMiscUtil.getMaxHP(p)) < 0.5) color = ChatColor.YELLOW;
+				str = "-- Your HP " + color + "" + DMiscUtil.getHP(p) + "/" + DMiscUtil.getMaxHP(p) + ChatColor.YELLOW + " Favor " + DMiscUtil.getFavor(p) + "/" + DMiscUtil.getFavorCap(p);
+				if(DMiscUtil.getActiveEffects(p.getName()).size() > 0)
 				{
-					HashMap<String, Long> effects = DUtil.getActiveEffects(p.getName());
+					HashMap<String, Long> effects = DMiscUtil.getActiveEffects(p.getName());
 					str += ChatColor.WHITE + " Active effects:";
 					for(String stt : effects.keySet())
 						str += " " + stt + "[" + ((effects.get(stt) - System.currentTimeMillis()) / 1000) + "s]";
@@ -46,20 +47,20 @@ public class DChatCommands implements Listener
 				try
 				{
 					String other = e.getMessage().split(" ")[1];
-					if(other != null) other = DUtil.getDemigodsPlayer(other);
-					if((other != null) && DUtil.isFullParticipant(other))
+					if(other != null) other = DMiscUtil.getDemigodsPlayer(other);
+					if((other != null) && DMiscUtil.isFullParticipant(other))
 					{
-						p.sendMessage(other + " -- " + DUtil.getAllegiance(other));
-						if(DUtil.hasDeity(p, "Athena") || DUtil.hasDeity(p, "Themis"))
+						p.sendMessage(other + " -- " + DMiscUtil.getAllegiance(other));
+						if(DMiscUtil.hasDeity(p, "Athena") || DMiscUtil.hasDeity(p, "Themis"))
 						{
 							String st = ChatColor.GRAY + "Deities:";
-							for(Deity d : DUtil.getDeities(other))
+							for(Deity d : DMiscUtil.getDeities(other))
 								st += " " + d.getName();
 							p.sendMessage(st);
-							p.sendMessage(ChatColor.GRAY + "HP " + DUtil.getHP(other) + "/" + DUtil.getMaxHP(other) + " Favor " + DUtil.getFavor(other) + "/" + DUtil.getFavorCap(other));
-							if(DUtil.getActiveEffects(other).size() > 0)
+							p.sendMessage(ChatColor.GRAY + "HP " + DMiscUtil.getHP(other) + "/" + DMiscUtil.getMaxHP(other) + " Favor " + DMiscUtil.getFavor(other) + "/" + DMiscUtil.getFavorCap(other));
+							if(DMiscUtil.getActiveEffects(other).size() > 0)
 							{
-								HashMap<String, Long> fx = DUtil.getActiveEffects(other);
+								HashMap<String, Long> fx = DMiscUtil.getActiveEffects(other);
 								str += ChatColor.GRAY + " Active effects:";
 								for(String stt : fx.keySet())
 									str += " " + stt + "[" + ((fx.get(stt) - System.currentTimeMillis()) / 1000) + "s]";
@@ -79,17 +80,17 @@ public class DChatCommands implements Listener
 	private void dg(Player p, AsyncPlayerChatEvent e)
 	{
 		HashMap<String, ArrayList<String>> alliances = new HashMap<String, ArrayList<String>>();
-		for(Player pl : DUtil.getPlugin().getServer().getOnlinePlayers())
+		for(Player pl : DMiscUtil.getPlugin().getServer().getOnlinePlayers())
 		{
 			if(DSettings.getEnabledWorlds().contains(pl.getWorld()))
 			{
-				if(DUtil.isFullParticipant(pl))
+				if(DMiscUtil.isFullParticipant(pl))
 				{
-					if(!alliances.containsKey(DUtil.getAllegiance(pl).toUpperCase()))
+					if(!alliances.containsKey(DMiscUtil.getAllegiance(pl).toUpperCase()))
 					{
-						alliances.put(DUtil.getAllegiance(pl).toUpperCase(), new ArrayList<String>());
+						alliances.put(DMiscUtil.getAllegiance(pl).toUpperCase(), new ArrayList<String>());
 					}
-					alliances.get(DUtil.getAllegiance(pl).toUpperCase()).add(pl.getName());
+					alliances.get(DMiscUtil.getAllegiance(pl).toUpperCase()).add(pl.getName());
 				}
 			}
 		}

@@ -1,7 +1,5 @@
 package com.WildAmazing.marinating.Demigods.Deities.Gods;
 
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -11,6 +9,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
+
+import com.WildAmazing.marinating.Demigods.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
 public class Hephaestus implements Deity, Listener
 {
@@ -54,15 +55,15 @@ public class Hephaestus implements Deity, Listener
 	@Override
 	public void printInfo(Player p)
 	{
-		if(DUtil.isFullParticipant(p) && DUtil.hasDeity(p, getName()))
+		if(DMiscUtil.isFullParticipant(p) && DMiscUtil.hasDeity(p, getName()))
 		{
-			int devotion = DUtil.getDevotion(p, getName());
+			int devotion = DMiscUtil.getDevotion(p, getName());
 			//
 			int passiverange = (int) Math.round(20 * Math.pow(devotion, 0.15));
 			int repairamt = (int) Math.ceil(10 * Math.pow(devotion, 0.09)); // percent
 			int ultrange = (int) Math.ceil(15 * Math.pow(devotion, 0.09));
 			int ultdamage = (int) Math.ceil(200 * Math.pow(devotion, 0.17));
-			int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DUtil.getAscensions(p) / DUtil.ASCENSIONCAP)));
+			int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / DMiscUtil.ASCENSIONCAP)));
 			//
 			p.sendMessage("--" + ChatColor.GOLD + getName() + ChatColor.GRAY + "[" + devotion + "]");
 			p.sendMessage(":Furnaces up to " + passiverange + " blocks away produce double yields.");
@@ -93,7 +94,7 @@ public class Hephaestus implements Deity, Listener
 			if(e.getEntity() instanceof Player)
 			{
 				Player p = (Player) e.getEntity();
-				if(!DUtil.hasDeity(p, getName()) || !DUtil.isFullParticipant(p)) return;
+				if(!DMiscUtil.hasDeity(p, getName()) || !DMiscUtil.isFullParticipant(p)) return;
 				if((e.getCause() == DamageCause.FIRE) || (e.getCause() == DamageCause.FIRE_TICK))
 				{
 					p.setFireTicks(0);
@@ -108,11 +109,11 @@ public class Hephaestus implements Deity, Listener
 	public void onCommand(Player P, String str, String[] args, boolean bind)
 	{
 		final Player p = P;
-		if(DUtil.hasDeity(p, getName()))
+		if(DMiscUtil.hasDeity(p, getName()))
 		{
 			if(str.equalsIgnoreCase(skillname))
 			{
-				if(DUtil.getFavor(p) < SKILLCOST)
+				if(DMiscUtil.getFavor(p) < SKILLCOST)
 				{
 					p.sendMessage(ChatColor.YELLOW + "" + skillname + " requires " + SKILLCOST + " Favor to use.");
 					return;
@@ -123,11 +124,11 @@ public class Hephaestus implements Deity, Listener
 					p.sendMessage(ChatColor.YELLOW + "This item cannot be repaired.");
 					return;
 				}
-				double repairamt = Math.ceil(10 * Math.pow(DUtil.getDevotion(p, getName()), 0.09)) / 100;
+				double repairamt = Math.ceil(10 * Math.pow(DMiscUtil.getDevotion(p, getName()), 0.09)) / 100;
 				short num = (short) (p.getItemInHand().getDurability() * (1 - repairamt));
 				p.sendMessage(ChatColor.RED + "Hephaestus" + ChatColor.WHITE + " has increased the item's durability by " + (p.getItemInHand().getDurability() - num) + ".");
 				p.getItemInHand().setDurability(num);
-				DUtil.setFavor(p, DUtil.getFavor(p) - SKILLCOST);
+				DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - SKILLCOST);
 			}
 			else if(str.equalsIgnoreCase(ult))
 			{
@@ -138,25 +139,25 @@ public class Hephaestus implements Deity, Listener
 					p.sendMessage(ChatColor.YELLOW + "and " + ((((TIME) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
 					return;
 				}
-				if(DUtil.getFavor(p) >= ULTIMATECOST)
+				if(DMiscUtil.getFavor(p) >= ULTIMATECOST)
 				{
-					if(!DUtil.canTarget(p, p.getLocation()))
+					if(!DMiscUtil.canTarget(p, p.getLocation()))
 					{
 						p.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 						return;
 					}
-					int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DUtil.getAscensions(p) / DUtil.ASCENSIONCAP)));
+					int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / DMiscUtil.ASCENSIONCAP)));
 					ULTIMATETIME = System.currentTimeMillis() + (t * 1000);
 					int num = shatter(p);
 					if(num > 0)
 					{
 						p.sendMessage(ChatColor.RED + "Hephaestus" + ChatColor.WHITE + " has unforged the equipment of " + num + " enemy players.");
-						DUtil.setFavor(p, DUtil.getFavor(p) - ULTIMATECOST);
+						DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - ULTIMATECOST);
 					}
 					else p.sendMessage(ChatColor.YELLOW + "No targets found.");
 				}
 				else p.sendMessage(ChatColor.YELLOW + "" + ult + " requires " + ULTIMATECOST + " Favor.");
-            }
+			}
 		}
 	}
 
@@ -168,13 +169,13 @@ public class Hephaestus implements Deity, Listener
 	public static void onSmelt(FurnaceSmeltEvent e)
 	{
 		if(e.getBlock() == null) return;
-		for(String s : DUtil.getFullParticipants())
+		for(String s : DMiscUtil.getFullParticipants())
 		{
-			Player p = DUtil.getOnlinePlayer(s);
+			Player p = DMiscUtil.getOnlinePlayer(s);
 			if((p == null) || p.isDead()) continue;
-			if(DUtil.hasDeity(p, "Hephaestus"))
+			if(DMiscUtil.hasDeity(p, "Hephaestus"))
 			{
-				if(p.getLocation().getWorld().equals(e.getBlock().getLocation().getWorld())) if(p.getLocation().distance(e.getBlock().getLocation()) < (int) Math.round(20 * Math.pow(DUtil.getDevotion(p, "Hephaestus"), 0.15)))
+				if(p.getLocation().getWorld().equals(e.getBlock().getLocation().getWorld())) if(p.getLocation().distance(e.getBlock().getLocation()) < (int) Math.round(20 * Math.pow(DMiscUtil.getDevotion(p, "Hephaestus"), 0.15)))
 				{
 					int amount = e.getResult().getAmount() * 2;
 					ItemStack out = e.getResult();
@@ -188,18 +189,18 @@ public class Hephaestus implements Deity, Listener
 
 	private int shatter(Player p)
 	{
-		int ultrange = (int) Math.ceil(15 * Math.pow(DUtil.getDevotion(p, getName()), 0.09));
-		int ultdamage = (int) Math.ceil(200 * Math.pow(DUtil.getDevotion(p, getName()), 0.17));
+		int ultrange = (int) Math.ceil(15 * Math.pow(DMiscUtil.getDevotion(p, getName()), 0.09));
+		int ultdamage = (int) Math.ceil(200 * Math.pow(DMiscUtil.getDevotion(p, getName()), 0.17));
 		if(ultdamage > 2000) ultdamage = 2000;
 		int i = 0;
 		for(Player pl : p.getWorld().getPlayers())
 		{
 			if(pl.getLocation().distance(p.getLocation()) <= ultrange)
 			{
-				if(!DUtil.canTarget(pl, pl.getLocation())) continue;
-				if(DUtil.isFullParticipant(pl))
+				if(!DMiscUtil.canTarget(pl, pl.getLocation())) continue;
+				if(DMiscUtil.isFullParticipant(pl))
 				{
-					if(DUtil.getAllegiance(pl).equalsIgnoreCase(getDefaultAlliance()))
+					if(DMiscUtil.getAllegiance(pl).equalsIgnoreCase(getDefaultAlliance()))
 					{
 						i++;
 						pl.sendMessage(ChatColor.RED + "Hephaestus" + ChatColor.WHITE + " has unforged your equipment.");

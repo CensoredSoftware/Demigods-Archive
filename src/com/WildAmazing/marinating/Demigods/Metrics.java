@@ -28,13 +28,6 @@
 
 package com.WildAmazing.marinating.Demigods;
 
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.scheduler.BukkitTask;
-
 import java.io.*;
 import java.net.Proxy;
 import java.net.URL;
@@ -42,6 +35,13 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.*;
 import java.util.logging.Level;
+
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.scheduler.BukkitTask;
 
 /**
  * <p>
@@ -452,21 +452,23 @@ public class Metrics
 		synchronized(graphs)
 		{
 
-            for (Graph graph : graphs) {
-                for (Plotter plotter : graph.getPlotters()) {
-                    // The key name to send to the metrics server
-                    // The format is C-GRAPHNAME-PLOTTERNAME where separator - is defined at the top
-                    // Legacy (R4) submitters use the format Custom%s, or CustomPLOTTERNAME
-                    final String key = String.format("C%s%s%s%s", CUSTOM_DATA_SEPARATOR, graph.getName(), CUSTOM_DATA_SEPARATOR, plotter.getColumnName());
+			for(Graph graph : graphs)
+			{
+				for(Plotter plotter : graph.getPlotters())
+				{
+					// The key name to send to the metrics server
+					// The format is C-GRAPHNAME-PLOTTERNAME where separator - is defined at the top
+					// Legacy (R4) submitters use the format Custom%s, or CustomPLOTTERNAME
+					final String key = String.format("C%s%s%s%s", CUSTOM_DATA_SEPARATOR, graph.getName(), CUSTOM_DATA_SEPARATOR, plotter.getColumnName());
 
-                    // The value to send, which for the foreseeable future is just the string
-                    // value of plotter.getValue()
-                    final String value = Integer.toString(plotter.getValue());
+					// The value to send, which for the foreseeable future is just the string
+					// value of plotter.getValue()
+					final String value = Integer.toString(plotter.getValue());
 
-                    // Add it to the http post data :)
-                    encodeDataPair(data, key, value);
-                }
-            }
+					// Add it to the http post data :)
+					encodeDataPair(data, key, value);
+				}
+			}
 		}
 
 		// Create the url
@@ -513,11 +515,13 @@ public class Metrics
 				synchronized(graphs)
 				{
 
-                    for (Graph graph : graphs) {
-                        for (Plotter plotter : graph.getPlotters()) {
-                            plotter.reset();
-                        }
-                    }
+					for(Graph graph : graphs)
+					{
+						for(Plotter plotter : graph.getPlotters())
+						{
+							plotter.reset();
+						}
+					}
 				}
 			}
 		}

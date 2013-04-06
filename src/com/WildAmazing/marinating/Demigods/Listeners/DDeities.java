@@ -13,11 +13,11 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.*;
 
+import com.WildAmazing.marinating.Demigods.DMiscUtil;
 import com.WildAmazing.marinating.Demigods.DSave;
 import com.WildAmazing.marinating.Demigods.DSettings;
-import com.WildAmazing.marinating.Demigods.DUtil;
+import com.WildAmazing.marinating.Demigods.DUpdateUtil;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.clashnia.ClashniaUpdate.DemigodsUpdate;
 
 public class DDeities implements Listener
 {
@@ -26,19 +26,19 @@ public class DDeities implements Listener
 	 */
 	public DDeities()
 	{
-		DUtil.getPlugin().getServer().getScheduler().scheduleSyncRepeatingTask(DUtil.getPlugin(), new Runnable()
+		DMiscUtil.getPlugin().getServer().getScheduler().scheduleSyncRepeatingTask(DMiscUtil.getPlugin(), new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				for(String name : DUtil.getFullParticipants())
+				for(String name : DMiscUtil.getFullParticipants())
 				{
-					Player p = DUtil.getOnlinePlayer(name);
+					Player p = DMiscUtil.getOnlinePlayer(name);
 					if((p != null) && p.isOnline())
 					{
 						if(DSettings.getEnabledWorlds().contains(p.getWorld()))
 						{
-							for(Deity d : DUtil.getDeities(p))
+							for(Deity d : DMiscUtil.getDeities(p))
 								d.onTick(System.currentTimeMillis());
 						}
 					}
@@ -53,9 +53,9 @@ public class DDeities implements Listener
 		if(!DSettings.getEnabledWorlds().contains(e.getBlock().getWorld())) return;
 		// Player
 		Player p = e.getPlayer();
-		if((DUtil.getDeities(p) != null) && (DUtil.getDeities(p).size() > 0))
+		if((DMiscUtil.getDeities(p) != null) && (DMiscUtil.getDeities(p).size() > 0))
 		{
-			for(Deity d : DUtil.getDeities(p))
+			for(Deity d : DMiscUtil.getDeities(p))
 				d.onEvent(e);
 		}
 	}
@@ -66,9 +66,9 @@ public class DDeities implements Listener
 		if(!DSettings.getEnabledWorlds().contains(e.getBlock().getWorld())) return;
 		// Player
 		Player p = e.getPlayer();
-		if((DUtil.getDeities(p) != null) && (DUtil.getDeities(p).size() > 0))
+		if((DMiscUtil.getDeities(p) != null) && (DMiscUtil.getDeities(p).size() > 0))
 		{
-			for(Deity d : DUtil.getDeities(p))
+			for(Deity d : DMiscUtil.getDeities(p))
 				d.onEvent(e);
 		}
 	}
@@ -79,11 +79,11 @@ public class DDeities implements Listener
 		if(!DSettings.getEnabledWorlds().contains(e.getEntity().getWorld())) return;
 		for(Player pl : e.getEntity().getWorld().getPlayers())
 		{
-			if(DUtil.isFullParticipant(pl))
+			if(DMiscUtil.isFullParticipant(pl))
 			{
-				if((DUtil.getDeities(pl) != null) && (DUtil.getDeities(pl).size() > 0))
+				if((DMiscUtil.getDeities(pl) != null) && (DMiscUtil.getDeities(pl).size() > 0))
 				{
-					for(Deity d : DUtil.getDeities(pl))
+					for(Deity d : DMiscUtil.getDeities(pl))
 						d.onEvent(e);
 				}
 			}
@@ -97,9 +97,9 @@ public class DDeities implements Listener
 		if(e.getEntity() instanceof Player)
 		{
 			Player p = (Player) e.getEntity();
-			if((DUtil.getDeities(p) != null) && (DUtil.getDeities(p).size() > 0))
+			if((DMiscUtil.getDeities(p) != null) && (DMiscUtil.getDeities(p).size() > 0))
 			{
-				for(Deity d : DUtil.getDeities(p))
+				for(Deity d : DMiscUtil.getDeities(p))
 					d.onEvent(e);
 			}
 		}
@@ -113,9 +113,9 @@ public class DDeities implements Listener
 		if(e.getTarget() instanceof Player)
 		{
 			Player p = (Player) e.getTarget();
-			if((DUtil.getDeities(p) != null) && (DUtil.getDeities(p).size() > 0))
+			if((DMiscUtil.getDeities(p) != null) && (DMiscUtil.getDeities(p).size() > 0))
 			{
-				for(Deity d : DUtil.getDeities(p))
+				for(Deity d : DMiscUtil.getDeities(p))
 					d.onEvent(e);
 			}
 		}
@@ -126,9 +126,9 @@ public class DDeities implements Listener
 	{
 		if(!DSettings.getEnabledWorlds().contains(e.getPlayer().getWorld())) return;
 		Player p = e.getPlayer();
-		if((DUtil.getDeities(p) != null) && (DUtil.getDeities(p).size() > 0))
+		if((DMiscUtil.getDeities(p) != null) && (DMiscUtil.getDeities(p).size() > 0))
 		{
-			for(Deity d : DUtil.getDeities(p))
+			for(Deity d : DMiscUtil.getDeities(p))
 				d.onEvent(e);
 		}
 	}
@@ -140,31 +140,28 @@ public class DDeities implements Listener
 		if(!DSettings.getEnabledWorlds().contains(p.getWorld())) return;
 		if(DSettings.getSettingBoolean("motd"))
 		{
-			p.sendMessage("This server is running Demigods v" + ChatColor.YELLOW + DUtil.getPlugin().getDescription().getVersion() + ChatColor.WHITE + ".");
+			p.sendMessage("This server is running Demigods v" + ChatColor.YELLOW + DMiscUtil.getPlugin().getDescription().getVersion() + ChatColor.WHITE + ".");
 			p.sendMessage(ChatColor.GRAY + "Type " + ChatColor.GREEN + "/dg" + ChatColor.GRAY + " for more info.");
 		}
 
 		/*
 		 * Update Notify
 		 */
-		if(DSettings.getSettingBoolean("update") || DSettings.getSettingBoolean("update_notify"))
+		if(DSettings.getSettingBoolean("update_notify") && DMiscUtil.hasPermissionOrOP(p, "demigods.admin"))
 		{
-			if(DemigodsUpdate.checker.getVersion().startsWith("3") && DUtil.hasPermissionOrOP(p, "demigods.admin") && DSettings.getSettingBoolean("update_notify"))
+			String latest = DUpdateUtil.getLatestVersion();
+			if(latest.startsWith("3"))
 			{
 				p.sendMessage(ChatColor.RED + "There is a new, stable" + ChatColor.DARK_GREEN + " upgrade release " + ChatColor.RED + "for Demigods.");
-				if(DSettings.getSettingBoolean("update")) p.sendMessage(ChatColor.RED + "You cannot automatically upgrade to version " + DemigodsUpdate.checker.getVersion() + ".");
+				if(DSettings.getSettingBoolean("update")) p.sendMessage(ChatColor.RED + "You cannot automatically upgrade to version " + latest + ".");
 				p.sendMessage(ChatColor.RED + "Visit BukkitDev and download Demigods after reading the special instructions.");
 				p.sendMessage(ChatColor.RED + "BukkitDev: " + ChatColor.GREEN + "dev.bukkit.org/server-mods/demigods");
 			}
-			else if((DSettings.getSettingBoolean("update_notify")) && (DemigodsUpdate.shouldUpdate()))
+			else if(DUpdateUtil.check())
 			{
 				p.sendMessage(ChatColor.RED + "There is a new, stable release for Demigods.");
-				if(!DSettings.getSettingBoolean("update"))
-				{
-					p.sendMessage(ChatColor.RED + "Please update ASAP.");
-					p.sendMessage(ChatColor.RED + "Latest: " + ChatColor.GREEN + "dev.bukkit.org/server-mods/demigods");
-				}
-				else p.sendMessage(ChatColor.RED + "The plugin should update automatically on the next server reload.");
+				if(DSettings.getSettingBoolean("update")) p.sendMessage("Please " + ChatColor.YELLOW + "reload the server " + ChatColor.WHITE + "ASAP to finish an auto-update.");
+				else p.sendMessage("Please update ASAP by using " + ChatColor.YELLOW + "/dg update");
 			}
 		}
 
@@ -187,9 +184,9 @@ public class DDeities implements Listener
 	{
 		Player p = e.getPlayer();
 		if(!DSettings.getEnabledWorlds().contains(p.getWorld())) return;
-		if((DUtil.getDeities(p) != null) && (DUtil.getDeities(p).size() > 0))
+		if((DMiscUtil.getDeities(p) != null) && (DMiscUtil.getDeities(p).size() > 0))
 		{
-			for(Deity d : DUtil.getDeities(p))
+			for(Deity d : DMiscUtil.getDeities(p))
 				d.onEvent(e);
 		}
 	}
@@ -198,22 +195,22 @@ public class DDeities implements Listener
 	public void onPlayerChat(AsyncPlayerChatEvent e)
 	{
 		Player p = e.getPlayer();
-		if(DUtil.isFullParticipant(p)) if(DSave.hasData(p, "ALLIANCECHAT"))
+		if(DMiscUtil.isFullParticipant(p)) if(DSave.hasData(p, "ALLIANCECHAT"))
 		{
 			if((Boolean) DSave.getData(p, "ALLIANCECHAT"))
 			{
 				e.setCancelled(true);
-				Logger.getLogger("Minecraft").info("[" + DUtil.getAllegiance(p) + "] " + p.getName() + ": " + e.getMessage());
-				for(Player pl : DUtil.getPlugin().getServer().getOnlinePlayers())
+				Logger.getLogger("Minecraft").info("[" + DMiscUtil.getAllegiance(p) + "] " + p.getName() + ": " + e.getMessage());
+				for(Player pl : DMiscUtil.getPlugin().getServer().getOnlinePlayers())
 				{
-					if(DUtil.isFullParticipant(pl) && DUtil.getAllegiance(pl).equalsIgnoreCase(DUtil.getAllegiance(p))) pl.sendMessage(ChatColor.GREEN + "[" + DUtil.getAscensions(p) + "] " + p.getName() + ": " + e.getMessage());
+					if(DMiscUtil.isFullParticipant(pl) && DMiscUtil.getAllegiance(pl).equalsIgnoreCase(DMiscUtil.getAllegiance(p))) pl.sendMessage(ChatColor.GREEN + "[" + DMiscUtil.getAscensions(p) + "] " + p.getName() + ": " + e.getMessage());
 				}
 			}
 		}
 		if(!DSettings.getEnabledWorlds().contains(p.getWorld())) return;
-		if((DUtil.getDeities(p) != null) && (DUtil.getDeities(p).size() > 0))
+		if((DMiscUtil.getDeities(p) != null) && (DMiscUtil.getDeities(p).size() > 0))
 		{
-			for(Deity d : DUtil.getDeities(p))
+			for(Deity d : DMiscUtil.getDeities(p))
 				d.onEvent(e);
 		}
 	}
@@ -223,9 +220,9 @@ public class DDeities implements Listener
 	{
 		Player p = e.getPlayer();
 		if(!DSettings.getEnabledWorlds().contains(p.getWorld())) return;
-		if((DUtil.getDeities(p) != null) && (DUtil.getDeities(p).size() > 0))
+		if((DMiscUtil.getDeities(p) != null) && (DMiscUtil.getDeities(p).size() > 0))
 		{
-			for(Deity d : DUtil.getDeities(p))
+			for(Deity d : DMiscUtil.getDeities(p))
 				d.onEvent(e);
 		}
 	}
@@ -235,9 +232,9 @@ public class DDeities implements Listener
 	{
 		Player p = e.getPlayer();
 		if(!DSettings.getEnabledWorlds().contains(p.getWorld())) return;
-		if((DUtil.getDeities(p) != null) && (DUtil.getDeities(p).size() > 0))
+		if((DMiscUtil.getDeities(p) != null) && (DMiscUtil.getDeities(p).size() > 0))
 		{
-			for(Deity d : DUtil.getDeities(p))
+			for(Deity d : DMiscUtil.getDeities(p))
 				d.onEvent(e);
 		}
 	}
@@ -247,9 +244,9 @@ public class DDeities implements Listener
 	{
 		Player p = e.getPlayer();
 		if(!DSettings.getEnabledWorlds().contains(p.getWorld())) return;
-		if((DUtil.getDeities(p) != null) && (DUtil.getDeities(p).size() > 0))
+		if((DMiscUtil.getDeities(p) != null) && (DMiscUtil.getDeities(p).size() > 0))
 		{
-			for(Deity d : DUtil.getDeities(p))
+			for(Deity d : DMiscUtil.getDeities(p))
 				d.onEvent(e);
 		}
 	}

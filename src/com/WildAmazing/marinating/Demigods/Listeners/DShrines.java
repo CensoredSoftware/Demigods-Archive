@@ -1,7 +1,8 @@
 package com.WildAmazing.marinating.Demigods.Listeners;
 
-import com.WildAmazing.marinating.Demigods.*;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.util.Iterator;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -18,8 +19,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Iterator;
-import java.util.List;
+import com.WildAmazing.marinating.Demigods.*;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
 public class DShrines implements Listener
 {
@@ -32,14 +33,14 @@ public class DShrines implements Listener
 	{
 		if(e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 		if(!DSettings.getEnabledWorlds().contains(e.getClickedBlock().getWorld())) return;
-		if(!DUtil.isFullParticipant(e.getPlayer())) return;
+		if(!DMiscUtil.isFullParticipant(e.getPlayer())) return;
 		if((e.getClickedBlock().getType() != Material.SIGN) && (e.getClickedBlock().getType() != Material.SIGN_POST)) return;
 		Sign s = (Sign) e.getClickedBlock().getState();
 		if(!s.getLines()[0].trim().equalsIgnoreCase("shrine")) return;
 		if(!s.getLines()[1].trim().equalsIgnoreCase("dedicate")) return;
 		String deityname = null;
 		Player p = e.getPlayer();
-		for(String name : DUtil.getDeityNames(p))
+		for(String name : DMiscUtil.getDeityNames(p))
 		{
 			if(s.getLines()[2].trim().equalsIgnoreCase(name))
 			{
@@ -48,7 +49,7 @@ public class DShrines implements Listener
 			}
 		}
 		if(deityname == null) return;
-		if(DUtil.getShrine(p.getName(), deityname) != null)
+		if(DMiscUtil.getShrine(p.getName(), deityname) != null)
 		{
 			p.sendMessage(ChatColor.YELLOW + "You already have a shrine dedicated to " + deityname + ".");
 			return;
@@ -74,9 +75,9 @@ public class DShrines implements Listener
 					return;
 				}
 			}
-			for(WriteLocation w : DUtil.getAllShrines())
+			for(WriteLocation w : DMiscUtil.getAllShrines())
 			{
-				if(DUtil.getShrineName(w).equals(s.getLines()[3].trim()))
+				if(DMiscUtil.getShrineName(w).equals(s.getLines()[3].trim()))
 				{
 					p.sendMessage(ChatColor.YELLOW + "A shrine with that name already exists.");
 					return;
@@ -84,17 +85,17 @@ public class DShrines implements Listener
 			}
 			shrinename = "#" + s.getLines()[3].trim();
 		}
-		for(WriteLocation center : DUtil.getAllShrines())
+		for(WriteLocation center : DMiscUtil.getAllShrines())
 		{
-			if(DUtil.toLocation(center).getWorld().equals(e.getClickedBlock().getWorld())) if(e.getClickedBlock().getLocation().distance(DUtil.toLocation(center)) < (RADIUS + 1))
+			if(DMiscUtil.toLocation(center).getWorld().equals(e.getClickedBlock().getWorld())) if(e.getClickedBlock().getLocation().distance(DMiscUtil.toLocation(center)) < (RADIUS + 1))
 			{
 				p.sendMessage(ChatColor.YELLOW + "Too close to an existing shrine.");
 				return;
 			}
 		}
 		// conditions cleared
-		DUtil.addShrine(p.getName(), deityname, DUtil.toWriteLocation(e.getClickedBlock().getLocation()));
-		if(shrinename.length() > 1) DUtil.addShrine(p.getName(), shrinename, DUtil.toWriteLocation(e.getClickedBlock().getLocation())); // accessible by two names
+		DMiscUtil.addShrine(p.getName(), deityname, DMiscUtil.toWriteLocation(e.getClickedBlock().getLocation()));
+		if(shrinename.length() > 1) DMiscUtil.addShrine(p.getName(), shrinename, DMiscUtil.toWriteLocation(e.getClickedBlock().getLocation())); // accessible by two names
 		e.getClickedBlock().setType(Material.GOLD_BLOCK);
 		e.getClickedBlock().getWorld().strikeLightningEffect(e.getClickedBlock().getLocation());
 		p.sendMessage(ChatColor.AQUA + "You have dedicated this shrine to " + deityname + ".");
@@ -109,9 +110,9 @@ public class DShrines implements Listener
 	public static void destroyShrine(BlockBreakEvent e)
 	{
 		if(!DSettings.getEnabledWorlds().contains(e.getBlock().getWorld())) return;
-		for(WriteLocation center : DUtil.getAllShrines())
+		for(WriteLocation center : DMiscUtil.getAllShrines())
 		{
-			if((DUtil.toWriteLocation(e.getBlock().getLocation())).equalsApprox(center))
+			if((DMiscUtil.toWriteLocation(e.getBlock().getLocation())).equalsApprox(center))
 			{
 				e.getPlayer().sendMessage(ChatColor.YELLOW + "Shrines cannot be broken by hand.");
 				e.setCancelled(true);
@@ -124,9 +125,9 @@ public class DShrines implements Listener
 	public void stopShrineDamage(BlockDamageEvent e)
 	{
 		if(!DSettings.getEnabledWorlds().contains(e.getBlock().getWorld())) return;
-		for(WriteLocation center : DUtil.getAllShrines())
+		for(WriteLocation center : DMiscUtil.getAllShrines())
 		{
-			if((DUtil.toWriteLocation(e.getBlock().getLocation())).equalsApprox(center))
+			if((DMiscUtil.toWriteLocation(e.getBlock().getLocation())).equalsApprox(center))
 			{
 				e.setCancelled(true);
 			}
@@ -137,9 +138,9 @@ public class DShrines implements Listener
 	public void stopShrineIgnite(BlockIgniteEvent e)
 	{
 		if(!DSettings.getEnabledWorlds().contains(e.getBlock().getWorld())) return;
-		for(WriteLocation center : DUtil.getAllShrines())
+		for(WriteLocation center : DMiscUtil.getAllShrines())
 		{
-			if((DUtil.toWriteLocation(e.getBlock().getLocation())).equalsApprox(center))
+			if((DMiscUtil.toWriteLocation(e.getBlock().getLocation())).equalsApprox(center))
 			{
 				e.setCancelled(true);
 			}
@@ -150,9 +151,9 @@ public class DShrines implements Listener
 	public void stopShrineBurn(BlockBurnEvent e)
 	{
 		if(!DSettings.getEnabledWorlds().contains(e.getBlock().getWorld())) return;
-		for(WriteLocation center : DUtil.getAllShrines())
+		for(WriteLocation center : DMiscUtil.getAllShrines())
 		{
-			if((DUtil.toWriteLocation(e.getBlock().getLocation())).equalsApprox(center))
+			if((DMiscUtil.toWriteLocation(e.getBlock().getLocation())).equalsApprox(center))
 			{
 				e.setCancelled(true);
 			}
@@ -170,9 +171,9 @@ public class DShrines implements Listener
 			{
 				return;
 			}
-			for(WriteLocation center : DUtil.getAllShrines())
+			for(WriteLocation center : DMiscUtil.getAllShrines())
 			{
-				if((DUtil.toWriteLocation(b.getLocation())).equalsApprox(center))
+				if((DMiscUtil.toWriteLocation(b.getLocation())).equalsApprox(center))
 				{
 					e.setCancelled(true);
 					break CHECKBLOCKS;
@@ -188,9 +189,9 @@ public class DShrines implements Listener
 		final Block b = e.getBlock().getRelative(e.getDirection(), 2);
 
 		if(!DSettings.getEnabledWorlds().contains(b.getWorld())) return;
-		for(WriteLocation shrine : DUtil.getAllShrines())
+		for(WriteLocation shrine : DMiscUtil.getAllShrines())
 		{
-			if((DUtil.toWriteLocation(b.getLocation())).equalsApprox((shrine)) && e.isSticky())
+			if((DMiscUtil.toWriteLocation(b.getLocation())).equalsApprox((shrine)) && e.isSticky())
 			{
 				e.setCancelled(true);
 			}
@@ -208,10 +209,10 @@ public class DShrines implements Listener
 			while(i.hasNext())
 			{
 				Block b = i.next();
-				if(!DUtil.canLocationPVP(b.getLocation())) i.remove();
-				for(WriteLocation center : DUtil.getAllShrines())
+				if(!DMiscUtil.canLocationPVP(b.getLocation())) i.remove();
+				for(WriteLocation center : DMiscUtil.getAllShrines())
 				{
-					if((DUtil.toWriteLocation(b.getLocation())).equalsApprox(center)) i.remove();
+					if((DMiscUtil.toWriteLocation(b.getLocation())).equalsApprox(center)) i.remove();
 				}
 			}
 		}
@@ -225,19 +226,19 @@ public class DShrines implements Listener
 		if(e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 		if(!DSettings.getEnabledWorlds().contains(e.getClickedBlock().getWorld())) return;
 		if(e.getClickedBlock().getType() != Material.GOLD_BLOCK) return;
-		if(!DUtil.isFullParticipant(e.getPlayer())) return;
+		if(!DMiscUtil.isFullParticipant(e.getPlayer())) return;
 		// check if block is shrine
-		String deityname = DUtil.getDeityAtShrine(DUtil.toWriteLocation(e.getClickedBlock().getLocation()));
+		String deityname = DMiscUtil.getDeityAtShrine(DMiscUtil.toWriteLocation(e.getClickedBlock().getLocation()));
 		if(deityname == null) return;
 		// check if player has deity
 		Player p = e.getPlayer();
-		for(Deity d : DUtil.getDeities(p))
+		for(Deity d : DMiscUtil.getDeities(p))
 			if(d.getName().equalsIgnoreCase(deityname))
 			{
 				// open the tribute inventory
-				Inventory ii = DUtil.getPlugin().getServer().createInventory(p, 27, "Tributes");
+				Inventory ii = DMiscUtil.getPlugin().getServer().createInventory(p, 27, "Tributes");
 				p.openInventory(ii);
-				DSave.saveData(p, deityname.toUpperCase() + "_TRIBUTE_", DUtil.getOwnerOfShrine(DUtil.toWriteLocation(e.getClickedBlock().getLocation())));
+				DSave.saveData(p, deityname.toUpperCase() + "_TRIBUTE_", DMiscUtil.getOwnerOfShrine(DMiscUtil.toWriteLocation(e.getClickedBlock().getLocation())));
 				e.setCancelled(true);
 				return;
 			}
@@ -248,30 +249,30 @@ public class DShrines implements Listener
 	public void shrineAlerts(PlayerMoveEvent e)
 	{
 		if(e.getFrom().distance(e.getTo()) < 0.1) return;
-		for(String player : DUtil.getFullParticipants())
+		for(String player : DMiscUtil.getFullParticipants())
 		{
-			if(DUtil.getShrines(player) != null) for(WriteLocation center : DUtil.getShrines(player).values())
+			if(DMiscUtil.getShrines(player) != null) for(WriteLocation center : DMiscUtil.getShrines(player).values())
 			{
 				// Check for world errors
-				if(!DUtil.toLocation(center).getWorld().equals(e.getPlayer().getWorld())) return;
-				if(e.getFrom().getWorld() != DUtil.toLocation(center).getWorld()) return;
+				if(!DMiscUtil.toLocation(center).getWorld().equals(e.getPlayer().getWorld())) return;
+				if(e.getFrom().getWorld() != DMiscUtil.toLocation(center).getWorld()) return;
 				/*
 				 * Outside coming in
 				 */
-				if(e.getFrom().distance(DUtil.toLocation(center)) > RADIUS)
+				if(e.getFrom().distance(DMiscUtil.toLocation(center)) > RADIUS)
 				{
-					if(DUtil.toLocation(center).distance(e.getTo()) <= RADIUS)
+					if(DMiscUtil.toLocation(center).distance(e.getTo()) <= RADIUS)
 					{
-						e.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + player + "'s shrine to " + ChatColor.YELLOW + DUtil.getDeityAtShrine(center) + ChatColor.GRAY + ".");
+						e.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + player + "'s shrine to " + ChatColor.YELLOW + DMiscUtil.getDeityAtShrine(center) + ChatColor.GRAY + ".");
 						return;
 					}
 				}
 				/*
 				 * Leaving
 				 */
-				else if(e.getFrom().distance(DUtil.toLocation(center)) <= RADIUS)
+				else if(e.getFrom().distance(DMiscUtil.toLocation(center)) <= RADIUS)
 				{
-					if(DUtil.toLocation(center).distance(e.getTo()) > RADIUS)
+					if(DMiscUtil.toLocation(center).distance(e.getTo()) > RADIUS)
 					{
 						e.getPlayer().sendMessage(ChatColor.GRAY + "You have left a shrine.");
 						return;
@@ -287,14 +288,14 @@ public class DShrines implements Listener
 		if(!DSettings.getEnabledWorlds().contains(e.getPlayer().getWorld())) return;
 		if(!(e.getPlayer() instanceof Player)) return;
 		Player p = (Player) e.getPlayer();
-		if(!DUtil.isFullParticipant(p)) return;
+		if(!DMiscUtil.isFullParticipant(p)) return;
 		// continue if tribute chest
 		if(!e.getInventory().getName().equals("Tributes")) return;
 		// get which deity tribute goes to
 		String togive = null;
-		for(String player : DUtil.getFullParticipants())
+		for(String player : DMiscUtil.getFullParticipants())
 		{
-			for(Deity d : DUtil.getDeities(player))
+			for(Deity d : DMiscUtil.getDeities(player))
 			{
 				if(DSave.hasData(player, d.getName().toUpperCase() + "_TRIBUTE_"))
 				{
@@ -312,22 +313,22 @@ public class DShrines implements Listener
 		{
 			if(ii != null)
 			{
-				value += DUtil.getValue(ii);
+				value += DMiscUtil.getValue(ii);
 				items++;
 			}
 		}
 		value *= FAVORMULTIPLIER;
 		// give devotion
-		int dbefore = DUtil.getDevotion(p, togive);
-		DUtil.setDevotion(p, togive, DUtil.getDevotion(p, togive) + value);
-		DUtil.setDevotion(creator, togive, DUtil.getDevotion(creator, togive) + value / 7);
+		int dbefore = DMiscUtil.getDevotion(p, togive);
+		DMiscUtil.setDevotion(p, togive, DMiscUtil.getDevotion(p, togive) + value);
+		DMiscUtil.setDevotion(creator, togive, DMiscUtil.getDevotion(creator, togive) + value / 7);
 		// give favor
-		int fbefore = DUtil.getFavorCap(p);
-		DUtil.setFavorCap(p, DUtil.getFavorCap(p) + value / 5);
+		int fbefore = DMiscUtil.getFavorCap(p);
+		DMiscUtil.setFavorCap(p, DMiscUtil.getFavorCap(p) + value / 5);
 		// devotion lock TODO
-		if(dbefore < DUtil.getDevotion(p, togive)) p.sendMessage(ChatColor.YELLOW + "Your Devotion for " + togive + " has increased to " + DUtil.getDevotion(p, togive) + ".");
-		if(fbefore < DUtil.getFavorCap(p)) p.sendMessage(ChatColor.YELLOW + "Your Favor Cap has increased to " + DUtil.getFavorCap(p) + ".");
-		if((fbefore == DUtil.getFavorCap(p)) && (dbefore == DUtil.getDevotion(p, togive)) && (items > 0)) p.sendMessage(ChatColor.YELLOW + "Your tributes were insufficient for " + togive + "'s blessings.");
+		if(dbefore < DMiscUtil.getDevotion(p, togive)) p.sendMessage(ChatColor.YELLOW + "Your Devotion for " + togive + " has increased to " + DMiscUtil.getDevotion(p, togive) + ".");
+		if(fbefore < DMiscUtil.getFavorCap(p)) p.sendMessage(ChatColor.YELLOW + "Your Favor Cap has increased to " + DMiscUtil.getFavorCap(p) + ".");
+		if((fbefore == DMiscUtil.getFavorCap(p)) && (dbefore == DMiscUtil.getDevotion(p, togive)) && (items > 0)) p.sendMessage(ChatColor.YELLOW + "Your tributes were insufficient for " + togive + "'s blessings.");
 		DLevels.levelProcedure(p);
 		// clear inventory
 		e.getInventory().clear();

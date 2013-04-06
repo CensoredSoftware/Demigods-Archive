@@ -4,8 +4,8 @@ package com.WildAmazing.marinating.Demigods.Deities.Gods;
  * This style/format of code is now deprecated.
  */
 
-import com.WildAmazing.marinating.Demigods.DUtil;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,7 +19,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
+import com.WildAmazing.marinating.Demigods.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
 public class Poseidon implements Deity
 {
@@ -71,9 +72,9 @@ public class Poseidon implements Deity
 	@Override
 	public void printInfo(Player p)
 	{
-		if(DUtil.hasDeity(p, "Poseidon") && DUtil.isFullParticipant(p))
+		if(DMiscUtil.hasDeity(p, "Poseidon") && DMiscUtil.isFullParticipant(p))
 		{
-			int devotion = DUtil.getDevotion(p, getName());
+			int devotion = DMiscUtil.getDevotion(p, getName());
 			/*
 			 * Calculate special values first
 			 */
@@ -91,7 +92,7 @@ public class Poseidon implements Deity
 			// int numtargets = (int)Math.round(5*Math.pow(devotion, 0.15));
 			// int ultduration = (int)Math.round(30*Math.pow(devotion, 0.09));
 			// int t = (int)(ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN)*
-			// ((double)DUtil.getAscensions(p)/100)));
+			// ((double)DMiscUtil.getAscensions(p)/100)));
 			/*
 			 * The printed text
 			 */
@@ -100,11 +101,11 @@ public class Poseidon implements Deity
 			p.sendMessage("Immune to drowning, sneak while in water to swim very fast!");
 			p.sendMessage(":Deal " + damage + " damage and soak an enemy from a distance. " + ChatColor.GREEN + "/reel");
 			p.sendMessage(ChatColor.YELLOW + "Costs " + REELCOST + " Favor. Must have fishing rod in hand.");
-			if(((Poseidon) (DUtil.getDeity(p, "Poseidon"))).REEL) p.sendMessage(ChatColor.AQUA + "    Reel is active.");
+			if(((Poseidon) (DMiscUtil.getDeity(p, "Poseidon"))).REEL) p.sendMessage(ChatColor.AQUA + "    Reel is active.");
 			p.sendMessage(":Create a temporary flood of water. " + ChatColor.GREEN + "/drown");
 			p.sendMessage(ChatColor.YELLOW + "Costs " + drownCOST + " Favor.");
 			p.sendMessage("Water has radius of " + radius + " for " + duration + " seconds.");
-			if(((Poseidon) (DUtil.getDeity(p, "Poseidon"))).drownBIND != null) p.sendMessage(ChatColor.AQUA + "    drown bound to " + (((Poseidon) (DUtil.getDeity(p, "Poseidon"))).drownBIND).name());
+			if(((Poseidon) (DMiscUtil.getDeity(p, "Poseidon"))).drownBIND != null) p.sendMessage(ChatColor.AQUA + "    drown bound to " + (((Poseidon) (DMiscUtil.getDeity(p, "Poseidon"))).drownBIND).name());
 			else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
 			return;
 		}
@@ -129,8 +130,8 @@ public class Poseidon implements Deity
 				if(e.getCause() == DamageCause.DROWNING)
 				{
 					Player p = (Player) e.getEntity();
-					if(!DUtil.isFullParticipant(p)) return;
-					if(!DUtil.hasDeity(p, "Poseidon")) return;
+					if(!DMiscUtil.isFullParticipant(p)) return;
+					if(!DMiscUtil.hasDeity(p, "Poseidon")) return;
 					e.setDamage(0);
 					e.setCancelled(true);
 				}
@@ -140,8 +141,8 @@ public class Poseidon implements Deity
 		{
 			PlayerMoveEvent move = (PlayerMoveEvent) ee;
 			Player p = move.getPlayer();
-			if(!DUtil.isFullParticipant(p)) return;
-			if(!DUtil.hasDeity(p, "Poseidon")) return;
+			if(!DMiscUtil.isFullParticipant(p)) return;
+			if(!DMiscUtil.hasDeity(p, "Poseidon")) return;
 			// PHELPS SWIMMING
 			if(p.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || p.getLocation().getBlock().getType().equals(Material.WATER))
 			{
@@ -154,18 +155,18 @@ public class Poseidon implements Deity
 		{
 			PlayerInteractEvent e = (PlayerInteractEvent) ee;
 			Player p = e.getPlayer();
-			if(!DUtil.isFullParticipant(p)) return;
-			if(!DUtil.hasDeity(p, "Poseidon")) return;
+			if(!DMiscUtil.isFullParticipant(p)) return;
+			if(!DMiscUtil.hasDeity(p, "Poseidon")) return;
 			if(REEL)
 			{
 				if(p.getItemInHand().getType() == Material.FISHING_ROD)
 				{
 					if(REELTIME > System.currentTimeMillis()) return;
-					if(DUtil.getFavor(p) > REELCOST)
+					if(DMiscUtil.getFavor(p) > REELCOST)
 					{
 						if(reel(p))
 						{
-							DUtil.setFavor(p, DUtil.getFavor(p) - REELCOST);
+							DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - REELCOST);
 							REELTIME = System.currentTimeMillis() + REELDELAY;
 						}
 					}
@@ -183,11 +184,11 @@ public class Poseidon implements Deity
 					p.sendMessage(ChatColor.YELLOW + "You may not use this skill yet.");
 					return;
 				}
-				if(DUtil.getFavor(p) > drownCOST)
+				if(DMiscUtil.getFavor(p) > drownCOST)
 				{
 					if(drown(p))
 					{
-						DUtil.setFavor(p, DUtil.getFavor(p) - drownCOST);
+						DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - drownCOST);
 						drownTIME = System.currentTimeMillis() + DROWNDELAY;
 					}
 				}
@@ -204,8 +205,8 @@ public class Poseidon implements Deity
 	public void onCommand(Player P, String str, String[] args, boolean bind)
 	{
 		final Player p = P;
-		if(!DUtil.isFullParticipant(p)) return;
-		if(!DUtil.hasDeity(p, "Poseidon")) return;
+		if(!DMiscUtil.isFullParticipant(p)) return;
+		if(!DMiscUtil.hasDeity(p, "Poseidon")) return;
 		if(str.equalsIgnoreCase("reel"))
 		{
 			if(REEL)
@@ -226,18 +227,18 @@ public class Poseidon implements Deity
 			{
 				if(drownBIND == null)
 				{
-					if(DUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
+					if(DMiscUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
 					if(p.getItemInHand().getType() == Material.AIR) p.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
 					else
 					{
-						DUtil.registerBind(p, p.getItemInHand().getType());
+						DMiscUtil.registerBind(p, p.getItemInHand().getType());
 						drownBIND = p.getItemInHand().getType();
 						p.sendMessage(ChatColor.YELLOW + "Drown is now bound to " + p.getItemInHand().getType().name() + ".");
 					}
 				}
 				else
 				{
-					DUtil.removeBind(p, drownBIND);
+					DMiscUtil.removeBind(p, drownBIND);
 					p.sendMessage(ChatColor.YELLOW + "Drown is no longer bound to " + drownBIND.name() + ".");
 					drownBIND = null;
 				}
@@ -262,26 +263,26 @@ public class Poseidon implements Deity
 			 * p.sendMessage(ChatColor.YELLOW+"and "+((((TIME)/1000)-(System.currentTimeMillis()/1000))%60)+" seconds.");
 			 * return;
 			 * }
-			 * if (DUtil.getFavor(p)>=ULTIMATECOST) {
-			 * if (!DUtil.canPVP(p.getLocation())) {
+			 * if (DMiscUtil.getFavor(p)>=ULTIMATECOST) {
+			 * if (!DMiscUtil.canPVP(p.getLocation())) {
 			 * p.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
 			 * return;
 			 * }
-			 * for (String s : DUtil.getFullParticipants()) {
-			 * if (DUtil.isFullParticipant(s) && DUtil.getActiveEffectsList(s).contains("Waterfall")) {
+			 * for (String s : DMiscUtil.getFullParticipants()) {
+			 * if (DMiscUtil.isFullParticipant(s) && DMiscUtil.getActiveEffectsList(s).contains("Waterfall")) {
 			 * p.sendMessage(ChatColor.YELLOW+"Another player's Waterfall is already in effect.");
 			 * return;
 			 * }
 			 * }
 			 * int t = (int)(ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN)*
-			 * ((double)DUtil.getAscensions(p)/100)));
+			 * ((double)DMiscUtil.getAscensions(p)/100)));
 			 * int num = waterfall(p);
 			 * if (num > 0) {
 			 * p.sendMessage("In exchange for "+ChatColor.AQUA+ULTIMATECOST+ChatColor.WHITE+" Favor, ");
 			 * p.sendMessage(ChatColor.GOLD+"Poseidon"+ChatColor.WHITE+" has drowned "+num+" targets.");
-			 * DUtil.setFavor(p, DUtil.getFavor(p)-ULTIMATECOST);
+			 * DMiscUtil.setFavor(p, DMiscUtil.getFavor(p)-ULTIMATECOST);
 			 * ULTIMATETIME = System.currentTimeMillis()+t*1000;
-			 * DUtil.addActiveEffect(p.getName(), "Waterfall", (int)Math.round(30*Math.pow(DUtil.getDevotion(p, getName()), 0.09)));
+			 * DMiscUtil.addActiveEffect(p.getName(), "Waterfall", (int)Math.round(30*Math.pow(DMiscUtil.getDevotion(p, getName()), 0.09)));
 			 * } else p.sendMessage(ChatColor.YELLOW+"There are no targets nearby.");
 			 * } else p.sendMessage(ChatColor.YELLOW+"Waterfall requires "+ULTIMATECOST+" Favor.");
 			 * return;
@@ -293,19 +294,19 @@ public class Poseidon implements Deity
 	@Override
 	public void onTick(long timeSent)
 	{
-		int healinterval = 10 - (int) (Math.round(Math.pow(DUtil.getDevotion(getPlayerName(), getName()), 0.125))); // seconds
+		int healinterval = 10 - (int) (Math.round(Math.pow(DMiscUtil.getDevotion(getPlayerName(), getName()), 0.125))); // seconds
 		if(healinterval < 1) healinterval = 1;
 		if(timeSent > LASTCHECK + (healinterval * 1000))
 		{
 			LASTCHECK = timeSent;
-			Player p = DUtil.getOnlinePlayer(getPlayerName());
+			Player p = DMiscUtil.getOnlinePlayer(getPlayerName());
 			if((p != null) && p.isOnline())
 			{
 				if((p.getLocation().getBlock().getType() == Material.WATER) || (p.getEyeLocation().getBlock().getType() == Material.WATER))
 				{
-					int healamt = (int) Math.ceil(0.1 * Math.pow(DUtil.getDevotion(getPlayerName(), getName()), 0.297));
-					if(DUtil.getHP(getPlayerName()) + healamt > DUtil.getMaxHP(getPlayerName())) healamt = DUtil.getMaxHP(getPlayerName()) - DUtil.getHP(getPlayerName());
-					DUtil.setHP(getPlayerName(), DUtil.getHP(getPlayerName()) + healamt);
+					int healamt = (int) Math.ceil(0.1 * Math.pow(DMiscUtil.getDevotion(getPlayerName(), getName()), 0.297));
+					if(DMiscUtil.getHP(getPlayerName()) + healamt > DMiscUtil.getMaxHP(getPlayerName())) healamt = DMiscUtil.getMaxHP(getPlayerName()) - DMiscUtil.getHP(getPlayerName());
+					DMiscUtil.setHP(getPlayerName(), DMiscUtil.getHP(getPlayerName()) + healamt);
 				}
 			}
 		}
@@ -313,42 +314,42 @@ public class Poseidon implements Deity
 
 	private boolean reel(Player p)
 	{
-		if(!DUtil.canTarget(p, p.getLocation()))
+		if(!DMiscUtil.canTarget(p, p.getLocation()))
 		{
 			return false;
 		}
-		LivingEntity le = DUtil.getTargetLivingEntity(p, 3);
+		LivingEntity le = DMiscUtil.getTargetLivingEntity(p, 3);
 		if((le == null) || le.isDead()) return false;
-		if(!DUtil.canTarget(le, le.getLocation())) return false;
+		if(!DMiscUtil.canTarget(le, le.getLocation())) return false;
 		if(le.getLocation().getBlock().getType() == Material.AIR)
 		{
 			le.getLocation().getBlock().setType(Material.WATER);
 			le.getLocation().getBlock().setData((byte) 0x8);
 		}
-		int damage = (int) Math.ceil(0.37286 * Math.pow(DUtil.getDevotion(p, getName()), 0.371238));
+		int damage = (int) Math.ceil(0.37286 * Math.pow(DMiscUtil.getDevotion(p, getName()), 0.371238));
 		if(le instanceof Player)
 		{
-			if(DUtil.isFullParticipant((Player) le)) if(DUtil.getAllegiance((Player) le).equalsIgnoreCase(DUtil.getAllegiance(p))) return false;
+			if(DMiscUtil.isFullParticipant((Player) le)) if(DMiscUtil.getAllegiance((Player) le).equalsIgnoreCase(DMiscUtil.getAllegiance(p))) return false;
 		}
-		DUtil.damageDemigods(p, le, damage, DamageCause.CUSTOM);
+		DMiscUtil.damageDemigods(p, le, damage, DamageCause.CUSTOM);
 		REELTIME = System.currentTimeMillis();
 		return true;
 	}
 
 	private boolean drown(Player p)
 	{
-		if(!DUtil.canTarget(p, p.getLocation()))
+		if(!DMiscUtil.canTarget(p, p.getLocation()))
 		{
 			p.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 			return false;
 		}
 		// special values
-		int devotion = DUtil.getDevotion(p, getName());
+		int devotion = DMiscUtil.getDevotion(p, getName());
 		int radius = (int) (Math.ceil(1.6955424 * Math.pow(devotion, 0.129349)));
 		int duration = (int) Math.ceil(2.80488 * Math.pow(devotion, 0.2689)); // seconds
 		//
-		Location target = DUtil.getTargetLocation(p);
-		if(!DUtil.canLocationPVP(target))
+		Location target = DMiscUtil.getTargetLocation(p);
+		if(!DMiscUtil.canLocationPVP(target))
 		{
 			p.sendMessage(ChatColor.YELLOW + "That is a no-PVP zone.");
 			return false;
@@ -370,7 +371,7 @@ public class Poseidon implements Deity
 					Block block = target.getWorld().getBlockAt(target.getBlockX() + x, target.getBlockY() + y, target.getBlockZ() + z);
 					if(block.getLocation().distance(target) <= radius)
 					{
-						if(DUtil.canLocationPVP(block.getLocation())) if(block.getType() == Material.AIR)
+						if(DMiscUtil.canLocationPVP(block.getLocation())) if(block.getType() == Material.AIR)
 						{
 							block.setType(Material.WATER);
 							block.setData((byte) (0x8));
@@ -380,7 +381,7 @@ public class Poseidon implements Deity
 				}
 			}
 		}
-		DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable()
+		DMiscUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DMiscUtil.getPlugin(), new Runnable()
 		{
 			@Override
 			public void run()
@@ -392,16 +393,16 @@ public class Poseidon implements Deity
 	}
 	/*
 	 * private int waterfall(Player p) {
-	 * int numtargets = (int)Math.round(15*Math.pow(DUtil.getDevotion(p, getName()), 0.15));
-	 * final int ultduration = (int)Math.round(30*Math.pow(DUtil.getDevotion(p, getName()), 0.09)*20);
+	 * int numtargets = (int)Math.round(15*Math.pow(DMiscUtil.getDevotion(p, getName()), 0.15));
+	 * final int ultduration = (int)Math.round(30*Math.pow(DMiscUtil.getDevotion(p, getName()), 0.09)*20);
 	 * ArrayList<LivingEntity> entitylist = new ArrayList<LivingEntity>();
 	 * Vector ploc = p.getLocation().toVector();
 	 * for (LivingEntity anEntity : p.getWorld().getLivingEntities()){
 	 * if (anEntity instanceof Player)
-	 * if (DUtil.isFullParticipant((Player)anEntity))
-	 * if (DUtil.getAllegiance((Player)anEntity).equalsIgnoreCase(DUtil.getAllegiance(p)))
+	 * if (DMiscUtil.isFullParticipant((Player)anEntity))
+	 * if (DMiscUtil.getAllegiance((Player)anEntity).equalsIgnoreCase(DMiscUtil.getAllegiance(p)))
 	 * continue;
-	 * if (!DUtil.canPVP(anEntity.getLocation()))
+	 * if (!DMiscUtil.canPVP(anEntity.getLocation()))
 	 * continue;
 	 * if (anEntity.getLocation().toVector().isInSphere(ploc, 50.0) && (entitylist.size() < numtargets))
 	 * entitylist.add(anEntity);
@@ -410,7 +411,7 @@ public class Poseidon implements Deity
 	 * final LivingEntity fl = le;
 	 * for (int i=0;i<ultduration;i+=9) {
 	 * final int ii = i;
-	 * DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable() {
+	 * DMiscUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DMiscUtil.getPlugin(), new Runnable() {
 	 * 
 	 * @Override
 	 * public void run() {

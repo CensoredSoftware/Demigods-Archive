@@ -1,9 +1,9 @@
 package com.WildAmazing.marinating.Demigods;
 
-import com.WildAmazing.marinating.Demigods.Metrics.Graph;
-
 import java.io.IOException;
 import java.util.ArrayList;
+
+import com.WildAmazing.marinating.Demigods.Metrics.Graph;
 
 public class DMetrics
 {
@@ -31,9 +31,9 @@ public class DMetrics
 				public int getValue()
 				{
 					ArrayList<String> gods = new ArrayList<String>();
-					for(String s : DUtil.getFullParticipants())
+					for(String s : DMiscUtil.getFullParticipants())
 					{
-						if(DUtil.getAllegiance(s).equalsIgnoreCase("god"))
+						if(DMiscUtil.getAllegiance(s).equalsIgnoreCase("god"))
 						{
 							if(DSave.hasData(s, "LASTLOGINTIME"))
 							{
@@ -56,9 +56,9 @@ public class DMetrics
 				public int getValue()
 				{
 					ArrayList<String> titans = new ArrayList<String>();
-					for(String s : DUtil.getFullParticipants())
+					for(String s : DMiscUtil.getFullParticipants())
 					{
-						if(DUtil.getAllegiance(s).equalsIgnoreCase("titan"))
+						if(DMiscUtil.getAllegiance(s).equalsIgnoreCase("titan"))
 						{
 							if(DSave.hasData(s, "LASTLOGINTIME"))
 							{
@@ -81,9 +81,9 @@ public class DMetrics
 				public int getValue()
 				{
 					ArrayList<String> giants = new ArrayList<String>();
-					for(String s : DUtil.getFullParticipants())
+					for(String s : DMiscUtil.getFullParticipants())
 					{
-						if(DUtil.getAllegiance(s).equalsIgnoreCase("giant"))
+						if(DMiscUtil.getAllegiance(s).equalsIgnoreCase("giant"))
 						{
 							if(DSave.hasData(s, "LASTLOGINTIME"))
 							{
@@ -106,9 +106,9 @@ public class DMetrics
 				public int getValue()
 				{
 					ArrayList<String> others = new ArrayList<String>();
-					for(String s : DUtil.getFullParticipants())
+					for(String s : DMiscUtil.getFullParticipants())
 					{
-						if(!DUtil.getAllegiance(s).equalsIgnoreCase("god") && (!DUtil.getAllegiance(s).equalsIgnoreCase("titan")) && (!DUtil.getAllegiance(s).equalsIgnoreCase("giant")))
+						if(!DMiscUtil.getAllegiance(s).equalsIgnoreCase("god") && (!DMiscUtil.getAllegiance(s).equalsIgnoreCase("titan")) && (!DMiscUtil.getAllegiance(s).equalsIgnoreCase("giant")))
 						{
 							if(DSave.hasData(s, "LASTLOGINTIME"))
 							{
@@ -127,7 +127,7 @@ public class DMetrics
 		}
 		catch(IOException e)
 		{
-			DUtil.consoleMSG("severe", e.getMessage());
+			DMiscUtil.consoleMSG("severe", e.getMessage());
 		}
 	}
 
@@ -148,9 +148,9 @@ public class DMetrics
 				public int getValue()
 				{
 					ArrayList<String> gods = new ArrayList<String>();
-					for(String s : DUtil.getFullParticipants())
+					for(String s : DMiscUtil.getFullParticipants())
 					{
-						if(DUtil.getAllegiance(s).equalsIgnoreCase("god"))
+						if(DMiscUtil.getAllegiance(s).equalsIgnoreCase("god"))
 						{
 							gods.add(s);
 						}
@@ -169,9 +169,9 @@ public class DMetrics
 				public int getValue()
 				{
 					ArrayList<String> titans = new ArrayList<String>();
-					for(String s : DUtil.getFullParticipants())
+					for(String s : DMiscUtil.getFullParticipants())
 					{
-						if(DUtil.getAllegiance(s).equalsIgnoreCase("titan"))
+						if(DMiscUtil.getAllegiance(s).equalsIgnoreCase("titan"))
 						{
 							titans.add(s);
 						}
@@ -190,9 +190,9 @@ public class DMetrics
 				public int getValue()
 				{
 					ArrayList<String> giants = new ArrayList<String>();
-					for(String s : DUtil.getFullParticipants())
+					for(String s : DMiscUtil.getFullParticipants())
 					{
-						if(DUtil.getAllegiance(s).equalsIgnoreCase("giant"))
+						if(DMiscUtil.getAllegiance(s).equalsIgnoreCase("giant"))
 						{
 							giants.add(s);
 						}
@@ -211,9 +211,9 @@ public class DMetrics
 				public int getValue()
 				{
 					ArrayList<String> others = new ArrayList<String>();
-					for(String s : DUtil.getFullParticipants())
+					for(String s : DMiscUtil.getFullParticipants())
 					{
-						if(!DUtil.getAllegiance(s).equalsIgnoreCase("god") && (!DUtil.getAllegiance(s).equalsIgnoreCase("titan")) && (!DUtil.getAllegiance(s).equalsIgnoreCase("giant")))
+						if(!DMiscUtil.getAllegiance(s).equalsIgnoreCase("god") && (!DMiscUtil.getAllegiance(s).equalsIgnoreCase("titan")) && (!DMiscUtil.getAllegiance(s).equalsIgnoreCase("giant")))
 						{
 							others.add(s);
 						}
@@ -228,7 +228,7 @@ public class DMetrics
 		}
 		catch(IOException e)
 		{
-			DUtil.consoleMSG("severe", e.getMessage());
+			DMiscUtil.consoleMSG("severe", e.getMessage());
 		}
 	}
 }

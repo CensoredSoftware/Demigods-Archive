@@ -25,7 +25,6 @@ import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Deities.Gods.*;
 import com.WildAmazing.marinating.Demigods.Deities.Titans.*;
 import com.WildAmazing.marinating.Demigods.Listeners.*;
-import com.clashnia.ClashniaUpdate.DemigodsUpdate;
 import com.clashnia.Demigods.Deities.Giants.Typhon;
 import com.massivecraft.factions.P;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -39,7 +38,7 @@ public class Demigods extends JavaPlugin implements Listener
 	// Define variables
 	public static Logger log = Logger.getLogger("Minecraft");
 	static String mainDirectory = "plugins/Demigods/";
-	DUtil initialize;
+	DMiscUtil initialize;
 	DSave SAVE;
 
 	public static Deity[] deities = { new Cronus("ADMIN"), new Rhea("ADMIN"), new Prometheus("ADMIN"), new Atlas("ADMIN"), new Oceanus("ADMIN"), new Hyperion("ADMIN"), new Themis("ADMIN"), new Zeus("ADMIN"), new Poseidon("ADMIN"), new Hades("ADMIN"), new Ares("ADMIN"), new Athena("ADMIN"), new Apollo("ADMIN"), new Hephaestus("ADMIN"), new Typhon("ADMIN") };
@@ -59,8 +58,8 @@ public class Demigods extends JavaPlugin implements Listener
 
 		log.setFilter(new DLogFilter());
 
-		new DSettings(this); // #1 (needed for DUtil to load)
-		initialize = new DUtil(this); // #2 (needed for everything else to work)
+		new DSettings(this); // #1 (needed for DMiscUtil to load)
+		initialize = new DMiscUtil(this); // #2 (needed for everything else to work)
 		SAVE = new DSave(mainDirectory, deities); // #3 (needed to start save system)
 		loadListeners(); // #4
 		loadCommands(); // #5 (needed)
@@ -75,13 +74,23 @@ public class Demigods extends JavaPlugin implements Listener
 		loadMetrics(); // #11
 		unstickFireball(); // #12
 
-		/*
-		 * Check for updates, and then update if need be
-		 */
-		if(DSettings.getSettingBoolean("update"))
+		// Define variables
+		boolean auto = DSettings.getSettingBoolean("update");
+		boolean notify = DSettings.getSettingBoolean("update_notify");
+
+		// Check for updates, and then update if need be
+		if(auto || notify)
 		{
-			new DemigodsUpdate(this);
-			if(DemigodsUpdate.shouldUpdate()) DemigodsUpdate.demigodsUpdate();
+			if(DUpdateUtil.check())
+			{
+				if(auto) DUpdateUtil.execute();
+				if(notify)
+				{
+					Bukkit.broadcast(ChatColor.RED + "There is a new, stable release for Demigods.", "demigods.admin");
+					if(auto) Bukkit.broadcast("Please " + ChatColor.YELLOW + "reload the server " + ChatColor.WHITE + "ASAP to finish an auto-update.", "demigods.admin");
+					else Bukkit.broadcast("Please update ASAP by using " + ChatColor.YELLOW + "/dg update", "demigods.admin");
+				}
+			}
 		}
 
 		log.info("[Demigods] Preparation completed in " + ((double) (System.currentTimeMillis() - firstTime) / 1000) + " seconds.");
@@ -121,7 +130,7 @@ public class Demigods extends JavaPlugin implements Listener
 	public void saveOnExit(PlayerQuitEvent e)
 	{
 		// Save a player file when they exit, if it can't, let the Administrator know
-		if(DUtil.isFullParticipant(e.getPlayer())) try
+		if(DMiscUtil.isFullParticipant(e.getPlayer())) try
 		{
 			DSave.save(mainDirectory);
 		}
@@ -332,11 +341,11 @@ public class Demigods extends JavaPlugin implements Listener
 				for(World w : DSettings.getEnabledWorlds())
 				{
 					for(Player p : w.getPlayers())
-						if(DUtil.isFullParticipant(p))
+						if(DMiscUtil.isFullParticipant(p))
 						{
-							int regenrate = DUtil.getAscensions(p); // TODO: PERK UPGRADES THIS
+							int regenrate = DMiscUtil.getAscensions(p); // TODO: PERK UPGRADES THIS
 							if(regenrate < 1) regenrate = 1;
-							DUtil.setFavorQuiet(p.getName(), DUtil.getFavor(p) + regenrate);
+							DMiscUtil.setFavorQuiet(p.getName(), DMiscUtil.getFavor(p) + regenrate);
 						}
 				}
 			}
@@ -351,12 +360,12 @@ public class Demigods extends JavaPlugin implements Listener
 				for(World w : DSettings.getEnabledWorlds())
 				{
 					for(Player p : w.getPlayers())
-						if(DUtil.isFullParticipant(p))
+						if(DMiscUtil.isFullParticipant(p))
 						{
-							if((p.getHealth() < 1) || (DUtil.getHP(p) < 1)) continue;
+							if((p.getHealth() < 1) || (DMiscUtil.getHP(p) < 1)) continue;
 							int heal = 1; // TODO: PERK UPGRADES THIS
 							if(heal < 1) heal = 1;
-							if(DUtil.getHP(p) < DUtil.getMaxHP(p)) DUtil.setHPQuiet(p.getName(), DUtil.getHP(p) + heal);
+							if(DMiscUtil.getHP(p) < DMiscUtil.getMaxHP(p)) DMiscUtil.setHPQuiet(p.getName(), DMiscUtil.getHP(p) + heal);
 						}
 				}
 			}
@@ -372,7 +381,7 @@ public class Demigods extends JavaPlugin implements Listener
 				for(World w : DSettings.getEnabledWorlds())
 				{
 					for(Player p : w.getPlayers())
-						if(DUtil.isFullParticipant(p)) if(p.getHealth() > 0) DDamage.syncHealth(p);
+						if(DMiscUtil.isFullParticipant(p)) if(p.getHealth() > 0) DDamage.syncHealth(p);
 				}
 			}
 		}, startdelay, 2);
@@ -386,7 +395,7 @@ public class Demigods extends JavaPlugin implements Listener
 				try
 				{
 					DSave.save(mainDirectory);
-					log.info("[Demigods] Saved data for " + DUtil.getFullParticipants().size() + " Demigods players. " + DSave.getCompleteData().size() + " files total.");
+					log.info("[Demigods] Saved data for " + DMiscUtil.getFullParticipants().size() + " Demigods players. " + DSave.getCompleteData().size() + " files total.");
 				}
 				catch(FileNotFoundException e)
 				{
@@ -413,12 +422,12 @@ public class Demigods extends JavaPlugin implements Listener
 					for(World w : DSettings.getEnabledWorlds())
 					{
 						for(Player p : w.getPlayers())
-							if(DUtil.isFullParticipant(p)) if(p.getHealth() > 0)
+							if(DMiscUtil.isFullParticipant(p)) if(p.getHealth() > 0)
 							{
 								ChatColor color = ChatColor.GREEN;
-								if((DUtil.getHP(p) / (double) DUtil.getMaxHP(p)) < 0.25) color = ChatColor.RED;
-								else if((DUtil.getHP(p) / (double) DUtil.getMaxHP(p)) < 0.5) color = ChatColor.YELLOW;
-								String str = "-- HP " + color + "" + DUtil.getHP(p) + "/" + DUtil.getMaxHP(p) + ChatColor.YELLOW + " Favor " + DUtil.getFavor(p) + "/" + DUtil.getFavorCap(p);
+								if((DMiscUtil.getHP(p) / (double) DMiscUtil.getMaxHP(p)) < 0.25) color = ChatColor.RED;
+								else if((DMiscUtil.getHP(p) / (double) DMiscUtil.getMaxHP(p)) < 0.5) color = ChatColor.YELLOW;
+								String str = "-- HP " + color + "" + DMiscUtil.getHP(p) + "/" + DMiscUtil.getMaxHP(p) + ChatColor.YELLOW + " Favor " + DMiscUtil.getFavor(p) + "/" + DMiscUtil.getFavorCap(p);
 								p.sendMessage(str);
 							}
 					}
@@ -481,9 +490,9 @@ public class Demigods extends JavaPlugin implements Listener
 	private void cleanUp()
 	{
 		// Clean things that may cause glitches
-		for(String player : DUtil.getFullParticipants())
+		for(String player : DMiscUtil.getFullParticipants())
 		{
-			for(Deity d : DUtil.getDeities(player))
+			for(Deity d : DMiscUtil.getDeities(player))
 			{
 				if(DSave.hasData(player, d.getName().toUpperCase() + "_TRIBUTE_"))
 				{
@@ -508,14 +517,14 @@ public class Demigods extends JavaPlugin implements Listener
 	 * copy.get(player).remove("dEXP");
 	 * if (DSave.hasData(player, "LEVEL"))
 	 * copy.get(player).remove("LEVEL");
-	 * for (Deity d : DUtil.getDeities(player))
+	 * for (Deity d : DMiscUtil.getDeities(player))
 	 * {
-	 * copy.get(player).put(d.getName()+"_dvt", (int)Math.ceil((500*Math.pow(DUtil.getAscensions(player), 1.98))/DUtil.getDeities(player).size()));
+	 * copy.get(player).put(d.getName()+"_dvt", (int)Math.ceil((500*Math.pow(DMiscUtil.getAscensions(player), 1.98))/DMiscUtil.getDeities(player).size()));
 	 * }
 	 * if (!DSave.hasData(player, "A_EFFECTS"))
-	 * DUtil.setActiveEffects(player, new HashMap<String, Long>());
+	 * DMiscUtil.setActiveEffects(player, new HashMap<String, Long>());
 	 * if (!DSave.hasData(player, "P_SHRINES"))
-	 * DUtil.setShrines(player, new HashMap<String, WriteLocation>());
+	 * DMiscUtil.setShrines(player, new HashMap<String, WriteLocation>());
 	 * updated += " "+player;
 	 * }
 	 * }
@@ -528,7 +537,7 @@ public class Demigods extends JavaPlugin implements Listener
 	private void invalidShrines()
 	{
 		// Remove invalid shrines
-		Iterator<WriteLocation> i = DUtil.getAllShrines().iterator();
+		Iterator<WriteLocation> i = DMiscUtil.getAllShrines().iterator();
 		ArrayList<String> worldnames = new ArrayList<String>();
 		for(World w : getServer().getWorlds())
 			worldnames.add(w.getName());
@@ -539,7 +548,7 @@ public class Demigods extends JavaPlugin implements Listener
 			if(!worldnames.contains(n.getWorld()) || (n.getY() < 0) || (n.getY() > 256))
 			{
 				count++;
-				DUtil.removeShrine(n);
+				DMiscUtil.removeShrine(n);
 			}
 		}
 		if(count > 0) log.info("[Demigods] Removed " + count + " invalid shrines.");

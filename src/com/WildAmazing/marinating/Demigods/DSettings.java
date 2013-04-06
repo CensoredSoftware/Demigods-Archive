@@ -1,10 +1,10 @@
 package com.WildAmazing.marinating.Demigods;
 
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 
 public class DSettings
 {
@@ -32,7 +32,7 @@ public class DSettings
 
 	public static boolean getSettingBoolean(String id)
 	{
-        return !plugin.getConfig().isBoolean(id) || plugin.getConfig().getBoolean(id);
+		return !plugin.getConfig().isBoolean(id) || plugin.getConfig().getBoolean(id);
 	}
 
 	public static double getSettingDouble(String id)

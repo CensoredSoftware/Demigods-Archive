@@ -1,13 +1,5 @@
 package com.WildAmazing.marinating.Demigods;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Deities.Gods.*;
-import com.WildAmazing.marinating.Demigods.Deities.Titans.*;
-import com.clashnia.Demigods.Deities.Giants.Typhon;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -16,6 +8,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.logging.Logger;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Deities.Gods.*;
+import com.WildAmazing.marinating.Demigods.Deities.Titans.*;
+import com.clashnia.Demigods.Deities.Giants.Typhon;
 
 public class DDebug
 {
@@ -30,7 +31,7 @@ public class DDebug
 	{
 		try
 		{
-			cm.sendMessage("Name: " + DUtil.getDemigodsPlayer(p));
+			cm.sendMessage("Name: " + DMiscUtil.getDemigodsPlayer(p));
 		}
 		catch(NullPointerException ne)
 		{
@@ -38,7 +39,7 @@ public class DDebug
 		}
 		try
 		{
-			cm.sendMessage("Alliance: " + DUtil.getAllegiance(p));
+			cm.sendMessage("Alliance: " + DMiscUtil.getAllegiance(p));
 		}
 		catch(NullPointerException ne)
 		{
@@ -46,7 +47,7 @@ public class DDebug
 		}
 		try
 		{
-			cm.sendMessage("Current HP: " + DUtil.getHP(p));
+			cm.sendMessage("Current HP: " + DMiscUtil.getHP(p));
 		}
 		catch(NullPointerException ne)
 		{
@@ -54,7 +55,7 @@ public class DDebug
 		}
 		try
 		{
-			cm.sendMessage("Max HP: " + DUtil.getMaxHP(p));
+			cm.sendMessage("Max HP: " + DMiscUtil.getMaxHP(p));
 		}
 		catch(NullPointerException ne)
 		{
@@ -62,7 +63,7 @@ public class DDebug
 		}
 		try
 		{
-			cm.sendMessage("Current Favor: " + DUtil.getFavor(p));
+			cm.sendMessage("Current Favor: " + DMiscUtil.getFavor(p));
 		}
 		catch(NullPointerException ne)
 		{
@@ -70,7 +71,7 @@ public class DDebug
 		}
 		try
 		{
-			cm.sendMessage("Max Favor: " + DUtil.getFavorCap(p));
+			cm.sendMessage("Max Favor: " + DMiscUtil.getFavorCap(p));
 		}
 		catch(NullPointerException ne)
 		{
@@ -79,12 +80,12 @@ public class DDebug
 		try
 		{
 			String s = "";
-			for(Deity d : DUtil.getDeities(p))
+			for(Deity d : DMiscUtil.getDeities(p))
 			{
 				String name = d.getName();
 				try
 				{
-					s += " " + name + ";" + DUtil.getDevotion(p, name);
+					s += " " + name + ";" + DMiscUtil.getDevotion(p, name);
 				}
 				catch(Exception e)
 				{
@@ -99,7 +100,7 @@ public class DDebug
 		}
 		try
 		{
-			cm.sendMessage("Ascensions: " + DUtil.getAscensions(p));
+			cm.sendMessage("Ascensions: " + DMiscUtil.getAscensions(p));
 		}
 		catch(NullPointerException ne)
 		{
@@ -107,7 +108,7 @@ public class DDebug
 		}
 		try
 		{
-			cm.sendMessage("Kills: " + DUtil.getKills(p));
+			cm.sendMessage("Kills: " + DMiscUtil.getKills(p));
 		}
 		catch(NullPointerException ne)
 		{
@@ -115,7 +116,7 @@ public class DDebug
 		}
 		try
 		{
-			cm.sendMessage("Deaths: " + DUtil.getDeaths(p));
+			cm.sendMessage("Deaths: " + DMiscUtil.getDeaths(p));
 		}
 		catch(NullPointerException ne)
 		{
@@ -124,9 +125,9 @@ public class DDebug
 		try
 		{
 			cm.sendMessage("Accessible:");
-			for(WriteLocation w : DUtil.getAccessibleShrines(p))
+			for(WriteLocation w : DMiscUtil.getAccessibleShrines(p))
 			{
-				String name = DUtil.getShrineName(w);
+				String name = DMiscUtil.getShrineName(w);
 				try
 				{
 					cm.sendMessage(name + " " + w.getX() + " " + w.getY() + " " + w.getZ() + " " + w.getWorld());
@@ -146,13 +147,13 @@ public class DDebug
 		try
 		{
 			cm.sendMessage("Shrines:");
-			for(String name : DUtil.getShrines(p).keySet())
+			for(String name : DMiscUtil.getShrines(p).keySet())
 			{
 				try
 				{
-					WriteLocation w = DUtil.getShrines(p).get(name);
+					WriteLocation w = DMiscUtil.getShrines(p).get(name);
 					String names = "";
-					for(String player : DUtil.getShrineGuestlist(w))
+					for(String player : DMiscUtil.getShrineGuestlist(w))
 						names += player + " ";
 					names = names.trim();
 					cm.sendMessage(name + " " + w.getX() + " " + w.getY() + " " + w.getZ() + " " + w.getWorld() + " " + names);
@@ -185,7 +186,7 @@ public class DDebug
 	{
 		try
 		{
-			cm.info("Name: " + DUtil.getDemigodsPlayer(p));
+			cm.info("Name: " + DMiscUtil.getDemigodsPlayer(p));
 		}
 		catch(NullPointerException ne)
 		{
@@ -193,7 +194,7 @@ public class DDebug
 		}
 		try
 		{
-			cm.info("Alliance: " + DUtil.getAllegiance(p));
+			cm.info("Alliance: " + DMiscUtil.getAllegiance(p));
 		}
 		catch(NullPointerException ne)
 		{
@@ -201,7 +202,7 @@ public class DDebug
 		}
 		try
 		{
-			cm.info("Current HP: " + DUtil.getHP(p));
+			cm.info("Current HP: " + DMiscUtil.getHP(p));
 		}
 		catch(NullPointerException ne)
 		{
@@ -209,7 +210,7 @@ public class DDebug
 		}
 		try
 		{
-			cm.info("Max HP: " + DUtil.getMaxHP(p));
+			cm.info("Max HP: " + DMiscUtil.getMaxHP(p));
 		}
 		catch(NullPointerException ne)
 		{
@@ -217,7 +218,7 @@ public class DDebug
 		}
 		try
 		{
-			cm.info("Current Favor: " + DUtil.getFavor(p));
+			cm.info("Current Favor: " + DMiscUtil.getFavor(p));
 		}
 		catch(NullPointerException ne)
 		{
@@ -225,7 +226,7 @@ public class DDebug
 		}
 		try
 		{
-			cm.info("Max Favor: " + DUtil.getFavorCap(p));
+			cm.info("Max Favor: " + DMiscUtil.getFavorCap(p));
 		}
 		catch(NullPointerException ne)
 		{
@@ -234,12 +235,12 @@ public class DDebug
 		try
 		{
 			String s = "";
-			for(Deity d : DUtil.getDeities(p))
+			for(Deity d : DMiscUtil.getDeities(p))
 			{
 				String name = d.getName();
 				try
 				{
-					s += " " + name + ";" + DUtil.getDevotion(p, name);
+					s += " " + name + ";" + DMiscUtil.getDevotion(p, name);
 				}
 				catch(Exception e)
 				{
@@ -254,7 +255,7 @@ public class DDebug
 		}
 		try
 		{
-			cm.info("Ascensions: " + DUtil.getAscensions(p));
+			cm.info("Ascensions: " + DMiscUtil.getAscensions(p));
 		}
 		catch(NullPointerException ne)
 		{
@@ -262,7 +263,7 @@ public class DDebug
 		}
 		try
 		{
-			cm.info("Kills: " + DUtil.getKills(p));
+			cm.info("Kills: " + DMiscUtil.getKills(p));
 		}
 		catch(NullPointerException ne)
 		{
@@ -270,7 +271,7 @@ public class DDebug
 		}
 		try
 		{
-			cm.info("Deaths: " + DUtil.getDeaths(p));
+			cm.info("Deaths: " + DMiscUtil.getDeaths(p));
 		}
 		catch(NullPointerException ne)
 		{
@@ -279,9 +280,9 @@ public class DDebug
 		try
 		{
 			cm.info("Accessible:");
-			for(WriteLocation w : DUtil.getAccessibleShrines(p))
+			for(WriteLocation w : DMiscUtil.getAccessibleShrines(p))
 			{
-				String name = DUtil.getShrineName(w);
+				String name = DMiscUtil.getShrineName(w);
 				try
 				{
 					cm.info(name + " " + w.getX() + " " + w.getY() + " " + w.getZ() + " " + w.getWorld());
@@ -301,13 +302,13 @@ public class DDebug
 		try
 		{
 			cm.info("Shrines:");
-			for(String name : DUtil.getShrines(p).keySet())
+			for(String name : DMiscUtil.getShrines(p).keySet())
 			{
 				try
 				{
-					WriteLocation w = DUtil.getShrines(p).get(name);
+					WriteLocation w = DMiscUtil.getShrines(p).get(name);
 					String names = "";
-					for(String player : DUtil.getShrineGuestlist(w))
+					for(String player : DMiscUtil.getShrineGuestlist(w))
 						names += player + " ";
 					names = names.trim();
 					cm.info(name + " " + w.getX() + " " + w.getY() + " " + w.getZ() + " " + w.getWorld() + " " + names);
@@ -342,7 +343,7 @@ public class DDebug
 		FileWriter f = new FileWriter(new File(DSave.getPlayerSavePath() + p + ".txt"));
 		try
 		{
-			f.write("Name: " + DUtil.getDemigodsPlayer(p) + "\r\n");
+			f.write("Name: " + DMiscUtil.getDemigodsPlayer(p) + "\r\n");
 		}
 		catch(NullPointerException ne)
 		{
@@ -350,7 +351,7 @@ public class DDebug
 		}
 		try
 		{
-			f.write("Alliance: " + DUtil.getAllegiance(p) + "\r\n");
+			f.write("Alliance: " + DMiscUtil.getAllegiance(p) + "\r\n");
 		}
 		catch(NullPointerException ne)
 		{
@@ -358,7 +359,7 @@ public class DDebug
 		}
 		try
 		{
-			f.write("Current_HP: " + DUtil.getHP(p) + "\r\n");
+			f.write("Current_HP: " + DMiscUtil.getHP(p) + "\r\n");
 		}
 		catch(NullPointerException ne)
 		{
@@ -366,7 +367,7 @@ public class DDebug
 		}
 		try
 		{
-			f.write("Max_HP: " + DUtil.getMaxHP(p) + "\r\n");
+			f.write("Max_HP: " + DMiscUtil.getMaxHP(p) + "\r\n");
 		}
 		catch(NullPointerException ne)
 		{
@@ -374,7 +375,7 @@ public class DDebug
 		}
 		try
 		{
-			f.write("Current_Favor: " + DUtil.getFavor(p) + "\r\n");
+			f.write("Current_Favor: " + DMiscUtil.getFavor(p) + "\r\n");
 		}
 		catch(NullPointerException ne)
 		{
@@ -382,7 +383,7 @@ public class DDebug
 		}
 		try
 		{
-			f.write("Max_Favor: " + DUtil.getFavorCap(p) + "\r\n");
+			f.write("Max_Favor: " + DMiscUtil.getFavorCap(p) + "\r\n");
 		}
 		catch(NullPointerException ne)
 		{
@@ -391,12 +392,12 @@ public class DDebug
 		try
 		{
 			String s = "";
-			for(Deity d : DUtil.getDeities(p))
+			for(Deity d : DMiscUtil.getDeities(p))
 			{
 				String name = d.getName();
 				try
 				{
-					s += " " + name + ";" + DUtil.getDevotion(p, name);
+					s += " " + name + ";" + DMiscUtil.getDevotion(p, name);
 				}
 				catch(Exception e)
 				{
@@ -411,7 +412,7 @@ public class DDebug
 		}
 		try
 		{
-			f.write("Ascensions: " + DUtil.getAscensions(p) + "\r\n");
+			f.write("Ascensions: " + DMiscUtil.getAscensions(p) + "\r\n");
 		}
 		catch(NullPointerException ne)
 		{
@@ -419,7 +420,7 @@ public class DDebug
 		}
 		try
 		{
-			f.write("Kills: " + DUtil.getKills(p) + "\r\n");
+			f.write("Kills: " + DMiscUtil.getKills(p) + "\r\n");
 		}
 		catch(NullPointerException ne)
 		{
@@ -427,7 +428,7 @@ public class DDebug
 		}
 		try
 		{
-			f.write("Deaths: " + DUtil.getDeaths(p) + "\r\n");
+			f.write("Deaths: " + DMiscUtil.getDeaths(p) + "\r\n");
 		}
 		catch(NullPointerException ne)
 		{
@@ -436,9 +437,9 @@ public class DDebug
 		try
 		{
 			String s = "Accessible:\r\n";
-			for(WriteLocation wr : DUtil.getAccessibleShrines(p))
+			for(WriteLocation wr : DMiscUtil.getAccessibleShrines(p))
 			{
-				String name = DUtil.getShrineName(wr);
+				String name = DMiscUtil.getShrineName(wr);
 				try
 				{
 					s += name + " " + wr.getX() + " " + wr.getY() + " " + wr.getZ() + " " + wr.getWorld() + "\r\n";
@@ -459,13 +460,13 @@ public class DDebug
 		try
 		{
 			String s = "Shrines:\r\n";
-			for(String name : DUtil.getShrines(p).keySet())
+			for(String name : DMiscUtil.getShrines(p).keySet())
 			{
 				try
 				{
-					WriteLocation w = DUtil.getShrines(p).get(name);
+					WriteLocation w = DMiscUtil.getShrines(p).get(name);
 					String names = "";
-					for(String player : DUtil.getShrineGuestlist(w))
+					for(String player : DMiscUtil.getShrineGuestlist(w))
 						names += player + " ";
 					names = names.trim();
 					s += (name + " " + w.getX() + " " + w.getY() + " " + w.getZ() + " " + w.getWorld() + " " + names + "\r\n");
@@ -504,7 +505,7 @@ public class DDebug
 		FileWriter f = new FileWriter(file);
 		try
 		{
-			f.write("Name: " + DUtil.getDemigodsPlayer(p) + "\r\n");
+			f.write("Name: " + DMiscUtil.getDemigodsPlayer(p) + "\r\n");
 		}
 		catch(NullPointerException ne)
 		{
@@ -512,7 +513,7 @@ public class DDebug
 		}
 		try
 		{
-			f.write("Alliance: " + DUtil.getAllegiance(p) + "\r\n");
+			f.write("Alliance: " + DMiscUtil.getAllegiance(p) + "\r\n");
 		}
 		catch(NullPointerException ne)
 		{
@@ -520,7 +521,7 @@ public class DDebug
 		}
 		try
 		{
-			f.write("Current_HP: " + DUtil.getHP(p) + "\r\n");
+			f.write("Current_HP: " + DMiscUtil.getHP(p) + "\r\n");
 		}
 		catch(NullPointerException ne)
 		{
@@ -528,7 +529,7 @@ public class DDebug
 		}
 		try
 		{
-			f.write("Max_HP: " + DUtil.getMaxHP(p) + "\r\n");
+			f.write("Max_HP: " + DMiscUtil.getMaxHP(p) + "\r\n");
 		}
 		catch(NullPointerException ne)
 		{
@@ -536,7 +537,7 @@ public class DDebug
 		}
 		try
 		{
-			f.write("Current_Favor: " + DUtil.getFavor(p) + "\r\n");
+			f.write("Current_Favor: " + DMiscUtil.getFavor(p) + "\r\n");
 		}
 		catch(NullPointerException ne)
 		{
@@ -544,7 +545,7 @@ public class DDebug
 		}
 		try
 		{
-			f.write("Max_Favor: " + DUtil.getFavorCap(p) + "\r\n");
+			f.write("Max_Favor: " + DMiscUtil.getFavorCap(p) + "\r\n");
 		}
 		catch(NullPointerException ne)
 		{
@@ -553,12 +554,12 @@ public class DDebug
 		try
 		{
 			String s = "";
-			for(Deity d : DUtil.getDeities(p))
+			for(Deity d : DMiscUtil.getDeities(p))
 			{
 				String name = d.getName();
 				try
 				{
-					s += " " + name + ";" + DUtil.getDevotion(p, name);
+					s += " " + name + ";" + DMiscUtil.getDevotion(p, name);
 				}
 				catch(Exception e)
 				{
@@ -573,7 +574,7 @@ public class DDebug
 		}
 		try
 		{
-			f.write("Ascensions: " + DUtil.getAscensions(p) + "\r\n");
+			f.write("Ascensions: " + DMiscUtil.getAscensions(p) + "\r\n");
 		}
 		catch(NullPointerException ne)
 		{
@@ -581,7 +582,7 @@ public class DDebug
 		}
 		try
 		{
-			f.write("Kills: " + DUtil.getKills(p) + "\r\n");
+			f.write("Kills: " + DMiscUtil.getKills(p) + "\r\n");
 		}
 		catch(NullPointerException ne)
 		{
@@ -589,7 +590,7 @@ public class DDebug
 		}
 		try
 		{
-			f.write("Deaths: " + DUtil.getDeaths(p) + "\r\n");
+			f.write("Deaths: " + DMiscUtil.getDeaths(p) + "\r\n");
 		}
 		catch(NullPointerException ne)
 		{
@@ -598,9 +599,9 @@ public class DDebug
 		try
 		{
 			String s = "Accessible:\r\n";
-			for(WriteLocation wr : DUtil.getAccessibleShrines(p))
+			for(WriteLocation wr : DMiscUtil.getAccessibleShrines(p))
 			{
-				String name = DUtil.getShrineName(wr);
+				String name = DMiscUtil.getShrineName(wr);
 				try
 				{
 					s += name + " " + wr.getX() + " " + wr.getY() + " " + wr.getZ() + " " + wr.getWorld() + "\r\n";
@@ -621,13 +622,13 @@ public class DDebug
 		try
 		{
 			String s = "Shrines:\r\n";
-			for(String name : DUtil.getShrines(p).keySet())
+			for(String name : DMiscUtil.getShrines(p).keySet())
 			{
 				try
 				{
-					WriteLocation w = DUtil.getShrines(p).get(name);
+					WriteLocation w = DMiscUtil.getShrines(p).get(name);
 					String names = "";
-					for(String player : DUtil.getShrineGuestlist(w))
+					for(String player : DMiscUtil.getShrineGuestlist(w))
 						names += player + " ";
 					names = names.trim();
 					s += (name + " " + w.getX() + " " + w.getY() + " " + w.getZ() + " " + w.getWorld() + " " + names + "\r\n");
@@ -664,7 +665,7 @@ public class DDebug
 			DSave.removeData(p, "BINDINGS");
 			DSave.saveData(p, "BINDINGS", new ArrayList<Material>());
 			// clear effects
-			DUtil.setActiveEffects(p, new HashMap<String, Long>());
+			DMiscUtil.setActiveEffects(p, new HashMap<String, Long>());
 			// check name
 			String sname = s.nextLine();
 			if(!sname.split(" ")[1].equals(p)) return false;
@@ -693,23 +694,23 @@ public class DDebug
 				for(int i = 1; i < deities.length; i++)
 				{
 					String[] info = deities[i].split(";");
-					DUtil.removeDeity(p, info[0]);
-					if(info[0].equalsIgnoreCase("zeus")) DUtil.giveDeitySilent(p, new Zeus(p));
-					else if(info[0].equalsIgnoreCase("poseidon")) DUtil.giveDeitySilent(p, new Poseidon(p));
-					else if(info[0].equalsIgnoreCase("hades")) DUtil.giveDeitySilent(p, new Hades(p));
-					else if(info[0].equalsIgnoreCase("Apollo")) DUtil.giveDeitySilent(p, new Apollo(p));
-					else if(info[0].equalsIgnoreCase("Athena")) DUtil.giveDeitySilent(p, new Athena(p));
-					else if(info[0].equalsIgnoreCase("Hephaestus")) DUtil.giveDeitySilent(p, new Hephaestus(p));
-					else if(info[0].equalsIgnoreCase("Atlas")) DUtil.giveDeitySilent(p, new Atlas(p));
-					else if(info[0].equalsIgnoreCase("ares")) DUtil.giveDeitySilent(p, new Ares(p));
-					else if(info[0].equalsIgnoreCase("Cronus")) DUtil.giveDeitySilent(p, new Cronus(p));
-					else if(info[0].equalsIgnoreCase("Hyperion")) DUtil.giveDeitySilent(p, new Hyperion(p));
-					else if(info[0].equalsIgnoreCase("Oceanus")) DUtil.giveDeitySilent(p, new Oceanus(p));
-					else if(info[0].equalsIgnoreCase("Prometheus")) DUtil.giveDeitySilent(p, new Prometheus(p));
-					else if(info[0].equalsIgnoreCase("Rhea")) DUtil.giveDeitySilent(p, new Rhea(p));
-					else if(info[0].equalsIgnoreCase("themis")) DUtil.giveDeitySilent(p, new Themis(p));
-					else if(info[0].equalsIgnoreCase("typhon")) DUtil.giveDeitySilent(p, new Typhon(p));
-					DUtil.setDevotion(p, info[0], Integer.parseInt(info[1]));
+					DMiscUtil.removeDeity(p, info[0]);
+					if(info[0].equalsIgnoreCase("zeus")) DMiscUtil.giveDeitySilent(p, new Zeus(p));
+					else if(info[0].equalsIgnoreCase("poseidon")) DMiscUtil.giveDeitySilent(p, new Poseidon(p));
+					else if(info[0].equalsIgnoreCase("hades")) DMiscUtil.giveDeitySilent(p, new Hades(p));
+					else if(info[0].equalsIgnoreCase("Apollo")) DMiscUtil.giveDeitySilent(p, new Apollo(p));
+					else if(info[0].equalsIgnoreCase("Athena")) DMiscUtil.giveDeitySilent(p, new Athena(p));
+					else if(info[0].equalsIgnoreCase("Hephaestus")) DMiscUtil.giveDeitySilent(p, new Hephaestus(p));
+					else if(info[0].equalsIgnoreCase("Atlas")) DMiscUtil.giveDeitySilent(p, new Atlas(p));
+					else if(info[0].equalsIgnoreCase("ares")) DMiscUtil.giveDeitySilent(p, new Ares(p));
+					else if(info[0].equalsIgnoreCase("Cronus")) DMiscUtil.giveDeitySilent(p, new Cronus(p));
+					else if(info[0].equalsIgnoreCase("Hyperion")) DMiscUtil.giveDeitySilent(p, new Hyperion(p));
+					else if(info[0].equalsIgnoreCase("Oceanus")) DMiscUtil.giveDeitySilent(p, new Oceanus(p));
+					else if(info[0].equalsIgnoreCase("Prometheus")) DMiscUtil.giveDeitySilent(p, new Prometheus(p));
+					else if(info[0].equalsIgnoreCase("Rhea")) DMiscUtil.giveDeitySilent(p, new Rhea(p));
+					else if(info[0].equalsIgnoreCase("themis")) DMiscUtil.giveDeitySilent(p, new Themis(p));
+					else if(info[0].equalsIgnoreCase("typhon")) DMiscUtil.giveDeitySilent(p, new Typhon(p));
+					DMiscUtil.setDevotion(p, info[0], Integer.parseInt(info[1]));
 				}
 			}
 			// ascensions
@@ -729,8 +730,8 @@ public class DDebug
 				{
 					String[] info = in.split(" ");
 					WriteLocation shrine = new WriteLocation(info[4], Integer.parseInt(info[1]), Integer.parseInt(info[2]), Integer.parseInt(info[3]));
-					DUtil.removeGuest(shrine, p);
-					DUtil.addGuest(shrine, p);
+					DMiscUtil.removeGuest(shrine, p);
+					DMiscUtil.addGuest(shrine, p);
 					in = s.nextLine();
 				}
 			}
@@ -740,13 +741,13 @@ public class DDebug
 				String[] info = in.split(" ");
 				String name = info[0];
 				WriteLocation shrine = new WriteLocation(info[4], Integer.parseInt(info[1]), Integer.parseInt(info[2]), Integer.parseInt(info[3]));
-				DUtil.removeShrine(shrine);
-				DUtil.addShrine(p, name, shrine);
+				DMiscUtil.removeShrine(shrine);
+				DMiscUtil.addShrine(p, name, shrine);
 				if(info.length > 5)
 				{
 					for(int i = 5; i < info.length; i++)
 					{
-						DUtil.addGuest(shrine, DUtil.getDemigodsPlayer(info[i]));
+						DMiscUtil.addGuest(shrine, DMiscUtil.getDemigodsPlayer(info[i]));
 					}
 				}
 				in = s.nextLine();

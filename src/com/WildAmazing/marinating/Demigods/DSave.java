@@ -1,11 +1,12 @@
 package com.WildAmazing.marinating.Demigods;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import org.bukkit.entity.Player;
-
 import java.io.*;
 import java.util.HashMap;
 import java.util.logging.Logger;
+
+import org.bukkit.entity.Player;
+
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
 /*
  * HASHMAP OF PLAYER'S NAMES
@@ -45,7 +46,7 @@ public class DSave
 					@SuppressWarnings("unchecked")
 					HashMap<String, Object> cast = (HashMap<String, Object>) result;
 					SAVEDDATA.put(load, cast);
-					if(DUtil.isFullParticipant(load)) participants++;
+					if(DMiscUtil.isFullParticipant(load)) participants++;
 					ois.close();
 				}
 				catch(Exception error)
@@ -69,8 +70,8 @@ public class DSave
 	 */
 	public static boolean hasPlayer(Player p)
 	{
-        return p != null && hasPlayer(p.getName());
-    }
+		return p != null && hasPlayer(p.getName());
+	}
 
 	public static boolean hasPlayer(String p)
 	{
@@ -246,5 +247,30 @@ public class DSave
 	public static Deity[] getGlobalList()
 	{
 		return GLOBALLIST;
+	}
+
+	public static boolean getConfirmed(Player player, String command)
+	{
+		String name = player.getName();
+		if(!SAVEDDATA.containsKey(name) || !SAVEDDATA.get(name).containsKey(command)) return false;
+		return System.currentTimeMillis() <= (Long) SAVEDDATA.get(name).get(command);
+	}
+
+	public static void confirm(Player player, String command, boolean confirm)
+	{
+		String name = player.getName();
+		if(!confirm)
+		{
+			if(SAVEDDATA.containsKey(name)) SAVEDDATA.get(name).remove(command);
+			return;
+		}
+		else if(!SAVEDDATA.containsKey(name))
+		{
+			HashMap<String, Object> save = new HashMap<String, Object>();
+			save.put(command, System.currentTimeMillis() + (DSettings.getSettingInt("confirm_time") * 1000));
+			SAVEDDATA.put(name, save);
+			return;
+		}
+		else SAVEDDATA.get(name).put(command, System.currentTimeMillis() + (DSettings.getSettingInt("confirm_time") * 1000));
 	}
 }

@@ -1,19 +1,17 @@
 package com.WildAmazing.marinating.Demigods;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Listeners.DDamage;
-import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.Faction;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Logger;
+
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -24,13 +22,17 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Logger;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Listeners.DDamage;
+import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.Faction;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
-public class DUtil
+public class DMiscUtil
 {
 	private static Demigods plugin; // obviously needed
 	private static int dist = DSettings.getSettingInt("max_target_range"); // maximum range on targeting
@@ -41,7 +43,7 @@ public class DUtil
 	private static boolean ALLOWPVPEVERYWHERE = DSettings.getSettingBoolean("allow_skills_everywhere");
 	private static boolean USENEWPVP = DSettings.getSettingBoolean("use_new_pvp_zones");
 
-	public DUtil(Demigods d)
+	public DMiscUtil(Demigods d)
 	{
 		plugin = d;
 	}
@@ -230,8 +232,8 @@ public class DUtil
 	 */
 	public static boolean hasPermissionOrOP(Player p, String pe)
 	{// convenience method for permissions
-        return p.isOp() || p.hasPermission(pe);
-    }
+		return p.isOp() || p.hasPermission(pe);
+	}
 
 	/**
 	 * Checks is a player has the given permission.
@@ -313,8 +315,8 @@ public class DUtil
 
 	public static boolean areAllied(String p1, String p2)
 	{
-        return isFullParticipant(p1) && isFullParticipant(p2) && getAllegiance(p1).equalsIgnoreCase(getAllegiance(p2));
-    }
+		return isFullParticipant(p1) && isFullParticipant(p2) && getAllegiance(p1).equalsIgnoreCase(getAllegiance(p2));
+	}
 
 	/**
 	 * Gets the String representation of a player's allegiance.
@@ -348,8 +350,8 @@ public class DUtil
 	 */
 	public static boolean is(Player p, String type)
 	{
-        return DSave.hasData(p, "ALLEGIANCE") && DSave.getData(p, "ALLEGIANCE").equals(type);
-    }
+		return DSave.hasData(p, "ALLEGIANCE") && DSave.getData(p, "ALLEGIANCE").equals(type);
+	}
 
 	/**
 	 * Gives a player a deity, even if they have none.
@@ -538,13 +540,13 @@ public class DUtil
 		if(amt > getFavorCap(p)) amt = getFavorCap(p);
 		int c = amt - getFavor(p);
 		DSave.saveData(p, "FAVOR", amt);
-		if((c != 0) && (DUtil.getOnlinePlayer(p) != null))
+		if((c != 0) && (DMiscUtil.getOnlinePlayer(p) != null))
 		{
 			String disp = "";
 			if(c > 0) disp = "+" + c;
 			else disp += c;
-			String str = ChatColor.GOLD + "Favor: " + ChatColor.WHITE + DUtil.getFavor(p) + "/" + DUtil.getFavorCap(p) + " (" + disp + ")";
-			sendSimpleNoticeMessage(DUtil.getOnlinePlayer(p), str);
+			String str = ChatColor.GOLD + "Favor: " + ChatColor.WHITE + DMiscUtil.getFavor(p) + "/" + DMiscUtil.getFavorCap(p) + " (" + disp + ")";
+			sendSimpleNoticeMessage(DMiscUtil.getOnlinePlayer(p), str);
 		}
 	}
 
@@ -600,16 +602,16 @@ public class DUtil
 		if(amt < 0) amt = 0;
 		int c = amt - getHP(p);
 		DSave.saveData(p, "dHP", amt);
-		if((c != 0) && (DUtil.getOnlinePlayer(p) != null))
+		if((c != 0) && (DMiscUtil.getOnlinePlayer(p) != null))
 		{
 			ChatColor color = ChatColor.GREEN;
-			if((DUtil.getHP(p) / (double) DUtil.getMaxHP(p)) < 0.25) color = ChatColor.RED;
-			else if((DUtil.getHP(p) / (double) DUtil.getMaxHP(p)) < 0.5) color = ChatColor.YELLOW;
+			if((DMiscUtil.getHP(p) / (double) DMiscUtil.getMaxHP(p)) < 0.25) color = ChatColor.RED;
+			else if((DMiscUtil.getHP(p) / (double) DMiscUtil.getMaxHP(p)) < 0.5) color = ChatColor.YELLOW;
 			String disp = "";
 			if(c > 0) disp = "+" + c;
 			else disp += c;
-			String str = color + "HP: " + DUtil.getHP(p) + "/" + DUtil.getMaxHP(p) + " (" + disp + ")";
-			sendSimpleNoticeMessage(DUtil.getOnlinePlayer(p), str);
+			String str = color + "HP: " + DMiscUtil.getHP(p) + "/" + DMiscUtil.getMaxHP(p) + " (" + disp + ")";
+			sendSimpleNoticeMessage(DMiscUtil.getOnlinePlayer(p), str);
 		}
 	}
 
@@ -1130,8 +1132,8 @@ public class DUtil
 	@SuppressWarnings("unchecked")
 	public static boolean isBound(Player p, Material material)
 	{
-        return DSave.hasData(p, "BINDINGS") && ((ArrayList<Material>) DSave.getData(p, "BINDINGS")).contains(material);
-    }
+		return DSave.hasData(p, "BINDINGS") && ((ArrayList<Material>) DSave.getData(p, "BINDINGS")).contains(material);
+	}
 
 	@SuppressWarnings("unchecked")
 	public static ArrayList<Material> getBindings(Player p)
@@ -1214,8 +1216,8 @@ public class DUtil
 		if(getAscensions(p) == -1) return false;
 		if(getMaxHP(p) == -1) return false;
 		if(getFavor(p) == -1) return false;
-        return getFavorCap(p) != -1;
-    }
+		return getFavorCap(p) != -1;
+	}
 
 	/**
 	 * Checks if one team has an advantage over the other by greater than the given %.
@@ -1511,7 +1513,7 @@ public class DUtil
 		for(WriteLocation w : getAllShrines())
 		{
 			if(!w.getWorld().equals(l.getWorld().getName())) continue;
-			Location l1 = DUtil.toLocation(w);
+			Location l1 = DMiscUtil.toLocation(w);
 			if(l1.distance(l) < DShrines.RADIUS)
 			{
 				shrine = w;
@@ -1630,7 +1632,7 @@ public class DUtil
 		ArrayList<String> list = new ArrayList<String>();
 		for(String p : getFullParticipants())
 		{
-			for(WriteLocation w : DUtil.getAccessibleShrines(p))
+			for(WriteLocation w : DMiscUtil.getAccessibleShrines(p))
 			{
 				if(w.equalsApprox(shrine)) list.add(p);
 			}
@@ -1660,7 +1662,7 @@ public class DUtil
 			{
 				if(!getShrines(p).get(key).equalsApprox(shrine)) replace.put(key, getShrines(p).get(key));
 			}
-			DUtil.setShrines(p, replace);
+			DMiscUtil.setShrines(p, replace);
 			// remove from guest lists
 			while(getAccessibleShrines(p).contains(shrine))
 				getAccessibleShrines(p).remove(shrine);
@@ -1696,7 +1698,7 @@ public class DUtil
 		{
 			if(getShrines(p).containsKey(newname)) return false;
 		}
-		String owner = DUtil.getOwnerOfShrine(shrine);
+		String owner = DMiscUtil.getOwnerOfShrine(shrine);
 		String tomodify = null;
 		for(String shrinename : getShrines(owner).keySet())
 		{
@@ -1801,9 +1803,9 @@ public class DUtil
 
 	public static boolean removeActiveEffect(String p, String effectname)
 	{
-		for(String effect : DUtil.getActiveEffectsList(p))
+		for(String effect : DMiscUtil.getActiveEffectsList(p))
 		{
-			if(effect.equals(effectname)) return(DUtil.getActiveEffects(p).remove(effect) == null);
+			if(effect.equals(effectname)) return(DMiscUtil.getActiveEffects(p).remove(effect) == null);
 		}
 		return false;
 	}
@@ -1909,8 +1911,8 @@ public class DUtil
 	@SuppressWarnings("static-access")
 	public static boolean canWorldGuardBuild(Player player, Location location)
 	{
-        return plugin.WORLDGUARD == null || plugin.WORLDGUARD.canBuild(player, location);
-    }
+		return plugin.WORLDGUARD == null || plugin.WORLDGUARD.canBuild(player, location);
+	}
 
 	@SuppressWarnings("static-access")
 	public static boolean canWorldGuardDamage(Location l)
@@ -2083,5 +2085,10 @@ public class DUtil
 			}
 		}
 		return null;
+	}
+
+	public static void taggedMessage(CommandSender sender, String msg)
+	{
+		sender.sendMessage(ChatColor.DARK_AQUA + "[Demigods] " + ChatColor.RESET + msg);
 	}
 }
