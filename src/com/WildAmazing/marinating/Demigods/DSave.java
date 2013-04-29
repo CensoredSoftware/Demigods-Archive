@@ -232,7 +232,7 @@ public class DSave
 	/*
 	 * Saves itself, but must be loaded elsewhere (main plugin).
 	 */
-	public static void save(String path) throws FileNotFoundException, IOException
+	public static void save(String path) throws IOException
 	{
 		(new File(path + "Players/")).mkdirs();
 		for(String name : SAVEDDATA.keySet())
@@ -252,8 +252,7 @@ public class DSave
 	public static boolean getConfirmed(Player player, String command)
 	{
 		String name = player.getName();
-		if(!SAVEDDATA.containsKey(name) || !SAVEDDATA.get(name).containsKey(command)) return false;
-		return System.currentTimeMillis() <= (Long) SAVEDDATA.get(name).get(command);
+		return !(!SAVEDDATA.containsKey(name) || !SAVEDDATA.get(name).containsKey(command)) && System.currentTimeMillis() <= (Long) SAVEDDATA.get(name).get(command);
 	}
 
 	public static void confirm(Player player, String command, boolean confirm)
@@ -262,14 +261,12 @@ public class DSave
 		if(!confirm)
 		{
 			if(SAVEDDATA.containsKey(name)) SAVEDDATA.get(name).remove(command);
-			return;
 		}
 		else if(!SAVEDDATA.containsKey(name))
 		{
 			HashMap<String, Object> save = new HashMap<String, Object>();
 			save.put(command, System.currentTimeMillis() + (DSettings.getSettingInt("confirm_time") * 1000));
 			SAVEDDATA.put(name, save);
-			return;
 		}
 		else SAVEDDATA.get(name).put(command, System.currentTimeMillis() + (DSettings.getSettingInt("confirm_time") * 1000));
 	}

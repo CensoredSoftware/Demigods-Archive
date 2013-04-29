@@ -63,7 +63,6 @@ public class DPvP implements Listener
 					shooter.getInventory().setItem(slot, arrows);
 
 					e.setCancelled(true);
-					return;
 				}
 			}
 		}

@@ -1216,8 +1216,7 @@ public class DMiscUtil
 		if((getDeities(p) == null) || (getDeities(p).size() == 0)) return false;
 		if(getAscensions(p) == -1) return false;
 		if(getMaxHP(p) == -1) return false;
-		if(getFavor(p) == -1) return false;
-		return getFavorCap(p) != -1;
+		return getFavor(p) != -1 && getFavorCap(p) != -1;
 	}
 
 	/**
@@ -1954,8 +1953,7 @@ public class DMiscUtil
 	public static boolean canCampStampTarget(Player player)
 	{
 		if(Demigods.CAMPSTAMP == null) return true;
-		if(Demigods.CAMPSTAMP.getAPI().getProtectionStatus(player) == CampStampAPI.ProtectionStatus.NO_STATUS) return true;
-		return false;
+		return CampStampAPI.getProtectionStatus(player) == CampStampAPI.ProtectionStatus.NO_STATUS;
 	}
 
 	/**

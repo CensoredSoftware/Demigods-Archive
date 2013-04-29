@@ -1,7 +1,6 @@
 package com.WildAmazing.marinating.Demigods;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -653,7 +652,7 @@ public class DDebug
 		f.close();
 	}
 
-	public static boolean loadData(String p) throws FileNotFoundException
+	public static boolean loadData(String p)
 	{
 		try
 		{

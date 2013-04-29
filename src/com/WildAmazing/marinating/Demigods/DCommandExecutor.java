@@ -89,7 +89,7 @@ public class DCommandExecutor implements CommandExecutor
 			// else if (c.getName().equalsIgnoreCase("transfer")) return transfer(p,args);
 			else if(c.getName().equalsIgnoreCase("alliance")) return alliance(p);
 			else if(c.getName().equalsIgnoreCase("checkplayer")) return checkPlayer(p, args);
-			else if(c.getName().equalsIgnoreCase("shrine")) return shrine(p, args);
+			else if(c.getName().equalsIgnoreCase("shrine")) return shrine(p);
 			else if(c.getName().equalsIgnoreCase("shrinewarp")) return shrineWarp(p, args);
 			else if(c.getName().equalsIgnoreCase("forceshrinewarp")) return forceShrineWarp(p, args);
 			else if(c.getName().equalsIgnoreCase("shrineowner")) return shrineOwner(p, args);
@@ -481,7 +481,7 @@ public class DCommandExecutor implements CommandExecutor
 						return true;
 					}
 				}
-				catch(IOException e)
+				catch(Exception e)
 				{
 					Logger.getLogger("Minecraft").warning("[Demigods] Error loading from file for " + player + ".");
 					e.printStackTrace();
@@ -561,7 +561,7 @@ public class DCommandExecutor implements CommandExecutor
 								p.sendMessage(ChatColor.YELLOW + "You can create one with /dg debug " + target + " write.");
 							}
 						}
-						catch(IOException e)
+						catch(Exception e)
 						{
 							Logger.getLogger("Minecraft").warning("[Demigods] Error writing debug data for " + target + ".");
 							e.printStackTrace();
@@ -1395,7 +1395,7 @@ public class DCommandExecutor implements CommandExecutor
 		return true;
 	}
 
-	private boolean shrine(Player p, String[] args)
+	private boolean shrine(Player p)
 	{
 		if(!DMiscUtil.isFullParticipant(p)) return true;
 		// player has shrines for these deities
