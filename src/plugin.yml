@@ -3,7 +3,7 @@ main: com.WildAmazing.marinating.Demigods.Demigods
 version: 2.4.0
 description: Ally yourself with mythical deities and battle in the name of the Gods or Titans.
 author: marinating, HmmmQuestionMark
-softdepend: [WorldGuard, WorldEdit, Factions]
+softdepend: [WorldGuard, WorldEdit, Factions, CampStamp]
 commands:
     dg:
         description: Important information.
