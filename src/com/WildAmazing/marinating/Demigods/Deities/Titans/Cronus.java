@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -156,7 +155,7 @@ public class Cronus implements Deity
 								DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - CLEAVECOST);
 								for(int i = 1; i <= 31; i += 4)
 									e.getEntity().getWorld().playEffect(e.getEntity().getLocation(), Effect.SMOKE, i);
-								DMiscUtil.damageDemigods(p, (LivingEntity) e.getEntity(), (int) Math.ceil(Math.pow(DMiscUtil.getDevotion(p, getName()), 0.35)), DamageCause.ENTITY_ATTACK);
+								DMiscUtil.damageDemigods((LivingEntity) e.getEntity(), (int) Math.ceil(Math.pow(DMiscUtil.getDevotion(p, getName()), 0.35)));
 								CLEAVETIME = System.currentTimeMillis();
 								if((LivingEntity) e.getEntity() instanceof Player)
 								{

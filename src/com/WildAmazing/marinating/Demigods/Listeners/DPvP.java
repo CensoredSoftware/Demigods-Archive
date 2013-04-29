@@ -6,7 +6,10 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -41,23 +44,40 @@ public class DPvP implements Listener
 	public static boolean filterCheckTimeout = false;
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void launchProjectile(ProjectileLaunchEvent e)
+	public void onArrowLaunch(ProjectileLaunchEvent e)
 	{
-		Entity entity = e.getEntity();
-		if(entity instanceof Arrow && !DMiscUtil.canLocationPVP(entity.getLocation()))
+		if(e.getEntity() instanceof Arrow)
 		{
-			entity.remove();
-			e.setCancelled(true);
+			Arrow arrow = (Arrow) e.getEntity();
+			if(arrow.getShooter() instanceof Player)
+			{
+				Player shooter = (Player) arrow.getShooter();
+				if(!DMiscUtil.canTarget(shooter, shooter.getLocation()))
+				{
+					shooter.sendMessage(ChatColor.YELLOW + "This is a no-PvP zone.");
+
+					// Undo the arrow being removed from the inventory
+					int slot = shooter.getInventory().first(Material.ARROW);
+					ItemStack arrows = shooter.getInventory().getItem(slot);
+					arrows.setAmount(arrows.getAmount() + 1);
+					shooter.getInventory().setItem(slot, arrows);
+
+					e.setCancelled(true);
+					return;
+				}
+			}
 		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void pvpDamage(EntityDamageByEntityEvent e)
 	{
-		if(!(e.getDamager() instanceof Player)) return;
 		if(!(e.getEntity() instanceof Player)) return;
-		Player attacker = (Player) e.getDamager();
 		Player target = (Player) e.getEntity();
+		Player attacker;
+		if(e.getDamager() instanceof Arrow && ((Arrow) e.getDamager()).getShooter() instanceof Player) attacker = (Player) ((Arrow) e.getDamager()).getShooter();
+		else if(e.getDamager() instanceof Player) attacker = (Player) e.getDamager();
+		else return;
 		if(!(DMiscUtil.isFullParticipant(attacker) && DMiscUtil.isFullParticipant(target)))
 		{
 			if(!DMiscUtil.canTarget(target, target.getLocation()))
@@ -68,7 +88,7 @@ public class DPvP implements Listener
 			}
 		}
 		if(!DSettings.getEnabledWorlds().contains(attacker.getWorld())) return;
-		if(DMiscUtil.getAllegiance(attacker).equalsIgnoreCase(DMiscUtil.getAllegiance(target))) return;
+		if(DMiscUtil.getAllegiance(attacker).equalsIgnoreCase(DMiscUtil.getAllegiance(target))) return; // Handled in DDamage...
 		if(!DMiscUtil.canTarget(target, target.getLocation()))
 		{
 			attacker.sendMessage(ChatColor.YELLOW + "This is a no-PvP zone.");
@@ -81,9 +101,14 @@ public class DPvP implements Listener
 			e.setCancelled(true);
 			return;
 		}
-		Deity d = DMiscUtil.getDeities(attacker).get((int) Math.floor(Math.random() * DMiscUtil.getDeities(attacker).size()));
-		DMiscUtil.setDevotion(attacker, d, DMiscUtil.getDevotion(attacker, d) + (int) (e.getDamage() * MULTIPLIER));
-		DLevels.levelProcedure(attacker);
+		try
+		{
+			Deity d = DMiscUtil.getDeities(attacker).get((int) Math.floor(Math.random() * DMiscUtil.getDeities(attacker).size()));
+			DMiscUtil.setDevotion(attacker, d, DMiscUtil.getDevotion(attacker, d) + (int) (e.getDamage() * MULTIPLIER));
+			DLevels.levelProcedure(attacker);
+		}
+		catch(Exception ignored)
+		{}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)

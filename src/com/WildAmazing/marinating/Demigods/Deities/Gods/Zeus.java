@@ -133,10 +133,12 @@ public class Zeus implements Deity
 				if(e.getCause() == DamageCause.FALL)
 				{
 					e.setDamage(0);
+					e.setCancelled(true);
 				}
 				else if(e.getCause() == DamageCause.LIGHTNING)
 				{
 					e.setDamage(0);
+					e.setCancelled(true);
 				}
 			}
 		}
@@ -337,12 +339,11 @@ public class Zeus implements Deity
 			p.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 			return;
 		}
-		Location target = null;
-		target = b.getLocation();
-		p.getWorld().strikeLightningEffect(target);
-		if(p.getLocation().distance(target) > 2)
+		try
 		{
-			try
+			Location target = b.getLocation();
+			p.getWorld().strikeLightningEffect(target);
+			if(p.getLocation().distance(target) > 2)
 			{
 				if(!p.getWorld().equals(target.getWorld())) return;
 				if(!DMiscUtil.canLocationPVP(target)) return;
@@ -357,10 +358,10 @@ public class Zeus implements Deity
 					}
 				}
 			}
-			catch(Exception ignored)
-			{} // ignore it if something went wrong
+			else p.sendMessage(ChatColor.YELLOW + "Your target is too far away, or too close to you.");
 		}
-		else p.sendMessage(ChatColor.YELLOW + "Your target is too far away, or too close to you.");
+		catch(Exception ignored)
+		{} // ignore it if something went wrong
 	}
 
 	private int storm(Player p)
@@ -382,18 +383,14 @@ public class Zeus implements Deity
 					Player ptemp = (Player) e1;
 					if(!DMiscUtil.areAllied(p, ptemp) && !ptemp.equals(p))
 					{
-						strikeLightning(p, ptemp);
-						strikeLightning(p, ptemp);
-						strikeLightning(p, ptemp);
+						strikeLightning(p, ptemp, 3);
 						count++;
 					}
 				}
 				else
 				{
 					count++;
-					strikeLightning(p, e1);
-					strikeLightning(p, e1);
-					strikeLightning(p, e1);
+					strikeLightning(p, e1, 3);
 				}
 			}
 			catch(Exception ignored)
@@ -402,7 +399,7 @@ public class Zeus implements Deity
 		return count;
 	}
 
-	private void strikeLightning(Player p, Entity target)
+	private void strikeLightning(Player p, Entity target, int K)
 	{
 		if(!p.getWorld().equals(target.getWorld())) return;
 		if(!DMiscUtil.canTarget(target, target.getLocation())) return;
@@ -412,8 +409,8 @@ public class Zeus implements Deity
 			if(e instanceof LivingEntity)
 			{
 				LivingEntity le = (LivingEntity) e;
-				if(le instanceof Player && le == p) continue;
-				if(le.getLocation().distance(target.getLocation()) < 1.5) DMiscUtil.damageDemigods(p, le, DMiscUtil.getAscensions(p) * 2, DamageCause.LIGHTNING);
+				if(le instanceof Player && (le == p || !DMiscUtil.canTarget(le, le.getLocation()))) continue;
+				if(le.getLocation().distance(target.getLocation()) < 1.5) DMiscUtil.damageDemigods(p, le, DMiscUtil.getAscensions(p) * (2 * K), DamageCause.LIGHTNING);
 			}
 		}
 	}

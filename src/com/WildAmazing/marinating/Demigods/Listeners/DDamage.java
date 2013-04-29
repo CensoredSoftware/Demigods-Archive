@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -49,53 +48,43 @@ public class DDamage implements Listener
 		{
 			return;
 		}
-
-		if(e instanceof EntityDamageByEntityEvent)
-		{
-			EntityDamageByEntityEvent ee = (EntityDamageByEntityEvent) e;
-			if(ee.getDamager() instanceof Player)
-			{
-				if(!FRIENDLYFIRE)
-				{
-					if(DMiscUtil.areAllied(p, (Player) ee.getDamager()))
-					{
-						e.setCancelled(true);
-						return;
-					}
-
-					if(!DMiscUtil.canTarget(p, p.getLocation()))
-					{
-						e.setCancelled(true);
-						return;
-					}
-
-					if(!DMiscUtil.canTarget(ee.getDamager(), ee.getDamager().getLocation()))
-					{
-						e.setCancelled(true);
-						return;
-					}
-				}
-				DMiscUtil.damageDemigods((LivingEntity) ee.getDamager(), p, e.getDamage(), e.getCause());
-				e.setCancelled(true);
-			}
-		}
-
 		if(!DMiscUtil.canTarget(p, p.getLocation()))
 		{
 			e.setCancelled(true);
 			return;
 		}
 
+		if(e instanceof EntityDamageByEntityEvent)
+		{
+			EntityDamageByEntityEvent ee = (EntityDamageByEntityEvent) e;
+			if(ee.getDamager() instanceof Player)
+			{
+				if(!FRIENDLYFIRE && DMiscUtil.areAllied(p, (Player) ee.getDamager()))
+				{
+					if(DSettings.getSettingBoolean("friendly_fire_message")) ((Player) ee.getDamager()).sendMessage(ChatColor.YELLOW + "No friendly fire.");
+					e.setCancelled(true);
+					return;
+				}
+				if(!DMiscUtil.canTarget(ee.getDamager(), ee.getDamager().getLocation()))
+				{
+					e.setCancelled(true);
+					return;
+				}
+				DMiscUtil.damageDemigods(p, e.getDamage());
+				return;
+			}
+		}
+
 		if(e.getCause() == DamageCause.LAVA)
 		{
 			e.setDamage(0); // Disable lava damage, fire damage does enough for Demigods.
 			e.setCancelled(true);
+			return;
 		}
 
 		if((e.getCause() != DamageCause.ENTITY_ATTACK) && (e.getCause() != DamageCause.PROJECTILE))
 		{
-			DMiscUtil.damageDemigodsNonCombat(p, e.getDamage(), e.getCause());
-			e.setCancelled(true);
+			DMiscUtil.damageDemigods(p, e.getDamage());
 		}
 	}
 

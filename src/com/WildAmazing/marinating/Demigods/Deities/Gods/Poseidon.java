@@ -20,6 +20,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
 import com.WildAmazing.marinating.Demigods.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.DSettings;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
 public class Poseidon implements Deity
@@ -354,6 +355,13 @@ public class Poseidon implements Deity
 			p.sendMessage(ChatColor.YELLOW + "That is a no-PVP zone.");
 			return false;
 		}
+
+		if(target.getBlockY() >= DSettings.getSettingInt("poseidon.drown_world_height_limit"))
+		{
+			p.sendMessage(ChatColor.YELLOW + "You cannot use drown from this high up.");
+			return false;
+		}
+
 		if(target == null) return false;
 		drown(target, radius, duration * 20);
 		return true;

@@ -25,6 +25,7 @@ import org.bukkit.plugin.Plugin;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Listeners.DDamage;
 import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
+import com.censoredsoftware.CampStamp.CampStampAPI;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
@@ -338,7 +339,7 @@ public class DMiscUtil
 	public static String getAllegiance(String p)
 	{
 		if(DSave.hasData(p, "ALLEGIANCE")) return((String) DSave.getData(p, "ALLEGIANCE"));
-		return null;
+		return "Mortal";
 	}
 
 	/**
@@ -1945,9 +1946,16 @@ public class DMiscUtil
 	public static boolean canTarget(Entity player, Location location)
 	{
 		if(!(player instanceof Player)) return true;
-		else if(!USENEWPVP) return canLocationPVP(location);
-		else if(!isFullParticipant((Player) player)) return canLocationPVP(location);
-		else return DSave.hasData((Player) player, "temp_was_PVP") || canLocationPVP(location);
+		else if(!USENEWPVP) return canLocationPVP(location) && canCampStampTarget((Player) player);
+		else if(!isFullParticipant((Player) player)) return canLocationPVP(location) && canCampStampTarget((Player) player);
+		else return DSave.hasData((Player) player, "temp_was_PVP") || canLocationPVP(location) && canCampStampTarget((Player) player);
+	}
+
+	public static boolean canCampStampTarget(Player player)
+	{
+		if(Demigods.CAMPSTAMP == null) return true;
+		if(Demigods.CAMPSTAMP.getAPI().getProtectionStatus(player) == CampStampAPI.ProtectionStatus.NO_STATUS) return true;
+		return false;
 	}
 
 	/**
@@ -2060,19 +2068,24 @@ public class DMiscUtil
 		if(target.getHealth() > 1) target.damage(1);
 	}
 
-	public static void damageDemigods(Player target, int amount)
+	public static void damageDemigods(LivingEntity target, int amount)
 	{
-		if((target).getGameMode() == GameMode.CREATIVE) return;
-		if(!canTarget(target, target.getLocation())) return;
-		if(!canWorldGuardDamage(target.getLocation())) return;
-		if(DDamage.cancelSoulDamage(target, amount)) return;
-		int hp = getHP(target);
-		if(amount < 1) return;
-		amount -= DDamage.armorReduction(target);
-		amount = DDamage.specialReduction(target, amount);
-		if(amount < 1) return;
-		setHP((target), hp - amount);
 		if(target.getHealth() > 1) target.damage(1);
+		if(!canTarget(target, target.getLocation())) return;
+		if((target instanceof Player && (((Player) target).getGameMode() == GameMode.CREATIVE) || DDamage.cancelSoulDamage((Player) target, amount))) return;
+		if(!canWorldGuardDamage(target.getLocation())) return;
+		if(target instanceof Player)
+		{
+			int hp = getHP((Player) target);
+			if(amount < 1) return;
+			amount -= DDamage.armorReduction((Player) target);
+			amount = DDamage.specialReduction((Player) target, amount);
+			if(amount < 1) return;
+			setHP(((Player) target), hp - amount);
+			DDamage.syncHealth(((Player) target));
+			return;
+		}
+		target.damage(amount);
 	}
 
 	public static Plugin getPlugin(String p)

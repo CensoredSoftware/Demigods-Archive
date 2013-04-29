@@ -21,6 +21,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import com.WildAmazing.marinating.Demigods.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.DSettings;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
 public class Hades implements Deity
@@ -309,6 +310,11 @@ public class Hades implements Deity
 		if(target == null) return false;
 		if(!DMiscUtil.canTarget(target, target.getLocation()))
 		{
+			return false;
+		}
+		if(DSettings.getSettingBoolean("friendly_fire") && target instanceof Player && DMiscUtil.areAllied(p, (Player) target))
+		{
+			if(DSettings.getSettingBoolean("friendly_fire_message")) p.sendMessage(ChatColor.YELLOW + "No friendly fire.");
 			return false;
 		}
 		target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, blindduration, blindpower));

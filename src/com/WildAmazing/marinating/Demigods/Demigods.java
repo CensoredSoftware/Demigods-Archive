@@ -25,6 +25,7 @@ import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Deities.Gods.*;
 import com.WildAmazing.marinating.Demigods.Deities.Titans.*;
 import com.WildAmazing.marinating.Demigods.Listeners.*;
+import com.censoredsoftware.CampStamp.CampStampPlugin;
 import com.clashnia.Demigods.Deities.Giants.Typhon;
 import com.massivecraft.factions.P;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -34,6 +35,7 @@ public class Demigods extends JavaPlugin implements Listener
 	// Soft dependencies
 	protected static WorldGuardPlugin WORLDGUARD = null;
 	protected static P FACTIONS = null;
+	protected static CampStampPlugin CAMPSTAMP = null;
 
 	// Define variables
 	public static Logger log = Logger.getLogger("Minecraft");
@@ -52,7 +54,7 @@ public class Demigods extends JavaPlugin implements Listener
 	public void onEnable()
 	{
 		long firstTime = System.currentTimeMillis();
-		oldDownloader(); // #0 (disable our old update method) TODO
+		oldDownloader(); // #0 (disable our old update method)
 
 		log.info("[Demigods] Initializing.");
 
@@ -162,6 +164,13 @@ public class Demigods extends JavaPlugin implements Listener
 		{
 			FACTIONS = ((P) pg);
 			if(!DSettings.getSettingBoolean("allow_skills_everywhere")) log.info("[Demigods] Factions detected. Skills are disabled in peaceful zones.");
+		}
+
+		// Check for the Factions plugin
+		pg = getServer().getPluginManager().getPlugin("CampStamp");
+		if(pg != null && pg instanceof CampStampPlugin)
+		{
+			CAMPSTAMP = (CampStampPlugin) pg;
 		}
 
 		// Check to see if a player has the SimpleNotice client mod installed

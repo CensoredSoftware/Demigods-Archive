@@ -395,7 +395,7 @@ public class Rhea implements Deity
 				}
 			}
 		}
-		if(target != null)
+		if(target != null || !DMiscUtil.canTarget(target, target.getLocation()))
 		{
 			target.addPotionEffect(new PotionEffect(PotionEffectType.POISON, duration * 20, strength));
 			DMiscUtil.addActiveEffect(target.getName(), "Poison", duration);

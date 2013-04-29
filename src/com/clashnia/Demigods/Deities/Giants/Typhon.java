@@ -155,6 +155,7 @@ public class Typhon implements Deity
 						}
 						le.setVelocity(victor); // super kb
 						DMiscUtil.damageDemigods(p, le, DAMAGE, DamageCause.CUSTOM);
+						e.setCancelled(true);
 						DSave.removeData(p, "CHARGE");
 						p.sendMessage(ChatColor.YELLOW + "Your charged attack has dealt " + ChatColor.DARK_RED + DAMAGE + ChatColor.YELLOW + " damage.");
 					}
