@@ -2069,11 +2069,11 @@ public class DMiscUtil
 	public static void damageDemigods(LivingEntity target, int amount)
 	{
 		if(target.getHealth() > 1) target.damage(1);
-		if(!canTarget(target, target.getLocation())) return;
-		if((target instanceof Player && (((Player) target).getGameMode() == GameMode.CREATIVE) || DDamage.cancelSoulDamage((Player) target, amount))) return;
-		if(!canWorldGuardDamage(target.getLocation())) return;
 		if(target instanceof Player)
 		{
+			if(!canTarget(target, target.getLocation())) return;
+			if((((Player) target).getGameMode() == GameMode.CREATIVE) || DDamage.cancelSoulDamage((Player) target, amount)) return;
+			if(!canWorldGuardDamage(target.getLocation())) return;
 			int hp = getHP((Player) target);
 			if(amount < 1) return;
 			amount -= DDamage.armorReduction((Player) target);
