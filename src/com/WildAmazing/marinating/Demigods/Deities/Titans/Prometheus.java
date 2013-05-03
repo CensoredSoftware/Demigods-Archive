@@ -6,10 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Fireball;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -295,16 +292,23 @@ public class Prometheus implements Deity
 
 	}
 
-	private void shootFireball(Location from, Location to, Player player)
+	public static void shootFireball(Location from, Location to, Player player)
 	{
-		if(!DMiscUtil.canLocationPVP(to) || !DMiscUtil.canLocationPVP(from)) return;
+		player.getWorld().spawnEntity(from, EntityType.FIREBALL);
+		for(Entity entity : player.getNearbyEntities(2, 2, 2))
+		{
+			if(!(entity instanceof Fireball)) continue;
 
-		Vector path = to.toVector().subtract(from.toVector());
-		Location spawnLocation = new Location(player.getWorld(), path.getX(), path.getY(), path.getZ());
-
-		// Fire the fireball
-		Entity fireball = player.getWorld().spawn(spawnLocation, Fireball.class);
-		fireball.teleport(to);
+			Fireball fireball = (Fireball) entity;
+			to.setX(to.getX() + .5);
+			to.setY(to.getY() + .5);
+			to.setZ(to.getZ() + .5);
+			Vector path = to.toVector().subtract(from.toVector());
+			Vector victor = from.toVector().add(from.getDirection().multiply(2));
+			fireball.teleport(new Location(player.getWorld(), victor.getX(), victor.getY(), victor.getZ()));
+			fireball.setDirection(path);
+			fireball.setShooter(player);
+		}
 	}
 
 	private void blaze(Location target, int diameter)

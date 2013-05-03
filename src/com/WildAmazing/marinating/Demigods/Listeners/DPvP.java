@@ -119,6 +119,8 @@ public class DPvP implements Listener
 			if(villager.getLastDamageCause() instanceof EntityDamageByEntityEvent)
 			{
 				EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) villager.getLastDamageCause();
+
+				if(!(e.getDamager() instanceof Player)) return;
 				Player attacker = (Player) e.getDamager();
 
 				// Define Mortal Soul
