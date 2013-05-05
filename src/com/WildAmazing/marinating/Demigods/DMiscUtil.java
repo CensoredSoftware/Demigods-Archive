@@ -1947,7 +1947,7 @@ public class DMiscUtil
 		if(!(player instanceof Player)) return true;
 		else if(!USENEWPVP) return canLocationPVP(location) && canCampStampTarget((Player) player);
 		else if(!isFullParticipant((Player) player)) return canLocationPVP(location) && canCampStampTarget((Player) player);
-		else return DSave.hasData((Player) player, "temp_was_PVP") || canLocationPVP(location) && canCampStampTarget((Player) player);
+		else return (DSave.hasData((Player) player, "temp_was_PVP") && !hasPermission((Player) player, "demigods.bypasspvpdelay")) || canLocationPVP(location) && canCampStampTarget((Player) player);
 	}
 
 	public static boolean canCampStampTarget(Player player)
