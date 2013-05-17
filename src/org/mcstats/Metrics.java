@@ -25,7 +25,6 @@
  * authors and contributors and should not be interpreted as representing official policies,
  * either expressed or implied, of anybody else.
  */
-
 package org.mcstats;
 
 import java.io.*;
@@ -45,7 +44,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 /**
  * <p>
- * The metrics class obtains data about a demigods and submits statistics about it to the metrics backend.
+ * The metrics class obtains data about a plugin and submits statistics about it to the metrics backend.
  * </p>
  * <p>
  * Public methods provided by this class:
@@ -66,7 +65,7 @@ public class Metrics
 	/**
 	 * The base url of the metrics domain
 	 */
-	private static final String BASE_URL = "http://org.mcstats.org";
+	private static final String BASE_URL = "http://mcstats.org";
 	/**
 	 * The url used to report a server's status
 	 */
@@ -81,7 +80,7 @@ public class Metrics
 	 */
 	private static final int PING_INTERVAL = 10;
 	/**
-	 * The demigods this metrics submits for
+	 * The plugin this metrics submits for
 	 */
 	private final Plugin plugin;
 	/**
@@ -93,11 +92,11 @@ public class Metrics
 	 */
 	private final Graph defaultGraph = new Graph("Default");
 	/**
-	 * The demigods configuration file
+	 * The plugin configuration file
 	 */
 	private final YamlConfiguration configuration;
 	/**
-	 * The demigods configuration file
+	 * The plugin configuration file
 	 */
 	private final File configurationFile;
 	/**
@@ -138,7 +137,7 @@ public class Metrics
 		// Do we need to create the file?
 		if(configuration.get("guid", null) == null)
 		{
-			configuration.options().header("http://org.mcstats.org").copyDefaults(true);
+			configuration.options().header("http://mcstats.org").copyDefaults(true);
 			configuration.save(configurationFile);
 		}
 
@@ -151,8 +150,7 @@ public class Metrics
 	 * Construct and create a Graph that can be used to separate specific plotters to their own graphs on the metrics
 	 * website. Plotters can be added to the graph object returned.
 	 * 
-	 * @param name
-	 *        The name of the graph
+	 * @param name The name of the graph
 	 * @return Graph object created. Will never return NULL under normal circumstances unless bad parameters are given
 	 */
 	public Graph createGraph(final String name)
@@ -173,10 +171,9 @@ public class Metrics
 	}
 
 	/**
-	 * Add a Graph object to BukkitMetrics that represents data for the demigods that should be sent to the backend
+	 * Add a Graph object to BukkitMetrics that represents data for the plugin that should be sent to the backend
 	 * 
-	 * @param graph
-	 *        The name of the graph
+	 * @param graph The name of the graph
 	 */
 	public void addGraph(final Graph graph)
 	{
@@ -191,8 +188,7 @@ public class Metrics
 	/**
 	 * Adds a custom data plotter to the default graph
 	 * 
-	 * @param plotter
-	 *        The plotter to use to plot custom data
+	 * @param plotter The plotter to use to plot custom data
 	 */
 	public void addCustomData(final Plotter plotter)
 	{
@@ -209,7 +205,7 @@ public class Metrics
 	}
 
 	/**
-	 * Start measuring statistics. This will immediately create an async repeating task as the demigods and send the
+	 * Start measuring statistics. This will immediately create an async repeating task as the plugin and send the
 	 * initial data to the metrics backend, and then after that it will post in increments of PING_INTERVAL * 1200
 	 * ticks.
 	 * 
@@ -281,7 +277,7 @@ public class Metrics
 	}
 
 	/**
-	 * Has the server owner denied demigods metrics?
+	 * Has the server owner denied plugin metrics?
 	 * 
 	 * @return true if metrics should be opted out of it
 	 */
@@ -373,8 +369,8 @@ public class Metrics
 	public File getConfigFile()
 	{
 		// I believe the easiest way to get the base folder (e.g craftbukkit set via -P) for plugins to use
-		// is to abuse the demigods object we already have
-		// demigods.getDataFolder() => base/plugins/PluginA/
+		// is to abuse the plugin object we already have
+		// plugin.getDataFolder() => base/plugins/PluginA/
 		// pluginsFolder => base/plugins/
 		// The base is not necessarily relative to the startup directory.
 		File pluginsFolder = plugin.getDataFolder().getParentFile();
@@ -384,7 +380,7 @@ public class Metrics
 	}
 
 	/**
-	 * Generic method that posts a demigods to the metrics website
+	 * Generic method that posts a plugin to the metrics website
 	 */
 	private void postPlugin(final boolean isPing) throws IOException
 	{
@@ -401,7 +397,7 @@ public class Metrics
 		// Construct the post data
 		final StringBuilder data = new StringBuilder();
 
-		// The demigods's description file containing all of the demigods data such as name, version, author, etc
+		// The plugin's description file containg all of the plugin data such as name, version, author, etc
 		data.append(encode("guid")).append('=').append(encode(guid));
 		encodeDataPair(data, "version", pluginVersion);
 		encodeDataPair(data, "server", serverVersion);
@@ -548,12 +544,9 @@ public class Metrics
 	 * encodeDataPair(data, "version", description.getVersion());
 	 * </code>
 	 * 
-	 * @param buffer
-	 *        the stringbuilder to append the data pair onto
-	 * @param key
-	 *        the key value
-	 * @param value
-	 *        the value
+	 * @param buffer the stringbuilder to append the data pair onto
+	 * @param key the key value
+	 * @param value the value
 	 */
 	private static void encodeDataPair(final StringBuilder buffer, final String key, final String value) throws UnsupportedEncodingException
 	{
@@ -563,8 +556,7 @@ public class Metrics
 	/**
 	 * Encode text as UTF-8
 	 * 
-	 * @param text
-	 *        the text to encode
+	 * @param text the text to encode
 	 * @return the encoded text, as UTF-8
 	 */
 	private static String encode(final String text) throws UnsupportedEncodingException
@@ -606,8 +598,7 @@ public class Metrics
 		/**
 		 * Add a plotter to the graph, which will be used to plot entries
 		 * 
-		 * @param plotter
-		 *        the plotter to add to the graph
+		 * @param plotter the plotter to add to the graph
 		 */
 		public void addPlotter(final Plotter plotter)
 		{
@@ -617,8 +608,7 @@ public class Metrics
 		/**
 		 * Remove a plotter from the graph
 		 * 
-		 * @param plotter
-		 *        the plotter to remove from the graph
+		 * @param plotter the plotter to remove from the graph
 		 */
 		public void removePlotter(final Plotter plotter)
 		{
@@ -661,7 +651,7 @@ public class Metrics
 	}
 
 	/**
-	 * Interface used to collect custom data for a demigods
+	 * Interface used to collect custom data for a plugin
 	 */
 	public static abstract class Plotter
 	{
@@ -682,8 +672,7 @@ public class Metrics
 		/**
 		 * Construct a plotter with a specific plot name
 		 * 
-		 * @param name
-		 *        the name of the plotter to use, which will show up on the website
+		 * @param name the name of the plotter to use, which will show up on the website
 		 */
 		public Plotter(final String name)
 		{
