@@ -332,7 +332,7 @@ public class Poseidon implements Deity
 		{
 			if(DMiscUtil.isFullParticipant((Player) le)) if(DMiscUtil.getAllegiance((Player) le).equalsIgnoreCase(DMiscUtil.getAllegiance(p))) return false;
 		}
-		DMiscUtil.damageDemigods(p, le, damage, DamageCause.CUSTOM);
+		DMiscUtil.damageDemigods(p, le, damage, DamageCause.ENTITY_ATTACK);
 		REELTIME = System.currentTimeMillis();
 		return true;
 	}

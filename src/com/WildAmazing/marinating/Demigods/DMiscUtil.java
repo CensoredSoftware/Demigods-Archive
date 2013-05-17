@@ -16,8 +16,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -26,6 +24,7 @@ import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Listeners.DDamage;
 import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
 import com.censoredsoftware.CampStamp.CampStampAPI;
+import com.hqm.Fixes.DDamageFixes;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
@@ -1914,14 +1913,6 @@ public class DMiscUtil
 		return plugin.WORLDGUARD == null || plugin.WORLDGUARD.canBuild(player, location);
 	}
 
-	@SuppressWarnings("static-access")
-	public static boolean canWorldGuardDamage(Location l)
-	{
-		if(plugin.WORLDGUARD == null) return true;
-		ApplicableRegionSet set = plugin.WORLDGUARD.getRegionManager(l.getWorld()).getApplicableRegions(l);
-		return !set.allows(DefaultFlag.INVINCIBILITY);
-	}
-
 	/*
 	 * WORLDGUARD SUPPORT END
 	 */
@@ -1947,7 +1938,7 @@ public class DMiscUtil
 		if(!(player instanceof Player)) return true;
 		else if(!USENEWPVP) return canLocationPVP(location) && canCampStampTarget((Player) player);
 		else if(!isFullParticipant((Player) player)) return canLocationPVP(location) && canCampStampTarget((Player) player);
-		else return (DSave.hasData((Player) player, "temp_was_PVP") && !hasPermission((Player) player, "demigods.bypasspvpdelay")) || canLocationPVP(location) && canCampStampTarget((Player) player);
+		else return (DSave.hasData((Player) player, "temp_was_PVP")) || canLocationPVP(location) && canCampStampTarget((Player) player);
 	}
 
 	public static boolean canCampStampTarget(Player player)
@@ -2035,7 +2026,6 @@ public class DMiscUtil
 			if(((Player) target).getGameMode() == GameMode.CREATIVE) return;
 			if(!canTarget(target, target.getLocation())) return;
 			if(DDamage.cancelSoulDamage((Player) target, amount)) return;
-			if(!canWorldGuardDamage(target.getLocation())) return;
 			int hp = getHP((Player) target);
 			if(amount < 1) return;
 			amount -= DDamage.armorReduction((Player) target);
@@ -2044,7 +2034,7 @@ public class DMiscUtil
 			setHP(((Player) target), hp - amount);
 			if(source instanceof Player)
 			{
-				target.setLastDamageCause(new EntityDamageByEntityEvent(source, target, cause, amount));
+				DDamageFixes.setLastDamageBy(source, target, cause, amount);
 			}
 			DDamage.syncHealth(((Player) target));
 		}
@@ -2054,7 +2044,6 @@ public class DMiscUtil
 	public static void damageDemigodsNonCombat(Player target, int amount, DamageCause cause)
 	{
 		if((target).getGameMode() == GameMode.CREATIVE) return;
-		if(!canWorldGuardDamage(target.getLocation())) return;
 		if(DDamage.cancelSoulDamage(target, amount)) return;
 		int hp = getHP(target);
 		if(amount < 1) return;
@@ -2062,28 +2051,7 @@ public class DMiscUtil
 		amount = DDamage.specialReduction(target, amount);
 		if(amount < 1) return;
 		setHP((target), hp - amount);
-		target.setLastDamageCause(new EntityDamageEvent(target, cause, amount));
-		if(target.getHealth() > 1) target.damage(1);
-	}
-
-	public static void damageDemigods(LivingEntity target, int amount)
-	{
-		if(target.getHealth() > 1) target.damage(1);
-		if(target instanceof Player)
-		{
-			if(!canTarget(target, target.getLocation())) return;
-			if((((Player) target).getGameMode() == GameMode.CREATIVE) || DDamage.cancelSoulDamage((Player) target, amount)) return;
-			if(!canWorldGuardDamage(target.getLocation())) return;
-			int hp = getHP((Player) target);
-			if(amount < 1) return;
-			amount -= DDamage.armorReduction((Player) target);
-			amount = DDamage.specialReduction((Player) target, amount);
-			if(amount < 1) return;
-			setHP(((Player) target), hp - amount);
-			DDamage.syncHealth(((Player) target));
-			return;
-		}
-		target.damage(amount);
+		DDamageFixes.setLastDamage(target, cause, amount);
 	}
 
 	public static Plugin getPlugin(String p)

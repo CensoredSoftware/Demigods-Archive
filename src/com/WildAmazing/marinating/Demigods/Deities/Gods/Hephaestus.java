@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.WildAmazing.marinating.Demigods.DMiscUtil;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.hqm.Fixes.DDamageFixes;
 
 public class Hephaestus implements Deity, Listener
 {
@@ -98,8 +99,7 @@ public class Hephaestus implements Deity, Listener
 				if((e.getCause() == DamageCause.FIRE) || (e.getCause() == DamageCause.FIRE_TICK))
 				{
 					p.setFireTicks(0);
-					e.setDamage(0);
-					e.setCancelled(true);
+					DDamageFixes.checkAndCancel(e, true);
 				}
 			}
 		}

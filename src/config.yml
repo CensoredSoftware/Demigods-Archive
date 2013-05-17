@@ -10,6 +10,7 @@ inactive_worlds:
 globalfavormultiplier: 1.0
 globalexpmultiplier: 1.0
 globalfavorcap: 20000
+max_devotion_lost_on_death: 15000
 max_target_range: 100
 max_hp: 3000
 pvp_exp_bonus: 1.5
@@ -27,6 +28,7 @@ allow_skills_everywhere: false
 use_new_pvp_zones: true
 friendly_fire: false
 friendly_fire_message: true
+noob_level: 25000
 #Deity specific
 #Ares
 #Hades

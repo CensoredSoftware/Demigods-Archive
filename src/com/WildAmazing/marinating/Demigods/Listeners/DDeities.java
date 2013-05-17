@@ -73,8 +73,7 @@ public class DDeities implements Listener
 		}
 	}
 
-	@EventHandler
-	public void onEntityDamage(EntityDamageEvent e)
+	public static void onEntityDamage(EntityDamageEvent e)
 	{
 		if(!DSettings.getEnabledWorlds().contains(e.getEntity().getWorld())) return;
 		for(Player pl : e.getEntity().getWorld().getPlayers())

@@ -395,7 +395,7 @@ public class Rhea implements Deity
 				}
 			}
 		}
-		if(target != null || !DMiscUtil.canTarget(target, target.getLocation()))
+		if(target != null && DMiscUtil.canTarget(target, target.getLocation()))
 		{
 			target.addPotionEffect(new PotionEffect(PotionEffectType.POISON, duration * 20, strength));
 			DMiscUtil.addActiveEffect(target.getName(), "Poison", duration);
@@ -654,7 +654,7 @@ public class Rhea implements Deity
 							if(DSave.hasData((Player) le, "temp_trap_died")) return;
 							((Player) le).sendMessage(ChatColor.YELLOW + "You take damage from moving while entangled!");
 						}
-						DMiscUtil.damageDemigods(p, le, 5, DamageCause.CUSTOM);
+						DMiscUtil.damageDemigods(p, le, 5, DamageCause.ENTITY_ATTACK);
 					}
 					le.teleport(originalloc);
 				}

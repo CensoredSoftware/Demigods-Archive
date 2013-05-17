@@ -23,6 +23,7 @@ import org.bukkit.util.Vector;
 import com.WildAmazing.marinating.Demigods.DMiscUtil;
 import com.WildAmazing.marinating.Demigods.DSettings;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.hqm.Fixes.DDamageFixes;
 
 public class Hades implements Deity
 {
@@ -180,8 +181,7 @@ public class Hades implements Deity
 			if(!DMiscUtil.hasDeity(p, "Hades")) return;
 			if((e.getDamager() instanceof Zombie) || (e.getDamager() instanceof Skeleton))
 			{
-				e.setDamage(0);
-				e.setCancelled(true);
+				DDamageFixes.checkAndCancel(e, true);
 			}
 		}
 		else if(ee instanceof EntityTargetEvent)
@@ -318,7 +318,7 @@ public class Hades implements Deity
 			return false;
 		}
 		target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, blindduration, blindpower));
-		DMiscUtil.damageDemigods(p, target, damage, DamageCause.CUSTOM);
+		DMiscUtil.damageDemigods(p, target, damage, DamageCause.ENTITY_ATTACK);
 		for(BlockFace bf : BlockFace.values())
 		{
 			p.getWorld().playEffect(target.getLocation().getBlock().getRelative(bf).getLocation(), Effect.SMOKE, 1);

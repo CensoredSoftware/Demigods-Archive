@@ -26,7 +26,7 @@ public class Typhon implements Deity
 
 	private static final int SKILLCOST = 120;
 	private static final int SKILLDELAY = 1250; // milliseconds
-	private static final int EXPLOSIONSIZE = 4;
+	private static final int EXPLOSIONSIZE = 3;
 	private boolean SKILL = false;
 
 	private Material SKILLBIND = null;
@@ -154,7 +154,7 @@ public class Typhon implements Deity
 							}
 						}
 						le.setVelocity(victor); // super kb
-						DMiscUtil.damageDemigods(p, le, DAMAGE, DamageCause.CUSTOM);
+						DMiscUtil.damageDemigods(p, le, DAMAGE, DamageCause.ENTITY_ATTACK);
 						e.setCancelled(true);
 						DSave.removeData(p, "CHARGE");
 						p.sendMessage(ChatColor.YELLOW + "Your charged attack has dealt " + ChatColor.DARK_RED + DAMAGE + ChatColor.YELLOW + " damage.");

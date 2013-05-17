@@ -16,7 +16,7 @@ import com.WildAmazing.marinating.Demigods.Deities.Deity;
 public class DLevels implements Listener
 {
 	static double MULTIPLIER = DSettings.getSettingDouble("globalexpmultiplier"); // can be modified
-	static int LOSSLIMIT = 15000; // max devotion lost on death per deity
+	static int LOSSLIMIT = DSettings.getSettingInt("max_devotion_lost_on_death"); // max devotion lost on death per deity
 
 	@SuppressWarnings({ "incomplete-switch" })
 	@EventHandler(priority = EventPriority.HIGHEST)

@@ -3,7 +3,7 @@ package com.WildAmazing.marinating.Demigods;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.WildAmazing.marinating.Demigods.Metrics.Graph;
+import org.mcstats.Metrics;
 
 public class DMetrics
 {
@@ -21,7 +21,7 @@ public class DMetrics
 			Metrics metrics = new Metrics(plugin);
 
 			// New Graph
-			Graph graph = metrics.createGraph("Alliances for the Past Week");
+			Metrics.Graph graph = metrics.createGraph("Alliances for the Past Week");
 
 			// Gods
 			graph.addPlotter(new Metrics.Plotter("Gods")
@@ -138,7 +138,7 @@ public class DMetrics
 			Metrics metrics = new Metrics(plugin);
 
 			// New Graph
-			Graph graph = metrics.createGraph("Alliances for All Time");
+			Metrics.Graph graph = metrics.createGraph("Alliances for All Time");
 
 			// Gods
 			graph.addPlotter(new Metrics.Plotter("Gods")

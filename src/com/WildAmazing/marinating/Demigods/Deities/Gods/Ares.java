@@ -323,7 +323,7 @@ public class Ares implements Deity
 				Vector v = le.getLocation().toVector();
 				Vector victor = p.getLocation().toVector().subtract(v);
 				le.setVelocity(victor);
-				DMiscUtil.damageDemigods(p, le, damage, DamageCause.CUSTOM);
+				DMiscUtil.damageDemigods(p, le, damage, DamageCause.ENTITY_ATTACK);
 			}
 		}
 		if(confuse.size() > 0)

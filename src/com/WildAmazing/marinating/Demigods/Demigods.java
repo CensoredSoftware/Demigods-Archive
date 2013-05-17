@@ -27,6 +27,7 @@ import com.WildAmazing.marinating.Demigods.Deities.Titans.*;
 import com.WildAmazing.marinating.Demigods.Listeners.*;
 import com.censoredsoftware.CampStamp.CampStampPlugin;
 import com.clashnia.Demigods.Deities.Giants.Typhon;
+import com.hqm.Fixes.DDamageFixes;
 import com.massivecraft.factions.P;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
@@ -63,6 +64,7 @@ public class Demigods extends JavaPlugin implements Listener
 		new DSettings(this); // #1 (needed for DMiscUtil to load)
 		initialize = new DMiscUtil(this); // #2 (needed for everything else to work)
 		SAVE = new DSave(mainDirectory, deities); // #3 (needed to start save system)
+		loadFixes(); // #3.5
 		loadListeners(); // #4
 		loadCommands(); // #5 (needed)
 		initializeThreads(); // #6 (regen and etc)
@@ -315,6 +317,11 @@ public class Demigods extends JavaPlugin implements Listener
 
 		// Typhon
 		getCommand("charge").setExecutor(ce);
+	}
+
+	public void loadFixes()
+	{
+		getServer().getPluginManager().registerEvents(new DDamageFixes(), this);
 	}
 
 	public void loadListeners()

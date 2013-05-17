@@ -27,6 +27,8 @@ import com.WildAmazing.marinating.Demigods.DMiscUtil;
 import com.WildAmazing.marinating.Demigods.DSave;
 import com.WildAmazing.marinating.Demigods.DSettings;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.hqm.Fixes.DDamageFixes;
+import com.hqm.Fixes.DNoobFixes;
 
 public class DPvP implements Listener
 {
@@ -68,8 +70,7 @@ public class DPvP implements Listener
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void pvpDamage(EntityDamageByEntityEvent e)
+	public static void pvpDamage(EntityDamageByEntityEvent e)
 	{
 		if(!(e.getEntity() instanceof Player)) return;
 		Player target = (Player) e.getEntity();
@@ -82,7 +83,7 @@ public class DPvP implements Listener
 			if(!DMiscUtil.canTarget(target, target.getLocation()))
 			{
 				attacker.sendMessage(ChatColor.YELLOW + "This is a no-PvP zone.");
-				e.setCancelled(true);
+				DDamageFixes.checkAndCancel(e, true);
 				return;
 			}
 		}
@@ -91,13 +92,13 @@ public class DPvP implements Listener
 		if(!DMiscUtil.canTarget(target, target.getLocation()))
 		{
 			attacker.sendMessage(ChatColor.YELLOW + "This is a no-PvP zone.");
-			e.setCancelled(true);
+			DDamageFixes.checkAndCancel(e, true);
 			return;
 		}
 		if(!DMiscUtil.canTarget(attacker, attacker.getLocation()))
 		{
 			attacker.sendMessage(ChatColor.YELLOW + "This is a no-PvP zone.");
-			e.setCancelled(true);
+			DDamageFixes.checkAndCancel(e, true);
 			return;
 		}
 		try
@@ -282,7 +283,7 @@ public class DPvP implements Listener
 		if(DSave.hasData(player, "temp_was_PVP") || !DMiscUtil.isFullParticipant(player)) return;
 
 		// No Spawn Line-Jumping
-		if(!DMiscUtil.canLocationPVP(to) && DMiscUtil.canLocationPVP(from) && delayTime > 0)
+		if(!DMiscUtil.canLocationPVP(to) && DMiscUtil.canLocationPVP(from) && delayTime > 0 && !DMiscUtil.hasPermission(player, "demigods.bypasspvpdelay") && !DNoobFixes.isNoob(player))
 		{
 			DSave.saveData(player, "temp_was_PVP", true);
 			if(DSave.hasData(player, "temp_flash")) DSave.removeData(player, "temp_flash");
@@ -297,9 +298,10 @@ public class DPvP implements Listener
 				}
 			}, (delayTime * 20));
 		}
+		else if(!DSave.hasData(player, "temp_was_PVP") && !DMiscUtil.canLocationPVP(to) && DMiscUtil.canLocationPVP(from)) player.sendMessage(ChatColor.YELLOW + "You are now safe from all PVP!");
 
 		// Let players know where they can PVP
-		if(!DSave.hasData(player, "temp_was_PVP"))
+		if(!DSave.hasData(player, "temp_was_PVP") && DMiscUtil.canLocationPVP(to) && !DMiscUtil.canLocationPVP(from))
 		{
 			if(!DMiscUtil.canLocationPVP(from) && DMiscUtil.canLocationPVP(to)) player.sendMessage(ChatColor.YELLOW + "You can now PVP!");
 		}

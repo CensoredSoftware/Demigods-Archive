@@ -20,6 +20,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.WildAmazing.marinating.Demigods.DMiscUtil;
 import com.WildAmazing.marinating.Demigods.DSettings;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.hqm.Fixes.DDamageFixes;
 
 public class DDamage implements Listener
 {
@@ -31,26 +32,15 @@ public class DDamage implements Listener
 	 */
 	public static boolean FRIENDLYFIRE = DSettings.getSettingBoolean("friendly_fire");
 
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onDamage(EntityDamageEvent e)
+	public static void onDamage(EntityDamageEvent e)
 	{
 		if(!(e.getEntity() instanceof Player)) return;
 		Player p = (Player) e.getEntity();
-		if(!DMiscUtil.isFullParticipant(p))
-		{
-			return;
-		}
-		if(!DSettings.getEnabledWorlds().contains(p.getWorld()))
-		{
-			return;
-		}
-		if(!DMiscUtil.canWorldGuardDamage(p.getLocation()))
-		{
-			return;
-		}
+		if(!DMiscUtil.isFullParticipant(p)) return;
+		if(!DSettings.getEnabledWorlds().contains(p.getWorld())) return;
 		if(!DMiscUtil.canTarget(p, p.getLocation()))
 		{
-			e.setCancelled(true);
+			DDamageFixes.checkAndCancel(e, true);
 			return;
 		}
 
@@ -62,29 +52,28 @@ public class DDamage implements Listener
 				if(!FRIENDLYFIRE && DMiscUtil.areAllied(p, (Player) ee.getDamager()))
 				{
 					if(DSettings.getSettingBoolean("friendly_fire_message")) ((Player) ee.getDamager()).sendMessage(ChatColor.YELLOW + "No friendly fire.");
-					e.setCancelled(true);
+					DDamageFixes.checkAndCancel(e, true);
 					return;
 				}
 				if(!DMiscUtil.canTarget(ee.getDamager(), ee.getDamager().getLocation()))
 				{
-					e.setCancelled(true);
+					DDamageFixes.checkAndCancel(e, true);
 					return;
 				}
-				DMiscUtil.damageDemigods(p, e.getDamage());
+				DMiscUtil.damageDemigods((Player) ee.getDamager(), p, e.getDamage(), DamageCause.ENTITY_ATTACK);
 				return;
 			}
 		}
 
 		if(e.getCause() == DamageCause.LAVA)
 		{
-			e.setDamage(0); // Disable lava damage, fire damage does enough for Demigods.
-			e.setCancelled(true);
+			DDamageFixes.checkAndCancel(e, true);
 			return;
 		}
 
 		if((e.getCause() != DamageCause.ENTITY_ATTACK) && (e.getCause() != DamageCause.PROJECTILE))
 		{
-			DMiscUtil.damageDemigods(p, e.getDamage());
+			DMiscUtil.damageDemigodsNonCombat(p, e.getDamage(), e.getCause());
 		}
 	}
 
