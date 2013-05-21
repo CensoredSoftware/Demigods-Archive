@@ -96,7 +96,7 @@ public class Hephaestus implements Deity, Listener
 			{
 				Player p = (Player) e.getEntity();
 				if(!DMiscUtil.hasDeity(p, getName()) || !DMiscUtil.isFullParticipant(p)) return;
-				if((e.getCause() == DamageCause.FIRE) || (e.getCause() == DamageCause.FIRE_TICK))
+				if((e.getCause() == DamageCause.FIRE) || (e.getCause() == DamageCause.FIRE_TICK || e.getCause() == DamageCause.LAVA))
 				{
 					p.setFireTicks(0);
 					DDamageFixes.checkAndCancel(e, true);

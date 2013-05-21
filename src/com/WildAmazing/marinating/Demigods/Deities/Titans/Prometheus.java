@@ -175,7 +175,7 @@ public class Prometheus implements Deity
 		else if(ee instanceof EntityDamageEvent)
 		{
 			EntityDamageEvent e1 = (EntityDamageEvent) ee;
-			if((e1.getCause() == DamageCause.FIRE) || (e1.getCause() == DamageCause.FIRE_TICK))
+			if((e1.getCause() == DamageCause.FIRE) || (e1.getCause() == DamageCause.FIRE_TICK || e1.getCause() == DamageCause.LAVA))
 			{
 				if(!(e1.getEntity() instanceof Player)) return;
 				Player p = (Player) e1.getEntity();
