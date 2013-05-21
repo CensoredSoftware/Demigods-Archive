@@ -6,10 +6,11 @@
     <property name="source" value="1.6"/>
     <path id="Demigods.classpath">
         <pathelement location="bin"/>
-        <pathelement location="lib/bukkit.jar"/>
+        <pathelement location="lib/craftbukkit.jar"/>
         <pathelement location="lib/factions.jar"/>
         <pathelement location="lib/worldedit.jar"/>
         <pathelement location="lib/worldguard.jar"/>
+        <pathelement location="lib/campstamp.jar"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
