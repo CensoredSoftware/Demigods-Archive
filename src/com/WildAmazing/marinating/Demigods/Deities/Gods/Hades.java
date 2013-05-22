@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.Event;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -23,7 +22,6 @@ import org.bukkit.util.Vector;
 import com.WildAmazing.marinating.Demigods.DMiscUtil;
 import com.WildAmazing.marinating.Demigods.DSettings;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.hqm.Fixes.DDamageFixes;
 
 public class Hades implements Deity
 {
@@ -170,18 +168,6 @@ public class Hades implements Deity
 					ENTOMB = false;
 					p.sendMessage(ChatColor.YELLOW + "You don't have enough Favor to do that.");
 				}
-			}
-		}
-		else if(ee instanceof EntityDamageByEntityEvent)
-		{
-			EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) ee;
-			if(!(e.getEntity() instanceof Player)) return;
-			Player p = (Player) e.getEntity();
-			if(!DMiscUtil.isFullParticipant(p)) return;
-			if(!DMiscUtil.hasDeity(p, "Hades")) return;
-			if((e.getDamager() instanceof Zombie) || (e.getDamager() instanceof Skeleton))
-			{
-				DDamageFixes.checkAndCancel(e, true);
 			}
 		}
 		else if(ee instanceof EntityTargetEvent)

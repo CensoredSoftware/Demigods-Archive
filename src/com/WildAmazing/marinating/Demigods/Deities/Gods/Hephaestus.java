@@ -5,14 +5,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.WildAmazing.marinating.Demigods.DMiscUtil;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.hqm.Fixes.DDamageFixes;
 
 public class Hephaestus implements Deity, Listener
 {
@@ -89,20 +86,7 @@ public class Hephaestus implements Deity, Listener
 	@Override
 	public void onEvent(Event ee)
 	{
-		if(ee instanceof EntityDamageEvent)
-		{
-			EntityDamageEvent e = (EntityDamageEvent) ee;
-			if(e.getEntity() instanceof Player)
-			{
-				Player p = (Player) e.getEntity();
-				if(!DMiscUtil.hasDeity(p, getName()) || !DMiscUtil.isFullParticipant(p)) return;
-				if((e.getCause() == DamageCause.FIRE) || (e.getCause() == DamageCause.FIRE_TICK || e.getCause() == DamageCause.LAVA))
-				{
-					p.setFireTicks(0);
-					DDamageFixes.checkAndCancel(e, true);
-				}
-			}
-		}
+		// Nothing.
 	}
 
 	@Override

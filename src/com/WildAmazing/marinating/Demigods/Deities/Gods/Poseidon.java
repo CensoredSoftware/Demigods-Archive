@@ -13,7 +13,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -123,22 +122,7 @@ public class Poseidon implements Deity
 	@Override
 	public void onEvent(Event ee)
 	{
-		if(ee instanceof EntityDamageEvent)
-		{
-			EntityDamageEvent e = (EntityDamageEvent) ee;
-			if(e.getEntity() instanceof Player)
-			{
-				if(e.getCause() == DamageCause.DROWNING)
-				{
-					Player p = (Player) e.getEntity();
-					if(!DMiscUtil.isFullParticipant(p)) return;
-					if(!DMiscUtil.hasDeity(p, "Poseidon")) return;
-					e.setDamage(0);
-					e.setCancelled(true);
-				}
-			}
-		}
-		else if(ee instanceof PlayerMoveEvent)
+		if(ee instanceof PlayerMoveEvent)
 		{
 			PlayerMoveEvent move = (PlayerMoveEvent) ee;
 			Player p = move.getPlayer();

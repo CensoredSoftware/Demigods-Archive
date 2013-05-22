@@ -17,6 +17,7 @@ import org.bukkit.util.Vector;
 import com.WildAmazing.marinating.Demigods.DMiscUtil;
 import com.WildAmazing.marinating.Demigods.DSave;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.hqm.Fixes.DDamageFixes;
 
 public class Typhon implements Deity
 {
@@ -155,7 +156,7 @@ public class Typhon implements Deity
 						}
 						le.setVelocity(victor); // super kb
 						DMiscUtil.damageDemigods(p, le, DAMAGE, DamageCause.ENTITY_ATTACK);
-						e.setCancelled(true);
+						DDamageFixes.checkAndCancel(e, true);
 						DSave.removeData(p, "CHARGE");
 						p.sendMessage(ChatColor.YELLOW + "Your charged attack has dealt " + ChatColor.DARK_RED + DAMAGE + ChatColor.YELLOW + " damage.");
 					}

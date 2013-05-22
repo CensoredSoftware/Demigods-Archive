@@ -10,7 +10,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
@@ -123,26 +122,7 @@ public class Zeus implements Deity
 	@Override
 	public void onEvent(Event ee)
 	{
-		if(ee instanceof EntityDamageEvent)
-		{
-			EntityDamageEvent e = (EntityDamageEvent) ee;
-			if(e.getEntity() instanceof Player)
-			{
-				Player p = (Player) e.getEntity();
-				if(!DMiscUtil.hasDeity(p, "Zeus") || !DMiscUtil.isFullParticipant(p)) return;
-				if(e.getCause() == DamageCause.FALL)
-				{
-					e.setDamage(0);
-					e.setCancelled(true);
-				}
-				else if(e.getCause() == DamageCause.LIGHTNING)
-				{
-					e.setDamage(0);
-					e.setCancelled(true);
-				}
-			}
-		}
-		else if(ee instanceof PlayerInteractEvent)
+		if(ee instanceof PlayerInteractEvent)
 		{
 			PlayerInteractEvent e = (PlayerInteractEvent) ee;
 			Player p = e.getPlayer();

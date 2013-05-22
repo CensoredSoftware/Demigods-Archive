@@ -4,10 +4,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Fireball;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -63,8 +60,83 @@ public class DDamageFixes implements Listener
 		target.setLastDamageCause(damageBy);
 	}
 
+	private static void deityDamageImmunity(EntityDamageEvent event)
+	{
+		if(event.getEntity() instanceof Player)
+		{
+			Player p = (Player) event.getEntity();
+			if((DMiscUtil.hasDeity(p, "Prometheus") || DMiscUtil.hasDeity(p, "Hephaestus")) && (event.getCause() == EntityDamageEvent.DamageCause.FIRE) || (event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK || event.getCause() == EntityDamageEvent.DamageCause.LAVA))
+			{
+				p.setFireTicks(0);
+				DDamageFixes.checkAndCancel(event, true);
+				return;
+			}
+			else if(DMiscUtil.hasDeity(p, "Zeus") && (event.getCause() == EntityDamageEvent.DamageCause.FALL || event.getCause() == EntityDamageEvent.DamageCause.LIGHTNING))
+			{
+				DDamageFixes.checkAndCancel(event, true);
+				return;
+			}
+			else if(DMiscUtil.hasDeity(p, "Zeus") && event.getCause() == EntityDamageEvent.DamageCause.DROWNING)
+			{
+				DDamageFixes.checkAndCancel(event, true);
+				return;
+			}
+			else if(DMiscUtil.hasDeity(p, "Atlas"))
+			{
+				if(event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK)
+				{
+					int reduction = (int) Math.round(Math.pow(DMiscUtil.getDevotion(p, "Atlas"), 0.115));
+					if(reduction > event.getDamage()) reduction = event.getDamage();
+					event.setDamage(event.getDamage() - reduction);
+				}
+				else if(event.getCause() == EntityDamageEvent.DamageCause.FALL)
+				{
+					if(DMiscUtil.getActiveEffectsList(p.getName()).contains("Unburden")) event.setDamage(event.getDamage() / 3);
+				}
+			}
+			if(event instanceof EntityDamageByEntityEvent)
+			{
+				try
+				{
+					if(DMiscUtil.getActiveEffectsList(p.getName()).contains("Ceasefire"))
+					{
+						DDamageFixes.checkAndCancel(event, true);
+						return;
+					}
+				}
+				catch(Exception ignored)
+				{}
+				EntityDamageByEntityEvent damageByEntityEvent = (EntityDamageByEntityEvent) event;
+				if(damageByEntityEvent.getDamager() instanceof Player)
+				{
+					Player damager = (Player) damageByEntityEvent.getDamager();
+					if(DMiscUtil.isFullParticipant(p))
+					{
+						try
+						{
+							if(DMiscUtil.getActiveEffectsList(damager.getName()).contains("Ceasefire"))
+							{
+								DDamageFixes.checkAndCancel(event, true);
+								return;
+							}
+						}
+						catch(Exception ignored)
+						{}
+					}
+				}
+				if(DMiscUtil.hasDeity(p, "Hades") && (damageByEntityEvent.getDamager() instanceof Zombie) || (damageByEntityEvent.getDamager() instanceof Skeleton))
+				{
+					DDamageFixes.checkAndCancel(event, true);
+					return;
+				}
+			}
+		}
+	}
+
 	private static void triggerDownstream(EntityDamageEvent event)
 	{
+		DDamageFixes.deityDamageImmunity(event);
+		if(event.isCancelled()) return;
 		if(event instanceof EntityDamageByEntityEvent) DPvP.pvpDamage((EntityDamageByEntityEvent) event);
 		DDamage.onDamage(event);
 		DDeities.onEntityDamage(event);

@@ -8,8 +8,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.Event;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
@@ -170,19 +168,6 @@ public class Prometheus implements Deity
 					BLAZE = false;
 					p.sendMessage(ChatColor.YELLOW + "You do not have enough Favor to do that.");
 				}
-			}
-		}
-		else if(ee instanceof EntityDamageEvent)
-		{
-			EntityDamageEvent e1 = (EntityDamageEvent) ee;
-			if((e1.getCause() == DamageCause.FIRE) || (e1.getCause() == DamageCause.FIRE_TICK || e1.getCause() == DamageCause.LAVA))
-			{
-				if(!(e1.getEntity() instanceof Player)) return;
-				Player p = (Player) e1.getEntity();
-				if(!DMiscUtil.isFullParticipant(p)) return;
-				if(!DMiscUtil.hasDeity(p, "Prometheus")) return;
-				e1.setDamage(0);
-				e1.setCancelled(true);
 			}
 		}
 	}

@@ -3,8 +3,6 @@ package com.WildAmazing.marinating.Demigods.Deities.Titans;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -92,26 +90,7 @@ public class Atlas implements Deity
 	@Override
 	public void onEvent(Event ee)
 	{
-		if(ee instanceof EntityDamageEvent)
-		{
-			EntityDamageEvent e = (EntityDamageEvent) ee;
-			if(!(e.getEntity() instanceof Player)) return;
-			Player p = (Player) e.getEntity();
-			if(!DMiscUtil.isFullParticipant(p)) return;
-			if(DMiscUtil.hasDeity(p, "Atlas"))
-			{
-				if(e.getCause() == DamageCause.ENTITY_ATTACK)
-				{
-					int reduction = (int) Math.round(Math.pow(DMiscUtil.getDevotion(p, getName()), 0.115));
-					if(reduction > e.getDamage()) reduction = e.getDamage();
-					e.setDamage(e.getDamage() - reduction);
-				}
-				else if(e.getCause() == DamageCause.FALL)
-				{
-					if(DMiscUtil.getActiveEffectsList(p.getName()).contains("Unburden")) e.setDamage(e.getDamage() / 3);
-				}
-			}
-		}
+		// Nothing.
 	}
 
 	@SuppressWarnings("deprecation")

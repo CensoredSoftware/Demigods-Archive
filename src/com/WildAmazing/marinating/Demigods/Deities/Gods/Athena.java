@@ -8,9 +8,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.WildAmazing.marinating.Demigods.DMiscUtil;
@@ -127,40 +124,6 @@ public class Athena implements Deity
 				{
 					p.sendMessage(ChatColor.YELLOW + "You do not have enough Favor.");
 					SKILL = false;
-				}
-			}
-		}
-		else if(ee instanceof EntityDamageEvent)
-		{
-			EntityDamageEvent e = (EntityDamageEvent) ee;
-			if(e instanceof EntityDamageByEntityEvent)
-			{
-				EntityDamageByEntityEvent e1 = (EntityDamageByEntityEvent) e;
-				if(e1.getDamager() instanceof Player)
-				{
-					Player p = (Player) e1.getDamager();
-					if(DMiscUtil.isFullParticipant(p))
-					{
-						if(DMiscUtil.getActiveEffectsList(p.getName()).contains("Ceasefire"))
-						{
-							e.setDamage(0);
-							e.setCancelled(true);
-						}
-					}
-				}
-				return;
-			}
-			if((e.getCause() == DamageCause.DROWNING) || (e.getCause() == DamageCause.LAVA) || (e.getCause() == DamageCause.FIRE_TICK)) return;
-			if(e.getEntity() instanceof Player)
-			{
-				Player p = (Player) e.getEntity();
-				if(DMiscUtil.isFullParticipant(p))
-				{
-					if(DMiscUtil.getActiveEffectsList(p.getName()).contains("Ceasefire"))
-					{
-						e.setDamage(0);
-						e.setCancelled(true);
-					}
 				}
 			}
 		}
