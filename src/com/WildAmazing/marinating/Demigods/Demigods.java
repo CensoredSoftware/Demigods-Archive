@@ -59,7 +59,7 @@ public class Demigods extends JavaPlugin implements Listener
 
 		log.info("[Demigods] Initializing.");
 
-		log.setFilter(new DLogFilter());
+		getServer().getLogger().setFilter(new DLogFilter());
 
 		new DSettings(this); // #1 (needed for DMiscUtil to load)
 		initialize = new DMiscUtil(this); // #2 (needed for everything else to work)
