@@ -108,7 +108,7 @@ public class DLevels implements Listener
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGH)
 	public void gainEXP(EntityDamageByEntityEvent e)
 	{
 		if(e.getDamager() instanceof Player)

@@ -378,7 +378,7 @@ public class Demigods extends JavaPlugin implements Listener
 					for(Player p : w.getPlayers())
 						if(DMiscUtil.isFullParticipant(p))
 						{
-							if((p.getHealth() < 1) || (DMiscUtil.getHP(p) < 1)) continue;
+							if((p.getHealth() < 1.0) || (DMiscUtil.getHP(p) < 1)) continue;
 							int heal = 1; // TODO: PERK UPGRADES THIS
 							if(heal < 1) heal = 1;
 							if(DMiscUtil.getHP(p) < DMiscUtil.getMaxHP(p)) DMiscUtil.setHPQuiet(p.getName(), DMiscUtil.getHP(p) + heal);

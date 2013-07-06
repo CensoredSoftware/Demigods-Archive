@@ -289,7 +289,7 @@ public class Poseidon implements Deity
 			{
 				if((p.getLocation().getBlock().getType() == Material.WATER) || (p.getEyeLocation().getBlock().getType() == Material.WATER))
 				{
-					int healamt = (int) Math.ceil(0.1 * Math.pow(DMiscUtil.getDevotion(getPlayerName(), getName()), 0.297));
+					double healamt = Math.ceil(0.1 * Math.pow(DMiscUtil.getDevotion(getPlayerName(), getName()), 0.297));
 					if(DMiscUtil.getHP(getPlayerName()) + healamt > DMiscUtil.getMaxHP(getPlayerName())) healamt = DMiscUtil.getMaxHP(getPlayerName()) - DMiscUtil.getHP(getPlayerName());
 					DMiscUtil.setHP(getPlayerName(), DMiscUtil.getHP(getPlayerName()) + healamt);
 				}

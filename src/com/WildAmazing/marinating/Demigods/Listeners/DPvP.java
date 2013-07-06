@@ -3,13 +3,11 @@ package com.WildAmazing.marinating.Demigods.Listeners;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -45,7 +43,7 @@ public class DPvP implements Listener
 	public static boolean filterCheckQuitting = false;
 	public static boolean filterCheckTimeout = false;
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onArrowLaunch(ProjectileLaunchEvent e)
 	{
 		if(e.getEntity() instanceof Arrow)
@@ -111,136 +109,143 @@ public class DPvP implements Listener
 		{}
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void playerDeath(EntityDeathEvent e1)
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void playerDeath(final EntityDeathEvent e1)
 	{
-		if(e1.getEntity().getType().equals(EntityType.VILLAGER))
+		Bukkit.getScheduler().scheduleSyncDelayedTask(DMiscUtil.getPlugin(), new Runnable()
 		{
-			LivingEntity villager = e1.getEntity();
-			if(villager.getLastDamageCause() instanceof EntityDamageByEntityEvent)
+			@Override
+			public void run()
 			{
-				EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) villager.getLastDamageCause();
-
-				if(!(e.getDamager() instanceof Player)) return;
-				Player attacker = (Player) e.getDamager();
-
-				// Define Mortal Soul
-				ItemStack mortalHealth = new ItemStack(Material.GOLD_NUGGET, 1);
-
-				String mortalName = "Mortal Soul";
-				List<String> mortalLore = new ArrayList<String>();
-				mortalLore.add("Brings you back to life.");
-				mortalLore.add("You regain 20 health.");
-
-				ItemMeta mortalItem = mortalHealth.getItemMeta();
-				mortalItem.setDisplayName(mortalName);
-				mortalItem.setLore(mortalLore);
-
-				mortalHealth.setItemMeta(mortalItem);
-
-				villager.getLocation().getWorld().dropItemNaturally(villager.getLocation(), mortalHealth);
-				attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
-			}
-		}
-
-		if(!(e1.getEntity() instanceof Player)) return;
-		Player attacked = (Player) e1.getEntity();
-		if(!DSettings.getEnabledWorlds().contains(attacked.getWorld())) return;
-
-		if((attacked.getLastDamageCause() != null) && (attacked.getLastDamageCause() instanceof EntityDamageByEntityEvent))
-		{
-			EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) attacked.getLastDamageCause();
-			if(!(e.getDamager() instanceof Player)) return;
-			Player attacker = (Player) e.getDamager();
-			if(!(DMiscUtil.isFullParticipant(attacker))) return;
-			if(DMiscUtil.isFullParticipant(attacked))
-			{
-				if(DMiscUtil.getAllegiance(attacker).equalsIgnoreCase(DMiscUtil.getAllegiance(attacked)))
-				{ // betrayal
-					DMiscUtil.getPlugin().getServer().broadcastMessage(ChatColor.YELLOW + attacked.getName() + ChatColor.GRAY + " was betrayed by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + DMiscUtil.getAllegiance(attacker) + " alliance.");
-					if(DMiscUtil.getKills(attacker) > 0)
+				if(e1.getEntity().getType().equals(EntityType.VILLAGER))
+				{
+					LivingEntity villager = e1.getEntity();
+					if(villager.getLastDamageCause() instanceof EntityDamageByEntityEvent)
 					{
-						DMiscUtil.setKills(attacker, DMiscUtil.getKills(attacker) - 1);
-						attacker.sendMessage(ChatColor.RED + "Your number of kills has decreased to " + DMiscUtil.getKills(attacker) + ".");
-					}
-				}
-				else
-				{ // PVP kill
-					DMiscUtil.setKills(attacker, DMiscUtil.getKills(attacker) + 1);
-					DMiscUtil.setDeaths(attacked, DMiscUtil.getDeaths(attacked) + 1);
-					DMiscUtil.getPlugin().getServer().broadcastMessage(ChatColor.YELLOW + attacked.getName() + ChatColor.GRAY + " of the " + DMiscUtil.getAllegiance(attacked) + " alliance was slain by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + DMiscUtil.getAllegiance(attacker) + " alliance.");
+						EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) villager.getLastDamageCause();
 
-					// Define Immortal Soul Fragment
-					ItemStack health = new ItemStack(Material.GHAST_TEAR, 1);
+						if(!(e.getDamager() instanceof Player)) return;
+						Player attacker = (Player) e.getDamager();
 
-					String name = "Immortal Soul Fragment";
-					List<String> lore = new ArrayList<String>();
-					lore.add("Brings you back to life.");
-					lore.add("You regain full heath!");
+						// Define Mortal Soul
+						ItemStack mortalHealth = new ItemStack(Material.GOLD_NUGGET, 1);
 
-					ItemMeta item = health.getItemMeta();
-					item.setDisplayName(name);
-					item.setLore(lore);
+						String mortalName = "Mortal Soul";
+						List<String> mortalLore = new ArrayList<String>();
+						mortalLore.add("Brings you back to life.");
+						mortalLore.add("You regain 20 health.");
 
-					health.setItemMeta(item);
+						ItemMeta mortalItem = mortalHealth.getItemMeta();
+						mortalItem.setDisplayName(mortalName);
+						mortalItem.setLore(mortalLore);
 
-					// Define Immortal Soul Dust
-					ItemStack halfHealth = new ItemStack(Material.GLOWSTONE_DUST, 1);
+						mortalHealth.setItemMeta(mortalItem);
 
-					String halfName = "Immortal Soul Dust";
-					List<String> halfLore = new ArrayList<String>();
-					halfLore.add("Brings you back to life.");
-					halfLore.add("You regain half heath!");
-
-					ItemMeta halfItem = halfHealth.getItemMeta();
-					halfItem.setDisplayName(halfName);
-					halfItem.setLore(halfLore);
-
-					halfHealth.setItemMeta(halfItem);
-
-					if(DMiscUtil.getAscensions(attacked) > DMiscUtil.getAscensions(attacker))
-					{
-						attacked.getLocation().getWorld().dropItemNaturally(attacked.getLocation(), health);
-						attacker.sendMessage(ChatColor.GRAY + "One stronger than you has been slain by your hand.");
-					}
-
-					if(DMiscUtil.getAscensions(attacker) >= DMiscUtil.getAscensions(attacked))
-					{
-						attacked.getLocation().getWorld().dropItemNaturally(attacked.getLocation(), halfHealth);
+						villager.getLocation().getWorld().dropItemNaturally(villager.getLocation(), mortalHealth);
 						attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
 					}
+				}
 
-					double adjusted = DMiscUtil.getKills(attacked) * 1.0 / DMiscUtil.getDeaths(attacked);
-					if(adjusted > 5) adjusted = 5;
-					if(adjusted < 0.2) adjusted = 0.2;
-					for(Deity d : DMiscUtil.getDeities(attacker))
+				if(!(e1.getEntity() instanceof Player)) return;
+				Player attacked = (Player) e1.getEntity();
+				if(!DSettings.getEnabledWorlds().contains(attacked.getWorld())) return;
+
+				if((attacked.getLastDamageCause() != null) && (attacked.getLastDamageCause() instanceof EntityDamageByEntityEvent))
+				{
+					EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) attacked.getLastDamageCause();
+					if(!(e.getDamager() instanceof Player)) return;
+					Player attacker = (Player) e.getDamager();
+					if(!(DMiscUtil.isFullParticipant(attacker))) return;
+					if(DMiscUtil.isFullParticipant(attacked))
 					{
-						DMiscUtil.setDevotion(attacker, d, DMiscUtil.getDevotion(attacker, d) + (int) (pvpkillreward * MULTIPLIER * adjusted));
+						if(DMiscUtil.getAllegiance(attacker).equalsIgnoreCase(DMiscUtil.getAllegiance(attacked)))
+						{ // betrayal
+							DMiscUtil.getPlugin().getServer().broadcastMessage(ChatColor.YELLOW + attacked.getName() + ChatColor.GRAY + " was betrayed by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + DMiscUtil.getAllegiance(attacker) + " alliance.");
+							if(DMiscUtil.getKills(attacker) > 0)
+							{
+								DMiscUtil.setKills(attacker, DMiscUtil.getKills(attacker) - 1);
+								attacker.sendMessage(ChatColor.RED + "Your number of kills has decreased to " + DMiscUtil.getKills(attacker) + ".");
+							}
+						}
+						else
+						{ // PVP kill
+							DMiscUtil.setKills(attacker, DMiscUtil.getKills(attacker) + 1);
+							DMiscUtil.setDeaths(attacked, DMiscUtil.getDeaths(attacked) + 1);
+							DMiscUtil.getPlugin().getServer().broadcastMessage(ChatColor.YELLOW + attacked.getName() + ChatColor.GRAY + " of the " + DMiscUtil.getAllegiance(attacked) + " alliance was slain by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + DMiscUtil.getAllegiance(attacker) + " alliance.");
+
+							// Define Immortal Soul Fragment
+							ItemStack health = new ItemStack(Material.GHAST_TEAR, 1);
+
+							String name = "Immortal Soul Fragment";
+							List<String> lore = new ArrayList<String>();
+							lore.add("Brings you back to life.");
+							lore.add("You regain full heath!");
+
+							ItemMeta item = health.getItemMeta();
+							item.setDisplayName(name);
+							item.setLore(lore);
+
+							health.setItemMeta(item);
+
+							// Define Immortal Soul Dust
+							ItemStack halfHealth = new ItemStack(Material.GLOWSTONE_DUST, 1);
+
+							String halfName = "Immortal Soul Dust";
+							List<String> halfLore = new ArrayList<String>();
+							halfLore.add("Brings you back to life.");
+							halfLore.add("You regain half heath!");
+
+							ItemMeta halfItem = halfHealth.getItemMeta();
+							halfItem.setDisplayName(halfName);
+							halfItem.setLore(halfLore);
+
+							halfHealth.setItemMeta(halfItem);
+
+							if(DMiscUtil.getAscensions(attacked) > DMiscUtil.getAscensions(attacker))
+							{
+								attacked.getLocation().getWorld().dropItemNaturally(attacked.getLocation(), health);
+								attacker.sendMessage(ChatColor.GRAY + "One stronger than you has been slain by your hand.");
+							}
+
+							if(DMiscUtil.getAscensions(attacker) >= DMiscUtil.getAscensions(attacked))
+							{
+								attacked.getLocation().getWorld().dropItemNaturally(attacked.getLocation(), halfHealth);
+								attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
+							}
+
+							double adjusted = DMiscUtil.getKills(attacked) * 1.0 / DMiscUtil.getDeaths(attacked);
+							if(adjusted > 5) adjusted = 5;
+							if(adjusted < 0.2) adjusted = 0.2;
+							for(Deity d : DMiscUtil.getDeities(attacker))
+							{
+								DMiscUtil.setDevotion(attacker, d, DMiscUtil.getDevotion(attacker, d) + (int) (pvpkillreward * MULTIPLIER * adjusted));
+							}
+						}
+					}
+					else
+					{ // regular player
+						DMiscUtil.getPlugin().getServer().broadcastMessage(ChatColor.YELLOW + attacked.getName() + ChatColor.GRAY + " was slain by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + DMiscUtil.getAllegiance(attacker) + " alliance.");
+
+						// Define Mortal Soul
+						ItemStack mortalHealth = new ItemStack(Material.GOLD_NUGGET, 1);
+
+						String mortalName = "Mortal Soul";
+						List<String> mortalLore = new ArrayList<String>();
+						mortalLore.add("Brings you back to life.");
+						mortalLore.add("You regain 20 health.");
+
+						ItemMeta mortalItem = mortalHealth.getItemMeta();
+						mortalItem.setDisplayName(mortalName);
+						mortalItem.setLore(mortalLore);
+
+						mortalHealth.setItemMeta(mortalItem);
+
+						attacked.getLocation().getWorld().dropItemNaturally(attacked.getLocation(), mortalHealth);
+						attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
 					}
 				}
 			}
-			else
-			{ // regular player
-				DMiscUtil.getPlugin().getServer().broadcastMessage(ChatColor.YELLOW + attacked.getName() + ChatColor.GRAY + " was slain by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + DMiscUtil.getAllegiance(attacker) + " alliance.");
-
-				// Define Mortal Soul
-				ItemStack mortalHealth = new ItemStack(Material.GOLD_NUGGET, 1);
-
-				String mortalName = "Mortal Soul";
-				List<String> mortalLore = new ArrayList<String>();
-				mortalLore.add("Brings you back to life.");
-				mortalLore.add("You regain 20 health.");
-
-				ItemMeta mortalItem = mortalHealth.getItemMeta();
-				mortalItem.setDisplayName(mortalName);
-				mortalItem.setLore(mortalLore);
-
-				mortalHealth.setItemMeta(mortalItem);
-
-				attacked.getLocation().getWorld().dropItemNaturally(attacked.getLocation(), mortalHealth);
-				attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
-			}
-		}
+		}, 30);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -273,6 +278,15 @@ public class DPvP implements Listener
 			player.sendMessage(ChatColor.YELLOW + "You are now safe from all PVP!");
 		}
 		else if(!DMiscUtil.canLocationPVP(from) && DMiscUtil.canLocationPVP(to)) player.sendMessage(ChatColor.YELLOW + "You can now PVP!");
+
+		// This SHOULD happen automatically, but bukkit doesn't do this, so we need to.
+		if(player.isInsideVehicle() && player.getVehicle() instanceof Horse)
+		{
+			Horse horse = (Horse) player.getVehicle();
+			horse.eject();
+			horse.teleport(event.getTo());
+			horse.setPassenger(player);
+		}
 	}
 
 	public void onPlayerLineJump(final Player player, Location to, Location from, int delayTime)

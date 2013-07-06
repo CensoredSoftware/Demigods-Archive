@@ -299,8 +299,8 @@ public class Apollo implements Deity
 	private void cure()
 	{
 		Player p = DMiscUtil.getOnlinePlayer(getPlayerName());
-		int healamt = DMiscUtil.getMaxHP(p);
-		int selfheal = healamt / 9;
+		double healamt = DMiscUtil.getMaxHP(p);
+		double selfheal = healamt / 9;
 		if(DMiscUtil.getHP(p) + selfheal > DMiscUtil.getMaxHP(p))
 		{
 			selfheal = DMiscUtil.getMaxHP(p) - DMiscUtil.getHP(p);

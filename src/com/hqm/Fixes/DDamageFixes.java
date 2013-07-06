@@ -21,7 +21,7 @@ public class DDamageFixes implements Listener
 	private static Set<EntityDamageEvent> important = Collections.synchronizedSet(new HashSet<EntityDamageEvent>());
 	private static Set<EntityDamageEvent> processed = Collections.synchronizedSet(new HashSet<EntityDamageEvent>());
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGH)
 	private void onImportantDamage(EntityDamageEvent event)
 	{
 		if(isProcessed(event)) return;
@@ -46,14 +46,14 @@ public class DDamageFixes implements Listener
 		return processed.contains(event);
 	}
 
-	public static void setLastDamage(LivingEntity target, EntityDamageEvent.DamageCause cause, int amount)
+	public static void setLastDamage(LivingEntity target, EntityDamageEvent.DamageCause cause, double amount)
 	{
 		EntityDamageEvent damage = new EntityDamageEvent(target, cause, amount);
 		processed.add(damage);
 		target.setLastDamageCause(damage);
 	}
 
-	public static void setLastDamageBy(LivingEntity source, LivingEntity target, EntityDamageByEntityEvent.DamageCause cause, int amount)
+	public static void setLastDamageBy(LivingEntity source, LivingEntity target, EntityDamageByEntityEvent.DamageCause cause, double amount)
 	{
 		EntityDamageByEntityEvent damageBy = new EntityDamageByEntityEvent(source, target, cause, amount);
 		processed.add(damageBy);
@@ -85,7 +85,7 @@ public class DDamageFixes implements Listener
 			{
 				if(event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK)
 				{
-					int reduction = (int) Math.round(Math.pow(DMiscUtil.getDevotion(p, "Atlas"), 0.115));
+					double reduction = (double) Math.round(Math.pow(DMiscUtil.getDevotion(p, "Atlas"), 0.115));
 					if(reduction > event.getDamage()) reduction = event.getDamage();
 					event.setDamage(event.getDamage() - reduction);
 				}

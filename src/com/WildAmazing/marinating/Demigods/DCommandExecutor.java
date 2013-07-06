@@ -1470,7 +1470,7 @@ public class DCommandExecutor implements CommandExecutor
 		// warp code
 		target = DMiscUtil.toWriteLocation(b.getRelative(BlockFace.UP).getLocation());
 		final WriteLocation current = DMiscUtil.toWriteLocation(p.getLocation());
-		final int hp = DMiscUtil.getHP(p);
+		final double hp = DMiscUtil.getHP(p);
 		final float pitch = p.getLocation().getPitch();
 		final float yaw = p.getLocation().getYaw();
 		final Player pt = p;
@@ -1625,7 +1625,7 @@ public class DCommandExecutor implements CommandExecutor
 		// warp code
 		target = DMiscUtil.toWriteLocation(b.getRelative(BlockFace.UP).getLocation());
 		final WriteLocation current = DMiscUtil.toWriteLocation(p.getLocation());
-		final int hp = DMiscUtil.getHP(p);
+		final double hp = DMiscUtil.getHP(p);
 		final float pitch = p.getLocation().getPitch();
 		final float yaw = p.getLocation().getYaw();
 		final Player pt = p;

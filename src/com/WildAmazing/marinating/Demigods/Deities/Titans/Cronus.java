@@ -160,7 +160,7 @@ public class Cronus implements Deity
 								if((LivingEntity) e.getEntity() instanceof Player)
 								{
 									Player otherP = (Player) e.getEntity();
-									otherP.setFoodLevel(otherP.getFoodLevel() - (e.getDamage() / 2));
+									otherP.setFoodLevel(otherP.getFoodLevel() - (int) (e.getDamage() / 2));
 									if(otherP.getFoodLevel() < 0) otherP.setFoodLevel(0);
 								}
 							}

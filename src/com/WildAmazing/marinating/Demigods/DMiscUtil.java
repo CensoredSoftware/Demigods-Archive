@@ -585,7 +585,7 @@ public class DMiscUtil
 	 * @param p
 	 * @param amt
 	 */
-	public static void setHP(Player p, int amt)
+	public static void setHP(Player p, double amt)
 	{
 		setHP(p.getName(), amt);
 	}
@@ -596,17 +596,17 @@ public class DMiscUtil
 	 * @param p
 	 * @param amt
 	 */
-	public static void setHP(String p, int amt)
+	public static void setHP(String p, double amt)
 	{
 		if(amt > getMaxHP(p)) amt = getMaxHP(p);
 		if(amt < 0) amt = 0;
-		int c = amt - getHP(p);
+		double c = amt - getHP(p);
 		DSave.saveData(p, "dHP", amt);
 		if((c != 0) && (DMiscUtil.getOnlinePlayer(p) != null))
 		{
 			ChatColor color = ChatColor.GREEN;
-			if((DMiscUtil.getHP(p) / (double) DMiscUtil.getMaxHP(p)) < 0.25) color = ChatColor.RED;
-			else if((DMiscUtil.getHP(p) / (double) DMiscUtil.getMaxHP(p)) < 0.5) color = ChatColor.YELLOW;
+			if((DMiscUtil.getHP(p) / DMiscUtil.getMaxHP(p)) < 0.25) color = ChatColor.RED;
+			else if((DMiscUtil.getHP(p) / DMiscUtil.getMaxHP(p)) < 0.5) color = ChatColor.YELLOW;
 			String disp = "";
 			if(c > 0) disp = "+" + c;
 			else disp += c;
@@ -615,7 +615,7 @@ public class DMiscUtil
 		}
 	}
 
-	public static void setHPQuiet(String p, int amt)
+	public static void setHPQuiet(String p, double amt)
 	{
 		if(amt > getMaxHP(p)) amt = getMaxHP(p);
 		DSave.saveData(p, "dHP", amt);
@@ -627,7 +627,7 @@ public class DMiscUtil
 	 * @param p
 	 * @param amt
 	 */
-	public static void setMaxHP(Player p, int amt)
+	public static void setMaxHP(Player p, double amt)
 	{
 		setMaxHP(p.getName(), amt);
 	}
@@ -638,7 +638,7 @@ public class DMiscUtil
 	 * @param p
 	 * @param amt
 	 */
-	public static void setMaxHP(String p, int amt)
+	public static void setMaxHP(String p, double amt)
 	{
 		if(amt > MAXIMUMHP) amt = MAXIMUMHP;
 		DSave.saveData(p, "dmaxHP", amt);
@@ -650,7 +650,7 @@ public class DMiscUtil
 	 * @param p
 	 * @return
 	 */
-	public static int getHP(Player p)
+	public static double getHP(Player p)
 	{
 		return getHP(p.getName());
 	}
@@ -661,10 +661,10 @@ public class DMiscUtil
 	 * @param p
 	 * @return
 	 */
-	public static int getHP(String p)
+	public static double getHP(String p)
 	{
-		if(DSave.hasData(p, "dHP")) return (Integer) DSave.getData(p, "dHP");
-		return -1;
+		if(DSave.hasData(p, "dHP")) return Double.valueOf(DSave.getData(p, "dHP").toString());
+		return -1.0;
 	}
 
 	/**
@@ -673,7 +673,7 @@ public class DMiscUtil
 	 * @param p
 	 * @return
 	 */
-	public static int getMaxHP(Player p)
+	public static double getMaxHP(Player p)
 	{
 		return getMaxHP(p.getName());
 	}
@@ -684,10 +684,10 @@ public class DMiscUtil
 	 * @param p
 	 * @return
 	 */
-	public static int getMaxHP(String p)
+	public static double getMaxHP(String p)
 	{
-		if(DSave.hasData(p, "dmaxHP")) return (Integer) DSave.getData(p, "dmaxHP");
-		return -1;
+		if(DSave.hasData(p, "dmaxHP")) return Double.valueOf(DSave.getData(p, "dmaxHP").toString());
+		return -1.0;
 	}
 
 	/**
@@ -1475,8 +1475,8 @@ public class DMiscUtil
 		setAllegiance(playername, allegiance);
 		setFavorCap(playername, 300); // set favor cap before favor (MUST!!!)
 		setFavor(playername, 300);
-		setMaxHP(playername, 25);
-		setHP(playername, 25);
+		setMaxHP(playername, 25.0);
+		setHP(playername, 25.0);
 		setAscensions(playername, 0);
 		setDeaths(playername, 0);
 		setKills(playername, 0);
@@ -2018,7 +2018,7 @@ public class DMiscUtil
 	/**
 	 * Demigods damage handling
 	 */
-	public static void damageDemigods(LivingEntity source, LivingEntity target, int amount, DamageCause cause)
+	public static void damageDemigods(LivingEntity source, LivingEntity target, double amount, DamageCause cause)
 	{
 		if(target.getHealth() > 1) target.damage(1);
 		if(target instanceof Player)
@@ -2026,7 +2026,7 @@ public class DMiscUtil
 			if(((Player) target).getGameMode() == GameMode.CREATIVE) return;
 			if(!canTarget(target, target.getLocation())) return;
 			if(DDamage.cancelSoulDamage((Player) target, amount)) return;
-			int hp = getHP((Player) target);
+			double hp = getHP((Player) target);
 			if(amount < 1) return;
 			amount -= DDamage.armorReduction((Player) target);
 			amount = DDamage.specialReduction((Player) target, amount);
@@ -2041,11 +2041,11 @@ public class DMiscUtil
 		else target.damage(amount);
 	}
 
-	public static void damageDemigodsNonCombat(Player target, int amount, DamageCause cause)
+	public static void damageDemigodsNonCombat(Player target, double amount, DamageCause cause)
 	{
 		if((target).getGameMode() == GameMode.CREATIVE) return;
 		if(DDamage.cancelSoulDamage(target, amount)) return;
-		int hp = getHP(target);
+		double hp = getHP(target);
 		if(amount < 1) return;
 		amount -= DDamage.armorReduction(target);
 		amount = DDamage.specialReduction(target, amount);
