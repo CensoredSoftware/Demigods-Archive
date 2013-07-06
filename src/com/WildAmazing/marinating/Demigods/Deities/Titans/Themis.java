@@ -205,8 +205,9 @@ public class Themis implements Deity
 		if(target == null) return false;
 		if(!DMiscUtil.canTarget(target, target.getLocation())) return false;
 		Location between = p.getLocation();
-		p.teleport(target.getLocation());
-		target.teleport(between);
+		DMiscUtil.horseTeleport(p, target.getLocation());
+		if(target instanceof Player) DMiscUtil.horseTeleport((Player) target, between);
+		else target.teleport(between);
 		return true;
 	}
 

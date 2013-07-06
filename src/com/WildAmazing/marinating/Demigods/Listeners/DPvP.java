@@ -7,7 +7,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -278,15 +281,6 @@ public class DPvP implements Listener
 			player.sendMessage(ChatColor.YELLOW + "You are now safe from all PVP!");
 		}
 		else if(!DMiscUtil.canLocationPVP(from) && DMiscUtil.canLocationPVP(to)) player.sendMessage(ChatColor.YELLOW + "You can now PVP!");
-
-		// This SHOULD happen automatically, but bukkit doesn't do this, so we need to.
-		if(player.isInsideVehicle() && player.getVehicle() instanceof Horse)
-		{
-			Horse horse = (Horse) player.getVehicle();
-			horse.eject();
-			horse.teleport(event.getTo());
-			horse.setPassenger(player);
-		}
 	}
 
 	public void onPlayerLineJump(final Player player, Location to, Location from, int delayTime)

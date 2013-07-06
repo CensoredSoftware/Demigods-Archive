@@ -116,7 +116,7 @@ public class Athena implements Deity
 					if(go.getBlock().isLiquid() || go.getBlock().isEmpty())
 					{
 						DSave.saveData(p, "temp_flash", true);
-						p.teleport(go);
+						DMiscUtil.horseTeleport(p, go);
 						DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - SKILLCOST);
 					}
 				}

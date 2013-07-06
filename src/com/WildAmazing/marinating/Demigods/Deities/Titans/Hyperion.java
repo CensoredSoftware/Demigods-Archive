@@ -303,7 +303,7 @@ public class Hyperion implements Deity
 				@Override
 				public void run()
 				{
-					p.teleport(le.getLocation());
+					DMiscUtil.horseTeleport(p, le.getLocation());
 					DMiscUtil.damageDemigods(p, le, ultdamage, DamageCause.CUSTOM);
 				}
 			}, delay);
@@ -313,7 +313,7 @@ public class Hyperion implements Deity
 			@Override
 			public void run()
 			{
-				p.teleport(start);
+				DMiscUtil.horseTeleport(p, start);
 			}
 		}, 20 * entitylist.size() + 20);
 		return entitylist.size();

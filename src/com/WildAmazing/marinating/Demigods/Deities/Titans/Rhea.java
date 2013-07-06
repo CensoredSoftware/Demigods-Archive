@@ -656,7 +656,8 @@ public class Rhea implements Deity
 						}
 						DMiscUtil.damageDemigods(p, le, 5, DamageCause.ENTITY_ATTACK);
 					}
-					le.teleport(originalloc);
+					if(le instanceof Player) DMiscUtil.horseTeleport((Player) le, originalloc);
+					else le.teleport(originalloc);
 				}
 			}, i);
 		}

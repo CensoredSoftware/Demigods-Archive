@@ -1184,7 +1184,7 @@ public class DCommandExecutor implements CommandExecutor
 				int one = Integer.parseInt(args[0]);
 				int two = Integer.parseInt(args[1]);
 				int three = Integer.parseInt(args[2]);
-				p.teleport(new Location(p.getWorld(), one, two, three));
+				DMiscUtil.horseTeleport(p, new Location(p.getWorld(), one, two, three));
 			}
 			catch(Exception ignored)
 			{}
@@ -1569,7 +1569,7 @@ public class DCommandExecutor implements CommandExecutor
 					newloc.setYaw(yaw);
 					newloc.setX(newloc.getX() + 0.5);
 					newloc.setZ(newloc.getZ() + 0.5);
-					pt.teleport(newloc);
+					DMiscUtil.horseTeleport(pt, newloc);
 					pt.sendMessage(ChatColor.YELLOW + "Shrine warp successful.");
 					DMiscUtil.removeActiveEffect(pt.getName(), "Warping");
 				}
@@ -1824,7 +1824,7 @@ public class DCommandExecutor implements CommandExecutor
 					newloc.setYaw(yaw);
 					newloc.setX(newloc.getX() + 0.5);
 					newloc.setZ(newloc.getZ() + 0.5);
-					pt.teleport(newloc);
+					DMiscUtil.horseTeleport(pt, newloc);
 					pt.sendMessage(ChatColor.YELLOW + "Shrine warp successful.");
 					DMiscUtil.removeActiveEffect(pt.getName(), "Warping");
 				}
@@ -2609,7 +2609,7 @@ public class DCommandExecutor implements CommandExecutor
 			{
 				DMiscUtil.removeActiveEffect(p.getName(), "Congregate");
 				DMiscUtil.addActiveEffect(p.getName(), "Ceasefire", 60);
-				p.teleport(pl.getLocation());
+				DMiscUtil.horseTeleport(p, pl.getLocation());
 				return true;
 			}
 		}

@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -2069,5 +2070,19 @@ public class DMiscUtil
 	public static void taggedMessage(CommandSender sender, String msg)
 	{
 		sender.sendMessage(ChatColor.DARK_AQUA + "[Demigods] " + ChatColor.RESET + msg);
+	}
+
+	public static void horseTeleport(Player player, Location location)
+	{
+		if(player.isInsideVehicle() && player.getVehicle() instanceof Horse)
+		{
+			Horse horse = (Horse) player.getVehicle();
+			DSave.saveData(player, "temp_horse", true);
+			horse.eject();
+			horse.teleport(location);
+			horse.setPassenger(player);
+			DSave.removeData(player, "temp_horse");
+		}
+		else player.teleport(location);
 	}
 }
