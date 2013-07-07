@@ -54,7 +54,14 @@ public class DSettings
 
 			for(String s : plugin.getConfig().getStringList("active_worlds"))
 			{
-				enabledWorlds.add(plugin.getServer().getWorld(s));
+				try
+				{
+					enabledWorlds.add(plugin.getServer().getWorld(s));
+				}
+				catch(Exception ignored)
+				{
+					DMiscUtil.getPlugin().getLogger().severe("You do not have enabled worlds correctly configured!");
+				}
 			}
 		}
 		else
