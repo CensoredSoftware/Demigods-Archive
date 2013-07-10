@@ -100,12 +100,12 @@ public class DDamage implements Listener
 		double current = DMiscUtil.getHP(p);
 		if(current < 1)
 		{ // if player should be dead
-			p.setHealth(0);
+			p.setHealth(0.0);
 			return;
 		}
 		double ratio = current / DMiscUtil.getMaxHP(p);
-		int disp = (int) Math.ceil(ratio * 20);
-		if(disp < 1) disp = 1;
+		double disp = Math.ceil(ratio * 20);
+		if(disp < 1) disp = 1.0;
 		p.setHealth(disp);
 	}
 

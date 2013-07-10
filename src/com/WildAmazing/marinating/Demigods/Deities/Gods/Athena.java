@@ -113,7 +113,7 @@ public class Athena implements Deity
 					go.setY(go.getBlockY() + 1);
 					go.setPitch(pitch);
 					go.setYaw(yaw);
-					if(go.getBlock().isLiquid() || go.getBlock().isEmpty())
+					if((go.getBlock().isLiquid() || go.getBlock().isEmpty()) && DMiscUtil.canWorldGuardBuild(p, go))
 					{
 						DSave.saveData(p, "temp_flash", true);
 						DMiscUtil.horseTeleport(p, go);

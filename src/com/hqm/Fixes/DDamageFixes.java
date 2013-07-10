@@ -91,7 +91,7 @@ public class DDamageFixes implements Listener
 				}
 				else if(event.getCause() == EntityDamageEvent.DamageCause.FALL)
 				{
-					if(DMiscUtil.getActiveEffectsList(p.getName()).contains("Unburden")) event.setDamage(event.getDamage() / 3);
+					if(DMiscUtil.getActiveEffectsList(p.getName()).contains("Unburden")) event.setDamage(event.getDamage() / 3.0);
 				}
 			}
 			if(event instanceof EntityDamageByEntityEvent)

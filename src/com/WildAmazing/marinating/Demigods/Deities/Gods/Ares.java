@@ -150,7 +150,7 @@ public class Ares implements Deity
 					try
 					{
 						LivingEntity le = (LivingEntity) e.getEntity();
-						if(le.getHealth() - e.getDamage() <= 0)
+						if(le.getHealth() - e.getDamage() <= 0.0)
 						{
 							//
 							if((int) (Math.random() * 3) == 1)
