@@ -1,0 +1,107 @@
+package com.WildAmazing.marinating.Demigods.Listeners;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.Util.DSettings;
+
+public class DChatCommands implements Listener
+{
+	@EventHandler
+	public void onChatCommand(AsyncPlayerChatEvent e)
+	{
+		// Define variables
+		Player p = e.getPlayer();
+
+		if(!DMiscUtil.isFullParticipant(p)) return;
+		if(e.getMessage().contains("qd")) qd(p, e);
+		else if(e.getMessage().equals("dg")) dg(p, e);
+	}
+
+	private void qd(Player p, AsyncPlayerChatEvent e)
+	{
+		if((e.getMessage().charAt(0) == 'q') && (e.getMessage().charAt(1) == 'd'))
+		{
+			String str;
+			if(p.getHealth() > 0)
+			{
+				ChatColor color = ChatColor.GREEN;
+				if((DMiscUtil.getHP(p) / (double) DMiscUtil.getMaxHP(p)) < 0.25) color = ChatColor.RED;
+				else if((DMiscUtil.getHP(p) / (double) DMiscUtil.getMaxHP(p)) < 0.5) color = ChatColor.YELLOW;
+				str = "-- Your HP " + color + "" + DMiscUtil.getHP(p) + "/" + DMiscUtil.getMaxHP(p) + ChatColor.YELLOW + " Favor " + DMiscUtil.getFavor(p) + "/" + DMiscUtil.getFavorCap(p);
+				if(DMiscUtil.getActiveEffects(p.getName()).size() > 0)
+				{
+					HashMap<String, Long> effects = DMiscUtil.getActiveEffects(p.getName());
+					str += ChatColor.WHITE + " Active effects:";
+					for(String stt : effects.keySet())
+						str += " " + stt + "[" + ((effects.get(stt) - System.currentTimeMillis()) / 1000) + "s]";
+				}
+				try
+				{
+					String other = e.getMessage().split(" ")[1];
+					if(other != null) other = DMiscUtil.getDemigodsPlayer(other);
+					if((other != null) && DMiscUtil.isFullParticipant(other))
+					{
+						p.sendMessage(other + " -- " + DMiscUtil.getAllegiance(other));
+						if(DMiscUtil.hasDeity(p, "Athena") || DMiscUtil.hasDeity(p, "Themis"))
+						{
+							String st = ChatColor.GRAY + "Deities:";
+							for(Deity d : DMiscUtil.getDeities(other))
+								st += " " + d.getName();
+							p.sendMessage(st);
+							p.sendMessage(ChatColor.GRAY + "HP " + DMiscUtil.getHP(other) + "/" + DMiscUtil.getMaxHP(other) + " Favor " + DMiscUtil.getFavor(other) + "/" + DMiscUtil.getFavorCap(other));
+							if(DMiscUtil.getActiveEffects(other).size() > 0)
+							{
+								HashMap<String, Long> fx = DMiscUtil.getActiveEffects(other);
+								str += ChatColor.GRAY + " Active effects:";
+								for(String stt : fx.keySet())
+									str += " " + stt + "[" + ((fx.get(stt) - System.currentTimeMillis()) / 1000) + "s]";
+							}
+						}
+					}
+				}
+				catch(Exception ignored)
+				{}
+				p.sendMessage(str);
+				e.getRecipients().clear();
+				e.setCancelled(true);
+			}
+		}
+	}
+
+	private void dg(Player p, AsyncPlayerChatEvent e)
+	{
+		HashMap<String, ArrayList<String>> alliances = new HashMap<String, ArrayList<String>>();
+		for(Player pl : DMiscUtil.getPlugin().getServer().getOnlinePlayers())
+		{
+			if(DSettings.getEnabledWorlds().contains(pl.getWorld()))
+			{
+				if(DMiscUtil.isFullParticipant(pl))
+				{
+					if(!alliances.containsKey(DMiscUtil.getAllegiance(pl).toUpperCase()))
+					{
+						alliances.put(DMiscUtil.getAllegiance(pl).toUpperCase(), new ArrayList<String>());
+					}
+					alliances.get(DMiscUtil.getAllegiance(pl).toUpperCase()).add(pl.getName());
+				}
+			}
+		}
+		for(String alliance : alliances.keySet())
+		{
+			String names = "";
+			for(String name : alliances.get(alliance))
+				names += " " + name;
+			p.sendMessage(ChatColor.YELLOW + alliance + ": " + ChatColor.WHITE + names);
+		}
+		e.getRecipients().clear();
+		e.setCancelled(true);
+	}
+}

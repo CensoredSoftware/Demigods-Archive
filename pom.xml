@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.WildAmazing.marinating</groupId>
+    <artifactId>Demigods</artifactId>
+    <version>2.5.0</version>
+    <packaging>jar</packaging>
+
+    <name>Demigods</name>
+    <description>Demigods (Legacy) for Bukkit/Spigot Minecraft Servers.</description>
+    <url>http://github.com/CensoredSoftware/Demigods</url>
+
+    <licenses>
+        <license>
+            <name>Affero General Public License</name>
+            <url>http://www.affero.org/oagpl.html</url>
+            <comments>License on all contributions</comments>
+        </license>
+    </licenses>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spigot.version>1.6.2-R0.1-SNAPSHOT</spigot.version>
+        <mcstats.version>R7</mcstats.version>
+        <worldguard.version>5.8-SNAPSHOT</worldguard.version>
+        <campstamp.version>0.1.4</campstamp.version>
+    </properties>
+
+    <developers>
+        <developer>
+            <id>marinating</id>
+            <roles>
+                <role>original creator</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>HmmmQuestionMark</id>
+            <name>Alexander Chauncey</name>
+            <organization>CensoredSoftware</organization>
+            <organizationUrl>http://www.censoredsoftware.com/</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <properties>
+                <skype>HmmmQuestionMark</skype>
+            </properties>
+            <timezone>-4</timezone>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/CensoredSoftware/Demigods.git</connection>
+        <developerConnection>scm:git:git://github.com/CensoredSoftware/Demigods.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>http://github.com/CensoredSoftware/Demigods</url>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>censored-software</id>
+            <name>censored-software-releases</name>
+            <url>http://artifactory.censoredsoftware.com/artifactory/libs-release-local</url>
+        </repository>
+        <snapshotRepository>
+            <id>censored-software</id>
+            <name>censored-software-snapshots</name>
+            <url>http://artifactory.censoredsoftware.com/artifactory/libs-snapshot-local</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>censored-software</id>
+            <url>http://repo.censoredsoftware.com</url>
+        </repository>
+        <repository>
+            <id>md_5-releases</id>
+            <url>http://repo.md-5.net/content/repositories/snapshots</url>
+        </repository>
+        <repository>
+            <id>sk89q-repo</id>
+            <url>http://maven.sk89q.com/repo</url>
+        </repository>
+        <repository>
+            <id>Plugin Metrics</id>
+            <url>http://repo.mcstats.org/content/repositories/public</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>${spigot.version}</version>
+            <scope>compile</scope>
+            <type>jar</type>
+            <optional>false</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.sk89q</groupId>
+            <artifactId>worldguard</artifactId>
+            <version>${worldguard.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>bukkit</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>compile</scope>
+            <type>jar</type>
+            <optional>false</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.censoredsoftware.minecraft</groupId>
+            <artifactId>CampStamp</artifactId>
+            <version>${campstamp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mcstats.bukkit</groupId>
+            <artifactId>metrics</artifactId>
+            <version>${mcstats.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>bukkit</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>compile</scope>
+            <optional>false</optional>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>Demigods</finalName>
+        <defaultGoal>clean install</defaultGoal>
+        <sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
+        <resources>
+            <resource>
+                <targetPath>.</targetPath>
+                <filtering>true</filtering>
+                <directory>${basedir}/src/main/resources/</directory>
+                <includes>
+                    <include>plugin.yml</include>
+                    <include>config.yml</include>
+                </includes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.7.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <artifactSet>
+                                <includes>
+                                    <include>org.mcstats.bukkit:metrics</include>
+                                </includes>
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.4.1</version>
+                <configuration>
+                    <preparationGoals>assembly:assembly</preparationGoals>
+                    <goals>assembly:assembly</goals>
+                    <tagNameFormat>@{project.version}</tagNameFormat>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <finalName>Demigods</finalName>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
