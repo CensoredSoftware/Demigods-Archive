@@ -3,7 +3,10 @@ package com.WildAmazing.marinating.Demigods.Listeners;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -263,21 +266,6 @@ public class DPvP implements Listener
 		Location from = event.getFrom();
 		int delayTime = DSettings.getSettingInt("pvp_area_delay_time");
 		onPlayerLineJump(player, to, from, delayTime);
-		for(Location altar : DSave.getAllAltars())
-		{
-			double distance = altar.distance(event.getTo());
-			GameMode gameMode = player.getGameMode();
-			if(distance <= 16 && gameMode.equals(GameMode.SURVIVAL))
-			{
-				player.setGameMode(GameMode.ADVENTURE);
-				break;
-			}
-			else if(distance > 16 && gameMode.equals(GameMode.ADVENTURE))
-			{
-				player.setGameMode(GameMode.SURVIVAL);
-				break;
-			}
-		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)

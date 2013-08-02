@@ -28,6 +28,8 @@ public class DAltars implements Listener
 	{
 		if(!DSettings.getEnabledWorlds().contains(event.getWorld())) return;
 
+		if(!event.isNewChunk()) return;
+
 		// Define variables
 		final Location location = randomChunkLocation(event.getChunk());
 
