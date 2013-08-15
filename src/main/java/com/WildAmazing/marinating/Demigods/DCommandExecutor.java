@@ -1,13 +1,15 @@
 package com.WildAmazing.marinating.Demigods;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
-import java.util.logging.Logger;
-
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Deities.Gods.*;
+import com.WildAmazing.marinating.Demigods.Deities.Titans.*;
+import com.WildAmazing.marinating.Demigods.Listeners.DLevels;
+import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
+import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.Util.DSave;
+import com.WildAmazing.marinating.Demigods.Util.DSettings;
+import com.WildAmazing.marinating.Demigods.Util.DUpdateUtil;
+import com.clashnia.Demigods.Deities.Giants.Typhon;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,16 +21,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Deities.Gods.*;
-import com.WildAmazing.marinating.Demigods.Deities.Titans.*;
-import com.WildAmazing.marinating.Demigods.Listeners.DLevels;
-import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
-import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
-import com.WildAmazing.marinating.Demigods.Util.DSave;
-import com.WildAmazing.marinating.Demigods.Util.DSettings;
-import com.WildAmazing.marinating.Demigods.Util.DUpdateUtil;
-import com.clashnia.Demigods.Deities.Giants.Typhon;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class DCommandExecutor implements CommandExecutor
 {
@@ -2142,6 +2141,12 @@ public class DCommandExecutor implements CommandExecutor
 		{
 			if(DMiscUtil.getDeities(p).size() >= 2)
 			{
+				if(args[0].equalsIgnoreCase("?????"))
+				{
+					p.damage(10000.1);
+					p.sendMessage(ChatColor.RED + "?????: " + ChatColor.WHITE + "You may not forsake me.");
+					return true;
+				}
 				String str = "";
 				Deity toremove = DMiscUtil.getDeity(p, args[0]);
 				DLevels.levelProcedure(p);

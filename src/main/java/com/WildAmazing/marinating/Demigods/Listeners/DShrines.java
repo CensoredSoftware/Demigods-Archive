@@ -1,10 +1,12 @@
 package com.WildAmazing.marinating.Demigods.Listeners;
 
-import java.util.Iterator;
-import java.util.List;
-
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Demigods;
+import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.Util.DSave;
+import com.WildAmazing.marinating.Demigods.Util.DSettings;
+import com.WildAmazing.marinating.Demigods.WriteLocation;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -20,13 +22,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Demigods;
-import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
-import com.WildAmazing.marinating.Demigods.Util.DSave;
-import com.WildAmazing.marinating.Demigods.Util.DSettings;
-import com.WildAmazing.marinating.Demigods.WriteLocation;
-import com.censoredsoftware.demigods.hype.AltarDemo;
+import java.util.Iterator;
+import java.util.List;
 
 public class DShrines implements Listener
 {
@@ -125,14 +122,6 @@ public class DShrines implements Listener
 				break;
 			}
 		}
-		for(Location location : DSave.getAllAltars())
-		{
-			if(AltarDemo.ALTAR.getLocations(location).contains(e.getBlock().getLocation()))
-			{
-				e.setCancelled(true);
-				break;
-			}
-		}
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -144,14 +133,6 @@ public class DShrines implements Listener
 			if((DMiscUtil.toWriteLocation(e.getBlock().getLocation())).equalsApprox(center))
 			{
 				e.setCancelled(true);
-			}
-		}
-		for(Location location : DSave.getAllAltars())
-		{
-			if(AltarDemo.ALTAR.getLocations(location).contains(e.getBlock().getLocation()))
-			{
-				e.setCancelled(true);
-				break;
 			}
 		}
 	}
@@ -167,14 +148,6 @@ public class DShrines implements Listener
 				e.setCancelled(true);
 			}
 		}
-		for(Location location : DSave.getAllAltars())
-		{
-			if(AltarDemo.ALTAR.getLocations(location).contains(e.getBlock().getLocation()))
-			{
-				e.setCancelled(true);
-				break;
-			}
-		}
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -186,14 +159,6 @@ public class DShrines implements Listener
 			if((DMiscUtil.toWriteLocation(e.getBlock().getLocation())).equalsApprox(center))
 			{
 				e.setCancelled(true);
-			}
-		}
-		for(Location location : DSave.getAllAltars())
-		{
-			if(AltarDemo.ALTAR.getLocations(location).contains(e.getBlock().getLocation()))
-			{
-				e.setCancelled(true);
-				break;
 			}
 		}
 	}
@@ -217,14 +182,6 @@ public class DShrines implements Listener
 					break CHECKBLOCKS;
 				}
 			}
-			for(Location location : DSave.getAllAltars())
-			{
-				if(AltarDemo.ALTAR.getLocations(location).contains(b.getLocation()))
-				{
-					e.setCancelled(true);
-					break CHECKBLOCKS;
-				}
-			}
 		}
 	}
 
@@ -238,14 +195,6 @@ public class DShrines implements Listener
 		for(WriteLocation shrine : DMiscUtil.getAllShrines())
 		{
 			if((DMiscUtil.toWriteLocation(b.getLocation())).equalsApprox((shrine)) && e.isSticky())
-			{
-				e.setCancelled(true);
-				break;
-			}
-		}
-		for(Location location : DSave.getAllAltars())
-		{
-			if(AltarDemo.ALTAR.getLocations(location).contains(b.getLocation()))
 			{
 				e.setCancelled(true);
 				break;
@@ -268,10 +217,6 @@ public class DShrines implements Listener
 				for(WriteLocation center : DMiscUtil.getAllShrines())
 				{
 					if((DMiscUtil.toWriteLocation(b.getLocation())).equalsApprox(center)) i.remove();
-				}
-				for(Location location : DSave.getAllAltars())
-				{
-					if(AltarDemo.ALTAR.getLocations(location).contains(b.getLocation())) i.remove();
 				}
 			}
 		}
@@ -307,6 +252,8 @@ public class DShrines implements Listener
 	@EventHandler(priority = EventPriority.HIGH)
 	public void shrineAlerts(PlayerMoveEvent e)
 	{
+		if(!e.getFrom().getWorld().equals(e.getTo().getWorld())) return;
+		if(!DSettings.getEnabledWorlds().contains(e.getFrom().getWorld())) return;
 		if(e.getFrom().distance(e.getTo()) < 0.1) return;
 		for(String player : DMiscUtil.getFullParticipants())
 		{
@@ -377,6 +324,7 @@ public class DShrines implements Listener
 				items++;
 			}
 		}
+		if(togive.equals("?????")) value *= 1.54;
 		value *= FAVORMULTIPLIER;
 		// give devotion
 		int dbefore = DMiscUtil.getDevotion(p, togive);

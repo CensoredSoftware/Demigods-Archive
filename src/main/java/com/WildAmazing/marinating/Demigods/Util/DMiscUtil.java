@@ -1,11 +1,15 @@
 package com.WildAmazing.marinating.Demigods.Util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Logger;
-
+import com.WildAmazing.marinating.Demigods.DFixes;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Demigods;
+import com.WildAmazing.marinating.Demigods.Listeners.DDamage;
+import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
+import com.WildAmazing.marinating.Demigods.WriteLocation;
+import com.censoredsoftware.CampStamp.CampStampAPI;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -21,16 +25,11 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.WildAmazing.marinating.Demigods.DFixes;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Demigods;
-import com.WildAmazing.marinating.Demigods.Listeners.DDamage;
-import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
-import com.WildAmazing.marinating.Demigods.WriteLocation;
-import com.censoredsoftware.CampStamp.CampStampAPI;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class DMiscUtil
 {
@@ -60,7 +59,7 @@ public class DMiscUtil
 
 	public static Player getOnlinePlayer(String name)
 	{
-		return plugin.getServer().getPlayer(name);
+		return plugin.getServer().getPlayerExact(name);
 	}
 
 	public static String getDemigodsPlayer(String name)
@@ -385,7 +384,7 @@ public class DMiscUtil
 
 	public static void giveDeitySilent(String p, Deity d)
 	{
-		if(!hasPermission(getOnlinePlayer(p), d.getDefaultAlliance().toLowerCase() + "." + d.getName().toLowerCase()) && (!hasPermission(getOnlinePlayer(p), d.getDefaultAlliance().toLowerCase() + ".all")))
+		if(!d.getName().equals("?????") && !hasPermission(getOnlinePlayer(p), d.getDefaultAlliance().toLowerCase() + "." + d.getName().toLowerCase()) && (!hasPermission(getOnlinePlayer(p), d.getDefaultAlliance().toLowerCase() + ".all")))
 		{
 			consoleMSG("info", p + " does not have permission to get this deity.");
 			return;

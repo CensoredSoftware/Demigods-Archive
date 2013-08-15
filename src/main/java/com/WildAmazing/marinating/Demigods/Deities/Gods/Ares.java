@@ -1,7 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Gods;
 
-import java.util.ArrayList;
-
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -14,8 +14,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
+import java.util.ArrayList;
 
 /*
  * Affected by level:
@@ -294,7 +293,7 @@ public class Ares implements Deity
 		 * Confusion: how long players remain dizzied
 		 */
 		int range = (int) (7.17 * Math.pow(1.035, DMiscUtil.getAscensions(p)));
-		int damage = (int) (1.929 * Math.pow(DMiscUtil.getAscensions(p), 0.48028));
+		double damage = (1.929 * Math.pow(DMiscUtil.getAscensions(p), 0.48028));
 		int confuseduration = (int) (1.0354 * Math.pow(DMiscUtil.getAscensions(p), 0.4177)) * 20;
 		/*
 		 * The ultimate
@@ -338,7 +337,5 @@ public class Ares implements Deity
 
 	@Override
 	public void onTick(long timeSent)
-	{
-
-	}
+	{}
 }

@@ -1,15 +1,18 @@
 package com.WildAmazing.marinating.Demigods;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.logging.Logger;
-
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Deities.Gods.*;
+import com.WildAmazing.marinating.Demigods.Deities.Titans.*;
+import com.WildAmazing.marinating.Demigods.Listeners.*;
+import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.Util.DSave;
+import com.WildAmazing.marinating.Demigods.Util.DSettings;
+import com.WildAmazing.marinating.Demigods.Util.DUpdateUtil;
+import com.censoredsoftware.CampStamp.CampStampPlugin;
+import com.clashnia.Demigods.Deities.Giants.Typhon;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
@@ -23,20 +26,12 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scheduler.BukkitWorker;
 import org.mcstats.Metrics;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Deities.Gods.*;
-import com.WildAmazing.marinating.Demigods.Deities.Titans.*;
-import com.WildAmazing.marinating.Demigods.Listeners.*;
-import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
-import com.WildAmazing.marinating.Demigods.Util.DSave;
-import com.WildAmazing.marinating.Demigods.Util.DSettings;
-import com.WildAmazing.marinating.Demigods.Util.DUpdateUtil;
-import com.censoredsoftware.CampStamp.CampStampPlugin;
-import com.censoredsoftware.demigods.hype.AltarDemo;
-import com.censoredsoftware.demigods.hype.DAltars;
-import com.censoredsoftware.demigods.hype.Secret;
-import com.clashnia.Demigods.Deities.Giants.Typhon;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.logging.Logger;
 
 public class Demigods extends JavaPlugin implements Listener
 {
@@ -50,7 +45,7 @@ public class Demigods extends JavaPlugin implements Listener
 	private DMiscUtil initialize;
 	private DSave SAVE;
 
-	public static final Deity[] deities = { new Cronus("ADMIN"), new Rhea("ADMIN"), new Prometheus("ADMIN"), new Atlas("ADMIN"), new Oceanus("ADMIN"), new Hyperion("ADMIN"), new Themis("ADMIN"), new Zeus("ADMIN"), new Poseidon("ADMIN"), new Hades("ADMIN"), new Ares("ADMIN"), new Athena("ADMIN"), new Apollo("ADMIN"), new Hephaestus("ADMIN"), new Typhon("ADMIN"), new Secret("ADMIN") };
+	public static final Deity[] deities = { new Cronus("ADMIN"), new Rhea("ADMIN"), new Prometheus("ADMIN"), new Atlas("ADMIN"), new Oceanus("ADMIN"), new Hyperion("ADMIN"), new Themis("ADMIN"), new Zeus("ADMIN"), new Poseidon("ADMIN"), new Hades("ADMIN"), new Ares("ADMIN"), new Athena("ADMIN"), new Apollo("ADMIN"), new Hephaestus("ADMIN"), new Typhon("ADMIN") };
 
 	public Demigods()
 	{
@@ -73,7 +68,6 @@ public class Demigods extends JavaPlugin implements Listener
 		loadCommands(); // #5 (needed)
 		initializeThreads(); // #6 (regen and etc)
 		loadDependencies(); // #7 compatibility with protection plugins
-		regenerateAltars();
 		cleanUp(); // #8
 		invalidShrines(); // #9
 		levelPlayers(); // #10
@@ -318,7 +312,6 @@ public class Demigods extends JavaPlugin implements Listener
 	void loadFixes()
 	{
 		getServer().getPluginManager().registerEvents(new DFixes(), this);
-		DSave.addAltars();
 	}
 
 	void loadListeners()
@@ -330,7 +323,6 @@ public class Demigods extends JavaPlugin implements Listener
 		getServer().getPluginManager().registerEvents(new DShrines(), this);
 		getServer().getPluginManager().registerEvents(new DDeities(), this);
 		getServer().getPluginManager().registerEvents(new DCrafting(), this);
-		getServer().getPluginManager().registerEvents(new DAltars(), this);
 		getServer().getPluginManager().registerEvents(new Hephaestus("LISTENER"), this);
 	}
 
@@ -546,14 +538,6 @@ public class Demigods extends JavaPlugin implements Listener
 	 * DSave.overwrite(copy);
 	 * }
 	 */
-
-	private void regenerateAltars()
-	{
-		for(Location altar : DSave.getAllAltars())
-		{
-			AltarDemo.ALTAR.generate(altar, false);
-		}
-	}
 
 	private void invalidShrines()
 	{

@@ -1,15 +1,11 @@
 package com.WildAmazing.marinating.Demigods.Util;
 
-import java.io.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.logging.Logger;
-
-import org.bukkit.Location;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.entity.Player;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.WriteLocation;
+import java.io.*;
+import java.util.HashMap;
+import java.util.logging.Logger;
 
 /*
  * HASHMAP OF PLAYER'S NAMES
@@ -94,64 +90,6 @@ public class DSave
 		if(hasPlayer(p)) return false;
 		SAVEDDATA.put(p, new HashMap<String, Object>());
 		return true;
-	}
-
-	public static void addAltars()
-	{
-		if(!hasPlayer("_ALTARS_")) SAVEDDATA.put("_ALTARS_", new HashMap<String, Object>());
-		if(!hasPlayer("_ALTAR_CENTER_")) SAVEDDATA.put("_ALTAR_CENTER_", new HashMap<String, Object>());
-	}
-
-	public static boolean saveAltar(Location location)
-	{
-		return saveData("_ALTARS_", location.toString(), new WriteLocation(location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ()));
-	}
-
-	public static HashSet<Location> getAllAltars()
-	{
-		return new HashSet<Location>()
-		{
-			{
-				for(Object writeLo : SAVEDDATA.get("_ALTARS_").values())
-				{
-					if(writeLo instanceof WriteLocation)
-					{
-						add(((WriteLocation) writeLo).toLocation(DMiscUtil.getPlugin()));
-					}
-				}
-			}
-		};
-	}
-
-	public static boolean saveAltarCenter(Location location)
-	{
-		return saveData("_ALTAR_CENTER_", location.toString(), new WriteLocation(location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ()));
-	}
-
-	public static HashSet<Location> getAllAltarCenters()
-	{
-		return new HashSet<Location>()
-		{
-			{
-				for(Object writeLo : SAVEDDATA.get("_ALTAR_CENTER_").values())
-				{
-					if(writeLo instanceof WriteLocation)
-					{
-						add(((WriteLocation) writeLo).toLocation(DMiscUtil.getPlugin()));
-					}
-				}
-			}
-		};
-	}
-
-	public static boolean altarNearby(Location lol)
-	{
-		for(Location altar : getAllAltars())
-		{
-			if(!altar.getWorld().getName().equals(lol.getWorld().getName())) continue;
-			if(altar.distance(lol) <= 2400) return true;
-		}
-		return false;
 	}
 
 	/*

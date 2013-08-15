@@ -1,5 +1,8 @@
 package com.WildAmazing.marinating.Demigods.Listeners;
 
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.Util.DSettings;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,10 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
-import com.WildAmazing.marinating.Demigods.Util.DSettings;
 
 public class DLevels implements Listener
 {
@@ -29,71 +28,27 @@ public class DLevels implements Listener
 			{
 				if(!DMiscUtil.canWorldGuardBuild(p, e.getBlock().getLocation())) return;
 			}
-			catch(Exception ex)
-			{
-				// Do nothing
-			}
-			if(!DMiscUtil.isFullParticipant(p)) return;
+			catch(Exception ignored)
+			{}
 			if(!DSettings.getEnabledWorlds().contains(p.getWorld())) return;
+			if(!DMiscUtil.isFullParticipant(p)) return;
 			int value = 0;
 			switch(e.getBlock().getType())
 			{
-				case STONE:
-					value = 1;
-					break;
-				case GOLD_ORE:
-					value = 40;
-					break;
-				case IRON_ORE:
-					value = 15;
-					break;
 				case DIAMOND_ORE:
-					value = 100;
+					if(e.getExpToDrop() != 0) value = 100;
 					break;
 				case COAL_ORE:
-					value = 3;
+					if(e.getExpToDrop() != 0) value = 3;
 					break;
 				case LAPIS_ORE:
-					value = 30;
+					if(e.getExpToDrop() != 0) value = 30;
 					break;
 				case OBSIDIAN:
 					value = 15;
 					break;
-				case SMOOTH_BRICK:
-					value = 5;
-					break;
-				case MOSSY_COBBLESTONE:
-					value = 6;
-					break;
-				case MOB_SPAWNER:
-					value = 250;
-					break;
 				case REDSTONE_ORE:
-					value = 5;
-					break;
-				case CLAY:
-					value = 5;
-					break;
-				case GLOWSTONE:
-					value = 5;
-					break;
-				case NETHERRACK:
-					value = 2;
-					break;
-				case SOUL_SAND:
-					value = 2;
-					break;
-				case MYCEL:
-					value = 2;
-					break;
-				case NETHER_BRICK:
-					value = 2;
-					break;
-				case ENDER_PORTAL_FRAME:
-					value = 100;
-					break;
-				case ENDER_STONE:
-					value = 5;
+					if(e.getExpToDrop() != 0) value = 5;
 					break;
 			}
 			value *= MULTIPLIER;
