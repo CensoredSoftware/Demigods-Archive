@@ -1,8 +1,9 @@
 package com.WildAmazing.marinating.Demigods.Listeners;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.WildAmazing.marinating.Demigods.DFixes;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.Util.DSettings;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -17,10 +18,8 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.WildAmazing.marinating.Demigods.DFixes;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
-import com.WildAmazing.marinating.Demigods.Util.DSettings;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DDamage implements Listener
 {
@@ -71,19 +70,13 @@ public class DDamage implements Listener
 			return;
 		}
 
-		if((e.getCause() != DamageCause.ENTITY_ATTACK) && (e.getCause() != DamageCause.PROJECTILE))
-		{
-			DMiscUtil.damageDemigodsNonCombat(p, e.getDamage(), e.getCause());
-		}
+		if((e.getCause() != DamageCause.ENTITY_ATTACK) && (e.getCause() != DamageCause.PROJECTILE)) DMiscUtil.damageDemigodsNonCombat(p, e.getDamage(), e.getCause());
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onRespawn(PlayerRespawnEvent e)
 	{
-		if(DMiscUtil.isFullParticipant(e.getPlayer()))
-		{
-			DMiscUtil.setHP(e.getPlayer(), DMiscUtil.getMaxHP(e.getPlayer()));
-		}
+		if(DMiscUtil.isFullParticipant(e.getPlayer())) DMiscUtil.setHP(e.getPlayer(), DMiscUtil.getMaxHP(e.getPlayer()));
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)

@@ -1,9 +1,10 @@
 package com.WildAmazing.marinating.Demigods;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
+import com.WildAmazing.marinating.Demigods.Listeners.DDamage;
+import com.WildAmazing.marinating.Demigods.Listeners.DDeities;
+import com.WildAmazing.marinating.Demigods.Listeners.DPvP;
+import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.Util.DSettings;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -11,11 +12,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.WildAmazing.marinating.Demigods.Listeners.DDamage;
-import com.WildAmazing.marinating.Demigods.Listeners.DDeities;
-import com.WildAmazing.marinating.Demigods.Listeners.DPvP;
-import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
-import com.WildAmazing.marinating.Demigods.Util.DSettings;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public class DFixes implements Listener
 {
@@ -25,7 +24,7 @@ public class DFixes implements Listener
 	@EventHandler(priority = EventPriority.HIGH)
 	private void onImportantDamage(EntityDamageEvent event)
 	{
-		if(isProcessed(event)) return;
+		if(isProcessed(event) || !DSettings.getEnabledWorlds().contains(event.getEntity().getLocation().getWorld())) return;
 		if(event instanceof EntityDamageByEntityEvent && ((EntityDamageByEntityEvent) event).getDamager() instanceof Player && DMiscUtil.isFullParticipant((Player) ((EntityDamageByEntityEvent) event).getDamager())) important.add(event);
 		else if(event instanceof EntityDamageByEntityEvent && (((EntityDamageByEntityEvent) event).getDamager() instanceof Fireball || ((EntityDamageByEntityEvent) event).getDamager() instanceof Arrow)) important.add(event);
 		else if(event.getEntity() instanceof Player && DMiscUtil.isFullParticipant((Player) event.getEntity())) important.add(event);

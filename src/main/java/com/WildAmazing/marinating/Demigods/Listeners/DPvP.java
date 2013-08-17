@@ -1,8 +1,10 @@
 package com.WildAmazing.marinating.Demigods.Listeners;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.WildAmazing.marinating.Demigods.DFixes;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.Util.DSave;
+import com.WildAmazing.marinating.Demigods.Util.DSettings;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -23,11 +25,8 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.WildAmazing.marinating.Demigods.DFixes;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
-import com.WildAmazing.marinating.Demigods.Util.DSave;
-import com.WildAmazing.marinating.Demigods.Util.DSettings;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DPvP implements Listener
 {
@@ -85,6 +84,7 @@ public class DPvP implements Listener
 		if(e.getDamager() instanceof Arrow && ((Arrow) e.getDamager()).getShooter() instanceof Player) attacker = (Player) ((Arrow) e.getDamager()).getShooter();
 		else if(e.getDamager() instanceof Player) attacker = (Player) e.getDamager();
 		else return;
+		if(!DSettings.getEnabledWorlds().contains(attacker.getWorld())) return;
 		if(!(DMiscUtil.isFullParticipant(attacker) && DMiscUtil.isFullParticipant(target)))
 		{
 			if(!DMiscUtil.canTarget(target, target.getLocation()))
@@ -94,7 +94,6 @@ public class DPvP implements Listener
 				return;
 			}
 		}
-		if(!DSettings.getEnabledWorlds().contains(attacker.getWorld())) return;
 		if(DMiscUtil.getAllegiance(attacker).equalsIgnoreCase(DMiscUtil.getAllegiance(target))) return; // Handled in DDamage...
 		if(!DMiscUtil.canTarget(target, target.getLocation()))
 		{
