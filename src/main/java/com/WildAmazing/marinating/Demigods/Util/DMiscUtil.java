@@ -10,10 +10,7 @@ import com.censoredsoftware.CampStamp.CampStampAPI;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -21,6 +18,7 @@ import org.bukkit.entity.Horse;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -2027,13 +2025,19 @@ public class DMiscUtil
 			amount = DDamage.specialReduction((Player) target, amount);
 			if(amount < 1) return;
 			setHP(((Player) target), hp - amount);
-			if(source instanceof Player)
-			{
-				DFixes.setLastDamageBy(source, target, cause, amount);
-			}
+			if(source instanceof Player) DFixes.setLastDamageBy(source, target, cause, amount);
 			DDamage.syncHealth(((Player) target));
 		}
-		else target.damage(amount);
+		else
+		{
+			EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(source, target, cause, amount);
+			Bukkit.getPluginManager().callEvent(event);
+			if(amount >= 1 && !event.isCancelled())
+			{
+				target.setLastDamageCause(event);
+				target.damage(amount);
+			}
+		}
 	}
 
 	public static void damageDemigodsNonCombat(Player target, double amount, DamageCause cause)
