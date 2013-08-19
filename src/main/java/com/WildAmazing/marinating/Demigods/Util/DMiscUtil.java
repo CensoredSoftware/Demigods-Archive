@@ -7,6 +7,10 @@ import com.WildAmazing.marinating.Demigods.Listeners.DDamage;
 import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
 import com.WildAmazing.marinating.Demigods.WriteLocation;
 import com.censoredsoftware.CampStamp.CampStampAPI;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Sets;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -17,16 +21,12 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class DMiscUtil
@@ -93,28 +93,6 @@ public class DMiscUtil
 	}
 
 	/**
-	 * Gets the Entity a Player is looking at.
-	 * Returns null if none found.
-	 * Will not return the player.
-	 * 
-	 * @param p
-	 * @param offset
-	 * @return
-	 */
-	public static Entity getTargetEntity(Player p, int offset)
-	{
-		Entity e = null;
-		for(Block b : p.getLineOfSight(null, dist))
-		{
-			for(Entity t : b.getChunk().getEntities())
-			{
-				if((t.getLocation().distance(b.getLocation()) <= offset) && !t.equals(p)) e = t;
-			}
-		}
-		return e;
-	}
-
-	/**
 	 * Gets the LivingEntity a Player is looking at.
 	 * 
 	 * @param p
@@ -134,41 +112,6 @@ public class DMiscUtil
 	}
 
 	/**
-	 * Gets the LivingEntity a Player is looking at, with given range.
-	 * 
-	 * @param p
-	 * @return
-	 */
-	public static LivingEntity getTargetLivingEntity(Player p, int offset, int range)
-	{
-		LivingEntity e = null;
-		for(Block b : p.getLineOfSight(null, range))
-		{
-			for(Entity t : b.getChunk().getEntities())
-			{
-				if(t instanceof LivingEntity) if((t.getLocation().distance(b.getLocation()) <= offset) && !t.equals(p)) e = (LivingEntity) t;
-			}
-		}
-		return e;
-	}
-
-	/**
-	 * Converts Locations to WriteLocation.
-	 * 
-	 * @param L
-	 * @return
-	 */
-	public static ArrayList<WriteLocation> toWriteLocations(List<Location> L)
-	{
-		ArrayList<WriteLocation> aw = new ArrayList<WriteLocation>();
-		for(Location l : L)
-		{
-			aw.add(new WriteLocation(l.getWorld().getName(), l.getBlockX(), l.getBlockY(), l.getBlockZ()));
-		}
-		return aw;
-	}
-
-	/**
 	 * Converts a Location to WriteLocation.
 	 * 
 	 * @param l
@@ -177,29 +120,6 @@ public class DMiscUtil
 	public static WriteLocation toWriteLocation(Location l)
 	{
 		return new WriteLocation(l.getWorld().getName(), l.getBlockX(), l.getBlockY(), l.getBlockZ());
-	}
-
-	/**
-	 * Converts WriteLocations to Locations.
-	 * 
-	 * @param L
-	 * @return
-	 */
-	public static ArrayList<Location> toLocations(List<WriteLocation> L)
-	{
-		ArrayList<Location> al = new ArrayList<Location>();
-		for(WriteLocation l : L)
-		{
-			try
-			{
-				al.add(new Location(plugin.getServer().getWorld(l.getWorld()), l.getX(), l.getY(), l.getZ()));
-			}
-			catch(Exception ignored)
-			{
-
-			}
-		}
-		return al;
 	}
 
 	/**
@@ -244,60 +164,14 @@ public class DMiscUtil
 		return p.hasPermission(pe);
 	}
 
-	/**
-	 * Sets a player's allegiance to Titan.
-	 * 
-	 * @param p
-	 */
-	public static void setTitan(Player p)
-	{
-		DSave.saveData(p, "ALLEGIANCE", "titan");
-	}
-
 	public static void setTitan(String p)
 	{
 		DSave.saveData(p, "ALLEGIANCE", "titan");
 	}
 
-	/**
-	 * Sets a player's allegiance to Giant.
-	 * 
-	 * @param p
-	 */
-	public static void setGiant(Player p)
-	{
-		DSave.saveData(p, "ALLEGIANCE", "giant");
-	}
-
-	public static void setGiant(String p)
-	{
-		DSave.saveData(p, "ALLEGIANCE", "giant");
-	}
-
-	/**
-	 * Sets a player's allegiance to God.
-	 * 
-	 * @param p
-	 */
-	public static void setGod(Player p)
-	{
-		DSave.saveData(p, "ALLEGIANCE", "god");
-	}
-
 	public static void setGod(String p)
 	{
 		DSave.saveData(p, "ALLEGIANCE", "god");
-	}
-
-	/**
-	 * Sets a player's allegiance.
-	 * 
-	 * @param p
-	 * @param allegiance
-	 */
-	public static void setAllegiance(Player p, String allegiance)
-	{
-		DSave.saveData(p, "ALLEGIANCE", allegiance);
 	}
 
 	public static void setAllegiance(String p, String allegiance)
@@ -395,17 +269,6 @@ public class DMiscUtil
 			DSave.saveData(p, "DEITIES", ad);
 		}
 		setDevotion(p, d, 1);
-	}
-
-	/**
-	 * Removes a player's deity if they have it.
-	 * 
-	 * @param p
-	 * @param name
-	 */
-	public static void removeDeity(Player p, String name)
-	{
-		removeDeity(p.getName(), name);
 	}
 
 	public static void removeDeity(String p, String name)
@@ -550,7 +413,6 @@ public class DMiscUtil
 			if(c > 0) disp = "+" + c;
 			else disp += c;
 			String str = ChatColor.GOLD + "Favor: " + ChatColor.WHITE + DMiscUtil.getFavor(p) + "/" + DMiscUtil.getFavorCap(p) + " (" + disp + ")";
-			sendSimpleNoticeMessage(DMiscUtil.getOnlinePlayer(p), str);
 		}
 	}
 
@@ -615,7 +477,6 @@ public class DMiscUtil
 			if(c > 0) disp = "+" + c;
 			else disp += c;
 			String str = color + "HP: " + DMiscUtil.getHP(p) + "/" + DMiscUtil.getMaxHP(p) + " (" + disp + ")";
-			sendSimpleNoticeMessage(DMiscUtil.getOnlinePlayer(p), str);
 		}
 	}
 
@@ -623,17 +484,6 @@ public class DMiscUtil
 	{
 		if(amt > getMaxHP(p)) amt = getMaxHP(p);
 		DSave.saveData(p, "dHP", amt);
-	}
-
-	/**
-	 * Set a player's max HP.
-	 * 
-	 * @param p
-	 * @param amt
-	 */
-	public static void setMaxHP(Player p, double amt)
-	{
-		setMaxHP(p.getName(), amt);
 	}
 
 	/**
@@ -713,7 +563,6 @@ public class DMiscUtil
 				String disp = "";
 				if(c > 0) disp = "+" + c;
 				else disp += c;
-				sendSimpleNoticeMessage(getOnlinePlayer(p), ChatColor.DARK_PURPLE + getDeity(p, deityname).getName() + ": " + ChatColor.WHITE + disp);
 			}
 			return true;
 		}
@@ -841,22 +690,6 @@ public class DMiscUtil
 	{
 		if(amt > ASCENSIONCAP) amt = ASCENSIONCAP;
 		DSave.saveData(p, "ASCENSIONS", amt);
-	}
-
-	public static void setAscensions(Player p, int amt)
-	{
-		setAscensions(p.getName(), amt);
-	}
-
-	/**
-	 * Calculate how much Devotion until the next Ascension.
-	 * 
-	 * @param p
-	 * @return
-	 */
-	public static int costForNextAscension(Player p)
-	{
-		return costForNextAscension(p.getName());
 	}
 
 	public static int costForNextAscension(String p)
@@ -1000,6 +833,8 @@ public class DMiscUtil
 				return 60;
 			case 12:
 				return 70;
+			case 13:
+				return 80;
 		}
 		return -1;
 	}
@@ -1261,23 +1096,11 @@ public class DMiscUtil
 				}
 			}
 			alliancerank.add(newleader);
-			leadamt = -1;
 			alliances.remove(newleader);
 		}
 		if(alliancerank.size() == 1) return false;
-		if(alliancerank.get(0).equalsIgnoreCase(alliance))
-		{
-			if(advantagepercent <= ((double) talliances.get(alliancerank.get(0)) / talliances.get(alliancerank.get(1)))) return true;
-		}
+		if(alliancerank.get(0).equalsIgnoreCase(alliance) && advantagepercent <= ((double) talliances.get(alliancerank.get(0)) / talliances.get(alliancerank.get(1)))) return true;
 		return false;
-	}
-
-	/**
-	 * Convenience method
-	 */
-	public static void callEvent(Event event)
-	{
-		plugin.getServer().getPluginManager().callEvent(event);
 	}
 
 	/**
@@ -1848,9 +1671,7 @@ public class DMiscUtil
 			HashMap<String, Long> original = getActiveEffects(p);
 			ArrayList<String> toreturn = new ArrayList<String>();
 			for(String s : original.keySet())
-			{
 				if(original.get(s) > System.currentTimeMillis()) toreturn.add(s);
-			}
 			return toreturn;
 		}
 		return null;
@@ -1861,15 +1682,16 @@ public class DMiscUtil
 	 * 
 	 * @return
 	 */
-	public static ArrayList<WriteLocation> getAllShrines()
+	public static List<WriteLocation> getAllShrines()
 	{
-		ArrayList<WriteLocation> list = new ArrayList<WriteLocation>();
-		for(String player : getFullParticipants())
+		return new ArrayList<WriteLocation>()
 		{
-			for(WriteLocation w : getShrines(player).values())
-				list.add(w);
-		}
-		return list;
+			{
+				for(String player : getFullParticipants())
+					for(WriteLocation w : getShrines(player).values())
+						add(w);
+			}
+		};
 	}
 
 	/**
@@ -1877,12 +1699,16 @@ public class DMiscUtil
 	 * 
 	 * @return
 	 */
-	public static ArrayList<String> getFullParticipants()
+	public static Collection<String> getFullParticipants()
 	{
-		ArrayList<String> names = new ArrayList<String>();
-		for(String s : DSave.getCompleteData().keySet())
-			if(isFullParticipant(s)) names.add(s);
-		return names;
+		return Collections2.filter(DSave.getCompleteData().keySet(), new Predicate<String>()
+		{
+			@Override
+			public boolean apply(String s)
+			{
+				return isFullParticipant(s);
+			}
+		});
 	}
 
 	/*
@@ -1893,12 +1719,14 @@ public class DMiscUtil
 	{
 		if(ALLOWPVPEVERYWHERE) return true;
 		if(plugin.WORLDGUARD == null) return true;
-		ApplicableRegionSet set = plugin.WORLDGUARD.getRegionManager(l.getWorld()).getApplicableRegions(l);
-		for(ProtectedRegion region : set)
+		return !Iterators.any(plugin.WORLDGUARD.getRegionManager(l.getWorld()).getApplicableRegions(l).iterator(), new Predicate<ProtectedRegion>()
 		{
-			if(region.getId().toLowerCase().contains("nopvp")) return false;
-		}
-		return true;
+			@Override
+			public boolean apply(ProtectedRegion region)
+			{
+				return region.getId().toLowerCase().contains("nopvp");
+			}
+		});
 	}
 
 	@SuppressWarnings("static-access")
@@ -1938,74 +1766,6 @@ public class DMiscUtil
 	private static boolean canCampStampTarget(Player player)
 	{
 		return Demigods.CAMPSTAMP == null || CampStampAPI.getProtectionStatus(player) == CampStampAPI.ProtectionStatus.NO_STATUS;
-	}
-
-	/**
-	 * For fancy effects
-	 */
-	/**
-	 * Player: Player who sees it
-	 * Entity: Entity the swirls appear on
-	 * Color: In hex, eg 0x000FF
-	 * Duration in ticks
-	 * Originally by nisovin
-	 * public static void playEffect(final Player player, final LivingEntity entity, int color, int duration) {
-	 * final DataWatcher dw = new DataWatcher();
-	 * dw.a(8, Integer.valueOf(0));
-	 * dw.watch(8, Integer.valueOf(color));
-	 * 
-	 * Packet40EntityMetadata packet = new Packet40EntityMetadata(entity.getEntityId(), dw, ALLOWPVPEVERYWHERE);
-	 * ((CraftPlayer)player).getHandle().netServerHandler.sendPacket(packet);
-	 * 
-	 * Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-	 * 
-	 * @Override
-	 *           public void run() {
-	 *           DataWatcher dwReal = ((CraftLivingEntity)entity).getHandle().getDataWatcher();
-	 *           dw.watch(8, dwReal.getInt(8));
-	 *           Packet40EntityMetadata packet = new Packet40EntityMetadata(entity.getEntityId(), dw, false);
-	 *           ((CraftPlayer)player).getHandle().netServerHandler.sendPacket(packet);
-	 *           }
-	 *           }, duration);
-	 *           }
-	 */
-
-	/**
-	 * Entity: Entity to have the effect
-	 * Color: In hex, eg 0x000FF
-	 * Duration in ticks
-	 * 
-	 * @param entity
-	 * @param color
-	 * @param duration
-	 *        Originally by nisovin
-	 *        public static void playEffect(LivingEntity entity, int color, int duration) {
-	 *        final EntityLiving el = ((CraftLivingEntity)entity).getHandle();
-	 *        final DataWatcher dw = el.getDataWatcher();
-	 *        dw.watch(8, Integer.valueOf(color));
-	 * 
-	 *        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-	 * @Override
-	 *           public void run() {
-	 *           int c = 0;
-	 *           if (!el.effects.isEmpty()) {
-	 *           c = net.minecraft.server.PotionBrewer.a(el.effects.values());
-	 *           }
-	 *           dw.watch(8, Integer.valueOf(c));
-	 *           }
-	 *           }, duration);
-	 *           }
-	 */
-
-	/**
-	 * For SimpleNotice
-	 */
-	private static void sendSimpleNoticeMessage(Player p, String text)
-	{
-		if(p.getListeningPluginChannels().contains("SimpleNotice"))
-		{
-			p.sendPluginMessage(getPlugin(), "SimpleNotice", text.getBytes(java.nio.charset.Charset.forName("UTF-8")));
-		}
 	}
 
 	/**
@@ -2053,15 +1813,21 @@ public class DMiscUtil
 		DFixes.setLastDamage(target, cause, amount);
 	}
 
-	public static Plugin getPlugin(String p)
+	public static Plugin getPlugin(final String p)
 	{
-		for(Plugin pl : plugin.getServer().getPluginManager().getPlugins())
+		try
 		{
-			if(pl.getDescription().getName().equalsIgnoreCase(p))
+			return Iterators.find(Sets.newHashSet(plugin.getServer().getPluginManager().getPlugins()).iterator(), new Predicate<Plugin>()
 			{
-				return pl;
-			}
+				@Override
+				public boolean apply(Plugin pl)
+				{
+					return pl.getDescription().getName().equalsIgnoreCase(p);
+				}
+			});
 		}
+		catch(NoSuchElementException ignored)
+		{}
 		return null;
 	}
 
