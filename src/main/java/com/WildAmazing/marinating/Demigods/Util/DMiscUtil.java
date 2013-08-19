@@ -2014,7 +2014,7 @@ public class DMiscUtil
 	public static void damageDemigods(LivingEntity source, LivingEntity target, double amount, DamageCause cause)
 	{
 		if(target.getHealth() > 1) target.damage(1);
-		if(target instanceof Player)
+		if(target instanceof Player && isFullParticipant((Player) target))
 		{
 			if(((Player) target).getGameMode() == GameMode.CREATIVE) return;
 			if(!canTarget(target, target.getLocation())) return;
