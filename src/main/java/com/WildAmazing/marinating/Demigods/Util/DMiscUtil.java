@@ -1791,6 +1791,7 @@ public class DMiscUtil
 		else
 		{
 			EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(source, target, cause, amount);
+			DFixes.processed.add(event); // Demigods should ignore this event from here out.
 			Bukkit.getPluginManager().callEvent(event);
 			if(amount >= 1 && !event.isCancelled())
 			{

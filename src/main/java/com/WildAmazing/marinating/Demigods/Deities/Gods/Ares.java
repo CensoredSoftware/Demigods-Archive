@@ -137,7 +137,7 @@ public class Ares implements Deity
 				}
 			}
 		}
-		else if(ee instanceof EntityDamageByEntityEvent)
+		else if(ee instanceof EntityDamageByEntityEvent && !((EntityDamageByEntityEvent) ee).isCancelled())
 		{
 			try
 			{

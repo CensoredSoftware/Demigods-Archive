@@ -1,5 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Titans;
 
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -13,9 +15,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
-
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 
 public class Cronus implements Deity
 {
@@ -118,7 +117,7 @@ public class Cronus implements Deity
 	{
 		if(ee instanceof EntityDamageEvent)
 		{
-			if((EntityDamageEvent) ee instanceof EntityDamageByEntityEvent)
+			if((EntityDamageEvent) ee instanceof EntityDamageByEntityEvent && !((EntityDamageByEntityEvent) ee).isCancelled())
 			{
 				EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) ee;
 				if(e.getDamager() instanceof Player)

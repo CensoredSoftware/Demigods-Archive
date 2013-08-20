@@ -19,7 +19,7 @@ import java.util.Set;
 public class DFixes implements Listener
 {
 	private static final Set<EntityDamageEvent> important = Collections.synchronizedSet(new HashSet<EntityDamageEvent>());
-	private static final Set<EntityDamageEvent> processed = Collections.synchronizedSet(new HashSet<EntityDamageEvent>());
+	public static final Set<EntityDamageEvent> processed = Collections.synchronizedSet(new HashSet<EntityDamageEvent>());
 
 	@EventHandler(priority = EventPriority.HIGH)
 	private void onImportantDamage(EntityDamageEvent event)
