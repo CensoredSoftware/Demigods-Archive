@@ -1,7 +1,8 @@
 package com.WildAmazing.marinating.Demigods.Deities.Gods;
 
-import java.util.List;
-
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.Util.DSave;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -10,9 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
-import com.WildAmazing.marinating.Demigods.Util.DSave;
+import java.util.List;
 
 public class Athena implements Deity
 {
@@ -113,7 +112,7 @@ public class Athena implements Deity
 					go.setY(go.getBlockY() + 1);
 					go.setPitch(pitch);
 					go.setYaw(yaw);
-					if((go.getBlock().isLiquid() || go.getBlock().isEmpty()) && DMiscUtil.canWorldGuardBuild(p, go))
+					if((go.getBlock().isLiquid() || go.getBlock().isEmpty()) && DMiscUtil.canLocationPVP(go))
 					{
 						DSave.saveData(p, "temp_flash", true);
 						DMiscUtil.horseTeleport(p, go);

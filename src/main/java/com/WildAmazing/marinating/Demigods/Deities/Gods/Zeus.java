@@ -1,7 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Gods;
 
-import java.util.ArrayList;
-
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,8 +14,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
+import java.util.ArrayList;
 
 /*
  * Affected by level:
@@ -239,37 +238,39 @@ public class Zeus implements Deity
 				p.sendMessage(ChatColor.YELLOW + "Shove is now active.");
 			}
 		}
-		else if(str.equalsIgnoreCase("storm"))
-		{
-			if(!DMiscUtil.hasDeity(p, "Zeus")) return;
-			long TIME = ZEUSULTIMATETIME;
-			if(System.currentTimeMillis() < TIME)
-			{
-				p.sendMessage(ChatColor.YELLOW + "You cannot use the lightning storm again for " + ((((TIME) / 1000) - (System.currentTimeMillis() / 1000))) / 60 + " minutes");
-				p.sendMessage(ChatColor.YELLOW + "and " + ((((TIME) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
-				return;
-			}
-			if(DMiscUtil.getFavor(p) >= ZEUSULTIMATECOST)
-			{
-				if(!DMiscUtil.canTarget(p, p.getLocation()))
-				{
-					p.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
-					return;
-				}
-				int t = (int) (ZEUSULTIMATECOOLDOWNMAX - ((ZEUSULTIMATECOOLDOWNMAX - ZEUSULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
-				int num = storm(p);
-				if(num > 0)
-				{
-					p.sendMessage("In exchange for " + ChatColor.AQUA + ZEUSULTIMATECOST + ChatColor.WHITE + " Favor, ");
-					p.sendMessage(ChatColor.GOLD + "Zeus" + ChatColor.WHITE + " has unloaded his wrath on " + num + " targets.");
-					DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - ZEUSULTIMATECOST);
-					p.setNoDamageTicks(1000);
-					ZEUSULTIMATETIME = System.currentTimeMillis() + t * 1000;
-				}
-				else p.sendMessage(ChatColor.YELLOW + "There are no targets nearby.");
-			}
-			else p.sendMessage(ChatColor.YELLOW + "Lightning storm requires " + ZEUSULTIMATECOST + " Favor.");
-		}
+		/*
+		 * else if(str.equalsIgnoreCase("storm"))
+		 * {
+		 * if(!DMiscUtil.hasDeity(p, "Zeus")) return;
+		 * long TIME = ZEUSULTIMATETIME;
+		 * if(System.currentTimeMillis() < TIME)
+		 * {
+		 * p.sendMessage(ChatColor.YELLOW + "You cannot use the lightning storm again for " + ((((TIME) / 1000) - (System.currentTimeMillis() / 1000))) / 60 + " minutes");
+		 * p.sendMessage(ChatColor.YELLOW + "and " + ((((TIME) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
+		 * return;
+		 * }
+		 * if(DMiscUtil.getFavor(p) >= ZEUSULTIMATECOST)
+		 * {
+		 * if(!DMiscUtil.canTarget(p, p.getLocation()))
+		 * {
+		 * p.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
+		 * return;
+		 * }
+		 * int t = (int) (ZEUSULTIMATECOOLDOWNMAX - ((ZEUSULTIMATECOOLDOWNMAX - ZEUSULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
+		 * int num = storm(p);
+		 * if(num > 0)
+		 * {
+		 * p.sendMessage("In exchange for " + ChatColor.AQUA + ZEUSULTIMATECOST + ChatColor.WHITE + " Favor, ");
+		 * p.sendMessage(ChatColor.GOLD + "Zeus" + ChatColor.WHITE + " has unloaded his wrath on " + num + " targets.");
+		 * DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - ZEUSULTIMATECOST);
+		 * p.setNoDamageTicks(1000);
+		 * ZEUSULTIMATETIME = System.currentTimeMillis() + t * 1000;
+		 * }
+		 * else p.sendMessage(ChatColor.YELLOW + "There are no targets nearby.");
+		 * }
+		 * else p.sendMessage(ChatColor.YELLOW + "Lightning storm requires " + ZEUSULTIMATECOST + " Favor.");
+		 * }
+		 */
 	}
 
 	/*

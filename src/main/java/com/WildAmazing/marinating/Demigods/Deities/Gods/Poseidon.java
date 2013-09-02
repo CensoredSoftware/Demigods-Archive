@@ -4,8 +4,9 @@ package com.WildAmazing.marinating.Demigods.Deities.Gods;
  * This style/format of code is now deprecated.
  */
 
-import java.util.ArrayList;
-
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.Util.DSettings;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,9 +19,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
-import com.WildAmazing.marinating.Demigods.Util.DSettings;
+import java.util.ArrayList;
 
 public class Poseidon implements Deity
 {
@@ -334,7 +333,7 @@ public class Poseidon implements Deity
 		int duration = (int) Math.ceil(2.80488 * Math.pow(devotion, 0.2689)); // seconds
 		//
 		Location target = DMiscUtil.getTargetLocation(p);
-		if(!DMiscUtil.canLocationPVP(target))
+		if(!DMiscUtil.canLocationPVP(target) || !DMiscUtil.canWorldGuardBuild(p, target))
 		{
 			p.sendMessage(ChatColor.YELLOW + "That is a no-PVP zone.");
 			return false;
@@ -346,7 +345,6 @@ public class Poseidon implements Deity
 			return false;
 		}
 
-		if(target == null) return false;
 		drown(target, radius, duration * 20);
 		return true;
 	}
