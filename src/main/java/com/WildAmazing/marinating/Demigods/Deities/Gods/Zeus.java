@@ -39,7 +39,6 @@ public class Zeus implements Deity
 	private static final int ZEUSULTIMATECOOLDOWNMAX = 600; // seconds
 	private static final int ZEUSULTIMATECOOLDOWNMIN = 60;
 
-	private long ZEUSULTIMATETIME;
 	private long ZEUSSHOVETIME;
 	private long ZEUSLIGHTNINGTIME;
 	private boolean SHOVE = false;
@@ -50,7 +49,6 @@ public class Zeus implements Deity
 	public Zeus(String player)
 	{
 		PLAYER = player;
-		ZEUSULTIMATETIME = System.currentTimeMillis();
 		ZEUSSHOVETIME = System.currentTimeMillis();
 		ZEUSLIGHTNINGTIME = System.currentTimeMillis();
 	}
@@ -89,9 +87,6 @@ public class Zeus implements Deity
 			p.sendMessage("Affects up to " + targets + " targets with power " + (int) (Math.round(multiply * 10)) + ".");
 			if(((Zeus) (DMiscUtil.getDeity(p, "Zeus"))).SHOVEBIND != null) p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Zeus) (DMiscUtil.getDeity(p, "Zeus"))).SHOVEBIND.name());
 			else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
-			p.sendMessage(":Zeus strikes lightning on nearby enemies as they are");
-			p.sendMessage("raised in the air and dropped. " + ChatColor.GREEN + "/storm");
-			p.sendMessage(ChatColor.YELLOW + "Costs " + ZEUSULTIMATECOST + " Favor. Cooldown time: " + t + " seconds.");
 			return;
 		}
 		p.sendMessage("--" + ChatColor.GOLD + "Zeus");
@@ -100,9 +95,6 @@ public class Zeus implements Deity
 		p.sendMessage(ChatColor.YELLOW + "Costs " + LIGHTNINGCOST + " Favor. Can bind.");
 		p.sendMessage("Active: Use the force of wind to knock back enemies. " + ChatColor.GREEN + "/shove");
 		p.sendMessage(ChatColor.YELLOW + "Costs " + SHOVECOST + " Favor. Can bind.");
-		p.sendMessage("Ultimate: Zeus strikes lightning on nearby enemies as they are");
-		p.sendMessage("raised in the air and dropped. " + ChatColor.GREEN + "/storm");
-		p.sendMessage(ChatColor.YELLOW + "Costs " + ZEUSULTIMATECOST + " Favor. Has cooldown.");
 		p.sendMessage(ChatColor.YELLOW + "Select item: iron ingot");
 	}
 
@@ -238,39 +230,6 @@ public class Zeus implements Deity
 				p.sendMessage(ChatColor.YELLOW + "Shove is now active.");
 			}
 		}
-		/*
-		 * else if(str.equalsIgnoreCase("storm"))
-		 * {
-		 * if(!DMiscUtil.hasDeity(p, "Zeus")) return;
-		 * long TIME = ZEUSULTIMATETIME;
-		 * if(System.currentTimeMillis() < TIME)
-		 * {
-		 * p.sendMessage(ChatColor.YELLOW + "You cannot use the lightning storm again for " + ((((TIME) / 1000) - (System.currentTimeMillis() / 1000))) / 60 + " minutes");
-		 * p.sendMessage(ChatColor.YELLOW + "and " + ((((TIME) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
-		 * return;
-		 * }
-		 * if(DMiscUtil.getFavor(p) >= ZEUSULTIMATECOST)
-		 * {
-		 * if(!DMiscUtil.canTarget(p, p.getLocation()))
-		 * {
-		 * p.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
-		 * return;
-		 * }
-		 * int t = (int) (ZEUSULTIMATECOOLDOWNMAX - ((ZEUSULTIMATECOOLDOWNMAX - ZEUSULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
-		 * int num = storm(p);
-		 * if(num > 0)
-		 * {
-		 * p.sendMessage("In exchange for " + ChatColor.AQUA + ZEUSULTIMATECOST + ChatColor.WHITE + " Favor, ");
-		 * p.sendMessage(ChatColor.GOLD + "Zeus" + ChatColor.WHITE + " has unloaded his wrath on " + num + " targets.");
-		 * DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - ZEUSULTIMATECOST);
-		 * p.setNoDamageTicks(1000);
-		 * ZEUSULTIMATETIME = System.currentTimeMillis() + t * 1000;
-		 * }
-		 * else p.sendMessage(ChatColor.YELLOW + "There are no targets nearby.");
-		 * }
-		 * else p.sendMessage(ChatColor.YELLOW + "Lightning storm requires " + ZEUSULTIMATECOST + " Favor.");
-		 * }
-		 */
 	}
 
 	/*
@@ -343,41 +302,6 @@ public class Zeus implements Deity
 		}
 		catch(Exception ignored)
 		{} // ignore it if something went wrong
-	}
-
-	private int storm(Player p)
-	{
-		ArrayList<Entity> entitylist = new ArrayList<Entity>();
-		Vector ploc = p.getLocation().toVector();
-		for(Entity anEntity : p.getWorld().getEntities())
-		{
-			if(anEntity.getLocation().toVector().isInSphere(ploc, 50.0)) entitylist.add(anEntity);
-		}
-		int count = 0;
-		for(Entity eee : entitylist)
-		{
-			try
-			{
-				LivingEntity e1 = (LivingEntity) eee;
-				if(e1 instanceof Player)
-				{
-					Player ptemp = (Player) e1;
-					if(!DMiscUtil.areAllied(p, ptemp) && !ptemp.equals(p))
-					{
-						strikeLightning(p, ptemp);
-						count++;
-					}
-				}
-				else
-				{
-					count++;
-					strikeLightning(p, e1);
-				}
-			}
-			catch(Exception ignored)
-			{} // ignore stuff like minecarts
-		}
-		return count;
 	}
 
 	private void strikeLightning(Player p, Entity target)

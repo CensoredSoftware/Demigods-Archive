@@ -1,10 +1,13 @@
 package com.WildAmazing.marinating.Demigods.Util;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Demigods;
+import com.google.common.collect.Maps;
 import org.bukkit.entity.Player;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /*
@@ -14,16 +17,12 @@ import java.util.logging.Logger;
  */
 public class DSave
 {
-	private final Logger log = Logger.getLogger("Minecraft");
-	private static Deity[] GLOBALLIST;
-	private static String PATH;
-	private static HashMap<String, HashMap<String, Object>> SAVEDDATA;
+	private final static Logger log = Logger.getLogger("Minecraft");
+	private final static String PATH = "plugins/Demigods/";
+	private static HashMap<String, HashMap<String, Object>> SAVEDDATA = Maps.newHashMap();
 
-	public DSave(String path, Deity[] alldeities)
+	public DSave()
 	{
-		PATH = path;
-		GLOBALLIST = alldeities;
-		SAVEDDATA = new HashMap<String, HashMap<String, Object>>();
 		int participants = 0;
 		File f1 = new File(PATH + "Players/");
 		if(!f1.exists())
@@ -80,9 +79,9 @@ public class DSave
 	/*
 	 * Add a player's information to be saved, under the player's name.
 	 */
-	public static boolean addPlayer(Player p)
+	public static void addPlayer(Player p)
 	{
-		return addPlayer(p.getName()); // always use getName();
+		addPlayer(p.getName()); // always use getName();
 	}
 
 	private static boolean addPlayer(String p)
@@ -112,9 +111,9 @@ public class DSave
 	/*
 	 * Save data under a certain id.
 	 */
-	public static boolean saveData(Player p, String id, Object save)
+	public static void saveData(Player p, String id, Object save)
 	{
-		return saveData(p.getName(), id, save);
+		saveData(p.getName(), id, save);
 	}
 
 	public static boolean saveData(String p, String id, Object save)
@@ -231,21 +230,21 @@ public class DSave
 	/*
 	 * Saves itself, but must be loaded elsewhere (main plugin).
 	 */
-	public static void save(String path) throws IOException
+	public static void save() throws IOException
 	{
-		(new File(path + "Players/")).mkdirs();
+		(new File(PATH + "Players/")).mkdirs();
 		for(String name : SAVEDDATA.keySet())
 		{
-			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path + "/Players/" + name + ".dem"));
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(PATH + "/Players/" + name + ".dem"));
 			oos.writeObject(SAVEDDATA.get(name));
 			oos.flush();
 			oos.close();
 		}
 	}
 
-	public static Deity[] getGlobalList()
+	public static Set<Deity> getGlobalList()
 	{
-		return GLOBALLIST;
+		return Demigods.deities;
 	}
 
 	public static boolean getConfirmed(Player player)

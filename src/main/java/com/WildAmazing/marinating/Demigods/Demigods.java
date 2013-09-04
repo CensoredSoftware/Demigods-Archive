@@ -10,6 +10,7 @@ import com.WildAmazing.marinating.Demigods.Util.DSettings;
 import com.WildAmazing.marinating.Demigods.Util.DUpdateUtil;
 import com.censoredsoftware.CampStamp.CampStampPlugin;
 import com.clashnia.Demigods.Deities.Giants.Typhon;
+import com.google.common.collect.ImmutableSet;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -30,6 +31,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
@@ -41,16 +43,27 @@ public class Demigods extends JavaPlugin implements Listener
 
 	// Define variables
 	private static final Logger log = Logger.getLogger("Minecraft");
-	static final String mainDirectory = "plugins/Demigods/";
-	private DMiscUtil initialize;
-	private DSave SAVE;
 
-	public static final Deity[] deities = { new Cronus("ADMIN"), new Rhea("ADMIN"), new Prometheus("ADMIN"), new Atlas("ADMIN"), new Oceanus("ADMIN"), new Hyperion("ADMIN"), new Themis("ADMIN"), new Zeus("ADMIN"), new Poseidon("ADMIN"), new Hades("ADMIN"), new Ares("ADMIN"), new Athena("ADMIN"), new Apollo("ADMIN"), new Hephaestus("ADMIN"), new Typhon("ADMIN") };
-
-	public Demigods()
+	public static final ImmutableSet<Deity> deities = ImmutableSet.copyOf(new HashSet<Deity>()
 	{
-		super();
-	}
+		{
+			add(new Cronus("ADMIN"));
+			add(new Rhea("ADMIN"));
+			add(new Prometheus("ADMIN"));
+			add(new Atlas("ADMIN"));
+			add(new Oceanus("ADMIN"));
+			add(new Hyperion("ADMIN"));
+			add(new Themis("ADMIN"));
+			add(new Zeus("ADMIN"));
+			add(new Poseidon("ADMIN"));
+			add(new Hades("ADMIN"));
+			add(new Ares("ADMIN"));
+			add(new Athena("ADMIN"));
+			add(new Apollo("ADMIN"));
+			add(new Hephaestus("ADMIN"));
+			add(new Typhon("ADMIN"));
+		}
+	});
 
 	@Override
 	public void onEnable()
@@ -60,9 +73,9 @@ public class Demigods extends JavaPlugin implements Listener
 
 		log.info("[Demigods] Initializing.");
 
-		new DSettings(this); // #1 (needed for DMiscUtil to load)
-		initialize = new DMiscUtil(this); // #2 (needed for everything else to work)
-		SAVE = new DSave(mainDirectory, deities); // #3 (needed to start save system)
+		new DSettings(); // #1 (needed for DMiscUtil to load)
+		new DMiscUtil(); // #2 (needed for everything else to work)
+		new DSave(); // #3 (needed to start save system)
 		loadFixes(); // #3.5
 		loadListeners(); // #4
 		loadCommands(); // #5 (needed)
@@ -105,7 +118,7 @@ public class Demigods extends JavaPlugin implements Listener
 		// Try to save files, if it can't, then let the Administrator know
 		try
 		{
-			DSave.save(mainDirectory);
+			DSave.save();
 		}
 		catch(FileNotFoundException e)
 		{
@@ -135,7 +148,7 @@ public class Demigods extends JavaPlugin implements Listener
 		// Save a player file when they exit, if it can't, let the Administrator know
 		if(DMiscUtil.isFullParticipant(e.getPlayer())) try
 		{
-			DSave.save(mainDirectory);
+			DSave.save();
 		}
 		catch(FileNotFoundException er)
 		{
@@ -399,7 +412,7 @@ public class Demigods extends JavaPlugin implements Listener
 			{
 				try
 				{
-					DSave.save(mainDirectory);
+					DSave.save();
 					log.info("[Demigods] Saved data for " + DMiscUtil.getFullParticipants().size() + " Demigods players. " + DSave.getCompleteData().size() + " files total.");
 				}
 				catch(FileNotFoundException e)
@@ -430,8 +443,8 @@ public class Demigods extends JavaPlugin implements Listener
 							if(DMiscUtil.isFullParticipant(p)) if(p.getHealth() > 0)
 							{
 								ChatColor color = ChatColor.GREEN;
-								if((DMiscUtil.getHP(p) / (double) DMiscUtil.getMaxHP(p)) < 0.25) color = ChatColor.RED;
-								else if((DMiscUtil.getHP(p) / (double) DMiscUtil.getMaxHP(p)) < 0.5) color = ChatColor.YELLOW;
+								if((DMiscUtil.getHP(p) / DMiscUtil.getMaxHP(p)) < 0.25) color = ChatColor.RED;
+								else if((DMiscUtil.getHP(p) / DMiscUtil.getMaxHP(p)) < 0.5) color = ChatColor.YELLOW;
 								String str = "-- HP " + color + "" + DMiscUtil.getHP(p) + "/" + DMiscUtil.getMaxHP(p) + ChatColor.YELLOW + " Favor " + DMiscUtil.getFavor(p) + "/" + DMiscUtil.getFavorCap(p);
 								p.sendMessage(str);
 							}

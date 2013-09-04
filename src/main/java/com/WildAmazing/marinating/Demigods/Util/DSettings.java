@@ -1,21 +1,19 @@
 package com.WildAmazing.marinating.Demigods.Util;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.WildAmazing.marinating.Demigods.Demigods;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
-import com.WildAmazing.marinating.Demigods.Demigods;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DSettings
 {
+	private static final Demigods plugin;
 
-	private static Demigods plugin;
-
-	public DSettings(Demigods instance)
+	static
 	{
-		plugin = instance;
+		plugin = (Demigods) Bukkit.getServer().getPluginManager().getPlugin("Demigods");
 		plugin.getConfig().options().copyDefaults(true);
 		plugin.saveConfig();
 	}

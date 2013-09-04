@@ -252,7 +252,7 @@ public class Ares implements Deity
 	 * Helper methods
 	 * ---------------
 	 */
-	private boolean strike(Player p)
+	private void strike(Player p)
 	{
 		/*
 		 * /
@@ -261,12 +261,12 @@ public class Ares implements Deity
 		if(target == null)
 		{
 			p.sendMessage(ChatColor.YELLOW + "No target found.");
-			return false;
+			return;
 		}
 		if(!DMiscUtil.canTarget(target, target.getLocation()) || !DMiscUtil.canTarget(p, p.getLocation()))
 		{
 			p.sendMessage(ChatColor.YELLOW + "Can't attack in a no-PVP zone.");
-			return false;
+			return;
 		}
 		/*
 		 * Calculate special values
@@ -281,7 +281,6 @@ public class Ares implements Deity
 		 */
 		DMiscUtil.damageDemigods(p, target, damage, DamageCause.ENTITY_ATTACK);
 		target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration, slowpower));
-		return true;
 	}
 
 	private int crash(Player p)

@@ -31,7 +31,7 @@ import java.util.logging.Logger;
 
 public class DMiscUtil
 {
-	private static Demigods plugin; // obviously needed
+	private static final Demigods plugin = (Demigods) Bukkit.getServer().getPluginManager().getPlugin("Demigods"); // obviously needed
 	private static final int dist = DSettings.getSettingInt("max_target_range"); // maximum range on targeting
 	private static final int MAXIMUMHP = DSettings.getSettingInt("max_hp"); // max hp a player can have
 	public static final int ASCENSIONCAP = DSettings.getSettingInt("ascension_cap"); // max levels
@@ -39,11 +39,6 @@ public class DMiscUtil
 	private static final boolean BROADCASTNEWDEITY = DSettings.getSettingBoolean("broadcast_new_deities"); // tell server when a player gets a deity
 	private static final boolean ALLOWPVPEVERYWHERE = DSettings.getSettingBoolean("allow_skills_everywhere");
 	private static final boolean USENEWPVP = DSettings.getSettingBoolean("use_new_pvp_zones");
-
-	public DMiscUtil(Demigods d)
-	{
-		plugin = d;
-	}
 
 	public static void consoleMSG(String level, String msg)
 	{
@@ -407,13 +402,6 @@ public class DMiscUtil
 		if(amt > getFavorCap(p)) amt = getFavorCap(p);
 		int c = amt - getFavor(p);
 		DSave.saveData(p, "FAVOR", amt);
-		if((c != 0) && (DMiscUtil.getOnlinePlayer(p) != null))
-		{
-			String disp = "";
-			if(c > 0) disp = "+" + c;
-			else disp += c;
-			String str = ChatColor.GOLD + "Favor: " + ChatColor.WHITE + DMiscUtil.getFavor(p) + "/" + DMiscUtil.getFavorCap(p) + " (" + disp + ")";
-		}
 	}
 
 	public static void setFavorQuiet(String p, int amt)
@@ -572,19 +560,19 @@ public class DMiscUtil
 		}
 	}
 
-	public static boolean setDevotion(Player p, Deity d, int amt)
+	public static void setDevotion(Player p, Deity d, int amt)
 	{
-		return setDevotion(p.getName(), d.getName(), amt);
+		setDevotion(p.getName(), d.getName(), amt);
 	}
 
-	public static boolean setDevotion(String p, Deity d, int amt)
+	public static void setDevotion(String p, Deity d, int amt)
 	{
-		return setDevotion(p, d.getName(), amt);
+		setDevotion(p, d.getName(), amt);
 	}
 
-	public static boolean setDevotion(Player p, String deityname, int amt)
+	public static void setDevotion(Player p, String deityname, int amt)
 	{
-		return setDevotion(p.getName(), deityname, amt);
+		setDevotion(p.getName(), deityname, amt);
 	}
 
 	/**
@@ -1052,17 +1040,17 @@ public class DMiscUtil
 		if(getDeaths(p) == -1) return false;
 		if(getKills(p) == -1) return false;
 		if((getDeities(p) == null) || (getDeities(p).size() == 0)) return false;
-		if(getAscensions(p) == -1) return false;
-		return getMaxHP(p) != -1 && getFavor(p) != -1 && getFavorCap(p) != -1;
+		return getAscensions(p) != -1 && getMaxHP(p) != -1 && getFavor(p) != -1 && getFavorCap(p) != -1;
 	}
 
 	/**
 	 * Checks if one team has an advantage over the other by greater than the given %.
 	 * 
+	 * 
 	 * @param alliance
 	 * @return
 	 */
-	public static boolean hasAdvantage(String alliance, double advantagepercent)
+	public static boolean hasAdvantage(String alliance)
 	{
 		HashMap<String, Integer> alliances = new HashMap<String, Integer>();
 		for(String player : DSave.getCompleteData().keySet())
@@ -1087,20 +1075,19 @@ public class DMiscUtil
 		{
 			String newleader = "";
 			int leadamt = -1;
-			for(String all : alliances.keySet())
+			for(Map.Entry<String, Integer> all : alliances.entrySet())
 			{
-				if(alliances.get(all) > leadamt)
+				if(all.getValue() > leadamt)
 				{
-					leadamt = alliances.get(all);
-					newleader = all;
+					leadamt = all.getValue();
+					newleader = all.getKey();
 				}
 			}
 			alliancerank.add(newleader);
 			alliances.remove(newleader);
 		}
 		if(alliancerank.size() == 1) return false;
-		if(alliancerank.get(0).equalsIgnoreCase(alliance) && advantagepercent <= ((double) talliances.get(alliancerank.get(0)) / talliances.get(alliancerank.get(1)))) return true;
-		return false;
+		return alliancerank.get(0).equalsIgnoreCase(alliance) && com.WildAmazing.marinating.Demigods.DCommandExecutor.ADVANTAGEPERCENT <= ((double) talliances.get(alliancerank.get(0)) / talliances.get(alliancerank.get(1)));
 	}
 
 	/**
@@ -1565,14 +1552,13 @@ public class DMiscUtil
 	}
 
 	@SuppressWarnings("unchecked")
-	public static boolean addShrine(String p, String deityname, WriteLocation loc)
+	public static void addShrine(String p, String deityname, WriteLocation loc)
 	{
 		if(DSave.hasData(p, "P_SHRINES"))
 		{
 			((HashMap<String, WriteLocation>) DSave.getData(p, "P_SHRINES")).put(deityname, loc);
-			return true;
+			return;
 		}
-		return false;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1588,9 +1574,9 @@ public class DMiscUtil
 		if(DSave.hasData(p, "P_SHRINES"))
 		{
 			HashMap<String, WriteLocation> original = (HashMap<String, WriteLocation>) DSave.getData(p, "P_SHRINES");
-			for(String s : original.keySet())
+			for(Map.Entry<String, WriteLocation> s : original.entrySet())
 			{
-				if(s.equalsIgnoreCase(deityname)) return original.get(s);
+				if(s.getKey().equalsIgnoreCase(deityname)) return s.getValue();
 			}
 		}
 		return null;
@@ -1610,29 +1596,28 @@ public class DMiscUtil
 	/**
 	 * Add a single active effect, using its name and its duration in seconds
 	 * 
+	 * 
 	 * @param p
 	 * @param effectname
 	 * @param lengthInSeconds
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static boolean addActiveEffect(String p, String effectname, int lengthInSeconds)
+	public static void addActiveEffect(String p, String effectname, int lengthInSeconds)
 	{
 		if(DSave.hasData(p, "A_EFFECTS"))
 		{
 			((HashMap<String, Long>) DSave.getData(p, "A_EFFECTS")).put(effectname, System.currentTimeMillis() + lengthInSeconds * 1000);
-			return true;
+			return;
 		}
-		return false;
 	}
 
-	public static boolean removeActiveEffect(String p, String effectname)
+	public static void removeActiveEffect(String p, String effectname)
 	{
 		for(String effect : DMiscUtil.getActiveEffectsList(p))
 		{
-			if(effect.equals(effectname)) return(DMiscUtil.getActiveEffects(p).remove(effect) == null);
+			if(effect.equals(effectname)) DMiscUtil.getActiveEffects(p).remove(effect);
 		}
-		return false;
 	}
 
 	/**
@@ -1648,9 +1633,9 @@ public class DMiscUtil
 		{
 			HashMap<String, Long> original = ((HashMap<String, Long>) DSave.getData(p, "A_EFFECTS"));
 			HashMap<String, Long> toreturn = new HashMap<String, Long>();
-			for(String s : original.keySet())
+			for(Map.Entry<String, Long> s : original.entrySet())
 			{
-				if(original.get(s) > System.currentTimeMillis()) toreturn.put(s, original.get(s));
+				if(s.getValue() > System.currentTimeMillis()) toreturn.put(s.getKey(), s.getValue());
 			}
 			setActiveEffects(p, toreturn); // clean original
 			return toreturn;
@@ -1670,8 +1655,8 @@ public class DMiscUtil
 		{
 			HashMap<String, Long> original = getActiveEffects(p);
 			ArrayList<String> toreturn = new ArrayList<String>();
-			for(String s : original.keySet())
-				if(original.get(s) > System.currentTimeMillis()) toreturn.add(s);
+			for(Map.Entry<String, Long> s : original.entrySet())
+				if(s.getValue() > System.currentTimeMillis()) toreturn.add(s.getKey());
 			return toreturn;
 		}
 		return null;
@@ -1718,8 +1703,7 @@ public class DMiscUtil
 	public static boolean canWorldGuardPVP(Location l)
 	{
 		if(ALLOWPVPEVERYWHERE) return true;
-		if(plugin.WORLDGUARD == null) return true;
-		return !Iterators.any(plugin.WORLDGUARD.getRegionManager(l.getWorld()).getApplicableRegions(l).iterator(), new Predicate<ProtectedRegion>()
+		return plugin.WORLDGUARD == null || !Iterators.any(plugin.WORLDGUARD.getRegionManager(l.getWorld()).getApplicableRegions(l).iterator(), new Predicate<ProtectedRegion>()
 		{
 			@Override
 			public boolean apply(ProtectedRegion region)

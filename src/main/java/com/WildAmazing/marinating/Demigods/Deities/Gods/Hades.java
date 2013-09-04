@@ -1,7 +1,8 @@
 package com.WildAmazing.marinating.Demigods.Deities.Gods;
 
-import java.util.ArrayList;
-
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.Util.DSettings;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -19,22 +20,20 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
-import com.WildAmazing.marinating.Demigods.Util.DSettings;
+import java.util.ArrayList;
 
 public class Hades implements Deity
 {
 
 	/* General */
 	private static final long serialVersionUID = 3647481847975286534L;
-	private final int CHAINCOST = 250;
-	private final int CHAINDELAY = 1500;
-	private final int ENTOMBCOST = 470;
-	private final int ENTOMBDELAY = 2000;
-	private final int ULTIMATECOST = 4000;
-	private final int ULTIMATECOOLDOWNMAX = 600;
-	private final int ULTIMATECOOLDOWNMIN = 320;
+	private static final int CHAINCOST = 250;
+	private static final int CHAINDELAY = 1500;
+	private static final int ENTOMBCOST = 470;
+	private static final int ENTOMBDELAY = 2000;
+	private static final int ULTIMATECOST = 4000;
+	private static final int ULTIMATECOOLDOWNMAX = 600;
+	private static final int ULTIMATECOOLDOWNMIN = 320;
 
 	/* Specific to player */
 	private final String PLAYER;

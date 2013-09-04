@@ -26,14 +26,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class DCommandExecutor implements CommandExecutor
 {
 	private final Demigods plugin;
-	private final double ADVANTAGEPERCENT = 1.3;
-	private final double TRANSFERTAX = 0.9;
+	public static final double ADVANTAGEPERCENT = 1.3;
+	private static final double TRANSFERTAX = 0.9;
 	private final boolean BALANCETEAMS = DSettings.getSettingBoolean("balance_teams");
 
 	public DCommandExecutor(Demigods d)
@@ -1214,8 +1215,8 @@ public class DCommandExecutor implements CommandExecutor
 		p.sendMessage(ChatColor.YELLOW + "--" + p.getName() + "--" + DMiscUtil.getRank(p) + "");
 		// HP
 		ChatColor color = ChatColor.GREEN;
-		if((DMiscUtil.getHP(p) / (double) DMiscUtil.getMaxHP(p)) < 0.25) color = ChatColor.RED;
-		else if((DMiscUtil.getHP(p) / (double) DMiscUtil.getMaxHP(p)) < 0.5) color = ChatColor.YELLOW;
+		if((DMiscUtil.getHP(p) / DMiscUtil.getMaxHP(p)) < 0.25) color = ChatColor.RED;
+		else if((DMiscUtil.getHP(p) / DMiscUtil.getMaxHP(p)) < 0.5) color = ChatColor.YELLOW;
 		p.sendMessage("HP: " + color + DMiscUtil.getHP(p) + "/" + DMiscUtil.getMaxHP(p));
 		// List deities
 		String send = "Your deities are:";
@@ -1243,9 +1244,9 @@ public class DCommandExecutor implements CommandExecutor
 		{
 			String printout = ChatColor.YELLOW + "Active effects:";
 			HashMap<String, Long> fx = DMiscUtil.getActiveEffects(p.getName());
-			for(String str : fx.keySet())
+			for(Map.Entry<String, Long> str : fx.entrySet())
 			{
-				printout += " " + str + "[" + (Math.round(fx.get(str) - System.currentTimeMillis()) / 1000) + "s]";
+				printout += " " + str.getKey() + "[" + (Math.round(str.getValue() - System.currentTimeMillis()) / 1000) + "s]";
 			}
 			p.sendMessage(printout);
 		}
@@ -1365,8 +1366,8 @@ public class DCommandExecutor implements CommandExecutor
 				p.sendMessage(send);
 				// HP
 				ChatColor color = ChatColor.GREEN;
-				if((DMiscUtil.getHP(target) / (double) DMiscUtil.getMaxHP(target)) < 0.25) color = ChatColor.RED;
-				else if((DMiscUtil.getHP(target) / (double) DMiscUtil.getMaxHP(target)) < 0.5) color = ChatColor.YELLOW;
+				if((DMiscUtil.getHP(target) / DMiscUtil.getMaxHP(target)) < 0.25) color = ChatColor.RED;
+				else if((DMiscUtil.getHP(target) / DMiscUtil.getMaxHP(target)) < 0.5) color = ChatColor.YELLOW;
 				p.sendMessage("HP: " + color + DMiscUtil.getHP(target) + "/" + DMiscUtil.getMaxHP(target));
 				// Display Favor/Ascensions and K/D
 				p.sendMessage("Devotion: " + DMiscUtil.getDevotion(target) + ChatColor.YELLOW + "   |   " + (DMiscUtil.costForNextAscension(DMiscUtil.getAscensions(target)) - DMiscUtil.getDevotion(target)) + " until next Ascension");
@@ -2469,20 +2470,18 @@ public class DCommandExecutor implements CommandExecutor
 					return true;
 				}
 				p.sendMessage(ChatColor.YELLOW + "The Fates ponder your decision...");
-				final Deity fchoice = choice;
-				final Player pl = p;
-				if(BALANCETEAMS && DMiscUtil.hasAdvantage(fchoice.getDefaultAlliance(), ADVANTAGEPERCENT)) // TODO Temp fix for Typhon.
+				if(BALANCETEAMS && DMiscUtil.hasAdvantage(choice.getDefaultAlliance())) // TODO Temp fix for Typhon.
 				{
-					pl.sendMessage(ChatColor.RED + "The Fates have determined that your selection would");
-					pl.sendMessage(ChatColor.RED + "unbalance the order of the universe. Try again");
-					pl.sendMessage(ChatColor.RED + "later or select a different deity.");
+					p.sendMessage(ChatColor.RED + "The Fates have determined that your selection would");
+					p.sendMessage(ChatColor.RED + "unbalance the order of the universe. Try again");
+					p.sendMessage(ChatColor.RED + "later or select a different deity.");
 					return true;
 				}
-				pl.sendMessage(ChatColor.YELLOW + "You have been accepted to the lineage of " + fchoice.getName() + ".");
-				DMiscUtil.initializePlayer(pl.getName(), fchoice.getDefaultAlliance(), fchoice);
-				pl.getWorld().strikeLightningEffect(pl.getLocation());
+				p.sendMessage(ChatColor.YELLOW + "You have been accepted to the lineage of " + choice.getName() + ".");
+				DMiscUtil.initializePlayer(p.getName(), choice.getDefaultAlliance(), choice);
+				p.getWorld().strikeLightningEffect(p.getLocation());
 				for(int i = 0; i < 20; i++)
-					pl.getWorld().spawn(pl.getLocation(), ExperienceOrb.class);
+					p.getWorld().spawn(p.getLocation(), ExperienceOrb.class);
 				return true;
 			}
 			p.sendMessage(ChatColor.YELLOW + "That is not a valid selection item for your first deity.");
@@ -2820,11 +2819,10 @@ public class DCommandExecutor implements CommandExecutor
 					try
 					{
 						WriteLocation w = DMiscUtil.getShrines(p).get(name);
-						String names = "";
+						StringBuilder names = new StringBuilder();
 						for(String player : DMiscUtil.getShrineGuestlist(w))
-							names += player + " ";
-						names = names.trim();
-						cm.sendMessage(name + " " + w.getX() + " " + w.getY() + " " + w.getZ() + " " + w.getWorld() + " " + names);
+							names.append(player).append(" ");
+						cm.sendMessage(name + " " + w.getX() + " " + w.getY() + " " + w.getZ() + " " + w.getWorld() + " " + names.toString().trim());
 					}
 					catch(Exception e)
 					{
@@ -2975,11 +2973,10 @@ public class DCommandExecutor implements CommandExecutor
 					try
 					{
 						WriteLocation w = DMiscUtil.getShrines(p).get(name);
-						String names = "";
+						StringBuilder names = new StringBuilder();
 						for(String player : DMiscUtil.getShrineGuestlist(w))
-							names += player + " ";
-						names = names.trim();
-						cm.info(name + " " + w.getX() + " " + w.getY() + " " + w.getZ() + " " + w.getWorld() + " " + names);
+							names.append(player).append(" ");
+						cm.info(name + " " + w.getX() + " " + w.getY() + " " + w.getZ() + " " + w.getWorld() + " " + names.toString().trim());
 					}
 					catch(Exception e)
 					{
@@ -3422,7 +3419,7 @@ public class DCommandExecutor implements CommandExecutor
 				}
 				// shrines
 				Logger.getLogger("Minecraft").info("[Demigods] Loaded " + p + "'s data from debug file.");
-				DSave.save(Demigods.mainDirectory);
+				DSave.save();
 			}
 			catch(Exception e)
 			{

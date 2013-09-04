@@ -1,7 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Titans;
 
-import java.util.ArrayList;
-
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,8 +11,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
+import java.util.ArrayList;
 
 //TODO better replacement for BLAZE
 public class Prometheus implements Deity
@@ -24,7 +23,6 @@ public class Prometheus implements Deity
 	private final int PROMETHEUSULTIMATECOOLDOWNMAX = 600; // seconds
 	private final int PROMETHEUSULTIMATECOOLDOWNMIN = 60;
 	private final int BLAZECOST = 400;
-	private final double FIREBALLDELAY = 0.5; // seconds
 	private final double BLAZEDELAY = 15;
 
 	private Material FIREBALLITEM = null;
@@ -34,14 +32,13 @@ public class Prometheus implements Deity
 	private long FIRESTORMTIME;
 	private long BLAZETIME;
 	private long FIREBALLTIME;
-	private final String DISPLAYNAME;
 
 	public Prometheus(String name)
 	{
 		PLAYER = name;
 		FIRESTORMTIME = System.currentTimeMillis();
 		BLAZETIME = System.currentTimeMillis();
-		DISPLAYNAME = name;
+		String DISPLAYNAME = name;
 		FIREBALLTIME = System.currentTimeMillis();
 	}
 
@@ -131,6 +128,7 @@ public class Prometheus implements Deity
 					}
 					DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - FIREBALLCOST);
 					shootFireball(p.getEyeLocation(), DMiscUtil.getTargetLocation(p), p);
+					double FIREBALLDELAY = 0.5;
 					FIREBALLTIME = System.currentTimeMillis() + (long) (FIREBALLDELAY * 1000);
 				}
 				else

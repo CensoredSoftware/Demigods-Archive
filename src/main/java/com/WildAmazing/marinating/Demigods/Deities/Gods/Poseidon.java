@@ -27,9 +27,7 @@ public class Poseidon implements Deity
 	/* General */
 	private static final long serialVersionUID = 2319323778421842381L;
 	private final int REELCOST = 120;
-	private final int REELDELAY = 1100;
 	private final int drownCOST = 240;
-	private final int DROWNDELAY = 15000;
 	// private final int ULTIMATECOST = 5000;
 	// private final int ULTIMATECOOLDOWNMAX = 800;
 	// private final int ULTIMATECOOLDOWNMIN = 220;
@@ -151,6 +149,7 @@ public class Poseidon implements Deity
 						if(reel(p))
 						{
 							DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - REELCOST);
+							int REELDELAY = 1100;
 							REELTIME = System.currentTimeMillis() + REELDELAY;
 						}
 					}
@@ -173,6 +172,7 @@ public class Poseidon implements Deity
 					if(drown(p))
 					{
 						DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - drownCOST);
+						int DROWNDELAY = 15000;
 						drownTIME = System.currentTimeMillis() + DROWNDELAY;
 					}
 				}
@@ -188,21 +188,20 @@ public class Poseidon implements Deity
 	@Override
 	public void onCommand(Player P, String str, String[] args, boolean bind)
 	{
-		final Player p = P;
-		if(!DMiscUtil.isFullParticipant(p)) return;
-		if(!DMiscUtil.hasDeity(p, "Poseidon")) return;
+		if(!DMiscUtil.isFullParticipant(P)) return;
+		if(!DMiscUtil.hasDeity(P, "Poseidon")) return;
 		if(str.equalsIgnoreCase("reel"))
 		{
 			if(REEL)
 			{
 				REEL = false;
-				p.sendMessage(ChatColor.YELLOW + "Reel is no longer active.");
+				P.sendMessage(ChatColor.YELLOW + "Reel is no longer active.");
 			}
 			else
 			{
 				REEL = true;
-				p.sendMessage(ChatColor.YELLOW + "Reel is now active.");
-				p.sendMessage(ChatColor.YELLOW + "It can only be used with a fishing rods.");
+				P.sendMessage(ChatColor.YELLOW + "Reel is now active.");
+				P.sendMessage(ChatColor.YELLOW + "It can only be used with a fishing rods.");
 			}
 		}
 		else if(str.equalsIgnoreCase("drown"))
@@ -211,19 +210,19 @@ public class Poseidon implements Deity
 			{
 				if(drownBIND == null)
 				{
-					if(DMiscUtil.isBound(p, p.getItemInHand().getType())) p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
-					if(p.getItemInHand().getType() == Material.AIR) p.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
+					if(DMiscUtil.isBound(P, P.getItemInHand().getType())) P.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
+					if(P.getItemInHand().getType() == Material.AIR) P.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
 					else
 					{
-						DMiscUtil.registerBind(p, p.getItemInHand().getType());
-						drownBIND = p.getItemInHand().getType();
-						p.sendMessage(ChatColor.YELLOW + "Drown is now bound to " + p.getItemInHand().getType().name() + ".");
+						DMiscUtil.registerBind(P, P.getItemInHand().getType());
+						drownBIND = P.getItemInHand().getType();
+						P.sendMessage(ChatColor.YELLOW + "Drown is now bound to " + P.getItemInHand().getType().name() + ".");
 					}
 				}
 				else
 				{
-					DMiscUtil.removeBind(p, drownBIND);
-					p.sendMessage(ChatColor.YELLOW + "Drown is no longer bound to " + drownBIND.name() + ".");
+					DMiscUtil.removeBind(P, drownBIND);
+					P.sendMessage(ChatColor.YELLOW + "Drown is no longer bound to " + drownBIND.name() + ".");
 					drownBIND = null;
 				}
 				return;
@@ -231,12 +230,12 @@ public class Poseidon implements Deity
 			if(drown)
 			{
 				drown = false;
-				p.sendMessage(ChatColor.YELLOW + "Drown is no longer active.");
+				P.sendMessage(ChatColor.YELLOW + "Drown is no longer active.");
 			}
 			else
 			{
 				drown = true;
-				p.sendMessage(ChatColor.YELLOW + "Drown is now active.");
+				P.sendMessage(ChatColor.YELLOW + "Drown is now active.");
 			}
 			/*
 			 * } else if (str.equalsIgnoreCase("waterfall")) {

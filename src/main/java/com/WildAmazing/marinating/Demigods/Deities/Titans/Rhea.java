@@ -1,7 +1,9 @@
 package com.WildAmazing.marinating.Demigods.Deities.Titans;
 
-import java.util.ArrayList;
-
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.Util.DSave;
+import com.WildAmazing.marinating.Demigods.WriteLocation;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,10 +20,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
-import com.WildAmazing.marinating.Demigods.Util.DSave;
-import com.WildAmazing.marinating.Demigods.WriteLocation;
+import java.util.ArrayList;
 
 public class Rhea implements Deity
 {
@@ -32,8 +31,6 @@ public class Rhea implements Deity
 	private final int RHEAULTIMATECOST = 5500;
 	private final int RHEAULTIMATECOOLDOWNMAX = 500;
 	private final int RHEAULTIMATECOOLDOWNMIN = 120;
-	private final int POISONDELAY = 1500; // milliseconds
-	private final int PLANTDELAY = 2000;
 
 	/* Specific to owner */
 	private final String PLAYER;
@@ -143,6 +140,7 @@ public class Rhea implements Deity
 					if(poison(p))
 					{
 						DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - POISONCOST);
+						int POISONDELAY = 1500;
 						POISONTIME = System.currentTimeMillis() + POISONDELAY;
 					}
 				}
@@ -160,6 +158,7 @@ public class Rhea implements Deity
 					if(plant(p))
 					{
 						DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - PLANTCOST);
+						int PLANTDELAY = 2000;
 						PLANTTIME = System.currentTimeMillis() + PLANTDELAY;
 					}
 				}

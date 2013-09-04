@@ -1,17 +1,17 @@
 package com.WildAmazing.marinating.Demigods.Listeners;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.Util.DSettings;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
-import com.WildAmazing.marinating.Demigods.Util.DSettings;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DChatCommands implements Listener
 {
@@ -34,15 +34,15 @@ public class DChatCommands implements Listener
 			if(p.getHealth() > 0)
 			{
 				ChatColor color = ChatColor.GREEN;
-				if((DMiscUtil.getHP(p) / (double) DMiscUtil.getMaxHP(p)) < 0.25) color = ChatColor.RED;
-				else if((DMiscUtil.getHP(p) / (double) DMiscUtil.getMaxHP(p)) < 0.5) color = ChatColor.YELLOW;
+				if((DMiscUtil.getHP(p) / DMiscUtil.getMaxHP(p)) < 0.25) color = ChatColor.RED;
+				else if((DMiscUtil.getHP(p) / DMiscUtil.getMaxHP(p)) < 0.5) color = ChatColor.YELLOW;
 				str = "-- Your HP " + color + "" + DMiscUtil.getHP(p) + "/" + DMiscUtil.getMaxHP(p) + ChatColor.YELLOW + " Favor " + DMiscUtil.getFavor(p) + "/" + DMiscUtil.getFavorCap(p);
 				if(DMiscUtil.getActiveEffects(p.getName()).size() > 0)
 				{
 					HashMap<String, Long> effects = DMiscUtil.getActiveEffects(p.getName());
 					str += ChatColor.WHITE + " Active effects:";
-					for(String stt : effects.keySet())
-						str += " " + stt + "[" + ((effects.get(stt) - System.currentTimeMillis()) / 1000) + "s]";
+					for(Map.Entry<String, Long> stt : effects.entrySet())
+						str += " " + stt.getKey() + "[" + ((stt.getValue() - System.currentTimeMillis()) / 1000) + "s]";
 				}
 				try
 				{
@@ -62,8 +62,8 @@ public class DChatCommands implements Listener
 							{
 								HashMap<String, Long> fx = DMiscUtil.getActiveEffects(other);
 								str += ChatColor.GRAY + " Active effects:";
-								for(String stt : fx.keySet())
-									str += " " + stt + "[" + ((fx.get(stt) - System.currentTimeMillis()) / 1000) + "s]";
+								for(Map.Entry<String, Long> stt : fx.entrySet())
+									str += " " + stt.getKey() + "[" + ((stt.getValue() - System.currentTimeMillis()) / 1000) + "s]";
 							}
 						}
 					}
@@ -94,12 +94,12 @@ public class DChatCommands implements Listener
 				}
 			}
 		}
-		for(String alliance : alliances.keySet())
+		for(Map.Entry<String, ArrayList<String>> alliance : alliances.entrySet())
 		{
 			String names = "";
-			for(String name : alliances.get(alliance))
+			for(String name : alliance.getValue())
 				names += " " + name;
-			p.sendMessage(ChatColor.YELLOW + alliance + ": " + ChatColor.WHITE + names);
+			p.sendMessage(ChatColor.YELLOW + alliance.getKey() + ": " + ChatColor.WHITE + names);
 		}
 		e.getRecipients().clear();
 		e.setCancelled(true);
