@@ -8,7 +8,6 @@ import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 import com.WildAmazing.marinating.Demigods.Util.DSave;
 import com.WildAmazing.marinating.Demigods.Util.DSettings;
 import com.WildAmazing.marinating.Demigods.Util.DUpdateUtil;
-import com.censoredsoftware.CampStamp.CampStampPlugin;
 import com.clashnia.Demigods.Deities.Giants.Typhon;
 import com.google.common.collect.ImmutableSet;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -39,7 +38,6 @@ public class Demigods extends JavaPlugin implements Listener
 {
 	// Soft dependencies
 	public static WorldGuardPlugin WORLDGUARD = null;
-	public static CampStampPlugin CAMPSTAMP = null;
 
 	// Define variables
 	private static final Logger log = Logger.getLogger("Minecraft");
@@ -170,13 +168,6 @@ public class Demigods extends JavaPlugin implements Listener
 		{
 			WORLDGUARD = (WorldGuardPlugin) pg;
 			if(!DSettings.getSettingBoolean("allow_skills_everywhere")) log.info("[Demigods] WorldGuard detected. Skills are disabled in no-PvP zones.");
-		}
-
-		// Check for the CampStamp plugin
-		pg = getServer().getPluginManager().getPlugin("CampStamp");
-		if(pg != null && pg instanceof CampStampPlugin)
-		{
-			CAMPSTAMP = (CampStampPlugin) pg;
 		}
 	}
 

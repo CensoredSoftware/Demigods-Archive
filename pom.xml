@@ -23,10 +23,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spigot.version>1.6.2-R0.1-SNAPSHOT</spigot.version>
+        <spigot.version>1.6.4-R0.1-SNAPSHOT</spigot.version>
         <mcstats.version>R7</mcstats.version>
         <worldguard.version>5.8-SNAPSHOT</worldguard.version>
-        <campstamp.version>0.1.4</campstamp.version>
     </properties>
 
     <developers>
@@ -113,11 +112,6 @@
             <scope>compile</scope>
             <type>jar</type>
             <optional>false</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.censoredsoftware.minecraft</groupId>
-            <artifactId>CampStamp</artifactId>
-            <version>${campstamp.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mcstats.bukkit</groupId>

@@ -6,7 +6,6 @@ import com.WildAmazing.marinating.Demigods.Demigods;
 import com.WildAmazing.marinating.Demigods.Listeners.DDamage;
 import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
 import com.WildAmazing.marinating.Demigods.WriteLocation;
-import com.censoredsoftware.CampStamp.CampStampAPI;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterators;
@@ -1743,14 +1742,9 @@ public class DMiscUtil
 	public static boolean canTarget(Entity player, Location location)
 	{
 		if(!(player instanceof Player)) return true;
-		else if(!USENEWPVP) return canLocationPVP(location) && canCampStampTarget((Player) player);
-		else if(!isFullParticipant((Player) player)) return canLocationPVP(location) && canCampStampTarget((Player) player);
-		else return (DSave.hasData((Player) player, "temp_was_PVP")) || canLocationPVP(location) && canCampStampTarget((Player) player);
-	}
-
-	private static boolean canCampStampTarget(Player player)
-	{
-		return Demigods.CAMPSTAMP == null || CampStampAPI.getProtectionStatus(player) == CampStampAPI.ProtectionStatus.NO_STATUS;
+		else if(!USENEWPVP) return canLocationPVP(location);
+		else if(!isFullParticipant((Player) player)) return canLocationPVP(location);
+		else return (DSave.hasData((Player) player, "temp_was_PVP")) || canLocationPVP(location);
 	}
 
 	/**
