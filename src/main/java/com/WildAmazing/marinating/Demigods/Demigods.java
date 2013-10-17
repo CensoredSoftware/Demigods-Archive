@@ -7,7 +7,7 @@ import com.WildAmazing.marinating.Demigods.Listeners.*;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 import com.WildAmazing.marinating.Demigods.Util.DSave;
 import com.WildAmazing.marinating.Demigods.Util.DSettings;
-import com.WildAmazing.marinating.Demigods.Util.DUpdateUtil;
+import com.WildAmazing.marinating.Demigods.Util.Updater;
 import com.clashnia.Demigods.Deities.Giants.Typhon;
 import com.google.common.collect.ImmutableSet;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -41,6 +41,7 @@ public class Demigods extends JavaPlugin implements Listener
 
 	// Define variables
 	private static final Logger log = Logger.getLogger("Minecraft");
+	public static File FILE;
 
 	public static final ImmutableSet<Deity> deities = ImmutableSet.copyOf(new HashSet<Deity>()
 	{
@@ -69,6 +70,8 @@ public class Demigods extends JavaPlugin implements Listener
 		long firstTime = System.currentTimeMillis();
 		oldDownloader(); // #0 (disable our old update method)
 
+		FILE = getFile();
+
 		log.info("[Demigods] Initializing.");
 
 		new DSettings(); // #1 (needed for DMiscUtil to load)
@@ -90,22 +93,9 @@ public class Demigods extends JavaPlugin implements Listener
 
 		// Define variables
 		boolean auto = DSettings.getSettingBoolean("update");
-		boolean notify = DSettings.getSettingBoolean("update_notify");
 
 		// Check for updates, and then update if need be
-		if(auto || notify)
-		{
-			if(DUpdateUtil.check())
-			{
-				if(auto) DUpdateUtil.execute();
-				if(notify)
-				{
-					Bukkit.broadcast(ChatColor.RED + "There is a new, stable release for Demigods.", "demigods.admin");
-					if(auto) Bukkit.broadcast("Please " + ChatColor.YELLOW + "reload the server " + ChatColor.WHITE + "ASAP to finish an auto-update.", "demigods.admin");
-					else Bukkit.broadcast("Please update ASAP by using " + ChatColor.YELLOW + "/dg update", "demigods.admin");
-				}
-			}
-		}
+		if(auto) new Updater(DMiscUtil.getPlugin(), 43837, Demigods.FILE, Updater.UpdateType.DEFAULT, true);
 
 		log.info("[Demigods] Preparation completed in " + ((double) (System.currentTimeMillis() - firstTime) / 1000) + " seconds.");
 	}

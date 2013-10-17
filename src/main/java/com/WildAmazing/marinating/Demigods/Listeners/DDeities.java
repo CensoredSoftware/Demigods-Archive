@@ -1,7 +1,9 @@
 package com.WildAmazing.marinating.Demigods.Listeners;
 
-import java.util.logging.Logger;
-
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
+import com.WildAmazing.marinating.Demigods.Util.DSave;
+import com.WildAmazing.marinating.Demigods.Util.DSettings;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,11 +15,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.*;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
-import com.WildAmazing.marinating.Demigods.Util.DSave;
-import com.WildAmazing.marinating.Demigods.Util.DSettings;
-import com.WildAmazing.marinating.Demigods.Util.DUpdateUtil;
+import java.util.logging.Logger;
 
 public class DDeities implements Listener
 {
@@ -141,27 +139,6 @@ public class DDeities implements Listener
 		{
 			p.sendMessage("This server is running Demigods v" + ChatColor.YELLOW + DMiscUtil.getPlugin().getDescription().getVersion() + ChatColor.WHITE + ".");
 			p.sendMessage(ChatColor.GRAY + "Type " + ChatColor.GREEN + "/dg" + ChatColor.GRAY + " for more info.");
-		}
-
-		/*
-		 * Update Notify
-		 */
-		if(DSettings.getSettingBoolean("update_notify") && DMiscUtil.hasPermissionOrOP(p))
-		{
-			String latest = DUpdateUtil.getLatestVersion();
-			if(latest.startsWith("3"))
-			{
-				p.sendMessage(ChatColor.RED + "There is a new, stable" + ChatColor.DARK_GREEN + " upgrade release " + ChatColor.RED + "for Demigods.");
-				if(DSettings.getSettingBoolean("update")) p.sendMessage(ChatColor.RED + "You cannot automatically upgrade to version " + latest + ".");
-				p.sendMessage(ChatColor.RED + "Visit BukkitDev and download Demigods after reading the special instructions.");
-				p.sendMessage(ChatColor.RED + "BukkitDev: " + ChatColor.GREEN + "dev.bukkit.org/server-mods/demigods");
-			}
-			else if(DUpdateUtil.check())
-			{
-				p.sendMessage(ChatColor.RED + "There is a new, stable release for Demigods.");
-				if(DSettings.getSettingBoolean("update")) p.sendMessage("Please " + ChatColor.YELLOW + "reload the server " + ChatColor.WHITE + "ASAP to finish an auto-update.");
-				else p.sendMessage("Please update ASAP by using " + ChatColor.YELLOW + "/dg update");
-			}
 		}
 
 		if(!DSave.hasPlayer(p))

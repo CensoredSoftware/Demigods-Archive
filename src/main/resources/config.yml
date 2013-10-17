@@ -2,7 +2,6 @@
 #Demigods Configuration File
 #Global Settings
 update: true
-update_notify: true
 motd: true
 active_worlds:
 - DEFAULT

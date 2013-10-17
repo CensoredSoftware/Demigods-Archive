@@ -8,7 +8,6 @@ import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 import com.WildAmazing.marinating.Demigods.Util.DSave;
 import com.WildAmazing.marinating.Demigods.Util.DSettings;
-import com.WildAmazing.marinating.Demigods.Util.DUpdateUtil;
 import com.clashnia.Demigods.Deities.Giants.Typhon;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -608,7 +607,6 @@ public class DCommandExecutor implements CommandExecutor
 		if(args.length == 1)
 		{
 			if(args[0].equalsIgnoreCase("check")) checkCode(p);
-			else if(args[0].equalsIgnoreCase("update")) update(p);
 			else if(args[0].equalsIgnoreCase("god"))
 			{
 				p.sendMessage(ChatColor.YELLOW + "[Demigods] God Help File");
@@ -2649,41 +2647,6 @@ public class DCommandExecutor implements CommandExecutor
 	 * return true;
 	 * }
 	 */
-
-	private static boolean update(Player player)
-	{
-		// Check Permissions
-		if(!DMiscUtil.hasPermissionOrOP(player))
-		{
-			player.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
-			return true;
-		}
-
-		if(DSave.getConfirmed(player))
-		{
-			DSave.confirm(player, false);
-			if(DUpdateUtil.check())
-			{
-				DMiscUtil.taggedMessage(player, "Beginning download...");
-				if(DUpdateUtil.execute()) DMiscUtil.taggedMessage(player, "Download complete. " + ChatColor.YELLOW + "Please reload the server!");
-				else DMiscUtil.taggedMessage(player, "Download failed. " + ChatColor.WHITE + "Please try again later.");
-			}
-			else
-			{
-				DMiscUtil.taggedMessage(player, "You are already running the latest version.");
-			}
-			return true;
-		}
-		else
-		{
-			DMiscUtil.taggedMessage(player, "Currently, version " + ChatColor.YELLOW + DMiscUtil.getPlugin().getDescription().getVersion() + ChatColor.WHITE + " is installed.");
-			DMiscUtil.taggedMessage(player, "The latest version up for download is " + ChatColor.YELLOW + DUpdateUtil.getLatestVersion() + ChatColor.WHITE + ".");
-			DMiscUtil.taggedMessage(player, "If you would still like to update, please use ");
-			DMiscUtil.taggedMessage(player, ChatColor.YELLOW + "/dg update " + ChatColor.WHITE + "again.");
-			DSave.confirm(player, true);
-			return true;
-		}
-	}
 
 	static class DDebug
 	{
