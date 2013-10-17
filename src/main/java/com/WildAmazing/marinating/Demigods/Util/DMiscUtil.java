@@ -100,6 +100,7 @@ public class DMiscUtil
 		{
 			for(Entity t : b.getChunk().getEntities())
 			{
+				if(t.getWorld() != b.getWorld()) continue;
 				if(t instanceof LivingEntity) if((t.getLocation().distance(b.getLocation()) <= offset) && !t.equals(p)) e = (LivingEntity) t;
 			}
 		}
