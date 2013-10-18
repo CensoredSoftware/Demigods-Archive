@@ -4,6 +4,7 @@ package com.WildAmazing.marinating.Demigods.Deities.Gods;
  * This style/format of code is now deprecated.
  */
 
+import com.WildAmazing.marinating.Demigods.DFixes;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 import com.WildAmazing.marinating.Demigods.Util.DSettings;
@@ -14,6 +15,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -133,6 +135,16 @@ public class Poseidon implements Deity
 				if(p.isSneaking()) p.setVelocity(vec);
 			}
 		}
+		if(ee instanceof EntityDamageEvent)
+		{
+			if(((EntityDamageEvent) ee).getCause().equals(DamageCause.DROWNING) && ((EntityDamageEvent) ee).getEntity() instanceof Player)
+			{
+				Player p = (Player) ((EntityDamageEvent) ee).getEntity();
+				if(!DMiscUtil.isFullParticipant(p)) return;
+				if(!DMiscUtil.hasDeity(p, "Poseidon")) return;
+				DFixes.checkAndCancel((EntityDamageEvent) ee);
+			}
+		}
 		else if(ee instanceof PlayerInteractEvent)
 		{
 			PlayerInteractEvent e = (PlayerInteractEvent) ee;
@@ -237,39 +249,6 @@ public class Poseidon implements Deity
 				drown = true;
 				P.sendMessage(ChatColor.YELLOW + "Drown is now active.");
 			}
-			/*
-			 * } else if (str.equalsIgnoreCase("waterfall")) {
-			 * long TIME = ULTIMATETIME;
-			 * if (System.currentTimeMillis() < TIME){
-			 * p.sendMessage(ChatColor.YELLOW+"You cannot use Waterfall again for "+((((TIME)/1000)-
-			 * (System.currentTimeMillis()/1000)))/60+" minutes");
-			 * p.sendMessage(ChatColor.YELLOW+"and "+((((TIME)/1000)-(System.currentTimeMillis()/1000))%60)+" seconds.");
-			 * return;
-			 * }
-			 * if (DMiscUtil.getFavor(p)>=ULTIMATECOST) {
-			 * if (!DMiscUtil.canPVP(p.getLocation())) {
-			 * p.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
-			 * return;
-			 * }
-			 * for (String s : DMiscUtil.getFullParticipants()) {
-			 * if (DMiscUtil.isFullParticipant(s) && DMiscUtil.getActiveEffectsList(s).contains("Waterfall")) {
-			 * p.sendMessage(ChatColor.YELLOW+"Another player's Waterfall is already in effect.");
-			 * return;
-			 * }
-			 * }
-			 * int t = (int)(ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN)*
-			 * ((double)DMiscUtil.getAscensions(p)/100)));
-			 * int num = waterfall(p);
-			 * if (num > 0) {
-			 * p.sendMessage("In exchange for "+ChatColor.AQUA+ULTIMATECOST+ChatColor.WHITE+" Favor, ");
-			 * p.sendMessage(ChatColor.GOLD+"Poseidon"+ChatColor.WHITE+" has drowned "+num+" targets.");
-			 * DMiscUtil.setFavor(p, DMiscUtil.getFavor(p)-ULTIMATECOST);
-			 * ULTIMATETIME = System.currentTimeMillis()+t*1000;
-			 * DMiscUtil.addActiveEffect(p.getName(), "Waterfall", (int)Math.round(30*Math.pow(DMiscUtil.getDevotion(p, getName()), 0.09)));
-			 * } else p.sendMessage(ChatColor.YELLOW+"There are no targets nearby.");
-			 * } else p.sendMessage(ChatColor.YELLOW+"Waterfall requires "+ULTIMATECOST+" Favor.");
-			 * return;
-			 */
 		}
 
 	}
