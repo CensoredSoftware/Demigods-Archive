@@ -76,7 +76,7 @@ public class DFixes implements Listener
 				DFixes.checkAndCancel(event);
 				return;
 			}
-			else if(DMiscUtil.hasDeity(p, "Zeus") && event.getCause() == EntityDamageEvent.DamageCause.DROWNING)
+			else if(DMiscUtil.hasDeity(p, "Poseidon") && event.getCause() == EntityDamageEvent.DamageCause.DROWNING)
 			{
 				DFixes.checkAndCancel(event);
 				return;
