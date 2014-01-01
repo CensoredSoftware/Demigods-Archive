@@ -24,7 +24,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scheduler.BukkitWorker;
-import org.mcstats.Metrics;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -88,8 +87,7 @@ public class Demigods extends JavaPlugin implements Listener
 
 		log.info("[Demigods] Attempting to load Metrics.");
 
-		loadMetrics(); // #11
-		unstickFireball(); // #12
+		unstickFireball(); // #11
 
 		// Define variables
 		boolean auto = DSettings.getSettingBoolean("update");
@@ -159,16 +157,6 @@ public class Demigods extends JavaPlugin implements Listener
 			WORLDGUARD = (WorldGuardPlugin) pg;
 			if(!DSettings.getSettingBoolean("allow_skills_everywhere")) log.info("[Demigods] WorldGuard detected. Skills are disabled in no-PvP zones.");
 		}
-	}
-
-	void loadMetrics()
-	{
-		try
-		{
-			(new Metrics(this)).start();
-		}
-		catch(Exception ignored)
-		{}
 	}
 
 	void loadCommands()

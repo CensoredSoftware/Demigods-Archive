@@ -1,4 +1,4 @@
-name: Demigods
+name: Demigods-Legacy
 main: com.WildAmazing.marinating.Demigods.Demigods
 version: ${project.version}
 description: Ally yourself with mythical deities and battle in the name of the Gods or Titans.
