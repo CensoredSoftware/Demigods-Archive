@@ -13,7 +13,7 @@ public class DSettings
 
 	static
 	{
-		plugin = (Demigods) Bukkit.getServer().getPluginManager().getPlugin("Demigods");
+		plugin = (Demigods) Bukkit.getServer().getPluginManager().getPlugin("Demigods-Legacy");
 		plugin.getConfig().options().copyDefaults(true);
 		plugin.saveConfig();
 	}
