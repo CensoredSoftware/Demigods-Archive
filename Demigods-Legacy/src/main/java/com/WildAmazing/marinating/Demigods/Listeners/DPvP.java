@@ -32,16 +32,6 @@ public class DPvP implements Listener
 {
 	private static final double MULTIPLIER = DSettings.getSettingDouble("pvp_exp_bonus"); // bonus for dealing damage
 	private static final int pvpkillreward = 1500; // Devotion
-	private static final String genericReason = ChatColor.YELLOW + " has lost connection to the game for a generic reason.";
-	private static final String endOfStream = ChatColor.YELLOW + " has lost connection to the game.";
-	private static final String overflow = ChatColor.YELLOW + " has disconnected due to overload.";
-	private static final String quitting = ChatColor.YELLOW + " has left the game.";
-	private static final String timeout = ChatColor.YELLOW + " has disconnected due to timeout.";
-	public static boolean filterCheckGeneric = false;
-	public static boolean filterCheckStream = false;
-	public static boolean filterCheckOverflow = false;
-	public static boolean filterCheckQuitting = false;
-	public static boolean filterCheckTimeout = false;
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onArrowLaunch(ProjectileLaunchEvent e)
