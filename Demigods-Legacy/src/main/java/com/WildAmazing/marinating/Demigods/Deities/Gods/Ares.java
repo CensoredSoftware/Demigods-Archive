@@ -292,7 +292,7 @@ public class Ares implements Deity
 		 * Confusion: how long players remain dizzied
 		 */
 		int range = (int) (7.17 * Math.pow(1.035, DMiscUtil.getAscensions(p)));
-		double damage = (1.929 * Math.pow(DMiscUtil.getAscensions(p), 0.48028));
+		int damage = (int) (1.929 * Math.pow(DMiscUtil.getAscensions(p), 0.48028));
 		int confuseduration = (int) (1.0354 * Math.pow(DMiscUtil.getAscensions(p), 0.4177)) * 20;
 		/*
 		 * The ultimate

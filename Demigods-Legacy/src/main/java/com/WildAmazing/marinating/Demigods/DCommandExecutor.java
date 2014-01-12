@@ -2140,12 +2140,6 @@ public class DCommandExecutor implements CommandExecutor
 		{
 			if(DMiscUtil.getDeities(p).size() >= 2)
 			{
-				if(args[0].equalsIgnoreCase("?????"))
-				{
-					p.damage(10000.1);
-					p.sendMessage(ChatColor.RED + "?????: " + ChatColor.WHITE + "You may not forsake me.");
-					return true;
-				}
 				String str = "";
 				Deity toremove = DMiscUtil.getDeity(p, args[0]);
 				DLevels.levelProcedure(p);

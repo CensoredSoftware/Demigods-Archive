@@ -1,5 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Titans;
 
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -8,9 +10,6 @@ import org.bukkit.entity.Squid;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
-
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 
 public class Oceanus implements Deity
 {
@@ -192,7 +191,7 @@ public class Oceanus implements Deity
 			LASTCHECK = timeSent;
 			if((DMiscUtil.getOnlinePlayer(getPlayerName()) != null) && DMiscUtil.getOnlinePlayer(getPlayerName()).getWorld().hasStorm())
 			{
-				double healamt = Math.ceil(0.1 * Math.pow(DMiscUtil.getDevotion(getPlayerName(), getName()), 0.297));
+				int healamt = (int) Math.ceil(0.1 * Math.pow(DMiscUtil.getDevotion(getPlayerName(), getName()), 0.297));
 				if(DMiscUtil.getHP(getPlayerName()) + healamt > DMiscUtil.getMaxHP(getPlayerName())) healamt = DMiscUtil.getMaxHP(getPlayerName()) - DMiscUtil.getHP(getPlayerName());
 				DMiscUtil.setHP(getPlayerName(), DMiscUtil.getHP(getPlayerName()) + healamt);
 			}

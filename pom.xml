@@ -33,7 +33,7 @@
 
     <properties> <!-- It is important to keep up to date manually. -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spigot.version>1.7.2-R0.2-SNAPSHOT</spigot.version>
+        <spigot.version>1.5.2-R0.1-SNAPSHOT</spigot.version>
         <worldguard.version>5.8-SNAPSHOT</worldguard.version>
     </properties>
 
@@ -80,8 +80,28 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>${spigot.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
             <scope>compile</scope>
             <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.sk89q</groupId>
+            <artifactId>worldedit</artifactId>
+            <version>5.5.8-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>compile</scope>
+            <type>jar</type>
+            <optional>false</optional>
         </dependency>
         <dependency>
             <groupId>com.sk89q</groupId>
@@ -89,8 +109,8 @@
             <version>${worldguard.version}</version>
             <exclusions>
                 <exclusion>
-                    <groupId>org.bukkit</groupId>
-                    <artifactId>bukkit</artifactId>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
             <scope>compile</scope>

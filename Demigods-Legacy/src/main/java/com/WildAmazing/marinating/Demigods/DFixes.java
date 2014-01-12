@@ -46,14 +46,14 @@ public class DFixes implements Listener
 		return processed.contains(event);
 	}
 
-	public static void setLastDamage(LivingEntity target, EntityDamageEvent.DamageCause cause, double amount)
+	public static void setLastDamage(LivingEntity target, EntityDamageEvent.DamageCause cause, int amount)
 	{
 		EntityDamageEvent damage = new EntityDamageEvent(target, cause, amount);
 		processed.add(damage);
 		target.setLastDamageCause(damage);
 	}
 
-	public static void setLastDamageBy(LivingEntity source, LivingEntity target, EntityDamageByEntityEvent.DamageCause cause, double amount)
+	public static void setLastDamageBy(LivingEntity source, LivingEntity target, EntityDamageByEntityEvent.DamageCause cause, int amount)
 	{
 		EntityDamageByEntityEvent damageBy = new EntityDamageByEntityEvent(source, target, cause, amount);
 		processed.add(damageBy);
@@ -85,13 +85,13 @@ public class DFixes implements Listener
 			{
 				if(event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK)
 				{
-					double reduction = (double) Math.round(Math.pow(DMiscUtil.getDevotion(p, "Atlas"), 0.115));
+					int reduction = (int) Math.round(Math.pow(DMiscUtil.getDevotion(p, "Atlas"), 0.115));
 					if(reduction > event.getDamage()) reduction = event.getDamage();
 					event.setDamage(event.getDamage() - reduction);
 				}
 				else if(event.getCause() == EntityDamageEvent.DamageCause.FALL)
 				{
-					if(DMiscUtil.getActiveEffectsList(p.getName()).contains("Unburden")) event.setDamage(event.getDamage() / 3.0);
+					if(DMiscUtil.getActiveEffectsList(p.getName()).contains("Unburden")) event.setDamage(event.getDamage() / 3);
 				}
 			}
 			if(event instanceof EntityDamageByEntityEvent)

@@ -1,7 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Gods;
 
-import java.util.ArrayList;
-
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
@@ -14,8 +14,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
+import java.util.ArrayList;
 
 public class Apollo implements Deity
 {
@@ -299,8 +298,8 @@ public class Apollo implements Deity
 	private void cure()
 	{
 		Player p = DMiscUtil.getOnlinePlayer(getPlayerName());
-		double healamt = DMiscUtil.getMaxHP(p);
-		double selfheal = healamt / 9;
+		int healamt = DMiscUtil.getMaxHP(p);
+		int selfheal = healamt / 9;
 		if(DMiscUtil.getHP(p) + selfheal > DMiscUtil.getMaxHP(p))
 		{
 			selfheal = DMiscUtil.getMaxHP(p) - DMiscUtil.getHP(p);

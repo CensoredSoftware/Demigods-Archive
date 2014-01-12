@@ -261,7 +261,7 @@ public class TyphonCommands
 		}
 		t.setFuryTime(System.currentTimeMillis() + 60000);
 		final TitanPlayerInfo tpi = (TitanPlayerInfo) plugin.getInfo(p);
-		final double save = p.getHealth();
+		final int save = p.getHealth();
 		if(tpi.getPower() < 750)
 		{
 			p.sendMessage("This ability costs 750 Power.");

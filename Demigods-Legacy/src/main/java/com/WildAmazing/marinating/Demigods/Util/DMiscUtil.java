@@ -17,7 +17,6 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Horse;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -439,7 +438,7 @@ public class DMiscUtil
 	 * @param p
 	 * @param amt
 	 */
-	public static void setHP(Player p, double amt)
+	public static void setHP(Player p, int amt)
 	{
 		setHP(p.getName(), amt);
 	}
@@ -450,7 +449,7 @@ public class DMiscUtil
 	 * @param p
 	 * @param amt
 	 */
-	public static void setHP(String p, double amt)
+	public static void setHP(String p, int amt)
 	{
 		if(amt > getMaxHP(p)) amt = getMaxHP(p);
 		if(amt < 0) amt = 0;
@@ -468,7 +467,7 @@ public class DMiscUtil
 		}
 	}
 
-	public static void setHPQuiet(String p, double amt)
+	public static void setHPQuiet(String p, int amt)
 	{
 		if(amt > getMaxHP(p)) amt = getMaxHP(p);
 		DSave.saveData(p, "dHP", amt);
@@ -480,7 +479,7 @@ public class DMiscUtil
 	 * @param p
 	 * @param amt
 	 */
-	public static void setMaxHP(String p, double amt)
+	public static void setMaxHP(String p, int amt)
 	{
 		if(amt > MAXIMUMHP) amt = MAXIMUMHP;
 		DSave.saveData(p, "dmaxHP", amt);
@@ -492,7 +491,7 @@ public class DMiscUtil
 	 * @param p
 	 * @return
 	 */
-	public static double getHP(Player p)
+	public static int getHP(Player p)
 	{
 		return getHP(p.getName());
 	}
@@ -503,10 +502,10 @@ public class DMiscUtil
 	 * @param p
 	 * @return
 	 */
-	public static double getHP(String p)
+	public static int getHP(String p)
 	{
-		if(DSave.hasData(p, "dHP")) return Double.valueOf(DSave.getData(p, "dHP").toString());
-		return -1.0;
+		if(DSave.hasData(p, "dHP")) return Integer.valueOf(DSave.getData(p, "dHP").toString());
+		return -1;
 	}
 
 	/**
@@ -515,7 +514,7 @@ public class DMiscUtil
 	 * @param p
 	 * @return
 	 */
-	public static double getMaxHP(Player p)
+	public static int getMaxHP(Player p)
 	{
 		return getMaxHP(p.getName());
 	}
@@ -526,10 +525,10 @@ public class DMiscUtil
 	 * @param p
 	 * @return
 	 */
-	public static double getMaxHP(String p)
+	public static int getMaxHP(String p)
 	{
-		if(DSave.hasData(p, "dmaxHP")) return Double.valueOf(DSave.getData(p, "dmaxHP").toString());
-		return -1.0;
+		if(DSave.hasData(p, "dmaxHP")) return Integer.valueOf(DSave.getData(p, "dmaxHP").toString());
+		return -1;
 	}
 
 	/**
@@ -1288,8 +1287,8 @@ public class DMiscUtil
 		setAllegiance(playername, allegiance);
 		setFavorCap(playername, 300); // set favor cap before favor (MUST!!!)
 		setFavor(playername, 300);
-		setMaxHP(playername, 25.0);
-		setHP(playername, 25.0);
+		setMaxHP(playername, 25);
+		setHP(playername, 25);
 		setAscensions(playername, 0);
 		setDeaths(playername, 0);
 		setKills(playername, 0);
@@ -1750,7 +1749,7 @@ public class DMiscUtil
 	/**
 	 * Demigods damage handling
 	 */
-	public static void damageDemigods(LivingEntity source, LivingEntity target, double amount, DamageCause cause)
+	public static void damageDemigods(LivingEntity source, LivingEntity target, int amount, DamageCause cause)
 	{
 		if(target.getHealth() > 1) target.damage(1);
 		if(target instanceof Player && isFullParticipant((Player) target))
@@ -1758,7 +1757,7 @@ public class DMiscUtil
 			if(((Player) target).getGameMode() == GameMode.CREATIVE) return;
 			if(!canTarget(target, target.getLocation())) return;
 			if(DDamage.cancelSoulDamage((Player) target, amount)) return;
-			double hp = getHP((Player) target);
+			int hp = getHP((Player) target);
 			if(amount < 1) return;
 			amount -= DDamage.armorReduction((Player) target);
 			amount = DDamage.specialReduction((Player) target, amount);
@@ -1780,11 +1779,11 @@ public class DMiscUtil
 		}
 	}
 
-	public static void damageDemigodsNonCombat(Player target, double amount, DamageCause cause)
+	public static void damageDemigodsNonCombat(Player target, int amount, DamageCause cause)
 	{
 		if((target).getGameMode() == GameMode.CREATIVE) return;
 		if(DDamage.cancelSoulDamage(target, amount)) return;
-		double hp = getHP(target);
+		int hp = getHP(target);
 		if(amount < 1) return;
 		amount -= DDamage.armorReduction(target);
 		amount = DDamage.specialReduction(target, amount);
@@ -1818,15 +1817,6 @@ public class DMiscUtil
 
 	public static void horseTeleport(Player player, Location location)
 	{
-		if(player.isInsideVehicle() && player.getVehicle() instanceof Horse)
-		{
-			Horse horse = (Horse) player.getVehicle();
-			DSave.saveData(player, "temp_horse", true);
-			horse.eject();
-			horse.teleport(location);
-			horse.setPassenger(player);
-			DSave.removeData(player, "temp_horse");
-		}
-		else player.teleport(location);
+		player.teleport(location);
 	}
 }

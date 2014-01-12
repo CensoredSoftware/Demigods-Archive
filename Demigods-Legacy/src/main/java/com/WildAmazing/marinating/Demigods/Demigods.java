@@ -7,7 +7,6 @@ import com.WildAmazing.marinating.Demigods.Listeners.*;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 import com.WildAmazing.marinating.Demigods.Util.DSave;
 import com.WildAmazing.marinating.Demigods.Util.DSettings;
-import com.WildAmazing.marinating.Demigods.Util.Updater;
 import com.clashnia.Demigods.Deities.Giants.Typhon;
 import com.google.common.collect.ImmutableSet;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -93,7 +92,7 @@ public class Demigods extends JavaPlugin implements Listener
 		boolean auto = DSettings.getSettingBoolean("update");
 
 		// Check for updates, and then update if need be
-		if(auto) new Updater(DMiscUtil.getPlugin(), 43837, Demigods.FILE, Updater.UpdateType.DEFAULT, true);
+		// if(auto) new Updater(DMiscUtil.getPlugin(), 43837, Demigods.FILE, Updater.UpdateType.DEFAULT, true);
 
 		log.info("[Demigods] Preparation completed in " + ((double) (System.currentTimeMillis() - firstTime) / 1000) + " seconds.");
 	}

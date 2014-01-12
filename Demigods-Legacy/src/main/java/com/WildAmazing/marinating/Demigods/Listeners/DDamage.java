@@ -90,15 +90,15 @@ public class DDamage implements Listener
 
 	public static void syncHealth(Player p)
 	{
-		double current = DMiscUtil.getHP(p);
+		int current = DMiscUtil.getHP(p);
 		if(current < 1)
 		{ // if player should be dead
-			p.setHealth(0.0);
+			p.setHealth(0);
 			return;
 		}
 		double ratio = current / DMiscUtil.getMaxHP(p);
-		double disp = Math.ceil(ratio * 20);
-		if(disp < 1) disp = 1.0;
+		int disp = (int) Math.ceil(ratio * 20);
+		if(disp < 1) disp = 1;
 		p.setHealth(disp);
 	}
 
@@ -205,7 +205,7 @@ public class DDamage implements Listener
 		return (int) (Math.round(reduction));
 	}
 
-	public static double specialReduction(Player p, double amount)
+	public static int specialReduction(Player p, int amount)
 	{
 		if(DMiscUtil.getActiveEffectsList(p.getName()) == null) return amount;
 		if(DMiscUtil.getActiveEffectsList(p.getName()).contains("Invincible"))
@@ -296,7 +296,7 @@ public class DDamage implements Listener
 		else return null;
 	}
 
-	public static Boolean cancelSoulDamage(Player p, double damage)
+	public static Boolean cancelSoulDamage(Player p, int damage)
 	{
 		if(damage >= DMiscUtil.getHP(p))
 		{
