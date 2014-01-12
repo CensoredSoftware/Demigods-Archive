@@ -34,6 +34,7 @@
     <properties> <!-- It is important to keep up to date manually. -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spigot.version>1.7.2-R0.2-SNAPSHOT</spigot.version>
+        <worldedit.version>5.5.8-SNAPSHOT</worldedit.version>
         <worldguard.version>5.8-SNAPSHOT</worldguard.version>
     </properties>
 
@@ -85,12 +86,26 @@
         </dependency>
         <dependency>
             <groupId>com.sk89q</groupId>
+            <artifactId>worldedit</artifactId>
+            <version>${worldedit.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>compile</scope>
+            <type>jar</type>
+            <optional>false</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.sk89q</groupId>
             <artifactId>worldguard</artifactId>
             <version>${worldguard.version}</version>
             <exclusions>
                 <exclusion>
-                    <groupId>org.bukkit</groupId>
-                    <artifactId>bukkit</artifactId>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
             <scope>compile</scope>
