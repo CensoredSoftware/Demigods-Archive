@@ -7,11 +7,9 @@ import com.WildAmazing.marinating.Demigods.Listeners.*;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 import com.WildAmazing.marinating.Demigods.Util.DSave;
 import com.WildAmazing.marinating.Demigods.Util.DSettings;
-import com.WildAmazing.marinating.Demigods.Util.Updater;
 import com.clashnia.Demigods.Deities.Giants.Typhon;
 import com.google.common.collect.ImmutableSet;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -67,7 +65,6 @@ public class Demigods extends JavaPlugin implements Listener
 	public void onEnable()
 	{
 		long firstTime = System.currentTimeMillis();
-		oldDownloader(); // #0 (disable our old update method)
 
 		FILE = getFile();
 
@@ -88,12 +85,6 @@ public class Demigods extends JavaPlugin implements Listener
 		log.info("[Demigods] Attempting to load Metrics.");
 
 		unstickFireball(); // #11
-
-		// Define variables
-		boolean auto = DSettings.getSettingBoolean("update");
-
-		// Check for updates, and then update if need be
-		if(auto) new Updater(DMiscUtil.getPlugin(), 43837, Demigods.FILE, Updater.UpdateType.DEFAULT, true);
 
 		log.info("[Demigods] Preparation completed in " + ((double) (System.currentTimeMillis() - firstTime) / 1000) + " seconds.");
 	}
@@ -326,8 +317,10 @@ public class Demigods extends JavaPlugin implements Listener
 			@Override
 			public void run()
 			{
-				for(World w : DSettings.getEnabledWorlds())
+				for(int i = 0; i < DSettings.getEnabledWorlds().size(); i++)
 				{
+					World w = DSettings.getEnabledWorlds().get(i);
+					if(w == null) continue;
 					for(Player p : w.getPlayers())
 						if(DMiscUtil.isFullParticipant(p))
 						{
@@ -345,8 +338,10 @@ public class Demigods extends JavaPlugin implements Listener
 			@Override
 			public void run()
 			{
-				for(World w : DSettings.getEnabledWorlds())
+				for(int i = 0; i < DSettings.getEnabledWorlds().size(); i++)
 				{
+					World w = DSettings.getEnabledWorlds().get(i);
+					if(w == null) continue;
 					for(Player p : w.getPlayers())
 						if(DMiscUtil.isFullParticipant(p))
 						{
@@ -365,8 +360,10 @@ public class Demigods extends JavaPlugin implements Listener
 			public void run()
 			{
 				if(DSettings.getEnabledWorlds() == null) return;
-				for(World w : DSettings.getEnabledWorlds())
+				for(int i = 0; i < DSettings.getEnabledWorlds().size(); i++)
 				{
+					World w = DSettings.getEnabledWorlds().get(i);
+					if(w == null) continue;
 					for(Player p : w.getPlayers())
 						if(DMiscUtil.isFullParticipant(p)) if(p.getHealth() > 0) DDamage.syncHealth(p);
 				}
@@ -406,8 +403,10 @@ public class Demigods extends JavaPlugin implements Listener
 				@Override
 				public void run()
 				{
-					for(World w : DSettings.getEnabledWorlds())
+					for(int i = 0; i < DSettings.getEnabledWorlds().size(); i++)
 					{
+						World w = DSettings.getEnabledWorlds().get(i);
+						if(w == null) continue;
 						for(Player p : w.getPlayers())
 							if(DMiscUtil.isFullParticipant(p)) if(p.getHealth() > 0)
 							{
@@ -420,57 +419,6 @@ public class Demigods extends JavaPlugin implements Listener
 					}
 				}
 			}, startdelay, frequency);
-		}
-	}
-
-	private void oldDownloader()
-	{
-		try
-		{
-			// Define variables
-			Plugin demigodDownloader = Bukkit.getPluginManager().getPlugin("DemigodDownloader");
-			String demigodDownloaderPath = demigodDownloader.getClass().getProtectionDomain().getCodeSource().getLocation().toString().substring(5);
-			String OS = System.getProperty("os.name");
-
-			log.info("[DemigodDownloader] " + demigodDownloaderPath);
-
-			// Disable old downloader plugin
-			Bukkit.getServer().getPluginManager().disablePlugin(demigodDownloader);
-
-			// Set the downloader to a variable for deletion
-			File oldDownloader = new File(demigodDownloaderPath);
-
-			// Check file existence and go from there
-			if(!oldDownloader.exists())
-			{
-				// Can't find downloader, let the administrator know
-				log.severe("[DemigodDownloader] Can't find the correct jar file...");
-				log.warning("[DemigodDownloader] Please manually remove the DemigodDownloader, it's obsolete.");
-			}
-			else
-			{
-				// Attempt to delete downloader
-				boolean success = oldDownloader.delete();
-				if(success)
-				{
-					log.info("[DemigodDownloader] Deleting old download method, just relax. :)");
-				}
-				else if(OS.contains("windows") || OS.contains("Windows"))
-				{
-					log.warning("[DemigodDownloader] Windows does not allow deletion of files that are in use.");
-					log.warning("[DemigodDownloader] Please manually remove the DemigodDownloader while the server is off.");
-				}
-				else
-				{
-					log.severe("[DemigodDownloader] There was an error when deleting the downloader.  Do you have permission?");
-					log.warning("[DemigodDownloader] Please manually remove the DemigodDownloader, it's obsolete.");
-				}
-			}
-
-		}
-		catch(NullPointerException e)
-		{
-			// Plugin doesn't exist, do nothing
 		}
 	}
 
@@ -526,8 +474,12 @@ public class Demigods extends JavaPlugin implements Listener
 		// Remove invalid shrines
 		Iterator<WriteLocation> i = DMiscUtil.getAllShrines().iterator();
 		ArrayList<String> worldnames = new ArrayList<String>();
-		for(World w : getServer().getWorlds())
+		for(int j = 0; j < DSettings.getEnabledWorlds().size(); j++)
+		{
+			World w = DSettings.getEnabledWorlds().get(j);
+			if(w == null) continue;
 			worldnames.add(w.getName());
+		}
 		int count = 0;
 		while(i.hasNext())
 		{
@@ -551,8 +503,10 @@ public class Demigods extends JavaPlugin implements Listener
 	private void unstickFireball()
 	{
 		// Unstick Prometheus fireballs
-		for(World w : DSettings.getEnabledWorlds())
+		for(int i = 0; i < DSettings.getEnabledWorlds().size(); i++)
 		{
+			World w = DSettings.getEnabledWorlds().get(i);
+			if(w == null) continue;
 			Iterator<Entity> it = w.getEntities().iterator();
 			while(it.hasNext())
 			{
