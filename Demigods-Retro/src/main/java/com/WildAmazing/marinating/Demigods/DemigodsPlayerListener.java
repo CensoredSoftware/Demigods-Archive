@@ -24,9 +24,15 @@ public class DemigodsPlayerListener implements Listener
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e)
-	{ // sync to master file
+	{
+		// sync to master file
 		if(!plugin.getConfigHandler().isParticipating(e.getPlayer().getWorld())) return;
 		final Player p = e.getPlayer();
+		// set new name
+		PlayerInfo info = Demigods.MASTERLIST.get(p.getUniqueId());
+		info.setPlayerName(p.getName());
+		Demigods.MASTERLIST.put(p.getUniqueId(), info);
+		// motd
 		if(plugin.getConfigHandler().getMOTD())
 		{
 			p.sendMessage("This server is running Demigods v" + ChatColor.YELLOW + plugin.getDescription().getVersion() + ChatColor.WHITE + ".");
@@ -271,26 +277,26 @@ public class DemigodsPlayerListener implements Listener
 				ArrayList<String> gods = new ArrayList<String>();
 				for(PlayerInfo pi : plugin.getMaster())
 				{
-					if(plugin.isGod(pi.getPlayer()))
+					if(plugin.isGod(pi.getPlayerId()))
 					{
 						numgods++;
 						numgodkills += pi.getKills();
 						numgoddeaths += pi.getDeaths();
-						if(plugin.isOnline(pi.getPlayer()))
+						if(plugin.isOnline(pi.getPlayerName()))
 						{
 							numgodsonline++;
-							gods.add(pi.getPlayer());
+							gods.add(pi.getPlayerName());
 						}
 					}
-					else if(plugin.isTitan(pi.getPlayer()))
+					else if(plugin.isTitan(pi.getPlayerId()))
 					{
 						numtitans++;
 						numtitankills += pi.getKills();
 						numtitandeaths += pi.getDeaths();
-						if(plugin.isOnline(pi.getPlayer()))
+						if(plugin.isOnline(pi.getPlayerName()))
 						{
 							numtitansonline++;
-							titans.add(pi.getPlayer());
+							titans.add(pi.getPlayerName());
 						}
 					}
 				}
@@ -463,11 +469,11 @@ public class DemigodsPlayerListener implements Listener
 					p.sendMessage(ChatColor.GOLD + "Top 10 Gods:");
 					if(Gods.length >= 5) for(int i = 0; i < 5; i++)
 					{
-						p.sendMessage((i + 1) + "- " + Gods[i].getPlayer() + ": " + Gods[i].getFavor() + " Favor, " + Gods[i].getBlessing() + " Blessing, " + Gods[i].getAllegiance().size() + " Gods.");
+						p.sendMessage((i + 1) + "- " + Gods[i].getPlayerName() + ": " + Gods[i].getFavor() + " Favor, " + Gods[i].getBlessing() + " Blessing, " + Gods[i].getAllegiance().size() + " Gods.");
 					}
 					else for(int i = 0; i < Gods.length; i++)
 					{
-						p.sendMessage((i + 1) + "- " + Gods[i].getPlayer() + ": " + Gods[i].getFavor() + " Favor, " + Gods[i].getBlessing() + " Blessing, " + Gods[i].getAllegiance().size() + " Gods.");
+						p.sendMessage((i + 1) + "- " + Gods[i].getPlayerName() + ": " + Gods[i].getFavor() + " Favor, " + Gods[i].getBlessing() + " Blessing, " + Gods[i].getAllegiance().size() + " Gods.");
 					}
 				}
 			}
@@ -605,11 +611,11 @@ public class DemigodsPlayerListener implements Listener
 					p.sendMessage(ChatColor.GOLD + "Top 10 Titans:");
 					if(Titans.length >= 10) for(int i = 0; i < 10; i++)
 					{
-						p.sendMessage((i + 1) + "- " + Titans[i].getPlayer() + ": " + Titans[i].getPower() + " Power, " + Titans[i].getGlory() + " Glory, " + Titans[i].getAllegiance().size() + " Titans.");
+						p.sendMessage((i + 1) + "- " + Titans[i].getPlayerName() + ": " + Titans[i].getPower() + " Power, " + Titans[i].getGlory() + " Glory, " + Titans[i].getAllegiance().size() + " Titans.");
 					}
 					else for(int i = 0; i < Titans.length; i++)
 					{
-						p.sendMessage((i + 1) + "- " + Titans[i].getPlayer() + ": " + Titans[i].getPower() + " Power, " + Titans[i].getGlory() + " Glory, " + Titans[i].getAllegiance().size() + " Titans.");
+						p.sendMessage((i + 1) + "- " + Titans[i].getPlayerName() + ": " + Titans[i].getPower() + " Power, " + Titans[i].getGlory() + " Glory, " + Titans[i].getAllegiance().size() + " Titans.");
 					}
 				}
 			}
@@ -951,7 +957,7 @@ public class DemigodsPlayerListener implements Listener
 					break;
 				case FORSAKE:
 					if(!plugin.isGod(player) && !plugin.isTitan(player)) break;
-					if(!player.isOp() || player.hasPermission("demigods.admin") && ! player.hasPermission("demigods.forsake")) break;
+					if(!player.isOp() || player.hasPermission("demigods.admin") && !player.hasPermission("demigods.forsake")) break;
 					if(args.length != 1)
 					{
 						player.sendMessage("Syntax: " + ChatColor.YELLOW + "/forsake <deityname>" + ChatColor.WHITE + " or " + ChatColor.YELLOW + "/forsake all");

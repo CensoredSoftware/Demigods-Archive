@@ -7,14 +7,16 @@ import org.bukkit.entity.Player;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class PlayerInfo implements Serializable
 {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 8119654291863150756L;
 	private String PLAYER;
+	private UUID ID;
 	private ArrayList<Divine> ALLEGIANCE;
 	private HashMap<Divine, Deity> DEITIES;
 	private boolean ALIVE = true;
@@ -137,7 +139,8 @@ public class PlayerInfo implements Serializable
 			ALLEGIANCE.remove(deity);
 		}
 		catch(Exception no)
-		{}
+		{
+		}
 	}
 
 	public ArrayList<Divine> getAllegiance()
@@ -156,9 +159,24 @@ public class PlayerInfo implements Serializable
 		return DEITIES.get(deityName);
 	}
 
-	public String getPlayer()
+	public String getPlayerName()
 	{
 		return PLAYER;
+	}
+
+	public void setPlayerName(String name)
+	{
+		PLAYER = name;
+	}
+
+	public UUID getPlayerId()
+	{
+		return ID;
+	}
+
+	public void setPlayerId(UUID id)
+	{
+		ID = id;
 	}
 
 	public boolean addDeity(Divine name, Deity toAdd)

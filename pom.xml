@@ -33,7 +33,7 @@
 
     <properties> <!-- It is important to keep up to date manually. -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spigot.version>1.7.2-R0.2-SNAPSHOT</spigot.version>
+        <spigot.version>1.7.9-R0.1-SNAPSHOT</spigot.version>
         <worldedit.version>5.5.8-SNAPSHOT</worldedit.version>
         <worldguard.version>5.8-SNAPSHOT</worldguard.version>
     </properties>
@@ -66,6 +66,10 @@
     </developers>
 
     <repositories>
+        <repository>
+            <id>CenSoft</id>
+            <url>http://repo.censoredsoftware.com/</url>
+        </repository>
         <repository>
             <id>sk89q-repo</id>
             <url>http://maven.sk89q.com/repo/</url>
@@ -111,6 +115,13 @@
             <scope>compile</scope>
             <type>jar</type>
             <optional>false</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>AccountsClient</artifactId>
+            <version>latest</version>
+            <scope>compile</scope>
+            <type>jar</type>
         </dependency>
     </dependencies>
 

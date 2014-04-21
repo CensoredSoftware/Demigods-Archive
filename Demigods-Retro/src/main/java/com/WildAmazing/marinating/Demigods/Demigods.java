@@ -6,6 +6,7 @@ import com.WildAmazing.marinating.Demigods.Titans.Listeners.OceanusCommands;
 import com.WildAmazing.marinating.Demigods.Titans.Listeners.PrometheusCommands;
 import com.WildAmazing.marinating.Demigods.Titans.Listeners.StyxCommands;
 import com.WildAmazing.marinating.Demigods.Utilities.*;
+import com.censoredsoftware.library.helper.MojangIdProvider;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -18,7 +19,7 @@ import java.util.logging.Logger;
 
 /**
  * <Plugin Name> for Bukkit
- * 
+ *
  * @author <Your Name>
  */
 public class Demigods extends JavaPlugin
@@ -27,7 +28,7 @@ public class Demigods extends JavaPlugin
 	private final DemigodsEntityListener entityListener = new DemigodsEntityListener(this);
 	private final DemigodsInventoryListener inventoryListener = new DemigodsInventoryListener(this);
 	private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
-	public static Logger log = Logger.getLogger("Minecraft");
+	public static Logger log;
 	static String mainDirectory = "plugins" + File.separator + "Demigods";
 	static String configDirectory = mainDirectory + File.separator + "demigods.properties";
 	static File FolderHelper = new File(mainDirectory);
@@ -36,17 +37,13 @@ public class Demigods extends JavaPlugin
 	private ConfigHandler CH;
 
 	private HashMap<Divine, DeityLocale> LOCLIST = new HashMap<Divine, DeityLocale>();
-	private HashMap<String, PlayerInfo> MASTERLIST = new HashMap<String, PlayerInfo>();
+	protected static HashMap<UUID, PlayerInfo> MASTERLIST = new HashMap<UUID, PlayerInfo>();
 
 	boolean FACTIONS = false;
 
-	public Demigods()
-	{
-		super();
-	}
-
 	public void onEnable()
 	{
+		log = getLogger();
 		long firstTime = System.currentTimeMillis();
 		loadMaster();
 		loadListeners();
@@ -75,7 +72,7 @@ public class Demigods extends JavaPlugin
 
 	public PlayerInfo getInfo(Player p)
 	{
-		return MASTERLIST.get(p.getName());
+		return MASTERLIST.get(p.getUniqueId());
 	}
 
 	public DeityLocale getLoc(Divine deity)
@@ -83,31 +80,29 @@ public class Demigods extends JavaPlugin
 		return LOCLIST.get(deity);
 	}
 
-	public boolean isGod(String p)
+	public boolean isGod(UUID p)
 	{
-		if(MASTERLIST.containsKey(p)) return(MASTERLIST.get(p) instanceof GodPlayerInfo);
-		return false;
+		return MASTERLIST.containsKey(p) && (MASTERLIST.get(p) instanceof GodPlayerInfo);
 	}
 
-	public boolean isTitan(String p)
+	public boolean isTitan(UUID p)
 	{
-		if(MASTERLIST.containsKey(p)) return(MASTERLIST.get(p) instanceof TitanPlayerInfo);
-		return false;
+		return MASTERLIST.containsKey(p) && (MASTERLIST.get(p) instanceof TitanPlayerInfo);
 	}
 
 	public boolean isGod(Player p)
 	{
-		return(isGod(p.getName()));
+		return (isGod(p.getUniqueId()));
 	}
 
 	public boolean isTitan(Player p)
 	{
-		return(isTitan(p.getName()));
+		return (isTitan(p.getUniqueId()));
 	}
 
 	public void addToMaster(PlayerInfo p)
 	{
-		if(!MASTERLIST.containsKey(p.getPlayer())) MASTERLIST.put(p.getPlayer(), p);
+		if(!MASTERLIST.containsKey(p.getPlayerId())) MASTERLIST.put(p.getPlayerId(), p);
 	}
 
 	public boolean addToMaster(DeityLocale newobj)
@@ -119,7 +114,7 @@ public class Demigods extends JavaPlugin
 
 	public void removeFromMaster(Player p)
 	{
-		if(MASTERLIST.containsKey(p.getName())) MASTERLIST.remove(p.getName());
+		if(MASTERLIST.containsKey(p.getUniqueId())) MASTERLIST.remove(p.getUniqueId());
 	}
 
 	public boolean isDebugging(final Player player)
@@ -202,7 +197,21 @@ public class Demigods extends JavaPlugin
 		{
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(DemigodSave));
 			Object result = ois.readObject();
-			MASTERLIST = (HashMap<String, PlayerInfo>) result;
+			try
+			{
+				HashMap<String, PlayerInfo> OLDMASTERLIST = (HashMap<String, PlayerInfo>) result;
+				MASTERLIST = new HashMap<UUID, PlayerInfo>();
+				for(Map.Entry<String, PlayerInfo> entry : OLDMASTERLIST.entrySet())
+				{
+					UUID id = MojangIdProvider.getId(entry.getKey());
+					MASTERLIST.put(id, entry.getValue());
+				}
+
+			}
+			catch(Exception oops)
+			{
+				MASTERLIST = (HashMap<UUID, PlayerInfo>) result;
+			}
 			ois.close();
 		}
 		catch(Exception e)
