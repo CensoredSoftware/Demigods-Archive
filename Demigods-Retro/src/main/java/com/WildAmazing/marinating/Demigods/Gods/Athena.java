@@ -3,38 +3,34 @@ package com.WildAmazing.marinating.Demigods.Gods;
 import com.WildAmazing.marinating.Demigods.Utilities.Deity;
 import com.WildAmazing.marinating.Demigods.Utilities.Divine;
 
-public class Athena extends Deity
-{
+import java.util.UUID;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6613139535440000477L;
-	boolean CEASEFIRE = false;
-	boolean BUFF = false;
+public class Athena extends Deity {
 
-	public Athena(String p)
-	{
-		super(Divine.ATHENA, p);
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = 6613139535440000477L;
+    boolean CEASEFIRE = false;
+    boolean BUFF = false;
 
-	public boolean getCeasefire()
-	{
-		return CEASEFIRE;
-	}
+    public Athena(UUID p) {
+        super(Divine.ATHENA, p);
+    }
 
-	public void setCeasefire(boolean b)
-	{
-		CEASEFIRE = b;
-	}
+    public boolean getCeasefire() {
+        return CEASEFIRE;
+    }
 
-	public boolean getBuff()
-	{
-		return BUFF;
-	}
+    public void setCeasefire(boolean b) {
+        CEASEFIRE = b;
+    }
 
-	public void setBuff(boolean b)
-	{
-		BUFF = b;
-	}
+    public boolean getBuff() {
+        return BUFF;
+    }
+
+    public void setBuff(boolean b) {
+        BUFF = b;
+    }
 }

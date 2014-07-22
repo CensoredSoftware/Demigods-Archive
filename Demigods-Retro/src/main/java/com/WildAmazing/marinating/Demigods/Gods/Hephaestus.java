@@ -3,26 +3,24 @@ package com.WildAmazing.marinating.Demigods.Gods;
 import com.WildAmazing.marinating.Demigods.Utilities.Deity;
 import com.WildAmazing.marinating.Demigods.Utilities.Divine;
 
-public class Hephaestus extends Deity
-{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1836286842611372087L;
-	private boolean OUTFIT = false;
+import java.util.UUID;
 
-	public Hephaestus(String p)
-	{
-		super(Divine.HEPHAESTUS, p);
-	}
+public class Hephaestus extends Deity {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1836286842611372087L;
+    private boolean OUTFIT = false;
 
-	public boolean getOutfit()
-	{
-		return OUTFIT;
-	}
+    public Hephaestus(UUID p) {
+        super(Divine.HEPHAESTUS, p);
+    }
 
-	public void setOutfit(boolean b)
-	{
-		OUTFIT = b;
-	}
+    public boolean getOutfit() {
+        return OUTFIT;
+    }
+
+    public void setOutfit(boolean b) {
+        OUTFIT = b;
+    }
 }

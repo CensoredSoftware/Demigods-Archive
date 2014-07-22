@@ -3,37 +3,33 @@ package com.WildAmazing.marinating.Demigods.Titans;
 import com.WildAmazing.marinating.Demigods.Utilities.Deity;
 import com.WildAmazing.marinating.Demigods.Utilities.Divine;
 
-public class Cronus extends Deity
-{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8478696197132571826L;
-	boolean REAP = false;
-	boolean FREEZE = false;
+import java.util.UUID;
 
-	public Cronus(String p)
-	{
-		super(Divine.CRONUS, p);
-	}
+public class Cronus extends Deity {
+    /**
+     *
+     */
+    private static final long serialVersionUID = -8478696197132571826L;
+    boolean REAP = false;
+    boolean FREEZE = false;
 
-	public void setReap(boolean b)
-	{
-		REAP = b;
-	}
+    public Cronus(UUID p) {
+        super(Divine.CRONUS, p);
+    }
 
-	public boolean getReap()
-	{
-		return REAP;
-	}
+    public void setReap(boolean b) {
+        REAP = b;
+    }
 
-	public void setFreeze(boolean b)
-	{
-		FREEZE = b;
-	}
+    public boolean getReap() {
+        return REAP;
+    }
 
-	public boolean getFreeze()
-	{
-		return FREEZE;
-	}
+    public void setFreeze(boolean b) {
+        FREEZE = b;
+    }
+
+    public boolean getFreeze() {
+        return FREEZE;
+    }
 }

@@ -4,50 +4,44 @@ import com.WildAmazing.marinating.Demigods.Utilities.Deity;
 import com.WildAmazing.marinating.Demigods.Utilities.Divine;
 import org.bukkit.entity.Player;
 
-public class Styx extends Deity
-{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5452083554070420482L;
-	private long timeInvincible;
-	private long reviveTime;
-	private String invinciblename = null;
+import java.util.UUID;
 
-	public Styx(String p)
-	{
-		super(Divine.STYX, p);
-		timeInvincible = System.currentTimeMillis();
-		reviveTime = System.currentTimeMillis();
-	}
+public class Styx extends Deity {
+    /**
+     *
+     */
+    private static final long serialVersionUID = -5452083554070420482L;
+    private long timeInvincible;
+    private long reviveTime;
+    private UUID invinciblePlayer;
 
-	public void setPlayer(Player p)
-	{
-		invinciblename = p.getName();
-	}
+    public Styx(UUID p) {
+        super(Divine.STYX, p);
+        timeInvincible = System.currentTimeMillis();
+        reviveTime = System.currentTimeMillis();
+    }
 
-	public String getPlayer()
-	{
-		return invinciblename;
-	}
+    public void setInvinciblePlayer(Player player) {
+        invinciblePlayer = player.getUniqueId();
+    }
 
-	public void setTime(long l)
-	{
-		timeInvincible = l;
-	}
+    public UUID getInvinciblePlayerId() {
+        return invinciblePlayer;
+    }
 
-	public long getTime()
-	{
-		return timeInvincible;
-	}
+    public void setTime(long l) {
+        timeInvincible = l;
+    }
 
-	public void setReviveTime(long l)
-	{
-		reviveTime = l;
-	}
+    public long getTime() {
+        return timeInvincible;
+    }
 
-	public long getReviveTime()
-	{
-		return reviveTime;
-	}
+    public void setReviveTime(long l) {
+        reviveTime = l;
+    }
+
+    public long getReviveTime() {
+        return reviveTime;
+    }
 }

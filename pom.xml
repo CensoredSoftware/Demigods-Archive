@@ -78,9 +78,20 @@
             <id>md5-repo</id>
             <url>http://repo.md-5.net/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+            <id>fanciful-mvn-repo</id>
+            <url>https://raw.github.com/mkremins/fanciful/mvn-repo/</url>
+        </repository>
     </repositories>
 
     <dependencies>
+        <!-- fanciful -->
+        <dependency>
+            <groupId>mkremins</groupId>
+            <artifactId>fanciful</artifactId>
+            <version>0.1.5</version>
+        </dependency>
+
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>

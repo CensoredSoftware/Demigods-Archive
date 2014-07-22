@@ -1,38 +1,34 @@
 package com.WildAmazing.marinating.Demigods.Utilities;
 
 import java.io.Serializable;
+import java.util.UUID;
 
-public abstract class Deity implements Serializable
-{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3835404655799787382L;
-	private Divine NAME;
-	private String PLAYER;
+public abstract class Deity implements Serializable {
+    /**
+     *
+     */
+    private static final long serialVersionUID = -3835404655799787382L;
+    private Divine NAME;
+    private UUID PLAYER;
 
-	/**
-	 * Control class. Extended by other Gods.
-	 */
-	public Deity()
-	{
-		NAME = Divine.OMNI;
-		PLAYER = null;
-	}
+    /**
+     * Control class. Extended by other Gods.
+     */
+    public Deity() {
+        NAME = Divine.OMNI;
+        PLAYER = null;
+    }
 
-	public Deity(Divine deityName, String playername)
-	{
-		NAME = deityName;
-		PLAYER = playername;
-	}
+    public Deity(Divine deityName, UUID playerId) {
+        NAME = deityName;
+        PLAYER = playerId;
+    }
 
-	public String getPlayer()
-	{
-		return PLAYER;
-	}
+    public UUID getPlayerId() {
+        return PLAYER;
+    }
 
-	public Divine getName()
-	{
-		return NAME;
-	}
+    public Divine getName() {
+        return NAME;
+    }
 }

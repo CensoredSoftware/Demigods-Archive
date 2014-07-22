@@ -4,37 +4,33 @@ import com.WildAmazing.marinating.Demigods.Utilities.Deity;
 import com.WildAmazing.marinating.Demigods.Utilities.Divine;
 import org.bukkit.Material;
 
-public class Hyperion extends Deity
-{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3423750475269887528L;
-	boolean FIREBALL = false;
-	Material FIREBALLITEM;
+import java.util.UUID;
 
-	public Hyperion(String p)
-	{
-		super(Divine.HYPERION, p);
-	}
+public class Hyperion extends Deity {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 3423750475269887528L;
+    boolean FIREBALL = false;
+    Material FIREBALLITEM;
 
-	public void setCombust(boolean b)
-	{
-		FIREBALL = b;
-	}
+    public Hyperion(UUID p) {
+        super(Divine.HYPERION, p);
+    }
 
-	public boolean getCombust()
-	{
-		return FIREBALL;
-	}
+    public void setCombust(boolean b) {
+        FIREBALL = b;
+    }
 
-	public void setCombustItem(Material m)
-	{
-		FIREBALLITEM = m;
-	}
+    public boolean getCombust() {
+        return FIREBALL;
+    }
 
-	public Material getCombustItem()
-	{
-		return FIREBALLITEM;
-	}
+    public void setCombustItem(Material m) {
+        FIREBALLITEM = m;
+    }
+
+    public Material getCombustItem() {
+        return FIREBALLITEM;
+    }
 }

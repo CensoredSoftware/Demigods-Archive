@@ -7,55 +7,47 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
-public class Rhea extends Deity
-{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4926492490352420958L;
-	Player PLAYER;
-	ArrayList<WriteLocation> MINE;
-	Material PLANTITEM, DETONATEITEM;
+public class Rhea extends Deity {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 4926492490352420958L;
+    Player PLAYER;
+    ArrayList<WriteLocation> MINE;
+    Material PLANTITEM, DETONATEITEM;
 
-	public Rhea(String p)
-	{
-		super(Divine.RHEA, p);
-		MINE = new ArrayList<WriteLocation>();
-	}
+    public Rhea(UUID p) {
+        super(Divine.RHEA, p);
+        MINE = new ArrayList<WriteLocation>();
+    }
 
-	public void addTree(WriteLocation l)
-	{
-		MINE.add(l);
-	}
+    public void addTree(WriteLocation l) {
+        MINE.add(l);
+    }
 
-	public void resetTree()
-	{
-		MINE.clear();
-	}
+    public void resetTree() {
+        MINE.clear();
+    }
 
-	public ArrayList<WriteLocation> getTree()
-	{
-		return MINE;
-	}
+    public ArrayList<WriteLocation> getTree() {
+        return MINE;
+    }
 
-	public Material getPlantItem()
-	{
-		return PLANTITEM;
-	}
+    public Material getPlantItem() {
+        return PLANTITEM;
+    }
 
-	public void setPlantItem(Material m)
-	{
-		PLANTITEM = m;
-	}
+    public void setPlantItem(Material m) {
+        PLANTITEM = m;
+    }
 
-	public Material getDetonateItem()
-	{
-		return DETONATEITEM;
-	}
+    public Material getDetonateItem() {
+        return DETONATEITEM;
+    }
 
-	public void setDetonateItem(Material m)
-	{
-		DETONATEITEM = m;
-	}
+    public void setDetonateItem(Material m) {
+        DETONATEITEM = m;
+    }
 }

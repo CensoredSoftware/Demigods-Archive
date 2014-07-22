@@ -4,48 +4,42 @@ import com.WildAmazing.marinating.Demigods.Utilities.Deity;
 import com.WildAmazing.marinating.Demigods.Utilities.Divine;
 import org.bukkit.Material;
 
-public class Ares extends Deity
-{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4766128921330356346L;
-	private boolean BLOODTHIRST = false;
-	private boolean FLING = false;
-	private Material FLINGITEM;
+import java.util.UUID;
 
-	public Ares(String p)
-	{
-		super(Divine.ARES, p);
-	}
+public class Ares extends Deity {
+    /**
+     *
+     */
+    private static final long serialVersionUID = -4766128921330356346L;
+    private boolean BLOODTHIRST = false;
+    private boolean FLING = false;
+    private Material FLINGITEM;
 
-	public void setBloodthirst(boolean b)
-	{
-		BLOODTHIRST = b;
-	}
+    public Ares(UUID p) {
+        super(Divine.ARES, p);
+    }
 
-	public boolean getBloodthirst()
-	{
-		return BLOODTHIRST;
-	}
+    public void setBloodthirst(boolean b) {
+        BLOODTHIRST = b;
+    }
 
-	public void setFling(boolean b)
-	{
-		FLING = b;
-	}
+    public boolean getBloodthirst() {
+        return BLOODTHIRST;
+    }
 
-	public boolean getFling()
-	{
-		return FLING;
-	}
+    public void setFling(boolean b) {
+        FLING = b;
+    }
 
-	public void setFlingItem(Material m)
-	{
-		FLINGITEM = m;
-	}
+    public boolean getFling() {
+        return FLING;
+    }
 
-	public Material getFlingItem()
-	{
-		return FLINGITEM;
-	}
+    public void setFlingItem(Material m) {
+        FLINGITEM = m;
+    }
+
+    public Material getFlingItem() {
+        return FLINGITEM;
+    }
 }

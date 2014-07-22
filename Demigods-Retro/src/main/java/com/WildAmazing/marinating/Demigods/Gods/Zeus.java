@@ -4,71 +4,61 @@ import com.WildAmazing.marinating.Demigods.Utilities.Deity;
 import com.WildAmazing.marinating.Demigods.Utilities.Divine;
 import org.bukkit.Material;
 
-public class Zeus extends Deity
-{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4054921217543910156L;
-	private boolean LIGHTNING = false;
-	private boolean LIFT = false;
-	private long stormTime;
-	private Material LIFTITEM = null;
-	private Material LIGHTNINGITEM = null;
+import java.util.UUID;
 
-	public Zeus(String p)
-	{
-		super(Divine.ZEUS, p);
-		stormTime = System.currentTimeMillis();
-	}
+public class Zeus extends Deity {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 4054921217543910156L;
+    private boolean LIGHTNING = false;
+    private boolean LIFT = false;
+    private long stormTime;
+    private Material LIFTITEM = null;
+    private Material LIGHTNINGITEM = null;
 
-	public Material getLiftItem()
-	{
-		return LIFTITEM;
-	}
+    public Zeus(UUID p) {
+        super(Divine.ZEUS, p);
+        stormTime = System.currentTimeMillis();
+    }
 
-	public void setLiftItem(Material m)
-	{
-		LIFTITEM = m;
-	}
+    public Material getLiftItem() {
+        return LIFTITEM;
+    }
 
-	public Material getLightningItem()
-	{
-		return LIGHTNINGITEM;
-	}
+    public void setLiftItem(Material m) {
+        LIFTITEM = m;
+    }
 
-	public void setLightningItem(Material m)
-	{
-		LIGHTNINGITEM = m;
-	}
+    public Material getLightningItem() {
+        return LIGHTNINGITEM;
+    }
 
-	public boolean getLightning()
-	{
-		return LIGHTNING;
-	}
+    public void setLightningItem(Material m) {
+        LIGHTNINGITEM = m;
+    }
 
-	public void setLightning(boolean b)
-	{
-		LIGHTNING = b;
-	}
+    public boolean getLightning() {
+        return LIGHTNING;
+    }
 
-	public boolean getLift()
-	{
-		return LIFT;
-	}
+    public void setLightning(boolean b) {
+        LIGHTNING = b;
+    }
 
-	public void setLift(boolean b)
-	{
-		LIFT = b;
-	}
+    public boolean getLift() {
+        return LIFT;
+    }
 
-	public long getStormTime()
-	{
-		return stormTime;
-	}
+    public void setLift(boolean b) {
+        LIFT = b;
+    }
 
-	public void setStormTime(long l)
-	{
-		stormTime = l;
-	}
+    public long getStormTime() {
+        return stormTime;
+    }
+
+    public void setStormTime(long l) {
+        stormTime = l;
+    }
 }
