@@ -1,8 +1,8 @@
 package com.WildAmazing.marinating.Demigods;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Deities.Gods.*;
-import com.WildAmazing.marinating.Demigods.Deities.Titans.*;
+import com.WildAmazing.marinating.Demigods.Deities.Jotunn.*;
+import com.WildAmazing.marinating.Demigods.Deities.Æsir.*;
 import com.WildAmazing.marinating.Demigods.Listeners.DLevels;
 import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
@@ -110,7 +110,6 @@ public class DCommandExecutor implements CommandExecutor {
                 return setAlliance(p, args);
             else if (c.getName().equalsIgnoreCase("removeplayer")) return removePlayer(p, args);
             else if (c.getName().equalsIgnoreCase("claim")) return claim(p);
-            else if (c.getName().equalsIgnoreCase("perks")) return perks(p);
             else if (c.getName().equalsIgnoreCase("value")) return value(p);
             else if (c.getName().equalsIgnoreCase("bindings")) return bindings(p);
             else if (c.getName().equalsIgnoreCase("assemble")) return assemble(p);
@@ -133,7 +132,7 @@ public class DCommandExecutor implements CommandExecutor {
     }
 
 	/*
-	 * Every command gets it's own method below.
+     * Every command gets it's own method below.
 	 */
 
     private boolean setFavor(String[] args) {
@@ -432,8 +431,8 @@ public class DCommandExecutor implements CommandExecutor {
         }
         if (args.length == 0) {
             p.sendMessage(ChatColor.YELLOW + "[Demigods] Information Directory");
-            p.sendMessage(ChatColor.GRAY + "/dg god");
-            p.sendMessage(ChatColor.GRAY + "/dg titan");
+            p.sendMessage(ChatColor.GRAY + "/dg aesir");
+            p.sendMessage(ChatColor.GRAY + "/dg jutunn");
             p.sendMessage(ChatColor.GRAY + "/dg claim");
             p.sendMessage(ChatColor.GRAY + "/dg shrine");
             p.sendMessage(ChatColor.GRAY + "/dg tribute");
@@ -442,54 +441,33 @@ public class DCommandExecutor implements CommandExecutor {
             p.sendMessage(ChatColor.GRAY + "/dg stats");
             p.sendMessage(ChatColor.GRAY + "/dg rankings");
             p.sendMessage("To see your own information, use " + ChatColor.YELLOW + "/check");
-            p.sendMessage(ChatColor.DARK_AQUA + "Source: github.com/CensoredSoftware/Demigods in compliance");
-            p.sendMessage(ChatColor.DARK_AQUA + "with GNU Affero General Public License.");
         }
         if (args.length == 1) {
             if (args[0].equalsIgnoreCase("check")) checkCode(p);
-            else if (args[0].equalsIgnoreCase("god")) {
-                p.sendMessage(ChatColor.YELLOW + "[Demigods] God Help File");
-                p.sendMessage(ChatColor.GRAY + "For more information on the Gods, use /dg <name>");
+            else if (args[0].equalsIgnoreCase("aesir") || args[0].equalsIgnoreCase("god")) {
+                p.sendMessage(ChatColor.YELLOW + "[Demigods] Æsir Help File");
+                p.sendMessage(ChatColor.GRAY + "For more information on the Æsir, use /dg <name>");
                 p.sendMessage(ChatColor.GOLD + "----Tier 1");
-                p.sendMessage(ChatColor.GRAY + "Zeus - God of lightning and air.");
-                p.sendMessage(ChatColor.GRAY + "Poseidon - God of the seas.");
-                p.sendMessage(ChatColor.GRAY + "Hades - God of the underworld.");
+                p.sendMessage(ChatColor.GRAY + "Odin - God of death, wisdom, and time.");
+                p.sendMessage(ChatColor.GRAY + "Thor - God of battle, lightning, and strength.");
+                p.sendMessage(ChatColor.GRAY + "Loki - Demigod-Jatunn of mischief and deception.");
                 p.sendMessage(ChatColor.GOLD + "----Tier 2");
                 p.sendMessage(ChatColor.GRAY + "Ares - God of war.");
                 p.sendMessage(ChatColor.GRAY + "Athena - Goddess of wisdom.");
                 p.sendMessage(ChatColor.GRAY + "Hephaestus - God of the forge.");
                 p.sendMessage(ChatColor.GRAY + "Apollo - God of archery and healing.");
-				/*
-				 * p.sendMessage(ChatColor.GOLD+"----Tier 3");
-				 * p.sendMessage(ChatColor.GRAY+"Artemis - Goddess of the hunt.");
-				 * p.sendMessage(ChatColor.GRAY+"Demeter - Goddess of the harvest.");
-				 * p.sendMessage(ChatColor.GRAY+"Dionysus - God of wine.");
-				 * p.sendMessage(ChatColor.GRAY+"Hermes - God of travel and thievery.");
-				 * p.sendMessage(ChatColor.GRAY+"Hestia - Goddess of cooking and the home.");
-				 */
-            } else if (args[0].equalsIgnoreCase("titan")) {
-                p.sendMessage(ChatColor.YELLOW + "[Demigods] Titan Help File");
-                p.sendMessage(ChatColor.GRAY + "For more information on the Titans, use /dg <name>");
+            } else if (args[0].equalsIgnoreCase("")) {
+                p.sendMessage(ChatColor.YELLOW + "[Demigods] Jotunn Help File");
+                p.sendMessage(ChatColor.GRAY + "For more information on the Jotunn, use /dg <name>");
                 p.sendMessage(ChatColor.GOLD + "----Tier 1");
-                p.sendMessage(ChatColor.GRAY + "Cronus - Titan of time.");
-                p.sendMessage(ChatColor.GRAY + "Rhea - Titaness of nature.");
-                p.sendMessage(ChatColor.GRAY + "Prometheus - Titan of fire.");
+                p.sendMessage(ChatColor.GRAY + "Fárbauti (farbauti) - Jatunn of anger and war.");
+                p.sendMessage(ChatColor.GRAY + "Hel - Ruler of Hel.");
+                p.sendMessage(ChatColor.GRAY + "Jörmungandr (jormungandr) - Jatunn of fire.");
                 p.sendMessage(ChatColor.GOLD + "----Tier 2");
                 p.sendMessage(ChatColor.GRAY + "Atlas - Titan of enduring.");
                 p.sendMessage(ChatColor.GRAY + "Oceanus - Titan of the oceans.");
                 p.sendMessage(ChatColor.GRAY + "Hyperion - Titan of light.");
                 p.sendMessage(ChatColor.GRAY + "Themis - Titaness of diplomacy and foresight.");
-				/*
-				 * p.sendMessage(ChatColor.GOLD+"----Tier 3");
-				 * p.sendMessage(ChatColor.GRAY+"Lelantos - Titan of the predator.");
-				 * p.sendMessage(ChatColor.GRAY+"Perses - Titan of destruction.");
-				 * p.sendMessage(ChatColor.GRAY+"Styx - Titan of death.");
-				 * p.sendMessage(ChatColor.GRAY+"Helios - Titan of the sun and keeper of oaths.");
-				 * p.sendMessage(ChatColor.GRAY+"Koios - Titan of intelligence.");
-				 */
-            } else if (args[0].equalsIgnoreCase("giant")) {
-                p.sendMessage(ChatColor.YELLOW + "[Demigods] Giant Help File");
-                p.sendMessage(ChatColor.GRAY + "Coming in the next stable update!");
             } else if (args[0].equalsIgnoreCase("claim")) {
                 p.sendMessage(ChatColor.YELLOW + "[Demigods] Claim Help File");
                 p.sendMessage(ChatColor.GRAY + "To claim your first deity, use " + ChatColor.YELLOW + "/claim" + ChatColor.GRAY + " with");
@@ -528,8 +506,8 @@ public class DCommandExecutor implements CommandExecutor {
                 p.sendMessage(ChatColor.GRAY + "your own shrines.");
             } else if (args[0].equalsIgnoreCase("player")) {
                 p.sendMessage(ChatColor.YELLOW + "[Demigods] Player Help File");
-                p.sendMessage(ChatColor.GRAY + "As a player, you may choose to ally with the Gods or");
-                p.sendMessage(ChatColor.GRAY + "the Titans. Once you have made an allegiance, you may");
+                p.sendMessage(ChatColor.GRAY + "As a player, you may choose to ally with the Æsir or");
+                p.sendMessage(ChatColor.GRAY + "the Jotunn. Once you have made an allegiance, you may");
                 p.sendMessage(ChatColor.GRAY + "not break it without forsaking all the deities you have.");
                 p.sendMessage(ChatColor.GRAY + "The three major attributes you have are:");
                 p.sendMessage(ChatColor.YELLOW + "Favor " + ChatColor.GRAY + "- A measure of power and a divine currency");
@@ -553,7 +531,6 @@ public class DCommandExecutor implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("stats")) {
                 int titancount = 0;
                 int godcount = 0;
-                int giantcount = 0;
                 int othercount = 0;
                 int titankills = 0;
                 int godkills = 0;
@@ -561,7 +538,6 @@ public class DCommandExecutor implements CommandExecutor {
                 int otherkills = 0;
                 int titandeaths = 0;
                 int goddeaths = 0;
-                int giantdeaths = 0;
                 int otherdeaths = 0;
                 ArrayList<UUID> onlinegods = new ArrayList<UUID>();
                 ArrayList<UUID> onlinetitans = new ArrayList<UUID>();
@@ -572,15 +548,14 @@ public class DCommandExecutor implements CommandExecutor {
                         if (DSave.hasData(id, "LASTLOGINTIME"))
                             if ((Long) DSave.getData(id, "LASTLOGINTIME") < System.currentTimeMillis() - 604800000)
                                 continue;
-                        if (DMiscUtil.getAllegiance(id).equalsIgnoreCase("titan")) {
+                        if (DMiscUtil.getAllegiance(id).equalsIgnoreCase("Jatunn")) {
                             titancount++;
                             titankills += DMiscUtil.getKills(id);
                             titandeaths += DMiscUtil.getDeaths(id);
                             if (DMiscUtil.getPlugin().getServer().getPlayer(id).isOnline()) {
                                 onlinetitans.add(id);
                             }
-                        } else if (DMiscUtil.getAllegiance(id).equalsIgnoreCase("god")) {
-
+                        } else if (DMiscUtil.getAllegiance(id).equalsIgnoreCase("Æsir")) {
                             godcount++;
                             godkills += DMiscUtil.getKills(id);
                             goddeaths += DMiscUtil.getDeaths(id);
@@ -624,13 +599,12 @@ public class DCommandExecutor implements CommandExecutor {
                     }
                     str3 = str3.substring(0, str3.length() - 2);
                 }
-                p.sendMessage("There are " + ChatColor.GREEN + onlinegods.size() + "/" + ChatColor.YELLOW + godcount + ChatColor.WHITE + " Gods online: " + ChatColor.GOLD + str1);
-                p.sendMessage("There are " + ChatColor.GREEN + onlinetitans.size() + "/" + ChatColor.YELLOW + titancount + ChatColor.WHITE + " Titans online: " + ChatColor.GOLD + str2);
+                p.sendMessage("There are " + ChatColor.GREEN + onlinegods.size() + "/" + ChatColor.YELLOW + godcount + ChatColor.WHITE + " Æsir online: " + ChatColor.GOLD + str1);
+                p.sendMessage("There are " + ChatColor.GREEN + onlinetitans.size() + "/" + ChatColor.YELLOW + titancount + ChatColor.WHITE + " Jotunn online: " + ChatColor.GOLD + str2);
                 if (othercount > 0)
                     p.sendMessage("There are " + ChatColor.GREEN + onlineother.size() + "/" + ChatColor.YELLOW + othercount + ChatColor.WHITE + " others online: " + ChatColor.GOLD + str3);
-                p.sendMessage("Total God kills: " + ChatColor.GREEN + godkills + ChatColor.YELLOW + " --- " + ChatColor.WHITE + " God K/D Ratio: " + ChatColor.YELLOW + ((float) godkills / goddeaths));
-                p.sendMessage("Total Titan kills: " + ChatColor.GREEN + titankills + ChatColor.YELLOW + " --- " + ChatColor.WHITE + " Titan K/D Ratio: " + ChatColor.YELLOW + ((float) titankills / titandeaths));
-                p.sendMessage("Total Giant kills: " + ChatColor.GREEN + giantkills + ChatColor.YELLOW + " --- " + ChatColor.WHITE + " Giant K/D Ratio: " + ChatColor.YELLOW + ((float) giantkills / giantdeaths));
+                p.sendMessage("Total Æsir kills: " + ChatColor.GREEN + godkills + ChatColor.YELLOW + " --- " + ChatColor.WHITE + " God K/D Ratio: " + ChatColor.YELLOW + ((float) godkills / goddeaths));
+                p.sendMessage("Total Jatunn kills: " + ChatColor.GREEN + titankills + ChatColor.YELLOW + " --- " + ChatColor.WHITE + " Titan K/D Ratio: " + ChatColor.YELLOW + ((float) titankills / titandeaths));
                 if (othercount > 0) {
                     p.sendMessage("Total Other kills: " + ChatColor.GREEN + otherkills + ChatColor.YELLOW + " --- " + ChatColor.WHITE + " Other K/D Ratio: " + ChatColor.YELLOW + ((float) otherkills / otherdeaths));
                 }
@@ -645,13 +619,13 @@ public class DCommandExecutor implements CommandExecutor {
                 ArrayList<Long> gr = new ArrayList<Long>();
                 ArrayList<Long> tr = new ArrayList<Long>();
                 for (UUID s : DMiscUtil.getFullParticipants()) {
-                    if (DMiscUtil.getAllegiance(s).equalsIgnoreCase("god")) {
+                    if (DMiscUtil.getAllegiance(s).equalsIgnoreCase("Æsir")) {
                         if (DSave.hasData(s, "LASTLOGINTIME"))
                             if ((Long) DSave.getData(s, "LASTLOGINTIME") < System.currentTimeMillis() - 604800000)
                                 continue;
                         gods.add(s);
                         gr.add(DMiscUtil.getRanking(s));
-                    } else if (DMiscUtil.getAllegiance(s).equalsIgnoreCase("titan")) {
+                    } else if (DMiscUtil.getAllegiance(s).equalsIgnoreCase("Jatunn")) {
                         if (DSave.hasData(s, "LASTLOGINTIME"))
                             if ((Long) DSave.getData(s, "LASTLOGINTIME") < System.currentTimeMillis() - 604800000)
                                 continue;
@@ -663,7 +637,6 @@ public class DCommandExecutor implements CommandExecutor {
                 String[] Titans = new String[titans.size()];
                 Long[] GR = new Long[gods.size()];
                 Long[] TR = new Long[titans.size()];
-                Long[] AR = new Long[titans.size()];
                 for (int i = 0; i < Gods.length; i++) {
                     Gods[i] = DMiscUtil.getLastKnownName(gods.get(i));
                     GR[i] = gr.get(i);
@@ -713,7 +686,7 @@ public class DCommandExecutor implements CommandExecutor {
                 p.sendMessage(ChatColor.GRAY + "Rankings are determined by Devotion, Deities, and Kills.");
                 int gp = Gods.length;
                 if (gp > 5) gp = 5;
-                p.sendMessage(ChatColor.GOLD + "-- Gods");
+                p.sendMessage(ChatColor.GOLD + "-- Æsir");
                 for (int i = 0; i < gp; i++) {
                     if (DMiscUtil.getOnlinePlayer(Gods[i]) != null)
                         p.sendMessage(ChatColor.GREEN + "  " + (i + 1) + ". " + Gods[i] + " :: " + GR[i]);
@@ -721,7 +694,7 @@ public class DCommandExecutor implements CommandExecutor {
                 }
                 int tp = Titans.length;
                 if (tp > 5) tp = 5;
-                p.sendMessage(ChatColor.DARK_RED + "-- Titans");
+                p.sendMessage(ChatColor.DARK_RED + "-- Jotunn");
                 for (int i = 0; i < tp; i++) {
                     if (DMiscUtil.getOnlinePlayer(Titans[i]) != null)
                         p.sendMessage(ChatColor.GREEN + "  " + (i + 1) + ". " + Titans[i] + " :: " + TR[i]);
@@ -734,12 +707,12 @@ public class DCommandExecutor implements CommandExecutor {
             }
         } else if (args.length == 2) {
             if (args[0].equalsIgnoreCase("ranking") || args[0].equalsIgnoreCase("rankings")) {
-                if (args[1].equalsIgnoreCase("god")) {
+                if (args[1].equalsIgnoreCase("aesir") || args[1].equalsIgnoreCase("god")) {
                     // get list of gods
                     ArrayList<UUID> gods = new ArrayList<UUID>();
                     ArrayList<Long> gr = new ArrayList<Long>();
                     for (UUID s : DMiscUtil.getFullParticipants()) {
-                        if (DMiscUtil.getAllegiance(s).equalsIgnoreCase("god")) {
+                        if (DMiscUtil.getAllegiance(s).equalsIgnoreCase("Æsir")) {
                             if (DSave.hasData(s, "LASTLOGINTIME"))
                                 if ((Long) DSave.getData(s, "LASTLOGINTIME") < System.currentTimeMillis() - 604800000)
                                     continue;
@@ -775,19 +748,19 @@ public class DCommandExecutor implements CommandExecutor {
                         GR[i] = GR[highestIndex];
                         GR[highestIndex] = l;
                     }
-                    p.sendMessage(ChatColor.GRAY + "----God Rankings----");
+                    p.sendMessage(ChatColor.GRAY + "----Æsir Rankings----");
                     p.sendMessage(ChatColor.GRAY + "Rankings are determined by Devotion, Deities, and Kills.");
                     for (int i = 0; i < Gods.length; i++) {
                         if (DMiscUtil.getOnlinePlayer(Gods[i]) != null)
                             p.sendMessage(ChatColor.GREEN + "  " + (i + 1) + ". " + Gods[i] + " :: " + GR[i]);
                         else p.sendMessage(ChatColor.GRAY + "  " + (i + 1) + ". " + Gods[i] + " :: " + GR[i]);
                     }
-                } else if (args[1].equalsIgnoreCase("titan")) {
+                } else if (args[1].equalsIgnoreCase("jotunn")) {
                     // get list of titans
                     ArrayList<UUID> titans = new ArrayList<UUID>();
                     ArrayList<Long> tr = new ArrayList<Long>();
                     for (UUID s : DMiscUtil.getFullParticipants()) {
-                        if (DMiscUtil.getAllegiance(s).equalsIgnoreCase("titan")) {
+                        if (DMiscUtil.getAllegiance(s).equalsIgnoreCase("Jotunn")) {
                             if (DSave.hasData(s, "LASTLOGINTIME"))
                                 if ((Long) DSave.getData(s, "LASTLOGINTIME") < System.currentTimeMillis() - 604800000)
                                     continue;
@@ -824,7 +797,7 @@ public class DCommandExecutor implements CommandExecutor {
                         TR[highestIndex] = l;
                     }
                     // print
-                    p.sendMessage(ChatColor.GRAY + "----Titan Rankings----");
+                    p.sendMessage(ChatColor.GRAY + "----Jotunn Rankings----");
                     p.sendMessage(ChatColor.GRAY + "Rankings are determined by Devotion, Deities, and Kills.");
                     for (int i = 0; i < Titans.length; i++) {
                         if (DMiscUtil.getOnlinePlayer(Titans[i]) != null)
@@ -847,8 +820,8 @@ public class DCommandExecutor implements CommandExecutor {
 
     private boolean checkCode(Player p) {
         if (!DMiscUtil.isFullParticipant(p)) {
-            p.sendMessage(ChatColor.YELLOW + "--" + p.getName() + "--Mortal--");
-            p.sendMessage("You are not affiliated with any Gods or Titans.");
+            p.sendMessage(ChatColor.YELLOW + "--" + p.getName() + "--Human--");
+            p.sendMessage("You are not affiliated with any Æsir or Jotunn.");
             return true;
         }
         if (DMiscUtil.getUnclaimedDevotion(p) > 0) {
@@ -1005,8 +978,8 @@ public class DCommandExecutor implements CommandExecutor {
                     p.sendMessage(printout);
                 }
             } else {
-                p.sendMessage(ChatColor.YELLOW + "--" + ptarget.getName() + "--Mortal--");
-                p.sendMessage(ptarget.getName() + " is not affiliated with any Gods or Titans.");
+                p.sendMessage(ChatColor.YELLOW + "--" + ptarget.getName() + "--Human--");
+                p.sendMessage(ptarget.getName() + " is not affiliated with any Æsir or Jotunn.");
             }
         } catch (NullPointerException name) {
             p.sendMessage(ChatColor.YELLOW + "Player not found.");
@@ -1477,7 +1450,7 @@ public class DCommandExecutor implements CommandExecutor {
             return true;
         }
         // check if creator/admin
-        if (!DMiscUtil.getOwnerOfShrine(shrine).equals(p.getName()) && !DMiscUtil.hasPermission(p, "demigods.admin")) {
+        if (!DMiscUtil.getOwnerOfShrine(shrine).equals(p.getUniqueId()) && !DMiscUtil.hasPermission(p, "demigods.admin")) {
             p.sendMessage(ChatColor.YELLOW + "Only admins and the creator of a shrine can modify it.");
             return true;
         }
@@ -1505,7 +1478,7 @@ public class DCommandExecutor implements CommandExecutor {
             return true;
         }
         // check if creator/admin
-        if (!DMiscUtil.getOwnerOfShrine(shrine).equals(p.getName()) && !DMiscUtil.hasPermission(p, "demigods.admin")) {
+        if (!DMiscUtil.getOwnerOfShrine(shrine).equals(p.getUniqueId()) && !DMiscUtil.hasPermission(p, "demigods.admin")) {
             p.sendMessage(ChatColor.YELLOW + "Only admins and the creator of a shrine can modify it.");
             return true;
         }
@@ -1526,22 +1499,52 @@ public class DCommandExecutor implements CommandExecutor {
             return true;
         } else {
             String s = args[1].toLowerCase();
-            if (s.equals("zeus")) DMiscUtil.giveDeity(target, new Zeus(target));
-            else if (s.equals("ares")) DMiscUtil.giveDeity(target, new Ares(target));
-            else if (s.equals("cronus")) DMiscUtil.giveDeity(target, new Cronus(target));
-            else if (s.equals("prometheus")) DMiscUtil.giveDeity(target, new Prometheus(target));
-            else if (s.equals("rhea")) DMiscUtil.giveDeity(target, new Rhea(target));
-            else if (s.equals("hades")) DMiscUtil.giveDeity(target, new Hades(target));
-            else if (s.equals("poseidon")) DMiscUtil.giveDeity(target, new Poseidon(target));
-            else if (s.equals("atlas")) DMiscUtil.giveDeity(target, new Atlas(target));
-            else if (s.equals("athena")) DMiscUtil.giveDeity(target, new Athena(target));
-            else if (s.equals("oceanus")) DMiscUtil.giveDeity(target, new Oceanus(target));
-            else if (s.equals("hyperion")) DMiscUtil.giveDeity(target, new Hyperion(target));
-            else if (s.equals("hephaestus")) DMiscUtil.giveDeity(target, new Hephaestus(target));
-            else if (s.equals("apollo")) DMiscUtil.giveDeity(target, new Apollo(target));
-            else if (s.equals("themis")) DMiscUtil.giveDeity(target, new Themis(target));
+            switch (s) {
+                case "thor":
+                    DMiscUtil.giveDeity(target, new Thor(target));
+                    break;
+                case "farbauti":
+                    DMiscUtil.giveDeity(target, new Fárbauti(target));
+                    break;
+                case "odin":
+                    DMiscUtil.giveDeity(target, new Odin(target));
+                    break;
+                case "jormungandr":
+                    DMiscUtil.giveDeity(target, new Jörmungandr(target));
+                    break;
+                case "rhea":
+                    DMiscUtil.giveDeity(target, new Rhea(target));
+                    break;
+                case "hel":
+                    DMiscUtil.giveDeity(target, new Hel(target));
+                    break;
+                case "poseidon":
+                    DMiscUtil.giveDeity(target, new Poseidon(target));
+                    break;
+                case "atlas":
+                    DMiscUtil.giveDeity(target, new Atlas(target));
+                    break;
+                case "athena":
+                    DMiscUtil.giveDeity(target, new Athena(target));
+                    break;
+                case "oceanus":
+                    DMiscUtil.giveDeity(target, new Oceanus(target));
+                    break;
+                case "hyperion":
+                    DMiscUtil.giveDeity(target, new Hyperion(target));
+                    break;
+                case "hephaestus":
+                    DMiscUtil.giveDeity(target, new Hephaestus(target));
+                    break;
+                case "apollo":
+                    DMiscUtil.giveDeity(target, new Apollo(target));
+                    break;
+                case "themis":
+                    DMiscUtil.giveDeity(target, new Themis(target));
+                    break;
+            }
             p.sendMessage(ChatColor.YELLOW + "Success! " + target + " now has the deity " + args[1] + ".");
-            p.sendMessage(ChatColor.YELLOW + "Skills may not work if you mismatch Titans and Gods.");
+            p.sendMessage(ChatColor.YELLOW + "Skills may not work if you mismatch Jotunn and Æsir.");
         }
         return true;
     }
@@ -1611,11 +1614,6 @@ public class DCommandExecutor implements CommandExecutor {
             p.sendMessage(ChatColor.YELLOW + "You do not have that deity.");
         } else {
             if (DMiscUtil.getDeities(p).size() >= 2) {
-                if (args[0].equalsIgnoreCase("?????")) {
-                    p.damage(10000.1);
-                    p.sendMessage(ChatColor.RED + "?????: " + ChatColor.WHITE + "You may not forsake me.");
-                    return true;
-                }
                 String str = "";
                 Deity toremove = DMiscUtil.getDeity(p, args[0]);
                 DLevels.levelProcedure(p);
@@ -1647,7 +1645,7 @@ public class DCommandExecutor implements CommandExecutor {
             }
             if (DSave.hasPlayer(target)) {
                 DMiscUtil.setFavor(target, amt);
-                p.sendMessage(ChatColor.YELLOW + "Success! " + target + " now has " + amt + " Favor/Power.");
+                p.sendMessage(ChatColor.YELLOW + "Success! " + target + " now has " + amt + " Favor.");
                 return true;
             }
             return false;
@@ -1669,7 +1667,7 @@ public class DCommandExecutor implements CommandExecutor {
             }
             if (DSave.hasPlayer(target)) {
                 DMiscUtil.setFavorCap(target, amt);
-                p.sendMessage(ChatColor.YELLOW + "Success! " + target + " now has " + amt + " max Favor/Power.");
+                p.sendMessage(ChatColor.YELLOW + "Success! " + target + " now has " + amt + " max Favor.");
                 return true;
             }
             return false;
@@ -1858,22 +1856,23 @@ public class DCommandExecutor implements CommandExecutor {
             Deity choice = null;
             switch (p.getItemInHand().getType()) {
                 case IRON_INGOT:
-                    choice = new Zeus(p.getUniqueId());
+                    choice = new Thor(p.getUniqueId());
+                    break;
+                case SOUL_SAND:
+                    choice = new Odin(p.getUniqueId());
                     break;
                 case WATER_BUCKET:
                     choice = new Poseidon(p.getUniqueId());
                     break;
-                case BONE:
-                    choice = new Hades(p.getUniqueId());
-                    break;
+
                 //
-                case SOUL_SAND:
-                    choice = new Cronus(p.getUniqueId());
+                case BONE:
+                    choice = new Hel(p.getUniqueId());
                     break;
                 case CLAY_BALL:
-                    choice = new Prometheus(p.getUniqueId());
+                    choice = new Jörmungandr(p.getUniqueId());
                     break;
-                case VINE:
+                case GOLD_SWORD:
                     choice = new Rhea(p.getUniqueId());
                     break;
             }
@@ -1883,11 +1882,9 @@ public class DCommandExecutor implements CommandExecutor {
                     return true;
                 }
                 p.sendMessage(ChatColor.YELLOW + "The Fates ponder your decision...");
-                if (BALANCETEAMS && DMiscUtil.hasAdvantage(choice.getDefaultAlliance())) // TODO Temp fix for Typhon.
-                {
-                    p.sendMessage(ChatColor.RED + "The Fates have determined that your selection would");
-                    p.sendMessage(ChatColor.RED + "unbalance the order of the universe. Try again");
-                    p.sendMessage(ChatColor.RED + "later or select a different deity.");
+                if (BALANCETEAMS && DMiscUtil.hasAdvantage(choice.getDefaultAlliance())) {
+                    p.sendMessage(ChatColor.RED + "Your selection would unbalance the order of the universe.");
+                    p.sendMessage(ChatColor.RED + "Try again later or select a different deity.");
                     return true;
                 }
                 p.sendMessage(ChatColor.YELLOW + "You have been accepted to the lineage of " + choice.getName() + ".");
@@ -1911,16 +1908,13 @@ public class DCommandExecutor implements CommandExecutor {
         Deity choice = null;
         switch (p.getItemInHand().getType()) {
             case IRON_INGOT:
-                choice = new Zeus(p.getUniqueId());
+                choice = new Thor(p.getUniqueId());
                 break;
             case WATER_BUCKET:
                 choice = new Poseidon(p.getUniqueId());
                 break;
-            case BONE:
-                choice = new Hades(p.getUniqueId());
-                break;
-            case GOLD_SWORD:
-                choice = new Ares(p.getUniqueId());
+            case SOUL_SAND:
+                choice = new Odin(p.getUniqueId());
                 break;
             case BOOK:
                 choice = new Athena(p.getUniqueId());
@@ -1932,11 +1926,14 @@ public class DCommandExecutor implements CommandExecutor {
                 choice = new Apollo(p.getUniqueId());
                 break;
             //
-            case SOUL_SAND:
-                choice = new Cronus(p.getUniqueId());
+            case BONE:
+                choice = new Hel(p.getUniqueId());
+                break;
+            case GOLD_SWORD:
+                choice = new Fárbauti(p.getUniqueId());
                 break;
             case CLAY_BALL:
-                choice = new Prometheus(p.getUniqueId());
+                choice = new Jörmungandr(p.getUniqueId());
                 break;
             case VINE:
                 choice = new Rhea(p.getUniqueId());
@@ -1982,11 +1979,6 @@ public class DCommandExecutor implements CommandExecutor {
         return true;
     }
 
-    private boolean perks(Player p) {
-        p.sendMessage(ChatColor.YELLOW + "Coming soon.");
-        return true;
-    }
-
     private boolean value(Player p) {
         if (DMiscUtil.isFullParticipant(p)) if (p.getItemInHand() != null)
             p.sendMessage(ChatColor.YELLOW + p.getItemInHand().getType().name() + " x" + p.getItemInHand().getAmount() + " is worth " + (int) (DMiscUtil.getValue(p.getItemInHand()) * DShrines.FAVORMULTIPLIER) + " at a shrine.");
@@ -2021,28 +2013,6 @@ public class DCommandExecutor implements CommandExecutor {
         p.sendMessage(ChatColor.YELLOW + "Unable to reach the congregation's location.");
         return true;
     }
-
-	/*
-	 * private boolean setLore(Player p) //TODO TEMP
-	 * {
-	 * // Define variables
-	 * ItemStack health = new ItemStack(Material.GOLD_NUGGET, 1);
-	 * 
-	 * String name = "Extra Life";
-	 * List<String> lore = new ArrayList<String>();
-	 * lore.add("Gain back a life!");
-	 * 
-	 * ItemMeta item = health.getItemMeta();
-	 * item.setDisplayName(name);
-	 * item.setLore(lore);
-	 * 
-	 * health.setItemMeta(item);
-	 * 
-	 * p.getInventory().addItem(health);
-	 * p.sendMessage(ChatColor.GREEN + "1 UP!");
-	 * return true;
-	 * }
-	 */
 
     static class DDebug {
 

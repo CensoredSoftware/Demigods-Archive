@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods.Deities.Titans;
+package com.WildAmazing.marinating.Demigods.Deities.Jotunn;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 //TODO better replacement for BLAZE
-public class Prometheus implements Deity {
+public class Jörmungandr implements Deity {
     private static final long serialVersionUID = -6437607905225500420L;
     private final UUID PLAYER;
     private final int FIREBALLCOST = 100;
@@ -33,7 +33,7 @@ public class Prometheus implements Deity {
     private long BLAZETIME;
     private long FIREBALLTIME;
 
-    public Prometheus(UUID name) {
+    public Jörmungandr(UUID name) {
         PLAYER = name;
         FIRESTORMTIME = System.currentTimeMillis();
         BLAZETIME = System.currentTimeMillis();
@@ -42,7 +42,7 @@ public class Prometheus implements Deity {
 
     @Override
     public String getName() {
-        return "Prometheus";
+        return "Jörmungandr";
     }
 
     public boolean getBLAZE() {
@@ -56,15 +56,15 @@ public class Prometheus implements Deity {
 
     @Override
     public String getDefaultAlliance() {
-        return "Titan";
+        return "Jotunn";
     }
 
     @Override
     public void printInfo(Player p) {
-        if (DMiscUtil.hasDeity(p, "Prometheus") && DMiscUtil.isFullParticipant(p)) {
+        if (DMiscUtil.hasDeity(p, "Jörmungandr") && DMiscUtil.isFullParticipant(p)) {
             int devotion = DMiscUtil.getDevotion(p, getName());
             /*
-			 * Calculate special values first
+             * Calculate special values first
 			 */
             int t = (int) (PROMETHEUSULTIMATECOOLDOWNMAX - ((PROMETHEUSULTIMATECOOLDOWNMAX - PROMETHEUSULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
             int diameter = (int) Math.ceil(1.43 * Math.pow(devotion, 0.1527));
@@ -73,30 +73,30 @@ public class Prometheus implements Deity {
 			/*
 			 * The printed text
 			 */
-            p.sendMessage("--" + ChatColor.GOLD + "Prometheus" + ChatColor.GRAY + "[" + devotion + "]");
+            p.sendMessage("--" + ChatColor.GOLD + "Jörmungandr" + ChatColor.GRAY + "[" + devotion + "]");
             p.sendMessage(":Immune to fire damage.");
             p.sendMessage(":Shoot a fireball at the cursor's location. " + ChatColor.GREEN + "/fireball");
             p.sendMessage(ChatColor.YELLOW + "Costs " + FIREBALLCOST + " Favor.");
-            if (((Prometheus) (DMiscUtil.getDeity(p, "Prometheus"))).FIREBALLITEM != null)
-                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Prometheus) (DMiscUtil.getDeity(p, "Prometheus"))).FIREBALLITEM.name());
+            if (((Jörmungandr) (DMiscUtil.getDeity(p, "Jörmungandr"))).FIREBALLITEM != null)
+                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Jörmungandr) (DMiscUtil.getDeity(p, "Jörmungandr"))).FIREBALLITEM.name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
             p.sendMessage(":Ignite the ground at the target location with diameter " + diameter + ". " + ChatColor.GREEN + "/blaze");
             p.sendMessage(ChatColor.YELLOW + "Costs " + BLAZECOST + " Favor. Cooldown time: " + BLAZEDELAY + " seconds.");
-            if (((Prometheus) (DMiscUtil.getDeity(p, "Prometheus"))).BLAZEITEM != null)
-                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Prometheus) (DMiscUtil.getDeity(p, "Prometheus"))).BLAZEITEM.name());
+            if (((Jörmungandr) (DMiscUtil.getDeity(p, "Jörmungandr"))).BLAZEITEM != null)
+                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Jörmungandr) (DMiscUtil.getDeity(p, "Jörmungandr"))).BLAZEITEM.name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
-            p.sendMessage(":Prometheus rains fire on nearby enemies.");
+            p.sendMessage(":Jörmungandr rains fire on nearby enemies.");
             p.sendMessage("Shoots " + firestormshots + " fireballs. " + ChatColor.GREEN + "/firestorm");
             p.sendMessage(ChatColor.YELLOW + "Costs " + PROMETHEUSULTIMATECOST + " Favor. Cooldown time: " + t + " seconds.");
             return;
         }
-        p.sendMessage("--" + ChatColor.GOLD + "Prometheus");
+        p.sendMessage("--" + ChatColor.GOLD + "Jörmungandr");
         p.sendMessage("Passive: Immune to fire damage.");
         p.sendMessage("Active: Shoot a fireball. " + ChatColor.GREEN + "/fireball");
         p.sendMessage(ChatColor.YELLOW + "Costs " + FIREBALLCOST + " Favor. Can bind.");
         p.sendMessage("Active: Ignite the ground around the target." + ChatColor.GREEN + " /blaze ");
         p.sendMessage(ChatColor.YELLOW + "Costs " + BLAZECOST + " Favor. Can bind. Has cooldown.");
-        p.sendMessage("Ultimate: Prometheus rains fireballs on your enemies.");
+        p.sendMessage("Ultimate: Jörmungandr rains fireballs on your enemies.");
         p.sendMessage(ChatColor.GREEN + "/firestorm" + ChatColor.YELLOW + " Costs " + PROMETHEUSULTIMATECOST + " Favor. Has cooldown.");
         p.sendMessage(ChatColor.YELLOW + "Select item: clay ball");
     }
@@ -107,7 +107,7 @@ public class Prometheus implements Deity {
             PlayerInteractEvent e = (PlayerInteractEvent) ee;
             Player p = e.getPlayer();
             if (!DMiscUtil.isFullParticipant(p)) return;
-            if (!DMiscUtil.hasDeity(p, "Prometheus")) return;
+            if (!DMiscUtil.hasDeity(p, "Jörmungandr")) return;
             if (FIREBALL || ((p.getItemInHand() != null) && (p.getItemInHand().getType() == FIREBALLITEM))) {
                 if (System.currentTimeMillis() < FIREBALLTIME) return;
                 if (DMiscUtil.getFavor(p) >= FIREBALLCOST) {
@@ -153,7 +153,7 @@ public class Prometheus implements Deity {
     public void onCommand(Player P, String str, String[] args, boolean bind) {
         final Player p = P;
         if (!DMiscUtil.isFullParticipant(p)) return;
-        if (!DMiscUtil.hasDeity(p, "Prometheus")) return;
+        if (!DMiscUtil.hasDeity(p, "Jörmungandr")) return;
         if (str.equalsIgnoreCase("fireball")) {
             if (bind) {
                 if (FIREBALLITEM == null) {
@@ -218,7 +218,7 @@ public class Prometheus implements Deity {
                 int t = (int) (PROMETHEUSULTIMATECOOLDOWNMAX - ((PROMETHEUSULTIMATECOOLDOWNMAX - PROMETHEUSULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
                 FIRESTORMTIME = System.currentTimeMillis() + (t * 1000);
                 p.sendMessage("In exchange for " + ChatColor.AQUA + PROMETHEUSULTIMATECOST + ChatColor.WHITE + " Favor, ");
-                p.sendMessage(ChatColor.GOLD + "Prometheus " + ChatColor.WHITE + " has unleashed his wrath on " + firestorm(p) + " non-allied entities.");
+                p.sendMessage(ChatColor.GOLD + "Jörmungandr " + ChatColor.WHITE + " has unleashed his wrath on " + firestorm(p) + " non-allied entities.");
                 DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - PROMETHEUSULTIMATECOST);
             } else p.sendMessage("Firestorm requires " + PROMETHEUSULTIMATECOST + " Favor.");
         }

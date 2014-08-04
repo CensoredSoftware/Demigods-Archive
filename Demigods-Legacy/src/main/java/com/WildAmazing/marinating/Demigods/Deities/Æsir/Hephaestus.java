@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods.Deities.Gods;
+package com.WildAmazing.marinating.Demigods.Deities.Æsir;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;

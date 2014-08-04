@@ -208,7 +208,7 @@ public class DShrines implements Listener {
                 e.setCancelled(true);
                 return;
             }
-        p.sendMessage(ChatColor.YELLOW + "You must be allianced to " + deityname + " in order to tribute here.");
+        p.sendMessage(ChatColor.YELLOW + "You must be allied with " + deityname + " in order to tribute here.");
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -223,7 +223,7 @@ public class DShrines implements Listener {
                     if (!DMiscUtil.toLocation(center).getWorld().equals(e.getPlayer().getWorld())) return;
                     if (e.getFrom().getWorld() != DMiscUtil.toLocation(center).getWorld()) return;
                 /*
-				 * Outside coming in
+                 * Outside coming in
 				 */
                     if (e.getFrom().distance(DMiscUtil.toLocation(center)) > RADIUS) {
                         if (DMiscUtil.toLocation(center).distance(e.getTo()) <= RADIUS) {

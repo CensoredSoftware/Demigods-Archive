@@ -1,7 +1,6 @@
 package com.WildAmazing.marinating.Demigods.Listeners;
 
 import com.WildAmazing.marinating.Demigods.DFixes;
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 import com.WildAmazing.marinating.Demigods.Util.DSettings;
 import org.bukkit.ChatColor;
@@ -15,11 +14,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DDamage implements Listener {
     /*
@@ -202,150 +196,6 @@ public class DDamage implements Listener {
         return amount;
     }
 
-    private static ItemStack getBestSoul(Player p) {
-        // Define Immortal Soul Fragment
-        ItemStack health = new ItemStack(Material.GHAST_TEAR);
-
-        String name = "Immortal Soul Fragment";
-        List<String> lore = new ArrayList<String>();
-        lore.add("Brings you back to life.");
-        lore.add("You regain full heath!");
-
-        ItemMeta item = health.getItemMeta();
-        item.setDisplayName(name);
-        item.setLore(lore);
-
-        health.setItemMeta(item);
-
-        // Define Immortal Soul Dust
-        ItemStack halfHealth = new ItemStack(Material.GLOWSTONE_DUST);
-
-        String halfName = "Immortal Soul Dust";
-        List<String> halfLore = new ArrayList<String>();
-        halfLore.add("Brings you back to life.");
-        halfLore.add("You regain half heath!");
-
-        ItemMeta halfItem = halfHealth.getItemMeta();
-        halfItem.setDisplayName(halfName);
-        halfItem.setLore(halfLore);
-
-        halfHealth.setItemMeta(halfItem);
-
-        // Define Mortal Soul
-        ItemStack mortalHealth = new ItemStack(Material.GOLD_NUGGET);
-
-        String mortalName = "Mortal Soul";
-        List<String> mortalLore = new ArrayList<String>();
-        mortalLore.add("Brings you back to life.");
-        mortalLore.add("You regain 20 health.");
-
-        ItemMeta mortalItem = mortalHealth.getItemMeta();
-        mortalItem.setDisplayName(mortalName);
-        mortalItem.setLore(mortalLore);
-
-        mortalHealth.setItemMeta(mortalItem);
-
-        // Player inventory
-        ItemStack[] invItems = p.getInventory().getContents();
-
-        // Has soul?
-        boolean hasFull = false;
-        boolean hasHalf = false;
-        boolean hasMortal = false;
-
-        for (ItemStack invItem : invItems) {
-            if (invItem == null) continue;
-            if (!invItem.hasItemMeta()) continue;
-
-            if (invItem.isSimilar(health)) {
-                hasFull = true;
-            } else if (invItem.isSimilar(halfHealth)) {
-                hasHalf = true;
-            } else if (invItem.isSimilar(mortalHealth)) {
-                hasMortal = true;
-            }
-        }
-
-        if (hasFull) return health;
-        else if (hasHalf) return halfHealth;
-        else if (hasMortal) return mortalHealth;
-        else return null;
-    }
-
-    public static Boolean cancelSoulDamage(Player p, double damage) {
-        if (damage >= DMiscUtil.getHP(p)) {
-            // Define Immortal Soul Fragment
-            ItemStack health = new ItemStack(Material.GHAST_TEAR);
-
-            String name = "Immortal Soul Fragment";
-            List<String> lore = new ArrayList<String>();
-            lore.add("Brings you back to life.");
-            lore.add("You regain full heath!");
-
-            ItemMeta item = health.getItemMeta();
-            item.setDisplayName(name);
-            item.setLore(lore);
-
-            health.setItemMeta(item);
-
-            // Define Immortal Soul Dust
-            ItemStack halfHealth = new ItemStack(Material.GLOWSTONE_DUST);
-
-            String halfName = "Immortal Soul Dust";
-            List<String> halfLore = new ArrayList<String>();
-            halfLore.add("Brings you back to life.");
-            halfLore.add("You regain half heath!");
-
-            ItemMeta halfItem = halfHealth.getItemMeta();
-            halfItem.setDisplayName(halfName);
-            halfItem.setLore(halfLore);
-
-            halfHealth.setItemMeta(halfItem);
-
-            // Define Mortal Soul
-            ItemStack mortalHealth = new ItemStack(Material.GOLD_NUGGET);
-
-            String mortalName = "Mortal Soul";
-            List<String> mortalLore = new ArrayList<String>();
-            mortalLore.add("Brings you back to life.");
-            mortalLore.add("You regain 20 health.");
-
-            ItemMeta mortalItem = mortalHealth.getItemMeta();
-            mortalItem.setDisplayName(mortalName);
-            mortalItem.setLore(mortalLore);
-
-            mortalHealth.setItemMeta(mortalItem);
-
-            ItemStack[] invItems = p.getInventory().getContents();
-
-            if (getBestSoul(p) == null) return false;
-
-            for (ItemStack invItem : invItems) {
-                if (invItem == null) continue;
-                if (!invItem.hasItemMeta()) continue;
-
-                if (invItem.isSimilar(getBestSoul(p))) {
-                    int amount = invItem.getAmount();
-                    p.getInventory().removeItem(invItem);
-                    invItem.setAmount(amount - 1);
-                    p.getInventory().addItem(invItem);
-
-                    if (getBestSoul(p) == health) hasFull(p);
-                    else if (getBestSoul(p) == halfHealth) {
-                        hasHalf(p);
-                        lessFakeDeath(p);
-                    } else if (getBestSoul(p) == mortalHealth) {
-                        hasMortal(p);
-                        fakeDeath(p);
-                    }
-
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     private static void hasFull(Player p) {
         DMiscUtil.setHP(p, DMiscUtil.getMaxHP(p));
     }
@@ -356,33 +206,5 @@ public class DDamage implements Listener {
 
     private static void hasMortal(Player p) {
         DMiscUtil.setHP(p, 20);
-    }
-
-    private static void fakeDeath(Player p) {
-        double reduced = 0.1; // TODO
-        long before = DMiscUtil.getDevotion(p);
-        for (Deity d : DMiscUtil.getDeities(p)) {
-            int reduceamt = (int) Math.round(DMiscUtil.getDevotion(p, d) * reduced * DLevels.MULTIPLIER);
-            if (reduceamt > DLevels.LOSSLIMIT) reduceamt = DLevels.LOSSLIMIT;
-            DMiscUtil.setDevotion(p, d, DMiscUtil.getDevotion(p, d) - reduceamt);
-        }
-        if (DMiscUtil.getDeities(p).size() < 2)
-            p.sendMessage(ChatColor.DARK_RED + "You have failed in your service to " + DMiscUtil.getDeities(p).get(0).getName() + ".");
-        else p.sendMessage(ChatColor.DARK_RED + "You have failed in your service to your deities.");
-        p.sendMessage(ChatColor.DARK_RED + "Your Devotion has been reduced by " + (before - DMiscUtil.getDevotion(p)) + ".");
-    }
-
-    private static void lessFakeDeath(Player p) {
-        double reduced = 0.025; // TODO
-        long before = DMiscUtil.getDevotion(p);
-        for (Deity d : DMiscUtil.getDeities(p)) {
-            int reduceamt = (int) Math.round(DMiscUtil.getDevotion(p, d) * reduced * DLevels.MULTIPLIER);
-            if (reduceamt > DLevels.LOSSLIMIT) reduceamt = DLevels.LOSSLIMIT;
-            DMiscUtil.setDevotion(p, d, DMiscUtil.getDevotion(p, d) - reduceamt);
-        }
-        if (DMiscUtil.getDeities(p).size() < 2)
-            p.sendMessage(ChatColor.DARK_RED + "You have failed in your service to " + DMiscUtil.getDeities(p).get(0).getName() + ".");
-        else p.sendMessage(ChatColor.DARK_RED + "You have failed in your service to your deities.");
-        p.sendMessage(ChatColor.DARK_RED + "Your Devotion has been reduced by " + (before - DMiscUtil.getDevotion(p)) + ".");
     }
 }

@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods.Deities.Titans;
+package com.WildAmazing.marinating.Demigods.Deities.Jotunn;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
@@ -67,7 +67,7 @@ public class Oceanus implements Deity {
             int duration = (int) Math.round(40 * Math.pow(devotion, 0.15)); // seconds
             int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / DMiscUtil.ASCENSIONCAP)));
             /*
-			 * Print text
+             * Print text
 			 */
             p.sendMessage("--" + ChatColor.GOLD + getName() + ChatColor.GRAY + "[" + devotion + "]");
             p.sendMessage(":While in the rain, heal " + healamt + " HP every " + healinterval + " seconds.");

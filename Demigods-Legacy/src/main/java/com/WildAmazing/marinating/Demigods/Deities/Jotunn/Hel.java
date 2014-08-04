@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods.Deities.Gods;
+package com.WildAmazing.marinating.Demigods.Deities.Jotunn;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
@@ -23,7 +23,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Hades implements Deity {
+public class Hel implements Deity {
 
     /* General */
     private static final long serialVersionUID = 3647481847975286534L;
@@ -43,7 +43,7 @@ public class Hades implements Deity {
     private Material CHAINBIND = null;
     private Material ENTOMBBIND = null;
 
-    public Hades(UUID name) {
+    public Hel(UUID name) {
         PLAYER = name;
         CHAINTIME = System.currentTimeMillis();
         ENTOMBTIME = System.currentTimeMillis();
@@ -52,7 +52,7 @@ public class Hades implements Deity {
 
     @Override
     public String getName() {
-        return "Hades";
+        return "Hel";
     }
 
     @Override
@@ -62,15 +62,15 @@ public class Hades implements Deity {
 
     @Override
     public String getDefaultAlliance() {
-        return "God";
+        return "Jotunn";
     }
 
     @Override
     public void printInfo(Player p) {
-        if (DMiscUtil.hasDeity(p, "Hades") && DMiscUtil.isFullParticipant(p)) {
-            int devotion = DMiscUtil.getDevotion(p, "Hades");
+        if (DMiscUtil.hasDeity(p, "Hel") && DMiscUtil.isFullParticipant(p)) {
+            int devotion = DMiscUtil.getDevotion(p, "Hel");
             /*
-			 * Calculate special values first
+             * Calculate special values first
 			 */
             // chain
             int damage = (int) (Math.round(5 * Math.pow(devotion, 0.20688)));
@@ -85,33 +85,33 @@ public class Hades implements Deity {
 			/*
 			 * The printed text
 			 */
-            p.sendMessage("--" + ChatColor.GOLD + "Hades" + ChatColor.GRAY + " [" + devotion + "]");
+            p.sendMessage("--" + ChatColor.GOLD + "Hel" + ChatColor.GRAY + " [" + devotion + "]");
             p.sendMessage(":Immune to skeleton and zombie attacks.");
             p.sendMessage(":Entomb an entity in obsidian. " + ChatColor.GREEN + "/entomb");
             p.sendMessage(ChatColor.YELLOW + "Costs " + ENTOMBCOST + " Favor.");
             p.sendMessage("Duration: " + duration + " seconds.");
-            if (((Hades) (DMiscUtil.getDeity(p, "Hades"))).ENTOMBBIND != null)
-                p.sendMessage(ChatColor.AQUA + "    Bound to " + (((Hades) (DMiscUtil.getDeity(p, "Hades"))).ENTOMBBIND).name());
+            if (((Hel) (DMiscUtil.getDeity(p, "Hel"))).ENTOMBBIND != null)
+                p.sendMessage(ChatColor.AQUA + "    Bound to " + (((Hel) (DMiscUtil.getDeity(p, "Hel"))).ENTOMBBIND).name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
             p.sendMessage(":Fire a chain of smoke, causing damage and darkness. " + ChatColor.GREEN + "/chain");
             p.sendMessage(ChatColor.YELLOW + "Costs " + CHAINCOST + " Favor.");
             p.sendMessage(damage + " damage, causes level " + blindpower + " darkness for " + blindduration + " seconds.");
-            if (((Hades) (DMiscUtil.getDeity(p, "Hades"))).CHAINBIND != null)
-                p.sendMessage(ChatColor.AQUA + "    Chain bound to " + (((Hades) (DMiscUtil.getDeity(p, "Hades"))).CHAINBIND).name());
+            if (((Hel) (DMiscUtil.getDeity(p, "Hel"))).CHAINBIND != null)
+                p.sendMessage(ChatColor.AQUA + "    Chain bound to " + (((Hel) (DMiscUtil.getDeity(p, "Hel"))).CHAINBIND).name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
-            p.sendMessage(":Turn day to night and curse your enemies with the power");
-            p.sendMessage("of Tartarus. Range: " + ultrange + ". Duration: " + ultduration + "" + ChatColor.GREEN + " /tartarus");
+            p.sendMessage(":Turn day to night and curse your enemies.");
+            p.sendMessage("Range: " + ultrange + ". Duration: " + ultduration + "" + ChatColor.GREEN + " /curse");
             p.sendMessage(ChatColor.YELLOW + "Costs " + ULTIMATECOST + " Favor. Cooldown time: " + t + " seconds.");
             return;
         }
-        p.sendMessage("--" + ChatColor.GOLD + "Hades");
+        p.sendMessage("--" + ChatColor.GOLD + "Hel");
         p.sendMessage("Passive: Immune to skeleton and zombie attacks.");
         p.sendMessage("Active: Entomb an entity in obsidian. " + ChatColor.GREEN + "/entomb");
         p.sendMessage(ChatColor.YELLOW + "Costs " + ENTOMBCOST + " Favor. Can bind.");
         p.sendMessage("Active: Fire a chain of smoke that damages and blinds.");
         p.sendMessage(ChatColor.GREEN + "/chain " + ChatColor.YELLOW + "Costs " + CHAINCOST + " Favor. Can bind.");
-        p.sendMessage("Ultimate: Turns day to night as Hades curses your enemies.");
-        p.sendMessage(ChatColor.GREEN + "/tartarus " + ChatColor.YELLOW + "Costs " + ULTIMATECOST + " Favor. Has cooldown.");
+        p.sendMessage("Ultimate: Turns day to night as Hel curses your enemies.");
+        p.sendMessage(ChatColor.GREEN + "/curse " + ChatColor.YELLOW + "Costs " + ULTIMATECOST + " Favor. Has cooldown.");
         p.sendMessage(ChatColor.YELLOW + "Select item: bone");
     }
 
@@ -121,11 +121,11 @@ public class Hades implements Deity {
             PlayerInteractEvent e = (PlayerInteractEvent) ee;
             Player p = e.getPlayer();
             if (!DMiscUtil.isFullParticipant(p)) return;
-            if (!DMiscUtil.hasDeity(p, "Hades")) return;
+            if (!DMiscUtil.hasDeity(p, "Hel")) return;
             if (CHAIN || ((CHAINBIND != null) && (p.getItemInHand().getType() == CHAINBIND))) {
                 if (System.currentTimeMillis() < CHAINTIME) return;
                 if (DMiscUtil.getFavor(p) >= CHAINCOST) {
-                    int devotion = DMiscUtil.getDevotion(p, "Hades");
+                    int devotion = DMiscUtil.getDevotion(p, "Hel");
                     int damage = (int) (Math.round(5 * Math.pow(devotion, 0.20688)));
                     int blindpower = (int) Math.round(1.26985 * Math.pow(devotion, 0.13047));
                     int blindduration = (int) Math.round(0.75 * Math.pow(devotion, 0.323999));
@@ -154,7 +154,7 @@ public class Hades implements Deity {
             EntityTargetEvent e = (EntityTargetEvent) ee;
             if (e.getEntity() instanceof LivingEntity) {
                 if ((e.getEntity() instanceof Zombie) || (e.getEntity() instanceof Skeleton)) {
-                    if (!DMiscUtil.hasDeity((Player) e.getTarget(), "Hades")) return;
+                    if (!DMiscUtil.hasDeity((Player) e.getTarget(), "Hel")) return;
                     e.setCancelled(true);
                 }
             }
@@ -165,7 +165,7 @@ public class Hades implements Deity {
     public void onCommand(Player P, String str, String[] args, boolean bind) {
         final Player p = P;
         if (!DMiscUtil.isFullParticipant(p)) return;
-        if (!DMiscUtil.hasDeity(p, "Hades")) return;
+        if (!DMiscUtil.hasDeity(p, "Hel")) return;
         if (str.equalsIgnoreCase("chain")) {
             if (bind) {
                 if (CHAINBIND == null) {
@@ -218,10 +218,10 @@ public class Hades implements Deity {
                 ENTOMB = true;
                 p.sendMessage(ChatColor.YELLOW + "Entomb is now active.");
             }
-        } else if (str.equalsIgnoreCase("tartarus")) {
+        } else if (str.equalsIgnoreCase("curse")) {
             long TIME = ULTIMATETIME;
             if (System.currentTimeMillis() < TIME) {
-                p.sendMessage(ChatColor.YELLOW + "You cannot use Tartarus again for " + ((((TIME) / 1000) - (System.currentTimeMillis() / 1000))) / 60 + " minutes");
+                p.sendMessage(ChatColor.YELLOW + "You cannot use curse again for " + ((((TIME) / 1000) - (System.currentTimeMillis() / 1000))) / 60 + " minutes");
                 p.sendMessage(ChatColor.YELLOW + "and " + ((((TIME) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
                 return;
             }
@@ -233,13 +233,13 @@ public class Hades implements Deity {
                 int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
                 int amt = tartarus(p);
                 if (amt > 0) {
-                    p.sendMessage(ChatColor.DARK_RED + "Hades" + ChatColor.GRAY + " curses " + amt + " enemies with the power of Tartarus.");
+                    p.sendMessage(ChatColor.DARK_RED + "Hel" + ChatColor.GRAY + " curses " + amt + " enemies.");
                     DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - ULTIMATECOST);
                     p.getWorld().setTime(18000);
                     ULTIMATETIME = System.currentTimeMillis() + t * 1000;
                 } else
                     p.sendMessage(ChatColor.YELLOW + "There were no valid targets or the ultimate could not be used.");
-            } else p.sendMessage(ChatColor.YELLOW + "Tartarus requires " + ULTIMATECOST + " Favor.");
+            } else p.sendMessage(ChatColor.YELLOW + "Curse requires " + ULTIMATECOST + " Favor.");
         }
     }
 
@@ -267,7 +267,7 @@ public class Hades implements Deity {
         LivingEntity le = DMiscUtil.getTargetLivingEntity(p, 2);
         if (le == null) return false;
         if (!DMiscUtil.canTarget(p, p.getLocation()) || !DMiscUtil.canTarget(le, le.getLocation())) return false;
-        int duration = (int) Math.round(2.18678 * Math.pow(DMiscUtil.getDevotion(p, "Hades"), 0.24723)); // seconds
+        int duration = (int) Math.round(2.18678 * Math.pow(DMiscUtil.getDevotion(p, "Hel"), 0.24723)); // seconds
         final ArrayList<Block> tochange = new ArrayList<Block>();
         for (int x = -3; x <= 3; x++) {
             for (int y = -3; y <= 3; y++) {
@@ -292,7 +292,7 @@ public class Hades implements Deity {
     }
 
     private int tartarus(Player p) {
-        int range = (int) Math.round(18.83043 * Math.pow(DMiscUtil.getDevotion(p, "Hades"), 0.088637));
+        int range = (int) Math.round(18.83043 * Math.pow(DMiscUtil.getDevotion(p, "Hel"), 0.088637));
         ArrayList<LivingEntity> entitylist = new ArrayList<LivingEntity>();
         Vector ploc = p.getLocation().toVector();
         for (LivingEntity anEntity : p.getWorld().getLivingEntities()) {

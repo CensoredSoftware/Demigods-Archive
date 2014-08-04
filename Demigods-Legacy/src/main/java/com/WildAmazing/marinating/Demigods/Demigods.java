@@ -1,8 +1,8 @@
 package com.WildAmazing.marinating.Demigods;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.Deities.Gods.*;
-import com.WildAmazing.marinating.Demigods.Deities.Titans.*;
+import com.WildAmazing.marinating.Demigods.Deities.Jotunn.*;
+import com.WildAmazing.marinating.Demigods.Deities.Æsir.*;
 import com.WildAmazing.marinating.Demigods.Listeners.*;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 import com.WildAmazing.marinating.Demigods.Util.DSave;
@@ -41,17 +41,17 @@ public class Demigods extends JavaPlugin implements Listener {
 
     public static final ImmutableSet<Deity> deities = ImmutableSet.copyOf(new HashSet<Deity>() {
         {
-            add(new Cronus(null));
+            add(new Odin(null));
             add(new Rhea(null));
-            add(new Prometheus(null));
+            add(new Jörmungandr(null));
             add(new Atlas(null));
             add(new Oceanus(null));
             add(new Hyperion(null));
             add(new Themis(null));
-            add(new Zeus(null));
+            add(new Thor(null));
             add(new Poseidon(null));
-            add(new Hades(null));
-            add(new Ares(null));
+            add(new Hel(null));
+            add(new Fárbauti(null));
             add(new Athena(null));
             add(new Apollo(null));
             add(new Hephaestus(null));
@@ -150,7 +150,7 @@ public class Demigods extends JavaPlugin implements Listener {
         getCommand("adddevotion").setExecutor(ce);
 
 		/*
-		 * Admin Commands
+         * Admin Commands
 		 */
         getCommand("checkplayer").setExecutor(ce);
         getCommand("removeplayer").setExecutor(ce);
@@ -177,8 +177,6 @@ public class Demigods extends JavaPlugin implements Listener {
         getCommand("setdeaths").setExecutor(ce);
         getCommand("exportdata").setExecutor(ce);
 
-        // getCommand("setlore").setExecutor(ce);
-
 		/*
 		 * Shrine commands
 		 */
@@ -204,9 +202,9 @@ public class Demigods extends JavaPlugin implements Listener {
         getCommand("bloodthirst").setExecutor(ce);
         getCommand("crash").setExecutor(ce);
 
-        // Cronus
+        // Odin
         getCommand("slow").setExecutor(ce);
-        getCommand("cleave").setExecutor(ce);
+        getCommand("stab").setExecutor(ce);
         getCommand("timestop").setExecutor(ce);
 
         // Prometheus
@@ -220,15 +218,14 @@ public class Demigods extends JavaPlugin implements Listener {
         getCommand("detonate").setExecutor(ce);
         getCommand("entangle").setExecutor(ce);
 
-        // Hades
+        // Hel
         getCommand("chain").setExecutor(ce);
         getCommand("entomb").setExecutor(ce);
-        getCommand("tartarus").setExecutor(ce);
+        getCommand("curse").setExecutor(ce);
 
         // Poseidon
         getCommand("reel").setExecutor(ce);
         getCommand("drown").setExecutor(ce);
-        // getCommand("waterfall").setExecutor(ce);
 
         // Atlas
         getCommand("unburden").setExecutor(ce);
@@ -259,9 +256,6 @@ public class Demigods extends JavaPlugin implements Listener {
         getCommand("swap").setExecutor(ce);
         getCommand("congregate").setExecutor(ce);
         getCommand("assemble").setExecutor(ce);
-
-        // Typhon
-        getCommand("charge").setExecutor(ce);
     }
 
     void loadFixes() {
@@ -275,7 +269,6 @@ public class Demigods extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new DPvP(), this);
         getServer().getPluginManager().registerEvents(new DShrines(), this);
         getServer().getPluginManager().registerEvents(new DDeities(), this);
-        getServer().getPluginManager().registerEvents(new DCrafting(), this);
         getServer().getPluginManager().registerEvents(new Hephaestus(null), this);
     }
 

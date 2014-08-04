@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods.Deities.Titans;
+package com.WildAmazing.marinating.Demigods.Deities.Jotunn;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
@@ -49,7 +49,7 @@ public class Atlas implements Deity {
         if (DMiscUtil.hasDeity(p, "Atlas") && DMiscUtil.isFullParticipant(p)) {
             int devotion = DMiscUtil.getDevotion(p, getName());
             /*
-			 * Calculate special values first
+             * Calculate special values first
 			 */
             int reduction = (int) Math.round(Math.pow(devotion, 0.115));
             //

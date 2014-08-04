@@ -182,7 +182,7 @@ public class DMiscUtil {
      */
     public static String getAllegiance(UUID p) {
         if (DSave.hasData(p, "ALLEGIANCE")) return ((String) DSave.getData(p, "ALLEGIANCE"));
-        return "Mortal";
+        return "Human";
     }
 
     /**
@@ -695,60 +695,30 @@ public class DMiscUtil {
      * @return
      */
     public static String getRank(Player p) {
-        if (getAllegiance(p).equalsIgnoreCase("titan")) {
-            switch (getDeities(p).size()) {
-                case 1:
-                    return "Fallen";
-                case 2:
-                    return "Condemned";
-                case 3:
-                    return "Reborn";
-                case 4:
-                    return "Initiate";
-                case 5:
-                    return "Fledgling";
-                case 6:
-                    return "Legion";
-                case 7:
-                    return "General";
-                case 8:
-                    return "Tyrant";
-                case 9:
-                    return "Emperor";
-                case 10:
-                    return "Immortal";
-                default:
-                    return "Primordial";
-            }
-        } else if (getAllegiance(p).equalsIgnoreCase("god")) {
-            switch (getDeities(p).size()) {
-                case 1:
-                    return "Apprentice";
-                case 2:
-                    return "Acolyte";
-                case 3:
-                    return "Zealot";
-                case 4:
-                    return "Legionnaire";
-                case 5:
-                    return "Champion";
-                case 6:
-                    return "Hero";
-                case 7:
-                    return "Demigod";
-                case 8:
-                    return "Exalted";
-                case 9:
-                    return "Ascended";
-                case 10:
-                    return "Exemplar";
-                default:
-                    return "Olympian";
-            }
-        } else if (getAllegiance(p).equalsIgnoreCase("giant")) {
-            return "Giant";
-        } else if (is(p)) return "Admin";
-        return "Error";
+        switch (getDeities(p).size()) {
+            case 1:
+                return "Apprentice";
+            case 2:
+                return "Acolyte";
+            case 3:
+                return "Zealot";
+            case 4:
+                return "Legionnaire";
+            case 5:
+                return "Champion";
+            case 6:
+                return "Hero";
+            case 7:
+                return "Demigod";
+            case 8:
+                return "Exalted";
+            case 9:
+                return "Ascended";
+            case 10:
+                return "Exemplar";
+            default:
+                return getAllegiance(p).equalsIgnoreCase("Æsir") ? "Valhallan" : "Jatunnspawn";
+        }
     }
 
     /**
@@ -1468,7 +1438,6 @@ public class DMiscUtil {
         if (target instanceof Player && isFullParticipant((Player) target)) {
             if (((Player) target).getGameMode() == GameMode.CREATIVE) return;
             if (!canTarget(target, target.getLocation())) return;
-            if (DDamage.cancelSoulDamage((Player) target, amount)) return;
             double hp = getHP((Player) target);
             if (amount < 1) return;
             amount -= DDamage.armorReduction((Player) target);
@@ -1490,7 +1459,6 @@ public class DMiscUtil {
 
     public static void damageDemigodsNonCombat(Player target, double amount, DamageCause cause) {
         if ((target).getGameMode() == GameMode.CREATIVE) return;
-        if (DDamage.cancelSoulDamage(target, amount)) return;
         double hp = getHP(target);
         if (amount < 1) return;
         amount -= DDamage.armorReduction(target);

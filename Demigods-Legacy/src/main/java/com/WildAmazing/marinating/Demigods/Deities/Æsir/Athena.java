@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods.Deities.Gods;
+package com.WildAmazing.marinating.Demigods.Deities.Æsir;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
@@ -68,7 +68,7 @@ public class Athena implements Deity {
                 p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Athena) DMiscUtil.getDeity(p, getName())).SKILLBIND.name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
             p.sendMessage(":Athena silences the battlefield, preventing all damage in range " + crange);
-            p.sendMessage("dealt by Gods and Titans alike for " + duration + " seconds." + ChatColor.GREEN + " /ceasefire");
+            p.sendMessage("dealt by Æsir and Jotunn alike for " + duration + " seconds." + ChatColor.GREEN + " /ceasefire");
             p.sendMessage(ChatColor.YELLOW + "Costs " + ULTIMATECOST + " Favor. Cooldown time: " + t + " seconds.");
             return;
         }

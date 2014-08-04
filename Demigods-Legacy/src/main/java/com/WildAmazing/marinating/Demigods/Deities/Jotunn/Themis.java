@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods.Deities.Titans;
+package com.WildAmazing.marinating.Demigods.Deities.Jotunn;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
@@ -65,7 +65,7 @@ public class Themis implements Deity {
             if (((Themis) DMiscUtil.getDeity(p, getName())).SKILLBIND != null)
                 p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Themis) DMiscUtil.getDeity(p, getName())).SKILLBIND.name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
-            p.sendMessage(":Call all Gods and Titans together for an assembly at your location.");
+            p.sendMessage(":Call all Æsir and Jotunn together for an assembly at your location.");
             p.sendMessage("Players will be temporarily immune to damage after teleporting.");
             p.sendMessage("Only consenting players will be teleported. " + ChatColor.GREEN + "/congregate");
             p.sendMessage(ChatColor.YELLOW + "Costs " + ULTIMATECOST + " Favor. Cooldown time: " + t + " seconds.");
@@ -75,7 +75,7 @@ public class Themis implements Deity {
         p.sendMessage("Passive: " + ChatColor.YELLOW + "qd" + ChatColor.WHITE + " gives more detail on targets.");
         p.sendMessage("Active: Change positions with a target animal or player. " + ChatColor.GREEN + "/swap");
         p.sendMessage(ChatColor.YELLOW + "Costs " + SKILLCOST + " Favor. Can bind.");
-        p.sendMessage("Ultimate: Themis calls together all Gods and Titans to your location.");
+        p.sendMessage("Ultimate: Themis calls together all Æsir and Jotunn to your location.");
         p.sendMessage("Requires other players' consent." + ChatColor.GREEN + "/congregate " + ChatColor.YELLOW + "Costs " + ULTIMATECOST + " Favor. Has cooldown.");
         p.sendMessage(ChatColor.YELLOW + "Select item: compass");
     }

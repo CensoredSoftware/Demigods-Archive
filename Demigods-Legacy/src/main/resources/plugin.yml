@@ -15,8 +15,6 @@ commands:
     alliance:
         description: Used to toggle alliance chat.
         usage: /alliance
-    perks:
-        description: Used to modify Perks.
     checkplayer:
         description: View information about another player.
         usage: /checkplayer <player>
@@ -164,7 +162,7 @@ commands:
         description: One of Ares' abilities.
     crash:
         description: Ares' ultimate.
-    cleave:
+    stab:
         description: One of Cronus's abilities.
     slow:
         description: One of Cronus's abilities.
@@ -188,7 +186,7 @@ commands:
         description: One of Hades' abilities.
     entomb:
         description: One of Hades' abilities.
-    tartarus:
+    curse:
         description: Hades' ultimate.
     reel:
         description: One of Poseidon's abilities.
@@ -226,8 +224,6 @@ commands:
         description: Themis' ultimate.
     assemble:
         description: Used with Themis' ultimate.
-    charge:
-        description: One of Typhon's abilities.
 permissions:
     demigods.bypassclaim:
         default: false

@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods.Deities.Titans;
+package com.WildAmazing.marinating.Demigods.Deities.Jotunn;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
@@ -70,7 +70,7 @@ public class Rhea implements Deity {
         if (DMiscUtil.hasDeity(p, "Rhea") && DMiscUtil.isFullParticipant(p)) {
             int devotion = DMiscUtil.getDevotion(p, getName());
             /*
-			 * Calculate special values first
+             * Calculate special values first
 			 */
             // poison
             int duration = (int) Math.ceil(2.4063 * Math.pow(devotion, 0.11)); // seconds

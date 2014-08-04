@@ -60,11 +60,11 @@ public class DFixes implements Listener {
     private static void deityDamageImmunity(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
             Player p = (Player) event.getEntity();
-            if ((DMiscUtil.hasDeity(p, "Prometheus") || DMiscUtil.hasDeity(p, "Hephaestus")) && (event.getCause() == EntityDamageEvent.DamageCause.FIRE) || (event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK || event.getCause() == EntityDamageEvent.DamageCause.LAVA)) {
+            if ((DMiscUtil.hasDeity(p, "Jörmungandr") || DMiscUtil.hasDeity(p, "Hephaestus")) && (event.getCause() == EntityDamageEvent.DamageCause.FIRE) || (event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK || event.getCause() == EntityDamageEvent.DamageCause.LAVA)) {
                 p.setFireTicks(0);
                 DFixes.checkAndCancel(event);
                 return;
-            } else if (DMiscUtil.hasDeity(p, "Zeus") && (event.getCause() == EntityDamageEvent.DamageCause.FALL || event.getCause() == EntityDamageEvent.DamageCause.LIGHTNING)) {
+            } else if (DMiscUtil.hasDeity(p, "Thor") && (event.getCause() == EntityDamageEvent.DamageCause.FALL || event.getCause() == EntityDamageEvent.DamageCause.LIGHTNING)) {
                 DFixes.checkAndCancel(event);
                 return;
             } else if (DMiscUtil.hasDeity(p, "Poseidon") && event.getCause() == EntityDamageEvent.DamageCause.DROWNING) {
@@ -101,7 +101,7 @@ public class DFixes implements Listener {
                         }
                     }
                 }
-                if (DMiscUtil.hasDeity(p, "Hades") && (damageByEntityEvent.getDamager() instanceof Zombie) || (damageByEntityEvent.getDamager() instanceof Skeleton)) {
+                if (DMiscUtil.hasDeity(p, "Hel") && (damageByEntityEvent.getDamager() instanceof Zombie) || (damageByEntityEvent.getDamager() instanceof Skeleton)) {
                     DFixes.checkAndCancel(event);
                 }
             }

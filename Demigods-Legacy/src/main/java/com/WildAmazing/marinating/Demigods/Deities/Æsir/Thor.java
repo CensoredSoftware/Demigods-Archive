@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods.Deities.Gods;
+package com.WildAmazing.marinating.Demigods.Deities.Æsir;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
@@ -24,7 +24,7 @@ import java.util.UUID;
  * Ultimate cooldown
  */
 
-public class Zeus implements Deity {
+public class Thor implements Deity {
     /**
      *
      */
@@ -46,7 +46,7 @@ public class Zeus implements Deity {
     private Material SHOVEBIND = null;
     private Material LIGHTNINGBIND = null;
 
-    public Zeus(UUID player) {
+    public Thor(UUID player) {
         PLAYER = player;
         ZEUSSHOVETIME = System.currentTimeMillis();
         ZEUSLIGHTNINGTIME = System.currentTimeMillis();
@@ -54,15 +54,15 @@ public class Zeus implements Deity {
 
     @Override
     public String getDefaultAlliance() {
-        return "God";
+        return "Æsir";
     }
 
     @Override
     public void printInfo(Player p) {
-        if (DMiscUtil.hasDeity(p, "Zeus") && DMiscUtil.isFullParticipant(p)) {
+        if (DMiscUtil.hasDeity(p, "Thor") && DMiscUtil.isFullParticipant(p)) {
             int devotion = DMiscUtil.getDevotion(p, getName());
             /*
-			 * Calculate special values first
+             * Calculate special values first
 			 */
             // shove
             int targets = (int) Math.ceil(1.561 * Math.pow(devotion, 0.128424));
@@ -72,33 +72,33 @@ public class Zeus implements Deity {
 			/*
 			 * The printed text
 			 */
-            p.sendMessage("--" + ChatColor.GOLD + "Zeus" + ChatColor.GRAY + " [" + devotion + "]");
+            p.sendMessage("--" + ChatColor.GOLD + "Thor" + ChatColor.GRAY + " [" + devotion + "]");
             p.sendMessage(":Immune to fall damage.");
             p.sendMessage(":Strike lightning at a target location. " + ChatColor.GREEN + "/lightning");
             p.sendMessage(ChatColor.YELLOW + "Costs " + LIGHTNINGCOST + " Favor.");
-            if (((Zeus) (DMiscUtil.getDeity(p, "Zeus"))).LIGHTNINGBIND != null)
-                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Zeus) (DMiscUtil.getDeity(p, "Zeus"))).LIGHTNINGBIND.name());
-            else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
-            p.sendMessage(":Use the force of wind to knock back enemies. " + ChatColor.GREEN + "/shove");
+            if (((Thor) (DMiscUtil.getDeity(p, "Thor"))).LIGHTNINGBIND != null)
+                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Thor) (DMiscUtil.getDeity(p, "Thor"))).LIGHTNINGBIND.name());
+            else p.sendMessage(ChatColor.AQUA + "    Use /bind to designate an item as Thor's hammer.");
+            p.sendMessage(":Use the force of Thor's hammer to knock back enemies. " + ChatColor.GREEN + "/shove");
             p.sendMessage(ChatColor.YELLOW + "Costs " + SHOVECOST + " Favor.");
             p.sendMessage("Affects up to " + targets + " targets with power " + (int) (Math.round(multiply * 10)) + ".");
-            if (((Zeus) (DMiscUtil.getDeity(p, "Zeus"))).SHOVEBIND != null)
-                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Zeus) (DMiscUtil.getDeity(p, "Zeus"))).SHOVEBIND.name());
+            if (((Thor) (DMiscUtil.getDeity(p, "Thor"))).SHOVEBIND != null)
+                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Thor) (DMiscUtil.getDeity(p, "Thor"))).SHOVEBIND.name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
             return;
         }
-        p.sendMessage("--" + ChatColor.GOLD + "Zeus");
+        p.sendMessage("--" + ChatColor.GOLD + "Thor");
         p.sendMessage("Passive: Immune to fall damage.");
         p.sendMessage("Active: Strike lightning at a target location. " + ChatColor.GREEN + "/lightning");
         p.sendMessage(ChatColor.YELLOW + "Costs " + LIGHTNINGCOST + " Favor. Can bind.");
-        p.sendMessage("Active: Use the force of wind to knock back enemies. " + ChatColor.GREEN + "/shove");
+        p.sendMessage("Active: Use the force of Thor's hammer to knock back enemies. " + ChatColor.GREEN + "/shove");
         p.sendMessage(ChatColor.YELLOW + "Costs " + SHOVECOST + " Favor. Can bind.");
         p.sendMessage(ChatColor.YELLOW + "Select item: iron ingot");
     }
 
     @Override
     public String getName() {
-        return "Zeus";
+        return "Thor";
     }
 
     @Override
@@ -111,7 +111,7 @@ public class Zeus implements Deity {
         if (ee instanceof PlayerInteractEvent) {
             PlayerInteractEvent e = (PlayerInteractEvent) ee;
             Player p = e.getPlayer();
-            if (!DMiscUtil.hasDeity(p, "Zeus") || !DMiscUtil.isFullParticipant(p)) return;
+            if (!DMiscUtil.hasDeity(p, "Thor") || !DMiscUtil.isFullParticipant(p)) return;
             if (SHOVE || ((p.getItemInHand() != null) && (p.getItemInHand().getType() == SHOVEBIND))) {
                 if (ZEUSSHOVETIME > System.currentTimeMillis()) return;
                 ZEUSSHOVETIME = System.currentTimeMillis() + SHOVEDELAY;
@@ -146,7 +146,7 @@ public class Zeus implements Deity {
     @Override
     public void onCommand(Player P, String str, String[] args, boolean bind) {
         final Player p = P;
-        if (!DMiscUtil.hasDeity(p, "Zeus")) return;
+        if (!DMiscUtil.hasDeity(p, "Thor")) return;
         if (str.equalsIgnoreCase("lightning")) {
             if (bind) {
                 if (LIGHTNINGBIND == null) {

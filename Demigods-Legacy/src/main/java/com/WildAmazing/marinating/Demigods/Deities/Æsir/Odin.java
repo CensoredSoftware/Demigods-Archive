@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods.Deities.Titans;
+package com.WildAmazing.marinating.Demigods.Deities.Æsir;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
@@ -18,12 +18,12 @@ import org.bukkit.util.Vector;
 
 import java.util.UUID;
 
-public class Cronus implements Deity {
+public class Odin implements Deity {
 
     private static final long serialVersionUID = -6160291350540472542L;
 
     // global vars
-    private static final int CLEAVECOST = 100;
+    private static final int STABCOST = 100;
     private static final int SLOWCOST = 180;
     private static final int CRONUSULTIMATECOST = 5000;
     private static final int CRONUSULTIMATECOOLDOWNMAX = 500;
@@ -31,35 +31,34 @@ public class Cronus implements Deity {
 
     // per player
     private final UUID PLAYER;
-    private boolean CLEAVE = false;
-    private Material CLEAVEITEM = null;
+    private boolean STAB = false;
     private boolean SLOW = false;
     private Material SLOWITEM = null;
     private long CRONUSULTIMATETIME;
-    private long CLEAVETIME;
+    private long STABTIME;
 
-    public Cronus(UUID player) {
+    public Odin(UUID player) {
         PLAYER = player;
         CRONUSULTIMATETIME = System.currentTimeMillis();
-        CLEAVETIME = System.currentTimeMillis();
+        STABTIME = System.currentTimeMillis();
     }
 
     @Override
     public String getName() {
-        return "Cronus";
+        return "Odin";
     }
 
     @Override
     public String getDefaultAlliance() {
-        return "Titan";
+        return "Æsir";
     }
 
     @Override
     public void printInfo(Player p) {
-        if (DMiscUtil.hasDeity(p, "Cronus") && DMiscUtil.isFullParticipant(p)) {
+        if (DMiscUtil.hasDeity(p, "Odin") && DMiscUtil.isFullParticipant(p)) {
             int devotion = DMiscUtil.getDevotion(p, getName());
             /*
-			 * Calculate special values first
+             * Calculate special values first
 			 */
             // cleave
             int damage = (int) Math.ceil(Math.pow(devotion, 0.35));
@@ -74,31 +73,28 @@ public class Cronus implements Deity {
 			/*
 			 * The printed text
 			 */
-            p.sendMessage("--" + ChatColor.GOLD + "Cronus" + ChatColor.GRAY + "[" + devotion + "]");
-            p.sendMessage(":Slow your enemy when attacking with a scythe (hoe).");
-            p.sendMessage(":Attack with a scythe to deal " + damage + " damage and " + hungerdamage + " hunger. " + ChatColor.GREEN + "/cleave");
-            p.sendMessage(ChatColor.YELLOW + "Costs " + CLEAVECOST + " Favor.");
-            if (((Cronus) (DMiscUtil.getDeity(p, "Cronus"))).CLEAVEITEM != null)
-                p.sendMessage(ChatColor.AQUA + "    Bound to " + (((Cronus) (DMiscUtil.getDeity(p, "Cronus"))).CLEAVEITEM).name());
-            else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
+            p.sendMessage("--" + ChatColor.GOLD + "Odin" + ChatColor.GRAY + "[" + devotion + "]");
+            p.sendMessage(":Slow your enemy when attacking with a spear (shovel).");
+            p.sendMessage(":Attack with a spear (shovel) to deal " + damage + " damage and " + hungerdamage + " hunger. " + ChatColor.GREEN + "/stab");
+            p.sendMessage(ChatColor.YELLOW + "Costs " + STABCOST + " Favor.");
             p.sendMessage(":Slow time to reduce movement speed of an enemy player. " + ChatColor.GREEN + "/slow");
             p.sendMessage(ChatColor.YELLOW + "Costs " + SLOWCOST + " Favor.");
             p.sendMessage("Slow power: " + strength + " for " + duration + " seconds.");
-            if (((Cronus) (DMiscUtil.getDeity(p, "Cronus"))).SLOWITEM != null)
-                p.sendMessage(ChatColor.AQUA + "    Bound to " + (((Cronus) (DMiscUtil.getDeity(p, "Cronus"))).SLOWITEM).name());
+            if (((Odin) (DMiscUtil.getDeity(p, "Odin"))).SLOWITEM != null)
+                p.sendMessage(ChatColor.AQUA + "    Bound to " + (((Odin) (DMiscUtil.getDeity(p, "Odin"))).SLOWITEM).name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
-            p.sendMessage(":Cronus slows enemies' perception of time, slowing their");
+            p.sendMessage(":Odin slows enemies' perception of time, slowing their");
             p.sendMessage("movement by " + slowamount + " for " + stopduration + " seconds. " + ChatColor.GREEN + "/timestop");
             p.sendMessage(ChatColor.YELLOW + "Costs " + CRONUSULTIMATECOST + " Favor. Cooldown time: " + t + " seconds.");
             return;
         }
-        p.sendMessage("--" + ChatColor.GOLD + "Cronus");
-        p.sendMessage("Passive: Slow your enemy when attacking with a scythe (hoe).");
-        p.sendMessage("Active: Cause extra damage and hunger with a scythe (hoe). " + ChatColor.GREEN + "/cleave");
-        p.sendMessage(ChatColor.YELLOW + "Costs " + CLEAVECOST + " Favor. Can bind.");
+        p.sendMessage("--" + ChatColor.GOLD + "Odin");
+        p.sendMessage("Passive: Slow your enemy when attacking with a spear (shovel).");
+        p.sendMessage("Active: Cause extra damage and hunger with a spear (shovel). " + ChatColor.GREEN + "/stab");
+        p.sendMessage(ChatColor.YELLOW + "Costs " + STABCOST + " Favor. Can bind.");
         p.sendMessage("Active: Slow time to reduce movement speed of an enemy player.");
         p.sendMessage(ChatColor.GREEN + "/slow " + ChatColor.YELLOW + "Costs " + SLOWCOST + " Favor. Can bind.");
-        p.sendMessage("Ultimate: Cronus slows enemies' perception of time,");
+        p.sendMessage("Ultimate: Odin slows enemies' perception of time,");
         p.sendMessage("slowing their movement drastically. " + ChatColor.GREEN + "/timestop");
         p.sendMessage(ChatColor.YELLOW + "Costs " + CRONUSULTIMATECOST + " Favor. Has cooldown.");
         p.sendMessage(ChatColor.YELLOW + "Select item: soul sand");
@@ -112,14 +108,16 @@ public class Cronus implements Deity {
     @Override
     public void onEvent(Event ee) {
         if (ee instanceof EntityDamageEvent) {
-            if ((EntityDamageEvent) ee instanceof EntityDamageByEntityEvent && !((EntityDamageByEntityEvent) ee).isCancelled()) {
+            if (ee instanceof EntityDamageByEntityEvent && !((EntityDamageByEntityEvent) ee).isCancelled()) {
                 EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) ee;
                 if (e.getDamager() instanceof Player) {
                     Player p = (Player) e.getDamager();
                     if (DMiscUtil.isFullParticipant(p)) {
-                        if (!DMiscUtil.hasDeity(p, "Cronus")) return;
-                        if (!p.getItemInHand().getType().name().contains("_HOE")) return;
+                        if (!DMiscUtil.hasDeity(p, "Odin")) return;
+                        if (!p.getItemInHand().getType().name().contains("_SPADE")) return;
                         if (!DMiscUtil.canTarget(p, p.getLocation())) return;
+
+                        Material STABITEM = p.getItemInHand().getType();
 
 						/*
 						 * Passive ability (stop movement)
@@ -134,24 +132,24 @@ public class Cronus implements Deity {
 						/*
 						 * Cleave
 						 */
-                        if (CLEAVE || ((CLEAVEITEM != null) && (p.getItemInHand().getType() == CLEAVEITEM))) {
-                            if (DMiscUtil.getFavor(p) >= CLEAVECOST) {
+                        if (STAB) {
+                            if (DMiscUtil.getFavor(p) >= STABCOST) {
                                 if (!(e.getEntity() instanceof LivingEntity)) return;
-                                if (System.currentTimeMillis() < CLEAVETIME + 100) return;
+                                if (System.currentTimeMillis() < STABTIME + 100) return;
                                 if (!DMiscUtil.canTarget(e.getEntity(), e.getEntity().getLocation())) return;
-                                DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - CLEAVECOST);
+                                DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - STABCOST);
                                 for (int i = 1; i <= 31; i += 4)
                                     e.getEntity().getWorld().playEffect(e.getEntity().getLocation(), Effect.SMOKE, i);
                                 DMiscUtil.damageDemigods(p, (LivingEntity) e.getEntity(), (int) Math.ceil(Math.pow(DMiscUtil.getDevotion(p, getName()), 0.35)), EntityDamageEvent.DamageCause.ENTITY_ATTACK);
-                                CLEAVETIME = System.currentTimeMillis();
-                                if ((LivingEntity) e.getEntity() instanceof Player) {
+                                STABTIME = System.currentTimeMillis();
+                                if (e.getEntity() instanceof Player) {
                                     Player otherP = (Player) e.getEntity();
                                     otherP.setFoodLevel(otherP.getFoodLevel() - (int) (e.getDamage() / 2));
                                     if (otherP.getFoodLevel() < 0) otherP.setFoodLevel(0);
                                 }
                             } else {
                                 p.sendMessage(ChatColor.YELLOW + "You don't have enough Favor to do that.");
-                                CLEAVE = false;
+                                STAB = false;
                             }
                         }
                     }
@@ -160,7 +158,7 @@ public class Cronus implements Deity {
         } else if (ee instanceof PlayerInteractEvent) {
             PlayerInteractEvent e = (PlayerInteractEvent) ee;
             Player p = e.getPlayer();
-            if (!DMiscUtil.hasDeity(p, "Cronus")) return;
+            if (!DMiscUtil.hasDeity(p, "Odin")) return;
             if (SLOW || ((SLOWITEM != null) && (p.getItemInHand().getType() == SLOWITEM))) {
                 if (DMiscUtil.getFavor(p) >= SLOWCOST) {
                     if (slow(p)) DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - SLOWCOST);
@@ -174,34 +172,14 @@ public class Cronus implements Deity {
 
     @Override
     public void onCommand(final Player p, String str, String[] args, boolean bind) {
-        if (!DMiscUtil.hasDeity(p, "Cronus")) return;
-        if (str.equalsIgnoreCase("cleave")) {
-            if (bind) {
-                if (CLEAVEITEM == null) {
-                    if (DMiscUtil.isBound(p, p.getItemInHand().getType()))
-                        p.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
-                    if (p.getItemInHand().getType() == Material.AIR)
-                        p.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
-                    if (!p.getItemInHand().getType().name().contains("_HOE"))
-                        p.sendMessage(ChatColor.YELLOW + "Cleave can only be bound to a scythe (hoe).");
-                    else {
-                        DMiscUtil.registerBind(p, p.getItemInHand().getType());
-                        CLEAVEITEM = p.getItemInHand().getType();
-                        p.sendMessage(ChatColor.YELLOW + "Cleave is now bound to " + p.getItemInHand().getType().name() + ".");
-                    }
-                } else {
-                    DMiscUtil.removeBind(p, CLEAVEITEM);
-                    p.sendMessage(ChatColor.YELLOW + "Cleave is no longer bound to " + CLEAVEITEM.name() + ".");
-                    CLEAVEITEM = null;
-                }
-                return;
-            }
-            if (CLEAVE) {
-                CLEAVE = false;
-                p.sendMessage(ChatColor.YELLOW + "Cleave is no longer active.");
+        if (!DMiscUtil.hasDeity(p, "Odin")) return;
+        if (str.equalsIgnoreCase("stab")) {
+            if (STAB) {
+                STAB = false;
+                p.sendMessage(ChatColor.YELLOW + "Stab is no longer active.");
             } else {
-                CLEAVE = true;
-                p.sendMessage(ChatColor.YELLOW + "Cleave is now active.");
+                STAB = true;
+                p.sendMessage(ChatColor.YELLOW + "Stab is now active.");
             }
         } else if (str.equalsIgnoreCase("slow")) {
             if (bind) {
@@ -230,7 +208,7 @@ public class Cronus implements Deity {
                 p.sendMessage(ChatColor.YELLOW + "Slow is now active.");
             }
         } else if (str.equalsIgnoreCase("timestop")) {
-            if (!DMiscUtil.hasDeity(p, "Cronus")) return;
+            if (!DMiscUtil.hasDeity(p, "Odin")) return;
             if (System.currentTimeMillis() < CRONUSULTIMATETIME) {
                 p.sendMessage(ChatColor.YELLOW + "You cannot stop time again for " + ((((CRONUSULTIMATETIME) / 1000) - (System.currentTimeMillis() / 1000))) / 60 + " minutes");
                 p.sendMessage(ChatColor.YELLOW + "and " + ((((CRONUSULTIMATETIME) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
@@ -291,10 +269,10 @@ public class Cronus implements Deity {
                 if (!DMiscUtil.canTarget(pl, pl.getLocation())) continue;
             }
             pl.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration * 20, slowamount));
-            p.sendMessage(ChatColor.DARK_RED + "Cronus has slowed time around you.");
+            p.sendMessage(ChatColor.DARK_RED + "Odin has slowed time around you.");
             DMiscUtil.addActiveEffect(pl.getUniqueId(), "Time Stop", duration);
             count++;
         }
-        p.sendMessage(ChatColor.RED + "Cronus has slowed time for " + count + " players nearby.");
+        p.sendMessage(ChatColor.RED + "Odin has slowed time for " + count + " players nearby.");
     }
 }

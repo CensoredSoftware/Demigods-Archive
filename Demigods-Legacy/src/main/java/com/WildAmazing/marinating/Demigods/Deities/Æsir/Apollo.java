@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods.Deities.Gods;
+package com.WildAmazing.marinating.Demigods.Deities.Æsir;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
@@ -64,7 +64,7 @@ public class Apollo implements Deity {
         if (DMiscUtil.isFullParticipant(p) && DMiscUtil.hasDeity(p, getName())) {
             int devotion = DMiscUtil.getDevotion(p, getName());
             /*
-			 * Special values
+             * Special values
 			 */
             // passive
             int duration = (int) Math.round(60 * Math.pow(devotion, 0.09)); // seconds

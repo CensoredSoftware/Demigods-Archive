@@ -147,44 +147,6 @@ public class DPvP implements Listener {
                             DMiscUtil.setDeaths(attacked, DMiscUtil.getDeaths(attacked) + 1);
                             DMiscUtil.getPlugin().getServer().broadcastMessage(ChatColor.YELLOW + attacked.getName() + ChatColor.GRAY + " of the " + DMiscUtil.getAllegiance(attacked) + " alliance was slain by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + DMiscUtil.getAllegiance(attacker) + " alliance.");
 
-                            // Define Immortal Soul Fragment
-                            ItemStack health = new ItemStack(Material.GHAST_TEAR, 1);
-
-                            String name = "Immortal Soul Fragment";
-                            List<String> lore = new ArrayList<String>();
-                            lore.add("Brings you back to life.");
-                            lore.add("You regain full heath!");
-
-                            ItemMeta item = health.getItemMeta();
-                            item.setDisplayName(name);
-                            item.setLore(lore);
-
-                            health.setItemMeta(item);
-
-                            // Define Immortal Soul Dust
-                            ItemStack halfHealth = new ItemStack(Material.GLOWSTONE_DUST, 1);
-
-                            String halfName = "Immortal Soul Dust";
-                            List<String> halfLore = new ArrayList<String>();
-                            halfLore.add("Brings you back to life.");
-                            halfLore.add("You regain half heath!");
-
-                            ItemMeta halfItem = halfHealth.getItemMeta();
-                            halfItem.setDisplayName(halfName);
-                            halfItem.setLore(halfLore);
-
-                            halfHealth.setItemMeta(halfItem);
-
-                            if (DMiscUtil.getAscensions(attacked) > DMiscUtil.getAscensions(attacker)) {
-                                attacked.getLocation().getWorld().dropItemNaturally(attacked.getLocation(), health);
-                                attacker.sendMessage(ChatColor.GRAY + "One stronger than you has been slain by your hand.");
-                            }
-
-                            if (DMiscUtil.getAscensions(attacker) >= DMiscUtil.getAscensions(attacked)) {
-                                attacked.getLocation().getWorld().dropItemNaturally(attacked.getLocation(), halfHealth);
-                                attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
-                            }
-
                             double adjusted = DMiscUtil.getKills(attacked) * 1.0 / DMiscUtil.getDeaths(attacked);
                             if (adjusted > 5) adjusted = 5;
                             if (adjusted < 0.2) adjusted = 0.2;
@@ -194,23 +156,6 @@ public class DPvP implements Listener {
                         }
                     } else { // regular player
                         DMiscUtil.getPlugin().getServer().broadcastMessage(ChatColor.YELLOW + attacked.getName() + ChatColor.GRAY + " was slain by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + DMiscUtil.getAllegiance(attacker) + " alliance.");
-
-                        // Define Mortal Soul
-                        ItemStack mortalHealth = new ItemStack(Material.GOLD_NUGGET, 1);
-
-                        String mortalName = "Mortal Soul";
-                        List<String> mortalLore = new ArrayList<String>();
-                        mortalLore.add("Brings you back to life.");
-                        mortalLore.add("You regain 20 health.");
-
-                        ItemMeta mortalItem = mortalHealth.getItemMeta();
-                        mortalItem.setDisplayName(mortalName);
-                        mortalItem.setLore(mortalLore);
-
-                        mortalHealth.setItemMeta(mortalItem);
-
-                        attacked.getLocation().getWorld().dropItemNaturally(attacked.getLocation(), mortalHealth);
-                        attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
                     }
                 }
             }

@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods.Deities.Gods;
+package com.WildAmazing.marinating.Demigods.Deities.Æsir;
 
 /*
  * This style/format of code is now deprecated.
@@ -69,7 +69,7 @@ public class Poseidon implements Deity {
         if (DMiscUtil.hasDeity(p, "Poseidon") && DMiscUtil.isFullParticipant(p)) {
             int devotion = DMiscUtil.getDevotion(p, getName());
             /*
-			 * Calculate special values first
+             * Calculate special values first
 			 */
             // heal amount
             int healamt = (int) Math.ceil(0.1 * Math.pow(devotion, 0.297));

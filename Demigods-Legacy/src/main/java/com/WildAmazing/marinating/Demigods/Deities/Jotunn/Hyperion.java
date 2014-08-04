@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods.Deities.Titans;
+package com.WildAmazing.marinating.Demigods.Deities.Jotunn;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
@@ -67,7 +67,7 @@ public class Hyperion implements Deity {
         if (DMiscUtil.isFullParticipant(p) && DMiscUtil.hasDeity(p, getName())) {
             int devotion = DMiscUtil.getDevotion(p, getName());
             /*
-			 * Calculate special values first
+             * Calculate special values first
 			 */
             // starfall
             int damage = (int) (Math.round(1.4 * Math.pow(devotion, 0.3)));
