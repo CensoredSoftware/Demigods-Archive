@@ -463,12 +463,12 @@ public class DCommandExecutor implements CommandExecutor {
                 p.sendMessage(ChatColor.GOLD + "----Tier 1");
                 p.sendMessage(ChatColor.GRAY + "Hel - Ruler of the unwanted dead.");
                 p.sendMessage(ChatColor.GRAY + "Jormungand - The World Serpent.");
-                p.sendMessage(ChatColor.GRAY + "Fire Giant (firegiant)** - A mighty race of deified fire.");
+                p.sendMessage(ChatColor.GRAY + "Fire Giant** - A mighty race of deified fire.");
                 p.sendMessage(ChatColor.GOLD + "----Tier 2");
                 p.sendMessage(ChatColor.GRAY + "Thrymr - Late king of the Jotunn.");
                 p.sendMessage(ChatColor.GRAY + "Jord - Mother of plants and animals.");
-                p.sendMessage(ChatColor.GRAY + "Frost Giant (frostgiant)** - A mighty race of deified frost.");
-                p.sendMessage(ChatColor.GRAY + "Dís (dis)** - A fearsome race of protective spirits.");
+                p.sendMessage(ChatColor.GRAY + "Frost Giant** - A mighty race of deified frost.");
+                p.sendMessage(ChatColor.GRAY + "Dís** - A fearsome race of protective spirits.");
                 p.sendMessage(ChatColor.GRAY.toString() + ChatColor.ITALIC + " Marked ** are races, not deities. No shrines or tributes.");
             } else if (args[0].equalsIgnoreCase("claim")) {
                 p.sendMessage(ChatColor.YELLOW + "[Demigods] Claim Help File");
