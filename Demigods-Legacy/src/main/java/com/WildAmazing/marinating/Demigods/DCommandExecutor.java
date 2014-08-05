@@ -839,7 +839,7 @@ public class DCommandExecutor implements CommandExecutor {
         else if ((DMiscUtil.getHP(p) / DMiscUtil.getMaxHP(p)) < 0.5) color = ChatColor.YELLOW;
         p.sendMessage("HP: " + color + DMiscUtil.getHP(p) + "/" + DMiscUtil.getMaxHP(p));
         // List deities
-        String send = "Your deities are:";
+        String send = "You are empowered by:";
         for (Deity d : DMiscUtil.getDeities(p)) {
             send += " " + d.getName() + " " + ChatColor.YELLOW + "<" + DMiscUtil.getDevotion(p, d) + ">" + ChatColor.WHITE;
         }
