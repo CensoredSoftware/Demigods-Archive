@@ -138,12 +138,7 @@ public class DPvP implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerMove(PlayerMoveEvent event) {
-        // Define variables
-        final Player player = event.getPlayer();
-        Location to = event.getTo();
-        Location from = event.getFrom();
-        int delayTime = DSettings.getSettingInt("pvp_area_delay_time");
-        onPlayerLineJump(player, to, from, delayTime);
+        onPlayerLineJump(event.getPlayer(), event.getTo(), event.getFrom(), DSettings.getSettingInt("pvp_area_delay_time"));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

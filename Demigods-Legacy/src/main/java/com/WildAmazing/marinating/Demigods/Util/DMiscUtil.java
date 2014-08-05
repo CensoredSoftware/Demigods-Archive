@@ -1435,14 +1435,13 @@ public class DMiscUtil {
     /*
      * WORLDGUARD SUPPORT START
      */
-    @SuppressWarnings("static-access")
     public static boolean canWorldGuardPVP(Location l) {
         return ALLOWPVPEVERYWHERE || WorldGuardUtil.worldGuardEnabled() && WorldGuardUtil.canPVP(l);
     }
 
-    @SuppressWarnings("static-access")
+    @Deprecated
     private static boolean canWorldGuardLegacyPVP(Location l) {
-        return ALLOWPVPEVERYWHERE || !WorldGuardUtil.worldGuardEnabled() || WorldGuardUtil.canPVP(l);
+        return canWorldGuardPVP(l);
     }
 
     @SuppressWarnings("static-access")
@@ -1453,18 +1452,16 @@ public class DMiscUtil {
 	/*
      * WORLDGUARD SUPPORT END
 	 */
-
+    @Deprecated
     public static boolean canLocationPVP(Location l) {
-        if (ALLOWPVPEVERYWHERE) return true;
-        if (USENEWPVP) return (canWorldGuardPVP(l));
-        else return (canWorldGuardLegacyPVP(l));
+        return (canWorldGuardPVP(l));
     }
 
     public static boolean canTarget(Entity player, Location location) {
         if (!(player instanceof Player)) return true;
-        else if (!USENEWPVP) return canLocationPVP(location);
-        else if (!isFullParticipant((Player) player)) return canLocationPVP(location);
-        else return (DSave.hasData((Player) player, "temp_was_PVP")) || canLocationPVP(location);
+        else if (!USENEWPVP) return canWorldGuardPVP(location);
+        else if (!isFullParticipant((Player) player)) return canWorldGuardPVP(location);
+        else return (DSave.hasData((Player) player, "temp_was_PVP")) || canWorldGuardPVP(location);
     }
 
     /**

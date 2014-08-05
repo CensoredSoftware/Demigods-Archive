@@ -1,7 +1,6 @@
 #default config.yml
 #Demigods Configuration File
 #Global Settings
-update: true
 motd: true
 active_worlds:
 - DEFAULT
@@ -22,20 +21,9 @@ favor_regen_seconds: 0.5
 hp_regen_seconds: 10.0
 save_interval_seconds: 300
 balance_teams: true
-ascension_cap: 100
+ascension_cap: 120
 allow_skills_everywhere: false
 use_new_pvp_zones: true
 friendly_fire: false
-friendly_fire_message: true
-noob_level: 25000
-#Deity specific
-#Ares
-#Hades
-#Poseidon
-poseidon:
-    drown_world_height_limit: 89
-#Zeus
-#Atlas
-#Cronus
-#Prometheus
-#Rhea
+friendly_fire_message: false
+noob_level: 5

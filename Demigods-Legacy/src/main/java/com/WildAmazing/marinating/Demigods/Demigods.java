@@ -277,6 +277,7 @@ public class Demigods extends JavaPlugin implements Listener {
     }
 
     void loadListeners() {
+        new WorldGuardUtil();
         getServer().getPluginManager().registerEvents(new DLevels(), this);
         getServer().getPluginManager().registerEvents(new DChatCommands(), this);
         getServer().getPluginManager().registerEvents(new DDamage(), this);
