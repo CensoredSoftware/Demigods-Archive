@@ -10,11 +10,13 @@ commands:
         aliases: demigods
     check:
         description: About the player.
+        aliases: [c]
     claim:
         description: Used to claim deities.
     alliance:
         description: Used to toggle alliance chat.
         usage: /alliance
+        aliases: [a]
     checkplayer:
         description: View information about another player.
         usage: /checkplayer <player>
@@ -116,13 +118,14 @@ commands:
         usage: /bindings
         description: Display what Materials are used for bindings.
         permission: demigods.bindings
+        aliases: [b]
     shrine:
         description: Gives information about shrines.
     shrinewarp:
         usage: /shrinewarp <deity> or /shrinewarp <player> <deity> or /shrinewarp <shrine name>
         description: Warps the user to the shrine.
         permission: demigods.shrinewarp
-        alias: warpshrine
+        aliases: [warpshrine, sw]
     forceshrinewarp:
         usage: /forceshrinewarp <deity> or /forceshrinewarp <player> <deity> or /forceshrinewarp <shrine name>
         description: Warps the user to the shrine, even if it is blocked.
@@ -150,6 +153,7 @@ commands:
         alias: shrinename
     value:
         description: See Favor value of item in hand.
+        aliases: [v]
     slam:
         description: One of Thor's abilities.
     lightning:
