@@ -71,7 +71,7 @@ public class FireGiant implements Deity {
             if (diameter > 12) diameter = 12;
             int firestormshots = (int) Math.round(2 * Math.pow(DMiscUtil.getDevotion(p, getName()), 0.15));
             /*
-			 * The printed text
+             * The printed text
 			 */
             p.sendMessage("--" + ChatColor.GOLD + "Fire Giant");
             p.sendMessage(":Immune to fire damage.");
@@ -217,8 +217,8 @@ public class FireGiant implements Deity {
                 }
                 int t = (int) (PROMETHEUSULTIMATECOOLDOWNMAX - ((PROMETHEUSULTIMATECOOLDOWNMAX - PROMETHEUSULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
                 FIRESTORMTIME = System.currentTimeMillis() + (t * 1000);
-                p.sendMessage("In exchange for " + ChatColor.AQUA + PROMETHEUSULTIMATECOST + ChatColor.WHITE + " Favor, ");
-                p.sendMessage(ChatColor.GOLD + "your divine fire " + ChatColor.WHITE + " has unleashed his wrath on " + firestorm(p) + " non-allied entities.");
+                p.sendMessage(ChatColor.GOLD + "Your divine fire " + ChatColor.WHITE + " has unleashed his wrath on " + firestorm(p) + " non-allied entities,");
+                p.sendMessage("in exchange for " + ChatColor.AQUA + PROMETHEUSULTIMATECOST + ChatColor.WHITE + " Favor.");
                 DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - PROMETHEUSULTIMATECOST);
             } else p.sendMessage("Firestorm requires " + PROMETHEUSULTIMATECOST + " Favor.");
         }

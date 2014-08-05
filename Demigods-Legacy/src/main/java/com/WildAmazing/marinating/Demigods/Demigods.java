@@ -7,8 +7,9 @@ import com.WildAmazing.marinating.Demigods.Listeners.*;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 import com.WildAmazing.marinating.Demigods.Util.DSave;
 import com.WildAmazing.marinating.Demigods.Util.DSettings;
+import com.WildAmazing.marinating.Demigods.Util.WorldGuardUtil;
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -16,8 +17,8 @@ import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scheduler.BukkitWorker;
@@ -32,9 +33,6 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 public class Demigods extends JavaPlugin implements Listener {
-    // Soft dependencies
-    public static WorldGuardPlugin WORLDGUARD = null;
-
     // Define variables
     private static final Logger log = Logger.getLogger("Minecraft");
     public static File FILE;
@@ -78,9 +76,19 @@ public class Demigods extends JavaPlugin implements Listener {
         invalidShrines(); // #9
         levelPlayers(); // #10
 
+        log.info("[Demigods] Attempting to hook into WorldGuard.");
+
+        // Init WorldGuard stuff # 11
+        WorldGuardUtil.setWhenToOverridePVP(this, new Predicate<EntityDamageByEntityEvent>() {
+            @Override
+            public boolean apply(EntityDamageByEntityEvent event) {
+                return !DSettings.getEnabledWorlds().contains(event.getEntity().getWorld());
+            }
+        });
+
         log.info("[Demigods] Attempting to load Metrics.");
 
-        unstickFireball(); // #11
+        unstickFireball(); // #12
 
         log.info("[Demigods] Preparation completed in " + ((double) (System.currentTimeMillis() - firstTime) / 1000) + " seconds.");
     }
@@ -124,12 +132,18 @@ public class Demigods extends JavaPlugin implements Listener {
     }
 
     void loadDependencies() {
-        // Check for the WorldGuard plugin
-        Plugin pg = getServer().getPluginManager().getPlugin("WorldGuard");
-        if ((pg != null) && (pg instanceof WorldGuardPlugin)) {
-            WORLDGUARD = (WorldGuardPlugin) pg;
-            if (!DSettings.getSettingBoolean("allow_skills_everywhere"))
-                log.info("[Demigods] WorldGuard detected. Skills are disabled in no-PvP zones.");
+        log.info("[Demigods] Attempting to hook into WorldGuard.");
+
+        // Init WorldGuard stuff # 11
+        WorldGuardUtil.setWhenToOverridePVP(this, new Predicate<EntityDamageByEntityEvent>() {
+            @Override
+            public boolean apply(EntityDamageByEntityEvent event) {
+                return !DSettings.getEnabledWorlds().contains(event.getEntity().getWorld());
+            }
+        });
+
+        if (WorldGuardUtil.worldGuardEnabled()) {
+            log.info("[Demigods] WorldGuard detected. Skills are disabled in no-PvP zones.");
         }
     }
 
@@ -269,6 +283,7 @@ public class Demigods extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new DPvP(), this);
         getServer().getPluginManager().registerEvents(new DShrines(), this);
         getServer().getPluginManager().registerEvents(new DDeities(), this);
+        getServer().getPluginManager().registerEvents(new DBlockChangeListener(), this);
         getServer().getPluginManager().registerEvents(new Dwarf(null), this);
     }
 

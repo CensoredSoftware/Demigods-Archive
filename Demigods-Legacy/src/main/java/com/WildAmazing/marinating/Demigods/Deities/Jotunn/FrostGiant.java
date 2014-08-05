@@ -1,6 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Jotunn;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Demigods;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -10,6 +11,7 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
 import java.util.UUID;
@@ -20,7 +22,6 @@ public class FrostGiant implements Deity {
 
     private static final String skillname = "Ice";
     private static final int SKILLCOST = 225;
-    private static final int SKILLDELAY = 2000; // milliseconds
     private static final int ULTIMATECOST = 2000;
     private static final int ULTIMATECOOLDOWNMAX = 700; // seconds
     private static final int ULTIMATECOOLDOWNMIN = 400;
@@ -95,7 +96,7 @@ public class FrostGiant implements Deity {
             if (!DMiscUtil.isFullParticipant(p) || !DMiscUtil.hasDeity(p, getName())) return;
             if (SKILL || ((p.getItemInHand() != null) && (p.getItemInHand().getType() == SKILLBIND))) {
                 if (SKILLTIME > System.currentTimeMillis()) return;
-                SKILLTIME = System.currentTimeMillis() + SKILLDELAY;
+                SKILLTIME = System.currentTimeMillis() + 700L;
                 if (DMiscUtil.getFavor(p) >= SKILLCOST) {
                     if (iceSpawn(p)) DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - SKILLCOST);
                 } else {
@@ -146,21 +147,18 @@ public class FrostGiant implements Deity {
                 if (DMiscUtil.getFavor(p) >= ULTIMATECOST) {
                     int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / DMiscUtil.ASCENSIONCAP)));
                     ULTIMATETIME = System.currentTimeMillis() + (t * 1000);
-                    int x = p.getLocation().getChunk().getX(), z = p.getLocation().getChunk().getZ();
-                    p.getWorld().setBiome(x, z, Biome.MEGA_TAIGA);
-                    p.getWorld().setBiome(x - 1, z, Biome.MEGA_TAIGA);
-                    p.getWorld().setBiome(x, z - 1, Biome.MEGA_TAIGA);
-                    p.getWorld().setBiome(x + 1, z, Biome.MEGA_TAIGA);
-                    p.getWorld().setBiome(x, z + 1, Biome.MEGA_TAIGA);
-                    p.getWorld().setBiome(x - 1, z - 1, Biome.MEGA_TAIGA);
-                    p.getWorld().setBiome(x + 1, z - 1, Biome.MEGA_TAIGA);
-                    p.getWorld().setBiome(x + 1, z + 1, Biome.MEGA_TAIGA);
-                    p.getWorld().setBiome(x - 1, z + 1, Biome.MEGA_TAIGA);
+
+                    for (int x = p.getLocation().getBlockX() - 14; x <= p.getLocation().getBlockX() + 14; x++)
+                        for (int z = p.getLocation().getBlockZ() - 14; z <= p.getLocation().getBlockZ() + 14; z++)
+                            p.getWorld().setBiome(x, z, Biome.COLD_TAIGA);
+
+                    p.getWorld().refreshChunk(p.getLocation().getBlockX(), p.getLocation().getBlockZ());
+
                     p.getWorld().setStorm(true);
                     p.getWorld().setThundering(true);
                     p.getWorld().setWeatherDuration((int) Math.round(40 * Math.pow(10000, 0.15)) * 20);
-                    p.sendMessage("In exchange for " + ChatColor.AQUA + ULTIMATECOST + ChatColor.WHITE + " Favor, ");
-                    p.sendMessage(ChatColor.GOLD + "your divine frost" + ChatColor.WHITE + " has started a snowstorm on your world.");
+                    p.sendMessage(ChatColor.GOLD + "Your divine frost" + ChatColor.WHITE + " has started a snowstorm on your world,");
+                    p.sendMessage("in exchange for " + ChatColor.AQUA + ULTIMATECOST + ChatColor.WHITE + " Favor.");
                     DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - ULTIMATECOST);
                 } else p.sendMessage(ChatColor.YELLOW + "Chill requires " + ULTIMATECOST + " Favor.");
             }
@@ -199,19 +197,13 @@ public class FrostGiant implements Deity {
         Location target = DMiscUtil.getTargetLocation(p);
         if (target == null) return false;
         if (!DMiscUtil.canLocationPVP(target)) return false;
-        FallingBlock ice = p.getWorld().spawnFallingBlock(p.getLocation(), Material.PACKED_ICE, (byte) 0);
-        Vector v = p.getLocation().toVector();
-        Vector victor = target.toVector().subtract(v);
-        ice.setVelocity(victor);
+        target.add(.5, .5, .5);
+        Vector victor = p.getEyeLocation().toVector().add(p.getEyeLocation().getDirection().multiply(2));
+        Vector path = target.toVector().subtract(p.getEyeLocation().toVector());
+        FallingBlock ice = p.getWorld().spawnFallingBlock(victor.toLocation(target.getWorld()), Material.PACKED_ICE, (byte) 0);
+        ice.setVelocity(path);
+        ice.setMetadata("splode", new FixedMetadataValue(Demigods.getProvidingPlugin(getClass()), getPlayerId().toString()));
         ice.setDropItem(false);
-        final FallingBlock ss = ice;
-        DMiscUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DMiscUtil.getPlugin(), new Runnable() {
-            @Override
-            public void run() {
-                ss.remove();
-                ss.getWorld().createExplosion(ss.getLocation(), 1 + Math.round(Math.pow(DMiscUtil.getDevotion(getPlayerId(), getName()), 0.1142)));
-            }
-        }, 60);
         return true;
     }
 }

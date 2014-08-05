@@ -10,9 +10,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -1440,26 +1437,17 @@ public class DMiscUtil {
      */
     @SuppressWarnings("static-access")
     public static boolean canWorldGuardPVP(Location l) {
-        if (ALLOWPVPEVERYWHERE) return true;
-        return plugin.WORLDGUARD == null || !Iterators.any(plugin.WORLDGUARD.getRegionManager(l.getWorld()).getApplicableRegions(l).iterator(), new Predicate<ProtectedRegion>() {
-            @Override
-            public boolean apply(ProtectedRegion region) {
-                return region.getId().toLowerCase().contains("nopvp");
-            }
-        });
+        return ALLOWPVPEVERYWHERE || WorldGuardUtil.worldGuardEnabled() && WorldGuardUtil.canPVP(l);
     }
 
     @SuppressWarnings("static-access")
     private static boolean canWorldGuardLegacyPVP(Location l) {
-        if (ALLOWPVPEVERYWHERE) return true;
-        if (plugin.WORLDGUARD == null) return true;
-        ApplicableRegionSet set = plugin.WORLDGUARD.getRegionManager(l.getWorld()).getApplicableRegions(l);
-        return !set.allows(DefaultFlag.PVP);
+        return ALLOWPVPEVERYWHERE || !WorldGuardUtil.worldGuardEnabled() || WorldGuardUtil.canPVP(l);
     }
 
     @SuppressWarnings("static-access")
     public static boolean canWorldGuardBuild(Player player, Location location) {
-        return plugin.WORLDGUARD == null || plugin.WORLDGUARD.canBuild(player, location);
+        return !WorldGuardUtil.worldGuardEnabled() || WorldGuardUtil.canBuild(player, location);
     }
 
 	/*

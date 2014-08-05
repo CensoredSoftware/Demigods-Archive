@@ -60,19 +60,19 @@ public class DFixes implements Listener {
     private static void deityDamageImmunity(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
             Player p = (Player) event.getEntity();
-            if ((DMiscUtil.hasDeity(p, "Fárbauti") || DMiscUtil.hasDeity(p, "Brokkr")) && (event.getCause() == EntityDamageEvent.DamageCause.FIRE) || (event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK || event.getCause() == EntityDamageEvent.DamageCause.LAVA)) {
+            if ((DMiscUtil.hasDeity(p, "Fire Giant") || DMiscUtil.hasDeity(p, "Dwarf")) && (event.getCause() == EntityDamageEvent.DamageCause.FIRE) || (event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK || event.getCause() == EntityDamageEvent.DamageCause.LAVA)) {
                 p.setFireTicks(0);
                 DFixes.checkAndCancel(event);
                 return;
             } else if (DMiscUtil.hasDeity(p, "Thor") && (event.getCause() == EntityDamageEvent.DamageCause.FALL || event.getCause() == EntityDamageEvent.DamageCause.LIGHTNING)) {
                 DFixes.checkAndCancel(event);
                 return;
-            } else if (DMiscUtil.hasDeity(p, "Poseidon") && event.getCause() == EntityDamageEvent.DamageCause.DROWNING) {
+            } else if (DMiscUtil.hasDeity(p, "Jormungand") && event.getCause() == EntityDamageEvent.DamageCause.DROWNING) {
                 DFixes.checkAndCancel(event);
                 return;
-            } else if (DMiscUtil.hasDeity(p, "Atlas")) {
+            } else if (DMiscUtil.hasDeity(p, "Thrymr")) {
                 if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
-                    double reduction = (double) Math.round(Math.pow(DMiscUtil.getDevotion(p, "Atlas"), 0.115));
+                    double reduction = (double) Math.round(Math.pow(DMiscUtil.getDevotion(p, "Thrymr"), 0.115));
                     if (reduction > event.getDamage()) reduction = event.getDamage();
                     event.setDamage(event.getDamage() - reduction);
                 } else if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
