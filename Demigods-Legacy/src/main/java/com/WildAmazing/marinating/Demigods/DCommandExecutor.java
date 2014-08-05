@@ -1613,7 +1613,7 @@ public class DCommandExecutor implements CommandExecutor {
         if (args.length != 1) return false;
         if (args[0].equalsIgnoreCase("all")) {
             DMiscUtil.getPlugin().getServer().broadcastMessage(ChatColor.RED + p.getName() + " has forsaken their deities.");
-            p.sendMessage(ChatColor.RED + "You are mortal.");
+            p.kickPlayer(ChatColor.RED + "You are mortal.");
             for (WriteLocation w : DMiscUtil.getShrines(p.getUniqueId()).values())
                 DMiscUtil.removeShrine(w);
             DSave.removePlayer(p);
@@ -1633,7 +1633,7 @@ public class DCommandExecutor implements CommandExecutor {
             } else {
                 Deity toremove = DMiscUtil.getDeity(p, args[0]);
                 p.sendMessage(ChatColor.YELLOW + "You have forsaken " + toremove.getName() + ".");
-                p.sendMessage(ChatColor.RED + "You are mortal.");
+                p.kickPlayer(ChatColor.YELLOW + "You have forsaken " + toremove.getName() + ChatColor.WHITE + " -- " + ChatColor.RED + "You are mortal.");
                 DMiscUtil.getPlugin().getServer().broadcastMessage(ChatColor.RED + p.getName() + " has forsaken " + toremove.getName() + ".");
                 DSave.removePlayer(p);
                 DSave.addPlayer(p);
