@@ -205,8 +205,26 @@ public class DMiscUtil {
             return;
         }
 
-        if (BROADCASTNEWDEITY)
-            plugin.getServer().broadcastMessage(ChatColor.YELLOW + getLastKnownName(p) + " has joined the lineage of " + d.getName() + ".");
+        if (BROADCASTNEWDEITY) {
+            String message;
+            switch (d.getName().toLowerCase()) {
+                case "frost giant":
+                    message = ChatColor.YELLOW + getLastKnownName(p) + " has joined the lineage of the frost giants.";
+                    break;
+                case "fire giant":
+                    message = ChatColor.YELLOW + getLastKnownName(p) + " has joined the lineage of fire giants.";
+                    break;
+                case "dwarf":
+                    message = ChatColor.YELLOW + getLastKnownName(p) + " has joined the lineage of the dwarves.";
+                    break;
+                case "dis":
+                    message = ChatColor.YELLOW + getLastKnownName(p) + " has joined a lineage of dísir.";
+                    break;
+                default:
+                    message = ChatColor.YELLOW + getLastKnownName(p) + " has joined the lineage of " + d.getName() + ".";
+            }
+            plugin.getServer().broadcastMessage(message);
+        }
         if (DSave.hasData(p, "DEITIES")) getDeities(p).add(d);
         else {
             ArrayList<Deity> ad = new ArrayList<Deity>();

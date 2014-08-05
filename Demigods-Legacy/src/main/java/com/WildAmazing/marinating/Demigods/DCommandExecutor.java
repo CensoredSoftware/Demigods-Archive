@@ -708,7 +708,7 @@ public class DCommandExecutor implements CommandExecutor {
             }
         } else if (args.length == 2) {
             for (Deity deity : DSave.getGlobalList()) {
-                if (deity.getName().equalsIgnoreCase(args[0] + args[1])) deity.printInfo(p);
+                if (deity.getName().equalsIgnoreCase(args[0] + " " + args[1])) deity.printInfo(p);
             }
             if (args[0].equalsIgnoreCase("ranking") || args[0].equalsIgnoreCase("rankings")) {
                 if (args[1].equalsIgnoreCase("aesir") || args[1].equalsIgnoreCase("god")) {
@@ -1859,7 +1859,7 @@ public class DCommandExecutor implements CommandExecutor {
 
     @SuppressWarnings("incomplete-switch")
     private boolean claim(Player p) {
-		/*
+        /*
 		 * Check for a new player first
 		 */
         if ((DMiscUtil.getDeities(p) == null) || (DMiscUtil.getDeities(p).size() == 0)) {
