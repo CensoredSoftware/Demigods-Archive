@@ -1869,7 +1869,7 @@ public class DCommandExecutor implements CommandExecutor {
     @SuppressWarnings("incomplete-switch")
     private boolean claim(Player p) {
         /*
-		 * Check for a new player first
+         * Check for a new player first
 		 */
         if ((DMiscUtil.getDeities(p) == null) || (DMiscUtil.getDeities(p).size() == 0)) {
             Deity choice = null;
@@ -1996,7 +1996,7 @@ public class DCommandExecutor implements CommandExecutor {
             }
         }
         if (DMiscUtil.hasDeity(p, choice.getName())) {
-            p.sendMessage(ChatColor.RED + "You are already allianced to " + choice.getName() + ".");
+            p.sendMessage(ChatColor.RED + "You are already allied with " + choice.getName() + ".");
             return true;
         }
         DMiscUtil.giveDeity(p, choice);
