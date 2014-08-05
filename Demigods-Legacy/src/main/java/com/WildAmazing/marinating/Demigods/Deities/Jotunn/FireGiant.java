@@ -1,6 +1,7 @@
 package com.WildAmazing.marinating.Demigods.Deities.Jotunn;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.Demigods;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -9,6 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -69,7 +71,7 @@ public class FireGiant implements Deity {
             int t = (int) (PROMETHEUSULTIMATECOOLDOWNMAX - ((PROMETHEUSULTIMATECOOLDOWNMAX - PROMETHEUSULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
             int diameter = (int) Math.ceil(1.43 * Math.pow(devotion, 0.1527));
             if (diameter > 12) diameter = 12;
-            int firestormshots = (int) Math.round(2 * Math.pow(DMiscUtil.getDevotion(p, getName()), 0.15));
+            int firestormshots = (int) Math.round(2 * Math.pow(40000, 0.15));
             /*
              * The printed text
 			 */
@@ -248,6 +250,7 @@ public class FireGiant implements Deity {
             fireball.teleport(new Location(player.getWorld(), victor.getX(), victor.getY(), victor.getZ()));
             fireball.setDirection(path);
             fireball.setShooter(player);
+            fireball.setMetadata("how_do_I_shot_web", new FixedMetadataValue(Demigods.getPlugin(Demigods.class), true));
         }
     }
 
@@ -264,7 +267,7 @@ public class FireGiant implements Deity {
     }
 
     private int firestorm(Player p) {
-        int total = 20 * (int) Math.round(2 * Math.pow(10000, 0.15));
+        int total = 20 * (int) Math.round(2 * Math.pow(40000, 0.15));
         Vector ploc = p.getLocation().toVector();
         ArrayList<LivingEntity> entitylist = new ArrayList<LivingEntity>();
         for (LivingEntity anEntity : p.getWorld().getLivingEntities()) {

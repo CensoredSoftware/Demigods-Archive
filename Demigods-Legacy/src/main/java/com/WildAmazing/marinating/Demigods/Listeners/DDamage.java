@@ -5,7 +5,9 @@ import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 import com.WildAmazing.marinating.Demigods.Util.DSettings;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -48,6 +50,13 @@ public class DDamage implements Listener {
                     return;
                 }
                 DMiscUtil.damageDemigods((Player) ee.getDamager(), p, e.getDamage(), DamageCause.ENTITY_ATTACK);
+                return;
+            } else if (ee.getDamager() instanceof Projectile && ((Projectile) ee.getDamager()).getShooter() instanceof LivingEntity) {
+                Projectile projectile = (Projectile) ee.getDamager();
+                if (projectile.hasMetadata("how_do_I_shot_web")) {
+                    DFixes.checkAndCancel(e);
+                    DMiscUtil.damageDemigods((LivingEntity) projectile.getShooter(), p, e.getDamage() * (DMiscUtil.getAscensions(p) + 1), DamageCause.ENTITY_EXPLOSION);
+                }
                 return;
             }
         }
