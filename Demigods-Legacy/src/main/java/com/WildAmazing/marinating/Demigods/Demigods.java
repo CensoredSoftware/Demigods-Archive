@@ -47,7 +47,7 @@ public class Demigods extends JavaPlugin implements Listener {
             add(new Thrymr(null));
             add(new FrostGiant(null));
             add(new Baldr(null));
-            add(new Dís(null));
+            add(new Dis(null));
             add(new Thor(null));
             add(new Jormungand(null));
             add(new Hel(null));

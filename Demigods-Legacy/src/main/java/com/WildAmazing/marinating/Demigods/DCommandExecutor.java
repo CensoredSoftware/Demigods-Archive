@@ -707,6 +707,9 @@ public class DCommandExecutor implements CommandExecutor {
                 }
             }
         } else if (args.length == 2) {
+            for (Deity deity : DSave.getGlobalList()) {
+                if (deity.getName().equalsIgnoreCase(args[0] + args[1])) deity.printInfo(p);
+            }
             if (args[0].equalsIgnoreCase("ranking") || args[0].equalsIgnoreCase("rankings")) {
                 if (args[1].equalsIgnoreCase("aesir") || args[1].equalsIgnoreCase("god")) {
                     // get list of gods
@@ -1546,7 +1549,7 @@ public class DCommandExecutor implements CommandExecutor {
                     break;
                 case "dís":
                 case "dis":
-                    DMiscUtil.giveDeity(target, new Dís(target));
+                    DMiscUtil.giveDeity(target, new Dis(target));
                     success = ChatColor.YELLOW + "Success! " + target + " has joined the dísir.";
                     break;
             }
@@ -1888,7 +1891,7 @@ public class DCommandExecutor implements CommandExecutor {
                     p.sendMessage(ChatColor.RED + "You do not have permission to claim this deity.");
                     return true;
                 }
-                p.sendMessage(ChatColor.YELLOW + "The Fates ponder your decision...");
+                p.sendMessage(ChatColor.YELLOW + "The great powers ponder your decision...");
                 if (BALANCETEAMS && DMiscUtil.hasAdvantage(choice.getDefaultAlliance())) {
                     p.sendMessage(ChatColor.RED + "Your selection would unbalance the order of the universe.");
                     p.sendMessage(ChatColor.RED + "Try again later or select a different deity.");
@@ -1896,7 +1899,7 @@ public class DCommandExecutor implements CommandExecutor {
                 }
                 if (choice.getClass() == Dwarf.class) {
                     p.sendMessage(ChatColor.YELLOW + "You have been accepted to the dwarven lineage.");
-                } else if (choice.getClass() == Dís.class) {
+                } else if (choice.getClass() == Dis.class) {
                     p.sendMessage(ChatColor.YELLOW + "You have been accepted into the lineage of the dísir.");
                 } else if (choice.getClass() == FireGiant.class) {
                     p.sendMessage(ChatColor.YELLOW + "You are gifted with divine fire, joining the lineage of the fire giants.");
@@ -1964,7 +1967,7 @@ public class DCommandExecutor implements CommandExecutor {
                 choice = new FrostGiant(p.getUniqueId());
                 break;
             case COMPASS:
-                choice = new Dís(p.getUniqueId());
+                choice = new Dis(p.getUniqueId());
                 break;
         }
         if (choice == null) {
@@ -1992,7 +1995,7 @@ public class DCommandExecutor implements CommandExecutor {
         DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) + 100);
         if (choice.getClass() == Dwarf.class) {
             p.sendMessage(ChatColor.YELLOW + "You have been accepted to the dwarven lineage.");
-        } else if (choice.getClass() == Dís.class) {
+        } else if (choice.getClass() == Dis.class) {
             p.sendMessage(ChatColor.YELLOW + "You have been accepted into the lineage of the dísir.");
         } else if (choice.getClass() == FireGiant.class) {
             p.sendMessage(ChatColor.YELLOW + "You are gifted with divine fire, joining the lineage of the fire giants.");

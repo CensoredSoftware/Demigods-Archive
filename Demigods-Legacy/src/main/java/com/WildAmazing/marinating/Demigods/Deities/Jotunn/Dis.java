@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.UUID;
 
-public class Dís implements Deity {
+public class Dis implements Deity {
     private static final long serialVersionUID = -2472769863144336856L;
     private final UUID PLAYER;
 
@@ -31,7 +31,7 @@ public class Dís implements Deity {
     private long ULTIMATETIME;
     private long LASTCHECK;
 
-    public Dís(UUID player) {
+    public Dis(UUID player) {
         PLAYER = player;
         SKILLTIME = System.currentTimeMillis();
         ULTIMATETIME = System.currentTimeMillis();
@@ -40,7 +40,7 @@ public class Dís implements Deity {
 
     @Override
     public String getName() {
-        return "Dís";
+        return "Dis";
     }
 
     @Override
@@ -62,8 +62,8 @@ public class Dís implements Deity {
             p.sendMessage(":Use " + ChatColor.YELLOW + "qd <name>" + ChatColor.WHITE + " for detailed information about any player");
             p.sendMessage(":Click a target player or mob to switch locations with them.");
             p.sendMessage(ChatColor.GREEN + "/swap" + ChatColor.YELLOW + "Costs " + SKILLCOST + " Favor.");
-            if (((Dís) DMiscUtil.getDeity(p, getName())).SKILLBIND != null)
-                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Dís) DMiscUtil.getDeity(p, getName())).SKILLBIND.name());
+            if (((Dis) DMiscUtil.getDeity(p, getName())).SKILLBIND != null)
+                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Dis) DMiscUtil.getDeity(p, getName())).SKILLBIND.name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
             p.sendMessage(":Call all AEsir and Jotunn together for an assembly at your location.");
             p.sendMessage("Players will be temporarily immune to damage after teleporting.");
