@@ -457,7 +457,7 @@ public class DCommandExecutor implements CommandExecutor {
                 p.sendMessage(ChatColor.GRAY + "Bragi - God of poetry.");
                 p.sendMessage(ChatColor.GRAY + "Dwarf** - A crafty race of wise blacksmiths.");
                 p.sendMessage(ChatColor.GRAY.toString() + ChatColor.ITALIC + " Those marked ** are races, not deities. No shrines or tributes.");
-            } else if (args[0].equalsIgnoreCase("")) {
+            } else if (args[0].equalsIgnoreCase("jotunn")) {
                 p.sendMessage(ChatColor.YELLOW + "[Demigods] Jotunn Help File");
                 p.sendMessage(ChatColor.GRAY + "For more information on the Jotunn, use /dg <name>");
                 p.sendMessage(ChatColor.GOLD + "----Tier 1");
