@@ -147,12 +147,12 @@ public class DMiscUtil {
         return p.hasPermission(pe);
     }
 
-    public static void setTitan(UUID p) {
-        DSave.saveData(p, "ALLEGIANCE", "titan");
+    public static void setJotunn(UUID p) {
+        DSave.saveData(p, "ALLEGIANCE", "jotunn");
     }
 
-    public static void setGod(UUID p) {
-        DSave.saveData(p, "ALLEGIANCE", "god");
+    public static void setAEsir(UUID p) {
+        DSave.saveData(p, "ALLEGIANCE", "aesir");
     }
 
     public static void setAllegiance(UUID p, String allegiance) {

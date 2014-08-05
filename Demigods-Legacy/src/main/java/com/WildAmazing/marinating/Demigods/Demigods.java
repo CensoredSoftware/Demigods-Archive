@@ -40,26 +40,20 @@ public class Demigods extends JavaPlugin implements Listener {
     public static final ImmutableSet<Deity> deities = ImmutableSet.copyOf(new HashSet<Deity>() {
         {
             UUID notchId = UUID.fromString("069a79f4-44e9-4726-a5be-fca90e38aaf5");
-            Odin odin = new Odin(notchId);
-            DMiscUtil.initializePlayer(notchId, "AEsir", odin);
-            add(odin);
-            add(new Thor(notchId));
+            add(new Odin(notchId));
+            add(new Jord(notchId));
+            add(new FireGiant(notchId));
+            add(new Thrymr(notchId));
+            add(new FrostGiant(notchId));
             add(new Baldr(notchId));
+            add(new Dis(notchId));
+            add(new Thor(notchId));
+            add(new Jormungand(notchId));
+            add(new Hel(notchId));
             add(new Vidar(notchId));
             add(new Heimdallr(notchId));
             add(new Bragi(notchId));
             add(new Dwarf(notchId));
-
-            UUID evilsephId = UUID.fromString("020242a1-7b94-4179-9eff-511eea1221da");
-            FireGiant fireGiant = new FireGiant(evilsephId);
-            DMiscUtil.initializePlayer(notchId, "Jotunn", fireGiant);
-            add(fireGiant);
-            add(new Jord(evilsephId));
-            add(new Thrymr(evilsephId));
-            add(new FrostGiant(evilsephId));
-            add(new Dis(evilsephId));
-            add(new Jormungand(evilsephId));
-            add(new Hel(evilsephId));
         }
     });
 

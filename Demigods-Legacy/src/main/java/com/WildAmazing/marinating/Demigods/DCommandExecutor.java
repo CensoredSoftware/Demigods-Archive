@@ -604,8 +604,8 @@ public class DCommandExecutor implements CommandExecutor {
                 p.sendMessage("There are " + ChatColor.GREEN + onlinetitans.size() + "/" + ChatColor.YELLOW + titancount + ChatColor.WHITE + " Jotunn online: " + ChatColor.GOLD + str2);
                 if (othercount > 0)
                     p.sendMessage("There are " + ChatColor.GREEN + onlineother.size() + "/" + ChatColor.YELLOW + othercount + ChatColor.WHITE + " others online: " + ChatColor.GOLD + str3);
-                p.sendMessage("Total AEsir kills: " + ChatColor.GREEN + godkills + ChatColor.YELLOW + " --- " + ChatColor.WHITE + " God K/D Ratio: " + ChatColor.YELLOW + ((float) godkills / goddeaths));
-                p.sendMessage("Total Jotunn kills: " + ChatColor.GREEN + titankills + ChatColor.YELLOW + " --- " + ChatColor.WHITE + " Titan K/D Ratio: " + ChatColor.YELLOW + ((float) titankills / titandeaths));
+                p.sendMessage("Total AEsir kills: " + ChatColor.GREEN + godkills + ChatColor.YELLOW + " --- " + ChatColor.WHITE + " AEsir K/D Ratio: " + ChatColor.YELLOW + ((float) godkills / goddeaths));
+                p.sendMessage("Total Jotunn kills: " + ChatColor.GREEN + titankills + ChatColor.YELLOW + " --- " + ChatColor.WHITE + " Jotunn K/D Ratio: " + ChatColor.YELLOW + ((float) titankills / titandeaths));
                 if (othercount > 0) {
                     p.sendMessage("Total Other kills: " + ChatColor.GREEN + otherkills + ChatColor.YELLOW + " --- " + ChatColor.WHITE + " Other K/D Ratio: " + ChatColor.YELLOW + ((float) otherkills / otherdeaths));
                 }
@@ -1841,8 +1841,8 @@ public class DCommandExecutor implements CommandExecutor {
         try {
             UUID target = DMiscUtil.getDemigodsPlayerId(args[0]);
             String allegiance = args[1];
-            if (allegiance.equalsIgnoreCase("god")) DMiscUtil.setGod(target);
-            else if (allegiance.equalsIgnoreCase("titan")) DMiscUtil.setTitan(target);
+            if (allegiance.equalsIgnoreCase("aesir")) DMiscUtil.setAEsir(target);
+            else if (allegiance.equalsIgnoreCase("jotunn")) DMiscUtil.setJotunn(target);
             else DMiscUtil.setAllegiance(target, allegiance);
             p.sendMessage(ChatColor.YELLOW + "Success! " + target + " is now in the " + DMiscUtil.getAllegiance(target) + " allegiance.");
             return true;
