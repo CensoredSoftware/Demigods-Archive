@@ -1496,7 +1496,7 @@ public class DCommandExecutor implements CommandExecutor {
     private boolean giveDeity(Player p, String[] args) {
         if (!(DMiscUtil.hasPermission(p, "demigods.givedeity") || DMiscUtil.hasPermission(p, "demigods.admin")))
             return true;
-        if (args.length != 2) return false;
+        if (args.length < 2) return false;
         UUID target = DMiscUtil.getDemigodsPlayerId(args[0]);
         if (DMiscUtil.hasDeity(target, args[1])) {
             p.sendMessage(ChatColor.YELLOW + "" + target + " already has that deity.");
@@ -1514,6 +1514,7 @@ public class DCommandExecutor implements CommandExecutor {
                 case "odin":
                     DMiscUtil.giveDeity(target, new Odin(target));
                     break;
+                case "fire":
                 case "firegiant":
                     DMiscUtil.giveDeity(target, new FireGiant(target));
                     success = ChatColor.YELLOW + "Success! " + target + " now has divine fire.";
@@ -1533,6 +1534,7 @@ public class DCommandExecutor implements CommandExecutor {
                 case "heimdallr":
                     DMiscUtil.giveDeity(target, new Heimdallr(target));
                     break;
+                case "frost":
                 case "frostgiant":
                     DMiscUtil.giveDeity(target, new FrostGiant(target));
                     success = ChatColor.YELLOW + "Success! " + target + " now has divine frost.";
