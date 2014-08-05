@@ -29,7 +29,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 public class DMiscUtil {
-    private static final Demigods plugin = (Demigods) Bukkit.getServer().getPluginManager().getPlugin("Demigods"); // obviously needed
+    private static final Demigods plugin = (Demigods) Bukkit.getServer().getPluginManager().getPlugin("NorseDemigods"); // obviously needed
     private static final int dist = DSettings.getSettingInt("max_target_range"); // maximum range on targeting
     private static final int MAXIMUMHP = DSettings.getSettingInt("max_hp"); // max hp a player can have
     public static final int ASCENSIONCAP = DSettings.getSettingInt("ascension_cap"); // max levels
