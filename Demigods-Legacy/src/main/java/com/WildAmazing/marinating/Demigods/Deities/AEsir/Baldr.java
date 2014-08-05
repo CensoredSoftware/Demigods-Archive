@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods.Deities.Æsir;
+package com.WildAmazing.marinating.Demigods.Deities.AEsir;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
@@ -59,7 +59,7 @@ public class Baldr implements Deity {
 
     @Override
     public String getDefaultAlliance() {
-        return "Æsir";
+        return "AEsir";
     }
 
     @Override
@@ -79,7 +79,7 @@ public class Baldr implements Deity {
             int ultdamage = (int) (Math.floor(10 * Math.pow(devotion, 0.105)));
             int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / DMiscUtil.ASCENSIONCAP)));
             /*
-			 * The printed text
+             * The printed text
 			 */
             p.sendMessage("--" + ChatColor.GOLD + getName() + ChatColor.GRAY + "[" + devotion + "]");
             p.sendMessage(":Move with increased speed while in a well-lit area (use" + ChatColor.GREEN + " /sprint " + ChatColor.YELLOW + "to toggle).");

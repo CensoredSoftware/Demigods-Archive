@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods.Deities.Æsir;
+package com.WildAmazing.marinating.Demigods.Deities.AEsir;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
@@ -43,7 +43,7 @@ public class Dwarf implements Deity, Listener {
 
     @Override
     public String getDefaultAlliance() {
-        return "Æsir";
+        return "AEsir";
     }
 
     @Override

@@ -748,7 +748,7 @@ public class DMiscUtil {
             case 10:
                 return "Exemplar";
             default:
-                return getAllegiance(p).equalsIgnoreCase("Æsir") ? "Valhallan" : "Jatunnspawn";
+                return getAllegiance(p).equalsIgnoreCase("AEsir") ? "Valhallan" : "Jatunnspawn";
         }
     }
 

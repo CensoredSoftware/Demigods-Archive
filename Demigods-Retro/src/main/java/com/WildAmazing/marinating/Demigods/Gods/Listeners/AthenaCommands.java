@@ -128,7 +128,7 @@ public class AthenaCommands {
                                         player.sendMessage("Current health: " + ((double) pp.getHealth() / 2) + "/10");
                                     } else {
                                         player.sendMessage(ChatColor.YELLOW + "--" + pp.getDisplayName() + "--Mortal--");
-                                        player.sendMessage(pp.getDisplayName() + " is not affiliated with any Æsir or Jotunn.");
+                                        player.sendMessage(pp.getDisplayName() + " is not affiliated with any AEsir or Jotunn.");
                                         player.sendMessage("Current health: " + ((double) pp.getHealth() / 2) + "/10");
                                     }
                                 } catch (Exception error) {

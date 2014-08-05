@@ -199,7 +199,7 @@ public class DemigodsPlayerListener implements Listener {
                 }
                 str2 = str2.substring(0, str2.length() - 2);
             }
-            p.sendMessage("There are " + ChatColor.GREEN + numgodsonline + "/" + ChatColor.YELLOW + numgods + ChatColor.WHITE + " Æsir online: " + ChatColor.GOLD + str1);
+            p.sendMessage("There are " + ChatColor.GREEN + numgodsonline + "/" + ChatColor.YELLOW + numgods + ChatColor.WHITE + " AEsir online: " + ChatColor.GOLD + str1);
             p.sendMessage("There are " + ChatColor.GREEN + numtitansonline + "/" + ChatColor.YELLOW + numtitans + ChatColor.WHITE + " Jotunn online: " + ChatColor.GOLD + str2);
             p.sendMessage("Total God kills: " + ChatColor.GREEN + numgodkills + ChatColor.YELLOW + " --- " + ChatColor.WHITE + " Total Titan kills: " + ChatColor.RED + numtitankills);
             p.sendMessage("God K/D Ratio: " + ChatColor.GREEN + ((float) numgodkills / numgoddeaths) + ChatColor.YELLOW + " --- " + ChatColor.WHITE + " Titan K/D Ratio: " + ChatColor.RED + ((float) numtitankills / numtitandeaths));
@@ -225,9 +225,9 @@ public class DemigodsPlayerListener implements Listener {
                 p.sendMessage(ChatColor.GRAY + "---");
                 p.sendMessage("/check - Check your rank, Favor/Power, and Blessing/Glory.");
                 p.sendMessage("Jotunn lose 10% of their Power when they die, but gain");
-                p.sendMessage("more Power as a reward from killing Æsir in combat.");
+                p.sendMessage("more Power as a reward from killing AEsir in combat.");
                 p.sendMessage("Blessing and Glory are a measure of the total Favor/Power");
-                p.sendMessage("you have earned. They are required to add minor Æsir and");
+                p.sendMessage("you have earned. They are required to add minor AEsir and");
                 p.sendMessage("Jotunn to your allegiance.");
                 p.sendMessage("To leave the alliance of a God or Titan, use " + ChatColor.GREEN + "/forsake");
             } else if (args[0].equalsIgnoreCase("protect")) {
@@ -249,7 +249,7 @@ public class DemigodsPlayerListener implements Listener {
             } else if (args[0].equalsIgnoreCase("shrine")) {
                 p.sendMessage(ChatColor.GRAY + "---");
                 p.sendMessage("Shrines are special protected zones. Tributes can only");
-                p.sendMessage("happen in shrines for Æsir/Jotunn in your allegiance. ");
+                p.sendMessage("happen in shrines for AEsir/Jotunn in your allegiance. ");
                 p.sendMessage("To create a shrine, place a sign with the following text:");
                 p.sendMessage("Line 1: " + ChatColor.GREEN + "shrine" + ChatColor.WHITE + " Line 2: " + ChatColor.GREEN + "dedicate" + ChatColor.WHITE + " Line 3: " + ChatColor.GREEN + "<deityname>" + ChatColor.WHITE + " Line 4: " + ChatColor.GREEN + "<size>");
                 p.sendMessage("example: [shrine][dedicate][Zeus][4] (The size defaults to 3)");
@@ -266,16 +266,16 @@ public class DemigodsPlayerListener implements Listener {
                 p.sendMessage("blocks are preferable to tools.");
             } else if (args[0].equalsIgnoreCase("gods") || args[0].equalsIgnoreCase("god")) {
                 p.sendMessage(ChatColor.GRAY + "---");
-                p.sendMessage("Æsir grant one passive ability, two active abilities, and");
+                p.sendMessage("AEsir grant one passive ability, two active abilities, and");
                 p.sendMessage("an ultimate. You may only choose one primary God.");
                 p.sendMessage("To select a God, place an iron block and click on it while");
                 p.sendMessage("it is surrounded in a 5x5 square of a single material.");
                 p.sendMessage("To choose Zeus, surround the iron block with air.");
                 p.sendMessage("To choose Poseidon, surround the block with water.");
                 p.sendMessage("To choose Hades, surround the block with dirt.");
-                p.sendMessage("To choose additional Æsir, place a gold block and click on");
+                p.sendMessage("To choose additional AEsir, place a gold block and click on");
                 p.sendMessage("it with a special item in hand.");
-                p.sendMessage("For detailed information on the Æsir, type " + ChatColor.YELLOW + "/dg god list");
+                p.sendMessage("For detailed information on the AEsir, type " + ChatColor.YELLOW + "/dg god list");
             } else if (args[0].equalsIgnoreCase("titans") || args[0].equalsIgnoreCase("titan")) {
                 p.sendMessage(ChatColor.GRAY + "---");
                 p.sendMessage("Jotunn grant two passive ability, one active ability, and");
@@ -344,11 +344,11 @@ public class DemigodsPlayerListener implements Listener {
             } else if (args[0].equalsIgnoreCase("god")) {
                 if (args[1].equalsIgnoreCase("list")) {
                     p.sendMessage(ChatColor.GRAY + "---");
-                    p.sendMessage(ChatColor.GOLD + "Primary Æsir:");
+                    p.sendMessage(ChatColor.GOLD + "Primary AEsir:");
                     p.sendMessage("Zeus - God of the sky.");
                     p.sendMessage("Poseidon - God of the seas.");
                     p.sendMessage("Hades - God of the underworld.");
-                    p.sendMessage(ChatColor.GOLD + "Minor Æsir:");
+                    p.sendMessage(ChatColor.GOLD + "Minor AEsir:");
                     p.sendMessage("Ares - God of war.");
                     p.sendMessage("Athena - God of wisdom.");
                     p.sendMessage("Hephaestus - God of the forge.");
@@ -452,12 +452,12 @@ public class DemigodsPlayerListener implements Listener {
                         Gods[i] = Gods[highestIndex];
                         Gods[highestIndex] = (GodPlayerInfo) temp;
                     }
-                    p.sendMessage(ChatColor.GOLD + "Top 10 Æsir:");
+                    p.sendMessage(ChatColor.GOLD + "Top 10 AEsir:");
                     if (Gods.length >= 5) for (int i = 0; i < 5; i++) {
-                        p.sendMessage((i + 1) + "- " + Gods[i].getPlayerName() + ": " + Gods[i].getFavor() + " Favor, " + Gods[i].getBlessing() + " Blessing, " + Gods[i].getAllegiance().size() + " Æsir.");
+                        p.sendMessage((i + 1) + "- " + Gods[i].getPlayerName() + ": " + Gods[i].getFavor() + " Favor, " + Gods[i].getBlessing() + " Blessing, " + Gods[i].getAllegiance().size() + " AEsir.");
                     }
                     else for (int i = 0; i < Gods.length; i++) {
-                        p.sendMessage((i + 1) + "- " + Gods[i].getPlayerName() + ": " + Gods[i].getFavor() + " Favor, " + Gods[i].getBlessing() + " Blessing, " + Gods[i].getAllegiance().size() + " Æsir.");
+                        p.sendMessage((i + 1) + "- " + Gods[i].getPlayerName() + ": " + Gods[i].getFavor() + " Favor, " + Gods[i].getBlessing() + " Blessing, " + Gods[i].getAllegiance().size() + " AEsir.");
                     }
                 }
             } else if (args[0].equalsIgnoreCase("titan")) {
@@ -654,7 +654,7 @@ public class DemigodsPlayerListener implements Listener {
                         if (!pi.isAlive()) player.sendMessage(ChatColor.GRAY + "You are a phantom.");
                     } else {
                         player.sendMessage(ChatColor.YELLOW + "--" + player.getName() + "--Mortal--");
-                        player.sendMessage("You are not affiliated with any Æsir or Jotunn.");
+                        player.sendMessage("You are not affiliated with any AEsir or Jotunn.");
                     }
                     event.setCancelled(true);
                     return;
@@ -738,7 +738,7 @@ public class DemigodsPlayerListener implements Listener {
                                     if (!pi.isAlive()) player.sendMessage(pp.getName() + " is a phantom.");
                                 } else {
                                     player.sendMessage(ChatColor.YELLOW + "--" + pp.getName() + "--Mortal--");
-                                    player.sendMessage(pp.getName() + " is not affiliated with any Æsir or Jotunn.");
+                                    player.sendMessage(pp.getName() + " is not affiliated with any AEsir or Jotunn.");
                                 }
                             } catch (Exception error) {
                                 player.sendMessage(ChatColor.RED + "Error. Was player's name typed correctly?");

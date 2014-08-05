@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods.Deities.Æsir;
+package com.WildAmazing.marinating.Demigods.Deities.AEsir;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
@@ -50,7 +50,7 @@ public class Odin implements Deity {
 
     @Override
     public String getDefaultAlliance() {
-        return "Æsir";
+        return "AEsir";
     }
 
     @Override
@@ -71,7 +71,7 @@ public class Odin implements Deity {
             int stopduration = (int) Math.round(9.9155621 * Math.pow(DMiscUtil.getAscensions(p), 0.459019));
             int t = (int) (CRONUSULTIMATECOOLDOWNMAX - ((CRONUSULTIMATECOOLDOWNMAX - CRONUSULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
             /*
-			 * The printed text
+             * The printed text
 			 */
             p.sendMessage("--" + ChatColor.GOLD + "Odin" + ChatColor.GRAY + "[" + devotion + "]");
             p.sendMessage(":Slow your enemy when attacking with a spear (shovel).");

@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods.Deities.Æsir;
+package com.WildAmazing.marinating.Demigods.Deities.AEsir;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
@@ -50,7 +50,7 @@ public class Vidar implements Deity {
 
     @Override
     public String getDefaultAlliance() {
-        return "Æsir";
+        return "AEsir";
     }
 
     @Override
@@ -70,7 +70,7 @@ public class Vidar implements Deity {
             int confuseduration = (int) (1.0354 * Math.pow(DMiscUtil.getAscensions(p), 0.4177)) * 20;
             int t = (int) (ARESULTIMATECOOLDOWNMAX - ((ARESULTIMATECOOLDOWNMAX - ARESULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
             /*
-			 * The printed text
+             * The printed text
 			 */
             p.sendMessage("--" + ChatColor.GOLD + "Vidar" + ChatColor.GRAY + " [" + devotion + "]");
             p.sendMessage(":Up to " + DMiscUtil.getAscensions(p) + " additional Favor per hit on overkill.");

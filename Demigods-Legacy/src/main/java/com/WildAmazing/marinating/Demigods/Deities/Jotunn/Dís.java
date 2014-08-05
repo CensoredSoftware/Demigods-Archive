@@ -65,7 +65,7 @@ public class Dís implements Deity {
             if (((Dís) DMiscUtil.getDeity(p, getName())).SKILLBIND != null)
                 p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Dís) DMiscUtil.getDeity(p, getName())).SKILLBIND.name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
-            p.sendMessage(":Call all Æsir and Jotunn together for an assembly at your location.");
+            p.sendMessage(":Call all AEsir and Jotunn together for an assembly at your location.");
             p.sendMessage("Players will be temporarily immune to damage after teleporting.");
             p.sendMessage("Only consenting players will be teleported. " + ChatColor.GREEN + "/congregate");
             p.sendMessage(ChatColor.YELLOW + "Costs " + ULTIMATECOST + " Favor. Cooldown time: " + t + " seconds.");
@@ -75,7 +75,7 @@ public class Dís implements Deity {
         p.sendMessage("Passive: " + ChatColor.YELLOW + "qd" + ChatColor.WHITE + " gives more detail on targets.");
         p.sendMessage("Active: Change positions with a target animal or player. " + ChatColor.GREEN + "/swap");
         p.sendMessage(ChatColor.YELLOW + "Costs " + SKILLCOST + " Favor. Can bind.");
-        p.sendMessage("Ultimate: Your dís calls together all Æsir and Jotunn to you.");
+        p.sendMessage("Ultimate: Your dís calls together all AEsir and Jotunn to you.");
         p.sendMessage("Requires other players' consent." + ChatColor.GREEN + "/congregate " + ChatColor.YELLOW + "Costs " + ULTIMATECOST + " Favor. Has cooldown.");
         p.sendMessage(ChatColor.YELLOW + "Select item: compass");
     }

@@ -1,8 +1,8 @@
 package com.WildAmazing.marinating.Demigods;
 
+import com.WildAmazing.marinating.Demigods.Deities.AEsir.*;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Deities.Jotunn.*;
-import com.WildAmazing.marinating.Demigods.Deities.Æsir.*;
 import com.WildAmazing.marinating.Demigods.Listeners.DLevels;
 import com.WildAmazing.marinating.Demigods.Listeners.DShrines;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
@@ -432,7 +432,7 @@ public class DCommandExecutor implements CommandExecutor {
         if (args.length == 0) {
             p.sendMessage(ChatColor.YELLOW + "[Demigods] Information Directory");
             p.sendMessage(ChatColor.GRAY + "/dg aesir");
-            p.sendMessage(ChatColor.GRAY + "/dg jutunn");
+            p.sendMessage(ChatColor.GRAY + "/dg jotunn");
             p.sendMessage(ChatColor.GRAY + "/dg claim");
             p.sendMessage(ChatColor.GRAY + "/dg shrine");
             p.sendMessage(ChatColor.GRAY + "/dg tribute");
@@ -445,8 +445,8 @@ public class DCommandExecutor implements CommandExecutor {
         if (args.length == 1) {
             if (args[0].equalsIgnoreCase("check")) checkCode(p);
             else if (args[0].equalsIgnoreCase("aesir") || args[0].equalsIgnoreCase("god")) {
-                p.sendMessage(ChatColor.YELLOW + "[Demigods] Æsir Help File");
-                p.sendMessage(ChatColor.GRAY + "For more information on the Æsir, use /dg <name>");
+                p.sendMessage(ChatColor.YELLOW + "[Demigods] AEsir Help File");
+                p.sendMessage(ChatColor.GRAY + "For more information on the AEsir, use /dg <name>");
                 p.sendMessage(ChatColor.GOLD + "----Tier 1");
                 p.sendMessage(ChatColor.GRAY + "Odin - God of death, wisdom, and time.");
                 p.sendMessage(ChatColor.GRAY + "Thor - God of battle, thunder, and strength.");
@@ -508,7 +508,7 @@ public class DCommandExecutor implements CommandExecutor {
                 p.sendMessage(ChatColor.GRAY + "your own shrines.");
             } else if (args[0].equalsIgnoreCase("player")) {
                 p.sendMessage(ChatColor.YELLOW + "[Demigods] Player Help File");
-                p.sendMessage(ChatColor.GRAY + "As a player, you may choose to ally with the Æsir or");
+                p.sendMessage(ChatColor.GRAY + "As a player, you may choose to ally with the AEsir or");
                 p.sendMessage(ChatColor.GRAY + "the Jotunn. Once you have made an allegiance, you may");
                 p.sendMessage(ChatColor.GRAY + "not break it without forsaking all the deities you have.");
                 p.sendMessage(ChatColor.GRAY + "The three major attributes you have are:");
@@ -549,14 +549,14 @@ public class DCommandExecutor implements CommandExecutor {
                         if (DSave.hasData(id, "LASTLOGINTIME"))
                             if ((Long) DSave.getData(id, "LASTLOGINTIME") < System.currentTimeMillis() - 604800000)
                                 continue;
-                        if (DMiscUtil.getAllegiance(id).equalsIgnoreCase("Jatunn")) {
+                        if (DMiscUtil.getAllegiance(id).equalsIgnoreCase("Jotunn")) {
                             titancount++;
                             titankills += DMiscUtil.getKills(id);
                             titandeaths += DMiscUtil.getDeaths(id);
                             if (DMiscUtil.getPlugin().getServer().getPlayer(id).isOnline()) {
                                 onlinetitans.add(id);
                             }
-                        } else if (DMiscUtil.getAllegiance(id).equalsIgnoreCase("Æsir")) {
+                        } else if (DMiscUtil.getAllegiance(id).equalsIgnoreCase("AEsir")) {
                             godcount++;
                             godkills += DMiscUtil.getKills(id);
                             goddeaths += DMiscUtil.getDeaths(id);
@@ -576,7 +576,7 @@ public class DCommandExecutor implements CommandExecutor {
                     }
                 }
                 /*
-				 * Print data
+                 * Print data
 				 */
                 p.sendMessage(ChatColor.GRAY + "----Stats----");
                 String str1 = "";
@@ -600,12 +600,12 @@ public class DCommandExecutor implements CommandExecutor {
                     }
                     str3 = str3.substring(0, str3.length() - 2);
                 }
-                p.sendMessage("There are " + ChatColor.GREEN + onlinegods.size() + "/" + ChatColor.YELLOW + godcount + ChatColor.WHITE + " Æsir online: " + ChatColor.GOLD + str1);
+                p.sendMessage("There are " + ChatColor.GREEN + onlinegods.size() + "/" + ChatColor.YELLOW + godcount + ChatColor.WHITE + " AEsir online: " + ChatColor.GOLD + str1);
                 p.sendMessage("There are " + ChatColor.GREEN + onlinetitans.size() + "/" + ChatColor.YELLOW + titancount + ChatColor.WHITE + " Jotunn online: " + ChatColor.GOLD + str2);
                 if (othercount > 0)
                     p.sendMessage("There are " + ChatColor.GREEN + onlineother.size() + "/" + ChatColor.YELLOW + othercount + ChatColor.WHITE + " others online: " + ChatColor.GOLD + str3);
-                p.sendMessage("Total Æsir kills: " + ChatColor.GREEN + godkills + ChatColor.YELLOW + " --- " + ChatColor.WHITE + " God K/D Ratio: " + ChatColor.YELLOW + ((float) godkills / goddeaths));
-                p.sendMessage("Total Jatunn kills: " + ChatColor.GREEN + titankills + ChatColor.YELLOW + " --- " + ChatColor.WHITE + " Titan K/D Ratio: " + ChatColor.YELLOW + ((float) titankills / titandeaths));
+                p.sendMessage("Total AEsir kills: " + ChatColor.GREEN + godkills + ChatColor.YELLOW + " --- " + ChatColor.WHITE + " God K/D Ratio: " + ChatColor.YELLOW + ((float) godkills / goddeaths));
+                p.sendMessage("Total Jotunn kills: " + ChatColor.GREEN + titankills + ChatColor.YELLOW + " --- " + ChatColor.WHITE + " Titan K/D Ratio: " + ChatColor.YELLOW + ((float) titankills / titandeaths));
                 if (othercount > 0) {
                     p.sendMessage("Total Other kills: " + ChatColor.GREEN + otherkills + ChatColor.YELLOW + " --- " + ChatColor.WHITE + " Other K/D Ratio: " + ChatColor.YELLOW + ((float) otherkills / otherdeaths));
                 }
@@ -620,13 +620,13 @@ public class DCommandExecutor implements CommandExecutor {
                 ArrayList<Long> gr = new ArrayList<Long>();
                 ArrayList<Long> tr = new ArrayList<Long>();
                 for (UUID s : DMiscUtil.getFullParticipants()) {
-                    if (DMiscUtil.getAllegiance(s).equalsIgnoreCase("Æsir")) {
+                    if (DMiscUtil.getAllegiance(s).equalsIgnoreCase("AEsir")) {
                         if (DSave.hasData(s, "LASTLOGINTIME"))
                             if ((Long) DSave.getData(s, "LASTLOGINTIME") < System.currentTimeMillis() - 604800000)
                                 continue;
                         gods.add(s);
                         gr.add(DMiscUtil.getRanking(s));
-                    } else if (DMiscUtil.getAllegiance(s).equalsIgnoreCase("Jatunn")) {
+                    } else if (DMiscUtil.getAllegiance(s).equalsIgnoreCase("Jotunn")) {
                         if (DSave.hasData(s, "LASTLOGINTIME"))
                             if ((Long) DSave.getData(s, "LASTLOGINTIME") < System.currentTimeMillis() - 604800000)
                                 continue;
@@ -687,7 +687,7 @@ public class DCommandExecutor implements CommandExecutor {
                 p.sendMessage(ChatColor.GRAY + "Rankings are determined by Devotion, Deities, and Kills.");
                 int gp = Gods.length;
                 if (gp > 5) gp = 5;
-                p.sendMessage(ChatColor.GOLD + "-- Æsir");
+                p.sendMessage(ChatColor.GOLD + "-- AEsir");
                 for (int i = 0; i < gp; i++) {
                     if (DMiscUtil.getOnlinePlayer(Gods[i]) != null)
                         p.sendMessage(ChatColor.GREEN + "  " + (i + 1) + ". " + Gods[i] + " :: " + GR[i]);
@@ -713,7 +713,7 @@ public class DCommandExecutor implements CommandExecutor {
                     ArrayList<UUID> gods = new ArrayList<UUID>();
                     ArrayList<Long> gr = new ArrayList<Long>();
                     for (UUID s : DMiscUtil.getFullParticipants()) {
-                        if (DMiscUtil.getAllegiance(s).equalsIgnoreCase("Æsir")) {
+                        if (DMiscUtil.getAllegiance(s).equalsIgnoreCase("AEsir")) {
                             if (DSave.hasData(s, "LASTLOGINTIME"))
                                 if ((Long) DSave.getData(s, "LASTLOGINTIME") < System.currentTimeMillis() - 604800000)
                                     continue;
@@ -749,7 +749,7 @@ public class DCommandExecutor implements CommandExecutor {
                         GR[i] = GR[highestIndex];
                         GR[highestIndex] = l;
                     }
-                    p.sendMessage(ChatColor.GRAY + "----Æsir Rankings----");
+                    p.sendMessage(ChatColor.GRAY + "----AEsir Rankings----");
                     p.sendMessage(ChatColor.GRAY + "Rankings are determined by Devotion, Deities, and Kills.");
                     for (int i = 0; i < Gods.length; i++) {
                         if (DMiscUtil.getOnlinePlayer(Gods[i]) != null)
@@ -822,7 +822,7 @@ public class DCommandExecutor implements CommandExecutor {
     private boolean checkCode(Player p) {
         if (!DMiscUtil.isFullParticipant(p)) {
             p.sendMessage(ChatColor.YELLOW + "--" + p.getName() + "--Human--");
-            p.sendMessage("You are not affiliated with any Æsir or Jotunn.");
+            p.sendMessage("You are not affiliated with any AEsir or Jotunn.");
             return true;
         }
         if (DMiscUtil.getUnclaimedDevotion(p) > 0) {
@@ -980,7 +980,7 @@ public class DCommandExecutor implements CommandExecutor {
                 }
             } else {
                 p.sendMessage(ChatColor.YELLOW + "--" + ptarget.getName() + "--Human--");
-                p.sendMessage(ptarget.getName() + " is not affiliated with any Æsir or Jotunn.");
+                p.sendMessage(ptarget.getName() + " is not affiliated with any AEsir or Jotunn.");
             }
         } catch (NullPointerException name) {
             p.sendMessage(ChatColor.YELLOW + "Player not found.");
@@ -1551,7 +1551,7 @@ public class DCommandExecutor implements CommandExecutor {
                     break;
             }
             p.sendMessage(success);
-            p.sendMessage(ChatColor.YELLOW + "Skills may not work if you mismatch Jotunn and Æsir.");
+            p.sendMessage(ChatColor.YELLOW + "Skills may not work if you mismatch Jotunn and AEsir.");
         }
         return true;
     }

@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods.Deities.Æsir;
+package com.WildAmazing.marinating.Demigods.Deities.AEsir;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
@@ -45,7 +45,7 @@ public class Heimdallr implements Deity {
 
     @Override
     public String getDefaultAlliance() {
-        return "Æsir";
+        return "AEsir";
     }
 
     @Override
@@ -68,7 +68,7 @@ public class Heimdallr implements Deity {
                 p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Heimdallr) DMiscUtil.getDeity(p, getName())).SKILLBIND.name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
             p.sendMessage(":Heimdallr silences the battlefield, preventing all damage in range " + crange);
-            p.sendMessage("dealt by Æsir and Jotunn alike for " + duration + " seconds." + ChatColor.GREEN + " /ceasefire");
+            p.sendMessage("dealt by AEsir and Jotunn alike for " + duration + " seconds." + ChatColor.GREEN + " /ceasefire");
             p.sendMessage(ChatColor.YELLOW + "Costs " + ULTIMATECOST + " Favor. Cooldown time: " + t + " seconds.");
             return;
         }

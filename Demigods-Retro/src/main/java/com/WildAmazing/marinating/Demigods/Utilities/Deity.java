@@ -12,7 +12,7 @@ public abstract class Deity implements Serializable {
     private UUID PLAYER;
 
     /**
-     * Control class. Extended by other Æsir.
+     * Control class. Extended by other AEsir.
      */
     public Deity() {
         NAME = Divine.OMNI;

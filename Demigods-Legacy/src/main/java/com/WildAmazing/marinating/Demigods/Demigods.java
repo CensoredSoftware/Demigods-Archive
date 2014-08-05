@@ -1,8 +1,8 @@
 package com.WildAmazing.marinating.Demigods;
 
+import com.WildAmazing.marinating.Demigods.Deities.AEsir.*;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Deities.Jotunn.*;
-import com.WildAmazing.marinating.Demigods.Deities.Æsir.*;
 import com.WildAmazing.marinating.Demigods.Listeners.*;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 import com.WildAmazing.marinating.Demigods.Util.DSave;
