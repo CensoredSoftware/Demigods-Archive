@@ -12,7 +12,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -24,9 +23,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DPvP implements Listener {
@@ -103,33 +100,6 @@ public class DPvP implements Listener {
         Bukkit.getScheduler().scheduleSyncDelayedTask(DMiscUtil.getPlugin(), new Runnable() {
             @Override
             public void run() {
-                if (e1.getEntity().getType().equals(EntityType.VILLAGER)) {
-                    LivingEntity villager = e1.getEntity();
-                    if (villager.getLastDamageCause() instanceof EntityDamageByEntityEvent) {
-                        EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) villager.getLastDamageCause();
-
-                        if (!(e.getDamager() instanceof Player)) return;
-                        Player attacker = (Player) e.getDamager();
-
-                        // Define Mortal Soul
-                        ItemStack mortalHealth = new ItemStack(Material.GOLD_NUGGET, 1);
-
-                        String mortalName = "Mortal Soul";
-                        List<String> mortalLore = new ArrayList<String>();
-                        mortalLore.add("Brings you back to life.");
-                        mortalLore.add("You regain 20 health.");
-
-                        ItemMeta mortalItem = mortalHealth.getItemMeta();
-                        mortalItem.setDisplayName(mortalName);
-                        mortalItem.setLore(mortalLore);
-
-                        mortalHealth.setItemMeta(mortalItem);
-
-                        villager.getLocation().getWorld().dropItemNaturally(villager.getLocation(), mortalHealth);
-                        attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
-                    }
-                }
-
                 if (!(e1.getEntity() instanceof Player)) return;
                 Player attacked = (Player) e1.getEntity();
                 if (!DSettings.getEnabledWorlds().contains(attacked.getWorld())) return;

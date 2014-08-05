@@ -70,7 +70,7 @@ public class Thor implements Deity {
             // ultimate
             int t = (int) (ZEUSULTIMATECOOLDOWNMAX - ((ZEUSULTIMATECOOLDOWNMAX - ZEUSULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
             /*
-			 * The printed text
+             * The printed text
 			 */
             p.sendMessage("--" + ChatColor.GOLD + "Thor" + ChatColor.GRAY + " [" + devotion + "]");
             p.sendMessage(":Immune to fall damage.");
@@ -79,7 +79,7 @@ public class Thor implements Deity {
             if (((Thor) (DMiscUtil.getDeity(p, "Thor"))).LIGHTNINGBIND != null)
                 p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Thor) (DMiscUtil.getDeity(p, "Thor"))).LIGHTNINGBIND.name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to designate an item as Thor's hammer.");
-            p.sendMessage(":Use the force of Thor's hammer to knock back enemies. " + ChatColor.GREEN + "/shove");
+            p.sendMessage(":Use the force of Thor's hammer to knock back enemies. " + ChatColor.GREEN + "/slam");
             p.sendMessage(ChatColor.YELLOW + "Costs " + SHOVECOST + " Favor.");
             p.sendMessage("Affects up to " + targets + " targets with power " + (int) (Math.round(multiply * 10)) + ".");
             if (((Thor) (DMiscUtil.getDeity(p, "Thor"))).SHOVEBIND != null)
@@ -91,7 +91,7 @@ public class Thor implements Deity {
         p.sendMessage("Passive: Immune to fall damage.");
         p.sendMessage("Active: Strike lightning at a target location. " + ChatColor.GREEN + "/lightning");
         p.sendMessage(ChatColor.YELLOW + "Costs " + LIGHTNINGCOST + " Favor. Can bind.");
-        p.sendMessage("Active: Use the force of Thor's hammer to knock back enemies. " + ChatColor.GREEN + "/shove");
+        p.sendMessage("Active: Use the force of Thor's hammer to knock back enemies. " + ChatColor.GREEN + "/slam");
         p.sendMessage(ChatColor.YELLOW + "Costs " + SHOVECOST + " Favor. Can bind.");
         p.sendMessage(ChatColor.YELLOW + "Select item: iron ingot");
     }
@@ -173,7 +173,7 @@ public class Thor implements Deity {
                 LIGHTNING = true;
                 p.sendMessage(ChatColor.YELLOW + "Lightning is now active.");
             }
-        } else if (str.equalsIgnoreCase("shove")) {
+        } else if (str.equalsIgnoreCase("slam")) {
             if (bind) {
                 if (SHOVEBIND == null) {
                     if (DMiscUtil.isBound(p, p.getItemInHand().getType()))
@@ -183,21 +183,21 @@ public class Thor implements Deity {
                     else {
                         DMiscUtil.registerBind(p, p.getItemInHand().getType());
                         SHOVEBIND = p.getItemInHand().getType();
-                        p.sendMessage(ChatColor.YELLOW + "Shove is now bound to " + p.getItemInHand().getType().name() + ".");
+                        p.sendMessage(ChatColor.YELLOW + "Slam is now bound to " + p.getItemInHand().getType().name() + ".");
                     }
                 } else {
                     DMiscUtil.removeBind(p, SHOVEBIND);
-                    p.sendMessage(ChatColor.YELLOW + "Shove is no longer bound to " + SHOVEBIND.name() + ".");
+                    p.sendMessage(ChatColor.YELLOW + "Slam is no longer bound to " + SHOVEBIND.name() + ".");
                     SHOVEBIND = null;
                 }
                 return;
             }
             if (SHOVE) {
                 SHOVE = false;
-                p.sendMessage(ChatColor.YELLOW + "Shove is no longer active.");
+                p.sendMessage(ChatColor.YELLOW + "Slam is no longer active.");
             } else {
                 SHOVE = true;
-                p.sendMessage(ChatColor.YELLOW + "Shove is now active.");
+                p.sendMessage(ChatColor.YELLOW + "Slam is now active.");
             }
         }
     }

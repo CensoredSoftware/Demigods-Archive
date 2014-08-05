@@ -190,14 +190,14 @@ public class Demigods extends JavaPlugin implements Listener {
         getCommand("nameshrine").setExecutor(ce);
 
 		/*
-		 * Deity Commands
+         * Deity Commands
 		 */
-        // Zeus
-        getCommand("shove").setExecutor(ce);
+        // Thor
+        getCommand("slam").setExecutor(ce);
         getCommand("lightning").setExecutor(ce);
         getCommand("storm").setExecutor(ce);
 
-        // Ares
+        // Vidar
         getCommand("strike").setExecutor(ce);
         getCommand("bloodthirst").setExecutor(ce);
         getCommand("crash").setExecutor(ce);
@@ -207,12 +207,12 @@ public class Demigods extends JavaPlugin implements Listener {
         getCommand("stab").setExecutor(ce);
         getCommand("timestop").setExecutor(ce);
 
-        // Prometheus
+        // Fire Giant
         getCommand("fireball").setExecutor(ce);
         getCommand("blaze").setExecutor(ce);
         getCommand("firestorm").setExecutor(ce);
 
-        // Rhea
+        // Jord
         getCommand("poison").setExecutor(ce);
         getCommand("plant").setExecutor(ce);
         getCommand("detonate").setExecutor(ce);
@@ -223,36 +223,36 @@ public class Demigods extends JavaPlugin implements Listener {
         getCommand("entomb").setExecutor(ce);
         getCommand("curse").setExecutor(ce);
 
-        // Poseidon
+        // Jormungand
         getCommand("reel").setExecutor(ce);
         getCommand("drown").setExecutor(ce);
 
-        // Atlas
+        // Thrymr
         getCommand("unburden").setExecutor(ce);
         getCommand("invincible").setExecutor(ce);
 
-        // Athena
+        // Heimdallr
         getCommand("flash").setExecutor(ce);
         getCommand("ceasefire").setExecutor(ce);
 
-        // Oceanus
-        getCommand("squid").setExecutor(ce);
-        getCommand("makeitrain").setExecutor(ce);
+        // Frost Giant
+        getCommand("ice").setExecutor(ce);
+        getCommand("chill").setExecutor(ce);
 
-        // Hyperion
+        // Baldr
         getCommand("starfall").setExecutor(ce);
         getCommand("sprint").setExecutor(ce);
         getCommand("smite").setExecutor(ce);
 
-        // Brokkr
+        // Dwarf
         getCommand("reforge").setExecutor(ce);
         getCommand("shatter").setExecutor(ce);
 
-        // Apollo
+        // Bragi
         getCommand("cure").setExecutor(ce);
         getCommand("finale").setExecutor(ce);
 
-        // Themis
+        // Dís
         getCommand("swap").setExecutor(ce);
         getCommand("congregate").setExecutor(ce);
         getCommand("assemble").setExecutor(ce);

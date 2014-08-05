@@ -150,7 +150,7 @@ commands:
         alias: shrinename
     value:
         description: See Favor value of item in hand.
-    shove:
+    slam:
         description: One of Thor's abilities.
     lightning:
         description: One of Thor's abilities.

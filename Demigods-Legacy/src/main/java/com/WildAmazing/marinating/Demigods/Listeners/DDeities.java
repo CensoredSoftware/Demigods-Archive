@@ -113,7 +113,7 @@ public class DDeities implements Listener {
         final Player p = e.getPlayer();
         if (!DSettings.getEnabledWorlds().contains(p.getWorld())) return;
         if (DSettings.getSettingBoolean("motd")) {
-            p.sendMessage("This server is running Demigods v" + ChatColor.YELLOW + DMiscUtil.getPlugin().getDescription().getVersion() + ChatColor.WHITE + ".");
+            p.sendMessage("This server is running NorseDemigods v" + ChatColor.YELLOW + DMiscUtil.getPlugin().getDescription().getVersion() + ChatColor.WHITE + ".");
             p.sendMessage(ChatColor.GRAY + "Type " + ChatColor.GREEN + "/dg" + ChatColor.GRAY + " for more info.");
         }
 
