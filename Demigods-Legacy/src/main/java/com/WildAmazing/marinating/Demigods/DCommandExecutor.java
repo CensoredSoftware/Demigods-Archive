@@ -841,7 +841,7 @@ public class DCommandExecutor implements CommandExecutor {
         // List deities
         String send = "You are empowered by:";
         for (Deity d : DMiscUtil.getDeities(p)) {
-            send += " " + d.getName() + " " + ChatColor.YELLOW + "<" + DMiscUtil.getDevotion(p, d) + ">" + ChatColor.WHITE;
+            send += " " + d.getName() + " " + ChatColor.YELLOW + (d.canTribute() ? "<" + DMiscUtil.getDevotion(p, d) + ">" : "") + ChatColor.WHITE;
         }
         p.sendMessage(send);
         // Display Favor/Ascensions and K/D
