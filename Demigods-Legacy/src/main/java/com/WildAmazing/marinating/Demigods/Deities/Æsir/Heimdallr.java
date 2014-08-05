@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import java.util.List;
 import java.util.UUID;
 
-public class Athena implements Deity {
+public class Heimdallr implements Deity {
     private static final long serialVersionUID = -9039521341663053625L;
     private final UUID PLAYER;
 
@@ -29,13 +29,13 @@ public class Athena implements Deity {
     private long SKILLTIME;
     private long ULTIMATETIME;
 
-    public Athena(UUID player) {
+    public Heimdallr(UUID player) {
         PLAYER = player;
     }
 
     @Override
     public String getName() {
-        return "Athena";
+        return "Heimdallr";
     }
 
     @Override
@@ -45,7 +45,7 @@ public class Athena implements Deity {
 
     @Override
     public String getDefaultAlliance() {
-        return "God";
+        return "Æsir";
     }
 
     @Override
@@ -64,10 +64,10 @@ public class Athena implements Deity {
             p.sendMessage(":Use " + ChatColor.YELLOW + "qd <name>" + ChatColor.WHITE + " for detailed information about any player");
             p.sendMessage("you are looking at.");
             p.sendMessage(":Left-click to teleport with range " + range + "." + ChatColor.GREEN + " /flash " + ChatColor.YELLOW + "Costs " + SKILLCOST + " Favor.");
-            if (((Athena) DMiscUtil.getDeity(p, getName())).SKILLBIND != null)
-                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Athena) DMiscUtil.getDeity(p, getName())).SKILLBIND.name());
+            if (((Heimdallr) DMiscUtil.getDeity(p, getName())).SKILLBIND != null)
+                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Heimdallr) DMiscUtil.getDeity(p, getName())).SKILLBIND.name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
-            p.sendMessage(":Athena silences the battlefield, preventing all damage in range " + crange);
+            p.sendMessage(":Heimdallr silences the battlefield, preventing all damage in range " + crange);
             p.sendMessage("dealt by Æsir and Jotunn alike for " + duration + " seconds." + ChatColor.GREEN + " /ceasefire");
             p.sendMessage(ChatColor.YELLOW + "Costs " + ULTIMATECOST + " Favor. Cooldown time: " + t + " seconds.");
             return;
@@ -76,7 +76,7 @@ public class Athena implements Deity {
         p.sendMessage("Passive: " + ChatColor.YELLOW + "qd" + ChatColor.WHITE + " gives more detail on targets.");
         p.sendMessage("Active: Left-click to teleport forward a set distance." + ChatColor.GREEN + "/flash");
         p.sendMessage(ChatColor.YELLOW + "Costs " + SKILLCOST + " Favor. Can bind.");
-        p.sendMessage("Ultimate: Athena silences the battlefield, preventing all");
+        p.sendMessage("Ultimate: Heimdallr silences the battlefield, preventing all");
         p.sendMessage("damage nearby for a short duration. " + ChatColor.GREEN + "/ceasefire");
         p.sendMessage(ChatColor.YELLOW + "Costs " + ULTIMATECOST + " Favor. Has cooldown.");
         p.sendMessage(ChatColor.YELLOW + "Select item: book");
@@ -162,7 +162,7 @@ public class Athena implements Deity {
                     for (Player pl : p.getWorld().getPlayers()) {
                         if (pl.getLocation().distance(p.getLocation()) <= crange) {
                             if (DMiscUtil.isFullParticipant(pl)) {
-                                pl.sendMessage(ChatColor.GOLD + "Athena" + ChatColor.WHITE + " has mandated a ceasefire for " + duration + " seconds.");
+                                pl.sendMessage(ChatColor.GOLD + "Heimdallr" + ChatColor.WHITE + " has mandated a ceasefire for " + duration + " seconds.");
                                 DMiscUtil.addActiveEffect(pl.getUniqueId(), "Ceasefire", duration);
                             }
                         }
@@ -176,5 +176,10 @@ public class Athena implements Deity {
     @Override
     public void onTick(long timeSent) {
 
+    }
+
+    @Override
+    public boolean canTribute() {
+        return true;
     }
 }

@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
-public class Hephaestus implements Deity, Listener {
+public class Dwarf implements Deity, Listener {
     private static final long serialVersionUID = -2472769863144336856L;
     private final UUID PLAYER;
 
@@ -26,14 +26,14 @@ public class Hephaestus implements Deity, Listener {
 
     private long ULTIMATETIME;
 
-    public Hephaestus(UUID player) {
+    public Dwarf(UUID player) {
         PLAYER = player;
         ULTIMATETIME = System.currentTimeMillis();
     }
 
     @Override
     public String getName() {
-        return "Hephaestus";
+        return "Dwarf";
     }
 
     @Override
@@ -43,7 +43,7 @@ public class Hephaestus implements Deity, Listener {
 
     @Override
     public String getDefaultAlliance() {
-        return "God";
+        return "Æsir";
     }
 
     @Override
@@ -62,7 +62,7 @@ public class Hephaestus implements Deity, Listener {
             p.sendMessage(":Immune to fire damage.");
             p.sendMessage(":Repair the item in hand by up to " + repairamt + "% of its durability.");
             p.sendMessage(ChatColor.GREEN + " /reforge " + ChatColor.YELLOW + "Costs " + SKILLCOST + " Favor.");
-            p.sendMessage(":Hephaestus cripples the durability of enemy weapons and armor.");
+            p.sendMessage(":Your dwarven blood cripples the durability of enemy weapons and armor.");
             p.sendMessage("Range: " + ultrange + " Damage: " + ultdamage + "" + ChatColor.GREEN + " /shatter");
             p.sendMessage(ChatColor.YELLOW + "Costs " + ULTIMATECOST + " Favor. Cooldown time: " + t + " seconds.");
             return;
@@ -72,7 +72,7 @@ public class Hephaestus implements Deity, Listener {
         p.sendMessage("Passive: Immune to fire damage.");
         p.sendMessage("Active: Repair the durability of an item in hand. " + ChatColor.GREEN + "/reforge");
         p.sendMessage(ChatColor.YELLOW + "Costs " + SKILLCOST + " Favor.");
-        p.sendMessage("Ultimate: Hephaestus unforges the weapons and armor of your");
+        p.sendMessage("Ultimate: Your dwarven blood un-forges the weapons and armor of your");
         p.sendMessage("opponents. " + ChatColor.GREEN + "/shatter");
         p.sendMessage(ChatColor.YELLOW + "Select item: furnace");
     }
@@ -98,7 +98,7 @@ public class Hephaestus implements Deity, Listener {
                 }
                 double repairamt = Math.ceil(10 * Math.pow(DMiscUtil.getDevotion(p, getName()), 0.09)) / 100;
                 short num = (short) (p.getItemInHand().getDurability() * (1 - repairamt));
-                p.sendMessage(ChatColor.RED + "Hephaestus" + ChatColor.WHITE + " has increased the item's durability by " + (p.getItemInHand().getDurability() - num) + ".");
+                p.sendMessage(ChatColor.RED + "Your dwarven powers" + ChatColor.WHITE + " have increased the item's durability by " + (p.getItemInHand().getDurability() - num) + ".");
                 p.getItemInHand().setDurability(num);
                 DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - SKILLCOST);
             } else if (str.equalsIgnoreCase(ult)) {
@@ -117,7 +117,7 @@ public class Hephaestus implements Deity, Listener {
                     ULTIMATETIME = System.currentTimeMillis() + (t * 1000);
                     int num = shatter(p);
                     if (num > 0) {
-                        p.sendMessage(ChatColor.RED + "Hephaestus" + ChatColor.WHITE + " has unforged the equipment of " + num + " enemy players.");
+                        p.sendMessage(ChatColor.RED + "Your dwarven powers" + ChatColor.WHITE + " have un-forged the equipment of " + num + " enemy players.");
                         DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - ULTIMATECOST);
                     } else p.sendMessage(ChatColor.YELLOW + "No targets found.");
                 } else p.sendMessage(ChatColor.YELLOW + "" + ult + " requires " + ULTIMATECOST + " Favor.");
@@ -135,9 +135,9 @@ public class Hephaestus implements Deity, Listener {
         for (UUID s : DMiscUtil.getFullParticipants()) {
             Player p = DMiscUtil.getOnlinePlayer(s);
             if ((p == null) || p.isDead()) continue;
-            if (DMiscUtil.hasDeity(p, "Hephaestus")) {
+            if (DMiscUtil.hasDeity(p, "Dwarf")) {
                 if (p.getLocation().getWorld().equals(e.getBlock().getLocation().getWorld()))
-                    if (p.getLocation().distance(e.getBlock().getLocation()) < (int) Math.round(20 * Math.pow(DMiscUtil.getDevotion(p, "Hephaestus"), 0.15))) {
+                    if (p.getLocation().distance(e.getBlock().getLocation()) < (int) Math.round(20 * Math.pow(DMiscUtil.getDevotion(p, "Dwarf"), 0.15))) {
                         int amount = e.getResult().getAmount() * 2;
                         ItemStack out = e.getResult();
                         out.setAmount(amount);
@@ -159,7 +159,7 @@ public class Hephaestus implements Deity, Listener {
                 if (DMiscUtil.isFullParticipant(pl)) {
                     if (DMiscUtil.getAllegiance(pl).equalsIgnoreCase(getDefaultAlliance())) {
                         i++;
-                        pl.sendMessage(ChatColor.RED + "Hephaestus" + ChatColor.WHITE + " has unforged your equipment.");
+                        pl.sendMessage(ChatColor.RED + "Dwarven powers" + ChatColor.WHITE + " have unforged your equipment.");
                         if (p.getItemInHand() != null) p.getItemInHand().setDurability((short) ultdamage);
                         for (ItemStack ii : pl.getInventory().getArmorContents())
                             if (ii != null) ii.setDurability((short) ultdamage);
@@ -168,5 +168,10 @@ public class Hephaestus implements Deity, Listener {
             }
         }
         return i;
+    }
+
+    @Override
+    public boolean canTribute() {
+        return false;
     }
 }

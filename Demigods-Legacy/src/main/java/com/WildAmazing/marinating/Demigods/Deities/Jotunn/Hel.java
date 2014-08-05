@@ -317,4 +317,9 @@ public class Hel implements Deity {
     public void onTick(long timeSent) {
 
     }
+
+    @Override
+    public boolean canTribute() {
+        return true;
+    }
 }

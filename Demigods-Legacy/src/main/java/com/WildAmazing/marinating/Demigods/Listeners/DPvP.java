@@ -5,6 +5,7 @@ import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 import com.WildAmazing.marinating.Demigods.Util.DSave;
 import com.WildAmazing.marinating.Demigods.Util.DSettings;
+import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -87,9 +88,12 @@ public class DPvP implements Listener {
             return;
         }
         try {
-            Deity d = DMiscUtil.getDeities(attacker).get((int) Math.floor(Math.random() * DMiscUtil.getDeities(attacker).size()));
-            DMiscUtil.setDevotion(attacker, d, DMiscUtil.getDevotion(attacker, d) + (int) (e.getDamage() * MULTIPLIER));
-            DLevels.levelProcedure(attacker);
+            List<Deity> deities = Lists.newArrayList(DMiscUtil.getTributeableDeities(attacker));
+            if (!deities.isEmpty()) {
+                Deity d = deities.get((int) Math.floor(Math.random() * deities.size()));
+                DMiscUtil.setDevotion(attacker, d, DMiscUtil.getDevotion(attacker, d) + (int) (e.getDamage() * MULTIPLIER));
+                DLevels.levelProcedure(attacker);
+            }
         } catch (Exception ignored) {
         }
     }

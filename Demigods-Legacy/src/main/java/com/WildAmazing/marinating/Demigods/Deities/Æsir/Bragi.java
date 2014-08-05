@@ -17,7 +17,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Apollo implements Deity {
+public class Bragi implements Deity {
     private static final long serialVersionUID = -5219841682574911103L;
 
     private final UUID PLAYER;
@@ -37,7 +37,7 @@ public class Apollo implements Deity {
     private long ULTIMATETIME;
     private long LASTCHECK;
 
-    public Apollo(UUID player) {
+    public Bragi(UUID player) {
         PLAYER = player;
         SKILLTIME = System.currentTimeMillis();
         ULTIMATETIME = System.currentTimeMillis();
@@ -46,7 +46,7 @@ public class Apollo implements Deity {
 
     @Override
     public String getName() {
-        return "Apollo";
+        return "Bragi";
     }
 
     @Override
@@ -56,7 +56,7 @@ public class Apollo implements Deity {
 
     @Override
     public String getDefaultAlliance() {
-        return "God";
+        return "Æsir";
     }
 
     @Override
@@ -80,8 +80,8 @@ public class Apollo implements Deity {
             p.sendMessage(":Play a music disc to receive a buff lasting " + duration + " seconds.");
             p.sendMessage(":Left-click to heal yourself for " + (healamt / 2) + " and a target");
             p.sendMessage("ally for " + healamt + " health." + ChatColor.GREEN + " /cure " + ChatColor.YELLOW + "Costs " + SKILLCOST + " Favor.");
-            if (((Apollo) DMiscUtil.getDeity(p, getName())).SKILLBIND != null)
-                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Apollo) DMiscUtil.getDeity(p, getName())).SKILLBIND.name());
+            if (((Bragi) DMiscUtil.getDeity(p, getName())).SKILLBIND != null)
+                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Bragi) DMiscUtil.getDeity(p, getName())).SKILLBIND.name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
             p.sendMessage("Slow enemies in range " + ultrange + " for " + ultslowduration + " seconds and strike");
             p.sendMessage("them with " + ultattacks + " waves of arrows." + ChatColor.GREEN + " /finale");
@@ -89,7 +89,7 @@ public class Apollo implements Deity {
             return;
         }
         p.sendMessage("--" + getName());
-        p.sendMessage("Passive: Play a music disc to receive special buffs from Apollo.");
+        p.sendMessage("Passive: Play a music disc to receive special buffs from Bragi.");
         p.sendMessage("Active: Heal yourself and a target ally." + ChatColor.GREEN + " /cure");
         p.sendMessage(ChatColor.YELLOW + "Costs " + SKILLCOST + " Favor. Can bind.");
         p.sendMessage("Ultimate: Slow enemies and rain arrows on them." + ChatColor.GREEN + " /finale ");
@@ -201,7 +201,7 @@ public class Apollo implements Deity {
                     int hit = finale(p);
                     if (hit > 0) {
                         ULTIMATETIME = System.currentTimeMillis() + (t * 1000);
-                        p.sendMessage(ChatColor.GOLD + "Apollo " + ChatColor.WHITE + " rains arrows on " + hit + " of your foes.");
+                        p.sendMessage(ChatColor.GOLD + "Bragi " + ChatColor.WHITE + " rains arrows on " + hit + " of your foes.");
                         DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - ULTIMATECOST);
                     } else p.sendMessage(ChatColor.YELLOW + "No targets for Finale were found.");
                 } else p.sendMessage(ChatColor.YELLOW + "" + ult + " requires " + ULTIMATECOST + " Favor.");
@@ -215,10 +215,10 @@ public class Apollo implements Deity {
             LASTCHECK = timeSent;
             if ((DMiscUtil.getOnlinePlayer(getPlayerId()) != null) && !DMiscUtil.getOnlinePlayer(getPlayerId()).isDead()) {
                 Player p = DMiscUtil.getOnlinePlayer(getPlayerId());
-                if (DMiscUtil.getActiveEffectsList(getPlayerId()).contains("Apollo health regeneration")) {
+                if (DMiscUtil.getActiveEffectsList(getPlayerId()).contains("Bragi health regeneration")) {
                     DMiscUtil.setHP(p, DMiscUtil.getHP(p) + 1);
                     if (DMiscUtil.getHP(p) > DMiscUtil.getMaxHP(p)) DMiscUtil.setHP(p, DMiscUtil.getMaxHP(p));
-                } else if (DMiscUtil.getActiveEffectsList(getPlayerId()).contains("Apollo Favor regeneration")) {
+                } else if (DMiscUtil.getActiveEffectsList(getPlayerId()).contains("Bragi Favor regeneration")) {
                     DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) + 5);
                     if (DMiscUtil.getFavor(p) > DMiscUtil.getFavorCap(p))
                         DMiscUtil.setFavor(p, DMiscUtil.getFavorCap(p));
@@ -231,19 +231,19 @@ public class Apollo implements Deity {
         int duration = (int) Math.round(60 * Math.pow(DMiscUtil.getDevotion(getPlayerId(), getName()), 0.09));
         Player p = DMiscUtil.getOnlinePlayer(getPlayerId());
         if (DMiscUtil.getActiveEffectsList(p.getUniqueId()).contains("Music Buff")) {
-            p.sendMessage(ChatColor.YELLOW + "You have already received a Music Buff from Apollo.");
+            p.sendMessage(ChatColor.YELLOW + "You have already received a Music Buff from Bragi.");
             return;
         }
         if (e == null) {
-            p.sendMessage(ChatColor.GOLD + "Apollo" + ChatColor.WHITE + " has granted you a " + description + " bonus for " + duration + " seconds.");
+            p.sendMessage(ChatColor.GOLD + "Bragi" + ChatColor.WHITE + " has granted you a " + description + " bonus for " + duration + " seconds.");
             p.sendMessage(ChatColor.YELLOW + "NOTE: This bonus cannot be applied to your allies.");
-            DMiscUtil.addActiveEffect(p.getUniqueId(), "Apollo " + description, duration);
+            DMiscUtil.addActiveEffect(p.getUniqueId(), "Bragi " + description, duration);
             DMiscUtil.addActiveEffect(p.getUniqueId(), "Music Buff", duration);
         } else for (Player pl : p.getWorld().getPlayers()) {
             if (pl.getLocation().toVector().isInSphere(p.getLocation().toVector(), 15)) {
                 if (DMiscUtil.isFullParticipant(pl)) {
                     if (DMiscUtil.getAllegiance(pl).equalsIgnoreCase(DMiscUtil.getAllegiance(p))) {
-                        pl.sendMessage(ChatColor.GOLD + "Apollo" + ChatColor.WHITE + " has granted you a " + description + " bonus for " + duration + " seconds.");
+                        pl.sendMessage(ChatColor.GOLD + "Bragi" + ChatColor.WHITE + " has granted you a " + description + " bonus for " + duration + " seconds.");
                         pl.addPotionEffect(new PotionEffect(e, duration * 20, 0));
                         DMiscUtil.addActiveEffect(pl.getUniqueId(), "Music Buff", duration);
                     }
@@ -260,7 +260,7 @@ public class Apollo implements Deity {
             selfheal = DMiscUtil.getMaxHP(p) - DMiscUtil.getHP(p);
         }
         DMiscUtil.setHP(p, DMiscUtil.getHP(p) + selfheal);
-        p.sendMessage(ChatColor.GREEN + "Apollo has cured you for " + selfheal + " health.");
+        p.sendMessage(ChatColor.GREEN + "Bragi has cured you for " + selfheal + " health.");
         LivingEntity le = DMiscUtil.getTargetLivingEntity(p, 3);
         if (le instanceof Player) {
             Player pl = (Player) le;
@@ -269,7 +269,7 @@ public class Apollo implements Deity {
                     healamt = DMiscUtil.getMaxHP(pl) - DMiscUtil.getHP(pl);
                 }
                 DMiscUtil.setHP(pl, DMiscUtil.getHP(pl) + healamt);
-                pl.sendMessage(ChatColor.GREEN + "Apollo has cured you for " + healamt + " health.");
+                pl.sendMessage(ChatColor.GREEN + "Bragi has cured you for " + healamt + " health.");
                 p.sendMessage(ChatColor.YELLOW + pl.getName() + " has been cured for " + healamt + " health.");
             }
         }
@@ -304,5 +304,10 @@ public class Apollo implements Deity {
             }
         }
         return entitylist.size();
+    }
+
+    @Override
+    public boolean canTribute() {
+        return true;
     }
 }

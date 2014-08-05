@@ -10,7 +10,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.UUID;
 
-public class Atlas implements Deity {
+public class Thrymr implements Deity {
 
     /* General */
     private static final long serialVersionUID = 1898032566168889851L;
@@ -24,14 +24,14 @@ public class Atlas implements Deity {
     private boolean SKILL = false;
     private long ULTIMATETIME;
 
-    public Atlas(UUID name) {
+    public Thrymr(UUID name) {
         PLAYER = name;
         ULTIMATETIME = System.currentTimeMillis();
     }
 
     @Override
     public String getName() {
-        return "Atlas";
+        return "Thrymr";
     }
 
     @Override
@@ -41,12 +41,12 @@ public class Atlas implements Deity {
 
     @Override
     public String getDefaultAlliance() {
-        return "Titan";
+        return "Jotunn";
     }
 
     @Override
     public void printInfo(Player p) {
-        if (DMiscUtil.hasDeity(p, "Atlas") && DMiscUtil.isFullParticipant(p)) {
+        if (DMiscUtil.hasDeity(p, "Thrymr") && DMiscUtil.isFullParticipant(p)) {
             int devotion = DMiscUtil.getDevotion(p, getName());
             /*
              * Calculate special values first
@@ -62,21 +62,22 @@ public class Atlas implements Deity {
 			/*
 			 * The printed text
 			 */
-            p.sendMessage("--" + ChatColor.GOLD + "Atlas" + ChatColor.GRAY + "[" + devotion + "]");
+            p.sendMessage("--" + ChatColor.GOLD + "Thrymr" + ChatColor.GRAY + "[" + devotion + "]");
             p.sendMessage(":Reduce incoming combat damage by " + reduction + ".");
             p.sendMessage(":Temporarily increase jump height.");
             p.sendMessage("Duration: " + length + " Jump multiplier: " + jump + ChatColor.GREEN + " /unburden " + ChatColor.YELLOW + "Costs " + SKILLCOST + " Favor.");
-            if (((Atlas) DMiscUtil.getDeity(p, "Atlas")).SKILL) p.sendMessage(ChatColor.AQUA + "    Skill is active.");
-            p.sendMessage(":Atlas shields you and nearby allies from harm.");
+            if (((Thrymr) DMiscUtil.getDeity(p, "Thrymr")).SKILL)
+                p.sendMessage(ChatColor.AQUA + "    Skill is active.");
+            p.sendMessage(":Thrymr shields you and nearby allies from harm.");
             p.sendMessage("50% damage reduction with range " + radius + " for " + duration + " seconds.");
             p.sendMessage(ChatColor.GREEN + " /invincible" + ChatColor.YELLOW + " Costs " + ULTIMATECOST + " Favor. Cooldown time: " + t + " seconds.");
             return;
         }
-        p.sendMessage("--" + ChatColor.GOLD + "Atlas");
+        p.sendMessage("--" + ChatColor.GOLD + "Thrymr");
         p.sendMessage("Passive: Reduce incoming combat damage.");
         p.sendMessage("Active: Release a great weight from your shoulders, increasing jump.");
         p.sendMessage(ChatColor.GREEN + "/unburden" + ChatColor.YELLOW + " Costs " + SKILLCOST + " Favor.");
-        p.sendMessage("Ultimate: Atlas shields you and nearby allies from harm.");
+        p.sendMessage("Ultimate: Thrymr shields you and nearby allies from harm.");
         p.sendMessage(ChatColor.GREEN + "/invincible" + ChatColor.YELLOW + " Costs " + ULTIMATECOST + " Favor. Has cooldown.");
         p.sendMessage(ChatColor.YELLOW + "Select item: obsidian");
     }
@@ -90,7 +91,7 @@ public class Atlas implements Deity {
     @Override
     public void onCommand(final Player p, String str, String[] args, boolean bind) {
         if (!DMiscUtil.isFullParticipant(p)) return;
-        if (!DMiscUtil.hasDeity(p, "Atlas")) return;
+        if (!DMiscUtil.hasDeity(p, "Thrymr")) return;
         if (str.equalsIgnoreCase("unburden")) {
             if (DMiscUtil.getActiveEffects(p.getUniqueId()).containsKey("Unburden")) {
                 SKILL = false;
@@ -131,7 +132,7 @@ public class Atlas implements Deity {
                 for (UUID s : DMiscUtil.getFullParticipants()) {
                     final Player pl = DMiscUtil.getOnlinePlayer(s);
                     if ((pl != null) && !pl.isDead() && (pl.getLocation().toVector().isInSphere(p.getLocation().toVector(), INVINCIBLERANGE))) {
-                        pl.sendMessage(ChatColor.DARK_AQUA + "Atlas" + ChatColor.GRAY + " shields you and your allies from harm.");
+                        pl.sendMessage(ChatColor.DARK_AQUA + "Thrymr" + ChatColor.GRAY + " shields you and your allies from harm.");
                         DMiscUtil.addActiveEffect(pl.getUniqueId(), "Invincible", seconds);
                         DMiscUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DMiscUtil.getPlugin(), new Runnable() {
                             @Override
@@ -157,5 +158,10 @@ public class Atlas implements Deity {
     @Override
     public void onTick(long timeSent) {
 
+    }
+
+    @Override
+    public boolean canTribute() {
+        return true;
     }
 }

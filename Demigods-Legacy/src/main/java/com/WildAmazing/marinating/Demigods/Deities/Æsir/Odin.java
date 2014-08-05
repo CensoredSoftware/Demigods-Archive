@@ -70,7 +70,7 @@ public class Odin implements Deity {
             int slowamount = (int) Math.round(.77179 * Math.pow(DMiscUtil.getAscensions(p), 0.17654391));
             int stopduration = (int) Math.round(9.9155621 * Math.pow(DMiscUtil.getAscensions(p), 0.459019));
             int t = (int) (CRONUSULTIMATECOOLDOWNMAX - ((CRONUSULTIMATECOOLDOWNMAX - CRONUSULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
-			/*
+            /*
 			 * The printed text
 			 */
             p.sendMessage("--" + ChatColor.GOLD + "Odin" + ChatColor.GRAY + "[" + devotion + "]");
@@ -274,5 +274,10 @@ public class Odin implements Deity {
             count++;
         }
         p.sendMessage(ChatColor.RED + "Odin has slowed time for " + count + " players nearby.");
+    }
+
+    @Override
+    public boolean canTribute() {
+        return true;
     }
 }

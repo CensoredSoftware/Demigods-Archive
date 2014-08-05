@@ -56,4 +56,9 @@ public interface Deity extends Serializable {
      * Used for events that execute repeatedly
      */
     public void onTick(long timeSent);
+
+    /**
+     * Can this deity be tributed to?
+     */
+    public boolean canTribute();
 }

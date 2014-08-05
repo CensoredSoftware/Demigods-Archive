@@ -43,12 +43,18 @@ public class DShrines implements Listener {
         if (!s.getLines()[1].trim().equalsIgnoreCase("dedicate")) return;
         String deityname = null;
         Player p = e.getPlayer();
-        for (String name : DMiscUtil.getDeityNames(p)) {
+        for (String name : DMiscUtil.getTributeableDeityNames(p)) {
             if (s.getLines()[2].trim().equalsIgnoreCase(name)) {
                 deityname = name;
                 break;
             }
         }
+
+        if (deityname == null) {
+            p.sendMessage(ChatColor.YELLOW + "You cannot make a shrine to that deity (if it even exists).");
+            return;
+        }
+
         if (DMiscUtil.getShrine(p.getUniqueId(), deityname) != null) {
             p.sendMessage(ChatColor.YELLOW + "You already have a shrine dedicated to " + deityname + ".");
             return;
@@ -231,7 +237,7 @@ public class DShrines implements Listener {
                             return;
                         }
                     }
-				/*
+                /*
 				 * Leaving
 				 */
                     else if (e.getFrom().distance(DMiscUtil.toLocation(center)) <= RADIUS) {

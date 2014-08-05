@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods.Deities.Æsir;
+package com.WildAmazing.marinating.Demigods.Deities.Jotunn;
 
 /*
  * This style/format of code is now deprecated.
@@ -24,7 +24,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Poseidon implements Deity {
+public class Jormungand implements Deity {
 
     /* General */
     private static final long serialVersionUID = 2319323778421842381L;
@@ -41,7 +41,7 @@ public class Poseidon implements Deity {
     private long REELTIME, drownTIME, LASTCHECK;
     private Material drownBIND = null;
 
-    public Poseidon(UUID name) {
+    public Jormungand(UUID name) {
         PLAYER = name;
         REELTIME = System.currentTimeMillis();
         drownTIME = System.currentTimeMillis();
@@ -51,7 +51,7 @@ public class Poseidon implements Deity {
 
     @Override
     public String getName() {
-        return "Poseidon";
+        return "Jormungand";
     }
 
     @Override
@@ -61,12 +61,12 @@ public class Poseidon implements Deity {
 
     @Override
     public String getDefaultAlliance() {
-        return "God";
+        return "Jotunn";
     }
 
     @Override
     public void printInfo(Player p) {
-        if (DMiscUtil.hasDeity(p, "Poseidon") && DMiscUtil.isFullParticipant(p)) {
+        if (DMiscUtil.hasDeity(p, "Jormungand") && DMiscUtil.isFullParticipant(p)) {
             int devotion = DMiscUtil.getDevotion(p, getName());
             /*
              * Calculate special values first
@@ -89,22 +89,22 @@ public class Poseidon implements Deity {
 			/*
 			 * The printed text
 			 */
-            p.sendMessage("--" + ChatColor.GOLD + "Poseidon" + ChatColor.GRAY + " [" + devotion + "]");
+            p.sendMessage("--" + ChatColor.GOLD + "Jormungand" + ChatColor.GRAY + " [" + devotion + "]");
             p.sendMessage(":Heal " + healamt + " every " + healinterval + " seconds while in contact with water.");
             p.sendMessage("Immune to drowning, sneak while in water to swim very fast!");
             p.sendMessage(":Deal " + damage + " damage and soak an enemy from a distance. " + ChatColor.GREEN + "/reel");
             p.sendMessage(ChatColor.YELLOW + "Costs " + REELCOST + " Favor. Must have fishing rod in hand.");
-            if (((Poseidon) (DMiscUtil.getDeity(p, "Poseidon"))).REEL)
+            if (((Jormungand) (DMiscUtil.getDeity(p, "Jormungand"))).REEL)
                 p.sendMessage(ChatColor.AQUA + "    Reel is active.");
             p.sendMessage(":Create a temporary flood of water. " + ChatColor.GREEN + "/drown");
             p.sendMessage(ChatColor.YELLOW + "Costs " + drownCOST + " Favor.");
             p.sendMessage("Water has radius of " + radius + " for " + duration + " seconds.");
-            if (((Poseidon) (DMiscUtil.getDeity(p, "Poseidon"))).drownBIND != null)
-                p.sendMessage(ChatColor.AQUA + "    drown bound to " + (((Poseidon) (DMiscUtil.getDeity(p, "Poseidon"))).drownBIND).name());
+            if (((Jormungand) (DMiscUtil.getDeity(p, "Jormungand"))).drownBIND != null)
+                p.sendMessage(ChatColor.AQUA + "    drown bound to " + (((Jormungand) (DMiscUtil.getDeity(p, "Jormungand"))).drownBIND).name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
             return;
         }
-        p.sendMessage("--" + ChatColor.GOLD + "Poseidon");
+        p.sendMessage("--" + ChatColor.GOLD + "Jormungand");
         p.sendMessage("Passive: Immune to drowning, with increased healing while in water.");
         p.sendMessage("Passive: Fast swim, sneak while in water to swim very fast!");
         p.sendMessage("Active: Deal damage and soak an enemy with a fishing rod. " + ChatColor.GREEN + "/reel");
@@ -120,7 +120,7 @@ public class Poseidon implements Deity {
             PlayerMoveEvent move = (PlayerMoveEvent) ee;
             Player p = move.getPlayer();
             if (!DMiscUtil.isFullParticipant(p)) return;
-            if (!DMiscUtil.hasDeity(p, "Poseidon")) return;
+            if (!DMiscUtil.hasDeity(p, "Jormungand")) return;
             // PHELPS SWIMMING
             if (p.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || p.getLocation().getBlock().getType().equals(Material.WATER)) {
                 Vector dir = p.getLocation().getDirection().normalize().multiply(1.3D);
@@ -132,14 +132,14 @@ public class Poseidon implements Deity {
             if (((EntityDamageEvent) ee).getCause().equals(DamageCause.DROWNING) && ((EntityDamageEvent) ee).getEntity() instanceof Player) {
                 Player p = (Player) ((EntityDamageEvent) ee).getEntity();
                 if (!DMiscUtil.isFullParticipant(p)) return;
-                if (!DMiscUtil.hasDeity(p, "Poseidon")) return;
+                if (!DMiscUtil.hasDeity(p, "Jormungand")) return;
                 DFixes.checkAndCancel((EntityDamageEvent) ee);
             }
         } else if (ee instanceof PlayerInteractEvent) {
             PlayerInteractEvent e = (PlayerInteractEvent) ee;
             Player p = e.getPlayer();
             if (!DMiscUtil.isFullParticipant(p)) return;
-            if (!DMiscUtil.hasDeity(p, "Poseidon")) return;
+            if (!DMiscUtil.hasDeity(p, "Jormungand")) return;
             if (REEL) {
                 if (p.getItemInHand().getType() == Material.FISHING_ROD) {
                     if (REELTIME > System.currentTimeMillis()) return;
@@ -177,7 +177,7 @@ public class Poseidon implements Deity {
     @Override
     public void onCommand(Player P, String str, String[] args, boolean bind) {
         if (!DMiscUtil.isFullParticipant(P)) return;
-        if (!DMiscUtil.hasDeity(P, "Poseidon")) return;
+        if (!DMiscUtil.hasDeity(P, "Jormungand")) return;
         if (str.equalsIgnoreCase("reel")) {
             if (REEL) {
                 REEL = false;
@@ -340,4 +340,9 @@ public class Poseidon implements Deity {
 	 * return entitylist.size();
 	 * }
 	 */
+
+    @Override
+    public boolean canTribute() {
+        return true;
+    }
 }

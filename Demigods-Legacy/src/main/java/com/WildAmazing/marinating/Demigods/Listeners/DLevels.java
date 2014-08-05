@@ -3,6 +3,7 @@ package com.WildAmazing.marinating.Demigods.Listeners;
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
 import com.WildAmazing.marinating.Demigods.Util.DSettings;
+import com.google.common.collect.Lists;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,6 +13,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
+import java.util.List;
 import java.util.UUID;
 
 public class DLevels implements Listener {
@@ -48,14 +50,13 @@ public class DLevels implements Listener {
                     break;
             }
             value *= MULTIPLIER;
-            /*
-			 * for (Deity d : DMiscUtil.getDeities(p)) {
-			 * DMiscUtil.setDevotion(p, d, DMiscUtil.getDevotion(p, d)+value);
-			 * }
-			 */
-            Deity d = DMiscUtil.getDeities(p).get((int) Math.floor(Math.random() * DMiscUtil.getDeities(p).size()));
-            DMiscUtil.setDevotion(p, d, DMiscUtil.getDevotion(p, d) + value);
-            levelProcedure(p);
+
+            List<Deity> deities = Lists.newArrayList(DMiscUtil.getTributeableDeities(p));
+            if (!deities.isEmpty()) {
+                Deity d = deities.get((int) Math.floor(Math.random() * deities.size()));
+                DMiscUtil.setDevotion(p, d, DMiscUtil.getDevotion(p, d) + value);
+                levelProcedure(p);
+            }
         }
     }
 
@@ -73,15 +74,12 @@ public class DLevels implements Listener {
             if (!DMiscUtil.canTarget(e.getEntity(), e.getEntity().getLocation())) {
                 return;
             }
-			/*
-			 * for (Deity d : DMiscUtil.getDeities(p)) {
-			 * DMiscUtil.setDevotion(p, d, (int)(DMiscUtil.getDevotion(p, d)+e.getDamage()*MULTIPLIER));
-			 * }
-			 */
-            // random deity
-            Deity d = DMiscUtil.getDeities(p).get((int) Math.floor(Math.random() * DMiscUtil.getDeities(p).size()));
-            DMiscUtil.setDevotion(p, d, (int) (DMiscUtil.getDevotion(p, d) + e.getDamage() * MULTIPLIER));
-            levelProcedure(p);
+            List<Deity> deities = Lists.newArrayList(DMiscUtil.getTributeableDeities(p));
+            if (!deities.isEmpty()) {
+                Deity d = deities.get((int) Math.floor(Math.random() * deities.size()));
+                DMiscUtil.setDevotion(p, d, (int) (DMiscUtil.getDevotion(p, d) + e.getDamage() * MULTIPLIER));
+                levelProcedure(p);
+            }
         }
     }
 
@@ -93,15 +91,17 @@ public class DLevels implements Listener {
         if (!DSettings.getEnabledWorlds().contains(p.getWorld())) return;
         double reduced = 0.1; // TODO
         long before = DMiscUtil.getDevotion(p);
-        for (Deity d : DMiscUtil.getDeities(p)) {
+        List<Deity> deities = Lists.newArrayList(DMiscUtil.getTributeableDeities(p));
+        for (Deity d : deities) {
             int reduceamt = (int) Math.round(DMiscUtil.getDevotion(p, d) * reduced * MULTIPLIER);
             if (reduceamt > LOSSLIMIT) reduceamt = LOSSLIMIT;
             DMiscUtil.setDevotion(p, d, DMiscUtil.getDevotion(p, d) - reduceamt);
         }
-        if (DMiscUtil.getDeities(p).size() < 2)
-            p.sendMessage(ChatColor.DARK_RED + "You have failed in your service to " + DMiscUtil.getDeities(p).get(0).getName() + ".");
+        if (deities.size() == 1)
+            p.sendMessage(ChatColor.DARK_RED + "You have failed in your service to " + deities.get(0).getName() + ".");
         else p.sendMessage(ChatColor.DARK_RED + "You have failed in your service to your deities.");
-        p.sendMessage(ChatColor.DARK_RED + "Your Devotion has been reduced by " + (before - DMiscUtil.getDevotion(p)) + ".");
+        if (before != DMiscUtil.getDevotion(p))
+            p.sendMessage(ChatColor.DARK_RED + "Your Devotion has been reduced by " + (before - DMiscUtil.getDevotion(p)) + ".");
         DMiscUtil.setHP(p, 0);
     }
 

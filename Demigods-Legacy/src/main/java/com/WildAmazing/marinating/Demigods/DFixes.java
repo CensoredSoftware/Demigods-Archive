@@ -60,7 +60,7 @@ public class DFixes implements Listener {
     private static void deityDamageImmunity(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
             Player p = (Player) event.getEntity();
-            if ((DMiscUtil.hasDeity(p, "Jörmungandr") || DMiscUtil.hasDeity(p, "Hephaestus")) && (event.getCause() == EntityDamageEvent.DamageCause.FIRE) || (event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK || event.getCause() == EntityDamageEvent.DamageCause.LAVA)) {
+            if ((DMiscUtil.hasDeity(p, "Fárbauti") || DMiscUtil.hasDeity(p, "Brokkr")) && (event.getCause() == EntityDamageEvent.DamageCause.FIRE) || (event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK || event.getCause() == EntityDamageEvent.DamageCause.LAVA)) {
                 p.setFireTicks(0);
                 DFixes.checkAndCancel(event);
                 return;

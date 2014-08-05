@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.UUID;
 
-public class Themis implements Deity {
+public class Dís implements Deity {
     private static final long serialVersionUID = -2472769863144336856L;
     private final UUID PLAYER;
 
@@ -31,7 +31,7 @@ public class Themis implements Deity {
     private long ULTIMATETIME;
     private long LASTCHECK;
 
-    public Themis(UUID player) {
+    public Dís(UUID player) {
         PLAYER = player;
         SKILLTIME = System.currentTimeMillis();
         ULTIMATETIME = System.currentTimeMillis();
@@ -40,7 +40,7 @@ public class Themis implements Deity {
 
     @Override
     public String getName() {
-        return "Themis";
+        return "Dís";
     }
 
     @Override
@@ -50,7 +50,7 @@ public class Themis implements Deity {
 
     @Override
     public String getDefaultAlliance() {
-        return "Titan";
+        return "Jotunn";
     }
 
     @Override
@@ -62,8 +62,8 @@ public class Themis implements Deity {
             p.sendMessage(":Use " + ChatColor.YELLOW + "qd <name>" + ChatColor.WHITE + " for detailed information about any player");
             p.sendMessage(":Click a target player or mob to switch locations with them.");
             p.sendMessage(ChatColor.GREEN + "/swap" + ChatColor.YELLOW + "Costs " + SKILLCOST + " Favor.");
-            if (((Themis) DMiscUtil.getDeity(p, getName())).SKILLBIND != null)
-                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Themis) DMiscUtil.getDeity(p, getName())).SKILLBIND.name());
+            if (((Dís) DMiscUtil.getDeity(p, getName())).SKILLBIND != null)
+                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Dís) DMiscUtil.getDeity(p, getName())).SKILLBIND.name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
             p.sendMessage(":Call all Æsir and Jotunn together for an assembly at your location.");
             p.sendMessage("Players will be temporarily immune to damage after teleporting.");
@@ -75,7 +75,7 @@ public class Themis implements Deity {
         p.sendMessage("Passive: " + ChatColor.YELLOW + "qd" + ChatColor.WHITE + " gives more detail on targets.");
         p.sendMessage("Active: Change positions with a target animal or player. " + ChatColor.GREEN + "/swap");
         p.sendMessage(ChatColor.YELLOW + "Costs " + SKILLCOST + " Favor. Can bind.");
-        p.sendMessage("Ultimate: Themis calls together all Æsir and Jotunn to your location.");
+        p.sendMessage("Ultimate: Your dís calls together all Æsir and Jotunn to you.");
         p.sendMessage("Requires other players' consent." + ChatColor.GREEN + "/congregate " + ChatColor.YELLOW + "Costs " + ULTIMATECOST + " Favor. Has cooldown.");
         p.sendMessage(ChatColor.YELLOW + "Select item: compass");
     }
@@ -149,7 +149,7 @@ public class Themis implements Deity {
                     ULTIMATETIME = System.currentTimeMillis() + (t * 1000);
                     int n = congregate();
                     if (n > 0) {
-                        p.sendMessage(ChatColor.GOLD + "Themis has called upon " + n + " players to assemble at your location.");
+                        p.sendMessage(ChatColor.GOLD + "A dís has called upon " + n + " players to assemble at your location.");
                         DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - ULTIMATECOST);
                     } else p.sendMessage(ChatColor.YELLOW + "There are no players to assemble.");
                 } else p.sendMessage(ChatColor.YELLOW + "" + ult + " requires " + ULTIMATECOST + " Favor.");
@@ -185,7 +185,7 @@ public class Themis implements Deity {
             if (DMiscUtil.isFullParticipant(pl)) {
                 count++;
                 if (!p.equals(pl) && !DMiscUtil.getActiveEffectsList(pl.getUniqueId()).contains("Congregate")) {
-                    pl.sendMessage(ChatColor.GOLD + "Themis has called for an assembly of deities at " + p.getName() + "'s location.");
+                    pl.sendMessage(ChatColor.GOLD + "A dís has called for an assembly of deities at " + p.getName() + "'s location.");
                     pl.sendMessage(ChatColor.GOLD + "Type " + ChatColor.WHITE + "/assemble" + ChatColor.GOLD + " to be teleported.");
                     pl.sendMessage(ChatColor.GOLD + "You will be immune to damage upon arrival for a short time.");
                     pl.sendMessage(ChatColor.GRAY + "You have one minute to answer the invitation.");
@@ -195,5 +195,10 @@ public class Themis implements Deity {
             }
         }
         return count;
+    }
+
+    @Override
+    public boolean canTribute() {
+        return false;
     }
 }

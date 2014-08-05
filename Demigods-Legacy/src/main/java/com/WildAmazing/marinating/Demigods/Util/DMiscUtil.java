@@ -288,6 +288,10 @@ public class DMiscUtil {
         return getDeities(p.getUniqueId());
     }
 
+    public static Collection<Deity> getTributeableDeities(Player p) {
+        return getTributeableDeities(p.getUniqueId());
+    }
+
     /**
      * Gives the list of all the player's deities.
      */
@@ -303,6 +307,22 @@ public class DMiscUtil {
     }
 
     /**
+     * Gives the list of all the player's deities.
+     */
+    public static Collection<Deity> getTributeableDeities(UUID p) throws NullPointerException {
+        Collection<Deity> deities = getDeities(p);
+        if (deities != null) {
+            deities = Collections2.filter(deities, new Predicate<Deity>() {
+                @Override
+                public boolean apply(Deity deity) {
+                    return deity.canTribute();
+                }
+            });
+        }
+        return deities;
+    }
+
+    /**
      * Gives the list of all the player's deities by name
      */
     public static ArrayList<String> getDeityNames(Player p) {
@@ -313,6 +333,17 @@ public class DMiscUtil {
         ArrayList<String> list = new ArrayList<String>();
         for (Deity d : getDeities(p))
             list.add(d.getName());
+        return list;
+    }
+
+    public static ArrayList<String> getTributeableDeityNames(Player p) {
+        return getTributeableDeityNames(p.getUniqueId());
+    }
+
+    private static ArrayList<String> getTributeableDeityNames(UUID p) {
+        ArrayList<String> list = new ArrayList<String>();
+        for (Deity d : getDeities(p))
+            if (d.canTribute()) list.add(d.getName());
         return list;
     }
 

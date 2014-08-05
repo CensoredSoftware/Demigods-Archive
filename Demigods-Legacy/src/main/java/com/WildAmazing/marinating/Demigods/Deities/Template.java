@@ -75,7 +75,7 @@ public class Template implements Deity {
                 SKILLTIME = System.currentTimeMillis() + SKILLDELAY;
                 if (DMiscUtil.getFavor(p) >= SKILLCOST) {
                     /*
-					 * Skill
+                     * Skill
 					 */
                     DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - SKILLCOST);
                 } else {
@@ -140,5 +140,10 @@ public class Template implements Deity {
         if (timeSent > LASTCHECK + 1000) {
             LASTCHECK = timeSent;
         }
+    }
+
+    @Override
+    public boolean canTribute() {
+        return false;
     }
 }

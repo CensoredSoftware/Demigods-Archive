@@ -151,79 +151,79 @@ commands:
     value:
         description: See Favor value of item in hand.
     shove:
-        description: One of Zeus's abilities.
+        description: One of Thor's abilities.
     lightning:
-        description: One of Zeus's abilities.
+        description: One of Thor's abilities.
     storm:
-        description: Zeus's ultimate.
+        description: Thor's ultimate.
     strike:
-        description: One of Ares' abilities.
+        description: One of Vidar's abilities.
     bloodthirst:
-        description: One of Ares' abilities.
+        description: One of Vidar's abilities.
     crash:
-        description: Ares' ultimate.
+        description: Vidar's ultimate.
     stab:
-        description: One of Cronus's abilities.
+        description: One of Odin's abilities.
     slow:
-        description: One of Cronus's abilities.
+        description: One of Odin's abilities.
     timestop:
-        description: Cronus's ultimate.
+        description: Odin's ultimate.
     fireball:
-        description: One of Prometheus's abilities.
+        description: One of Fárbauti's abilities.
     blaze:
-        description: One of Prometheus's abilities.
+        description: One of Fárbauti's abilities.
     firestorm:
-        description: Prometheus's ultimate.
+        description: Fárbauti's ultimate.
     poison:
-        description: One of Rhea's abilities.
+        description: One of Jord's abilities.
     plant:
-        description: One of Rhea's abilities.
+        description: One of Jord's abilities.
     detonate:
-        description: One of Rhea's abilities.
+        description: One of Jord's abilities.
     entangle:
-        description: Rhea's ultimate.
+        description: Jord's ultimate.
     chain:
-        description: One of Hades' abilities.
+        description: One of Hel's abilities.
     entomb:
-        description: One of Hades' abilities.
+        description: One of Hel's abilities.
     curse:
-        description: Hades' ultimate.
+        description: Hel' ultimate.
     reel:
-        description: One of Poseidon's abilities.
+        description: One of Jormungand's abilities.
     drown:
-        description: One of Poseidon's abilities.
+        description: One of Jormungand's abilities.
     unburden:
         description: One of Atlas' abilities.
     invincible:
         description: Atlas' ultimate.
     flash:
-        description: One of Athena's abilities.
+        description: One of Heimdallr's abilities.
     ceasefire:
-        description: Athena's ultimate.
-    squid:
-        description: One of Oceanus' abilities.
-    makeitrain:
-        description: Oceanus' ultimate.
+        description: Heimdallr's ultimate.
+    ice:
+        description: One of Bergelmir's abilities.
+    chill:
+        description: Bergelmir's ultimate.
     starfall:
-        description: One of Hyperion's abilities.
+        description: One of Baldr's abilities.
     sprint:
-        description: One of Hyperion's abilities.
+        description: One of Baldr's abilities.
     smite:
-        description: Hyperion's ultimate.
+        description: Baldr's ultimate.
     reforge:
-        description: One of Hephaestus's abilities.
+        description: One of any dwarf's abilities.
     shatter:
-        description: Hephaestus's ultimate.
+        description: A dwarf's ultimate.
     cure:
         description: One of Apollo's abilities.
     finale:
         description: Apollo's ultimate.
     swap:
-        description: One of Themis' abilities.
+        description: One of a dís' abilities.
     congregate:
-        description: Themis' ultimate.
+        description: A dís' ultimate.
     assemble:
-        description: Used with Themis' ultimate.
+        description: Used with any dís' ultimate.
 permissions:
     demigods.bypassclaim:
         default: false

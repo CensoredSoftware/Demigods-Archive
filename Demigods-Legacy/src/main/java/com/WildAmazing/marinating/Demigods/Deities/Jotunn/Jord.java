@@ -23,7 +23,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Rhea implements Deity {
+public class Jord implements Deity {
     /* Generalized things */
     private static final long serialVersionUID = 4917938727569988533L;
     private final int POISONCOST = 50;
@@ -42,7 +42,7 @@ public class Rhea implements Deity {
     private Material DETONATEBIND = null;
     private Material POISONBIND = null;
 
-    public Rhea(UUID name) {
+    public Jord(UUID name) {
         PLAYER = name;
         TREES = new ArrayList<WriteLocation>();
         PLANTTIME = System.currentTimeMillis();
@@ -52,7 +52,7 @@ public class Rhea implements Deity {
 
     @Override
     public String getName() {
-        return "Rhea";
+        return "Jord";
     }
 
     @Override
@@ -62,12 +62,12 @@ public class Rhea implements Deity {
 
     @Override
     public String getDefaultAlliance() {
-        return "Titan";
+        return "Jotunn";
     }
 
     @Override
     public void printInfo(Player p) {
-        if (DMiscUtil.hasDeity(p, "Rhea") && DMiscUtil.isFullParticipant(p)) {
+        if (DMiscUtil.hasDeity(p, "Jord") && DMiscUtil.isFullParticipant(p)) {
             int devotion = DMiscUtil.getDevotion(p, getName());
             /*
              * Calculate special values first
@@ -85,36 +85,36 @@ public class Rhea implements Deity {
 			/*
 			 * The printed text
 			 */
-            p.sendMessage("--" + ChatColor.GOLD + "Rhea" + ChatColor.GRAY + "[" + devotion + "]");
+            p.sendMessage("--" + ChatColor.GOLD + "Jord" + ChatColor.GRAY + "[" + devotion + "]");
             p.sendMessage(":Right click for a bonemeal effect.");
             p.sendMessage(":Poison a target player. " + ChatColor.GREEN + "/poison");
             p.sendMessage(ChatColor.YELLOW + "Costs " + POISONCOST + " Favor.");
             p.sendMessage("Poison power: " + strength + " for " + duration + " seconds.");
-            if (((Rhea) (DMiscUtil.getDeity(p, "Rhea"))).POISONBIND != null)
-                p.sendMessage(ChatColor.AQUA + "    Bound to " + (((Rhea) (DMiscUtil.getDeity(p, "Rhea"))).POISONBIND).name());
+            if (((Jord) (DMiscUtil.getDeity(p, "Jord"))).POISONBIND != null)
+                p.sendMessage(ChatColor.AQUA + "    Bound to " + (((Jord) (DMiscUtil.getDeity(p, "Jord"))).POISONBIND).name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
             p.sendMessage(":Plant and detonate exploding trees. " + ChatColor.GREEN + "/plant, /detonate");
             p.sendMessage(ChatColor.YELLOW + "Costs " + PLANTCOST + " Favor.");
             p.sendMessage("Explosion radius: " + explosionsize + ". Maximum trees: " + (DMiscUtil.getAscensions(p) + 1));
-            if (((Rhea) (DMiscUtil.getDeity(p, "Rhea"))).PLANTBIND != null)
-                p.sendMessage(ChatColor.AQUA + "    Plant bound to " + (((Rhea) (DMiscUtil.getDeity(p, "Rhea"))).PLANTBIND).name());
+            if (((Jord) (DMiscUtil.getDeity(p, "Jord"))).PLANTBIND != null)
+                p.sendMessage(ChatColor.AQUA + "    Plant bound to " + (((Jord) (DMiscUtil.getDeity(p, "Jord"))).PLANTBIND).name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind plant to an item.");
-            if (((Rhea) (DMiscUtil.getDeity(p, "Rhea"))).DETONATEBIND != null)
-                p.sendMessage(ChatColor.AQUA + "    Detonate bound to " + (((Rhea) (DMiscUtil.getDeity(p, "Rhea"))).DETONATEBIND).name());
+            if (((Jord) (DMiscUtil.getDeity(p, "Jord"))).DETONATEBIND != null)
+                p.sendMessage(ChatColor.AQUA + "    Detonate bound to " + (((Jord) (DMiscUtil.getDeity(p, "Jord"))).DETONATEBIND).name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind detonate to an item.");
-            p.sendMessage(":Rhea entangles nearby enemies, damaging them if they move.");
+            p.sendMessage(":Jord entangles nearby enemies, damaging them if they move.");
             p.sendMessage("Range: " + range + " for " + ultimateduration + " seconds. " + ChatColor.GREEN + "/entangle");
             p.sendMessage(ChatColor.YELLOW + "Costs " + RHEAULTIMATECOST + " Favor. Cooldown time: " + t + " seconds.");
             return;
         }
-        p.sendMessage("--" + ChatColor.GOLD + "Rhea");
+        p.sendMessage("--" + ChatColor.GOLD + "Jord");
         p.sendMessage("Passive: Right click for a bonemeal effect.");
         p.sendMessage("Active: Poison a target player. " + ChatColor.GREEN + "/poison");
         p.sendMessage(ChatColor.YELLOW + "Costs " + POISONCOST + " Favor. Can bind.");
         p.sendMessage("Active: Plant and detonate explosive trees.");
         p.sendMessage(ChatColor.GREEN + "/plant " + ChatColor.YELLOW + "Costs " + PLANTCOST + " Favor. Can bind.");
         p.sendMessage(ChatColor.GREEN + "/detonate " + ChatColor.YELLOW + "Can bind.");
-        p.sendMessage("Ultimate: Rhea entangles nearby enemies, damaging them if they move.");
+        p.sendMessage("Ultimate: Jord entangles nearby enemies, damaging them if they move.");
         p.sendMessage(ChatColor.GREEN + "/entangle " + ChatColor.YELLOW + "Costs " + RHEAULTIMATECOST + " Favor. Has cooldown.");
         p.sendMessage(ChatColor.YELLOW + "Select item: vines");
     }
@@ -125,7 +125,7 @@ public class Rhea implements Deity {
             PlayerInteractEvent e = (PlayerInteractEvent) ee;
             Player p = e.getPlayer();
             if (!DMiscUtil.isFullParticipant(p)) return;
-            if (!DMiscUtil.hasDeity(p, "Rhea")) return;
+            if (!DMiscUtil.hasDeity(p, "Jord")) return;
             if (!DMiscUtil.canTarget(p, p.getLocation())) return;
             if (POISON || ((POISONBIND != null) && (p.getItemInHand().getType() == POISONBIND))) {
                 if (POISONTIME > System.currentTimeMillis()) return;
@@ -213,7 +213,7 @@ public class Rhea implements Deity {
     public void onCommand(Player P, String str, String[] args, boolean bind) {
         final Player p = P;
         if (!DMiscUtil.isFullParticipant(p)) return;
-        if (!DMiscUtil.hasDeity(p, "Rhea")) return;
+        if (!DMiscUtil.hasDeity(p, "Jord")) return;
         if (str.equalsIgnoreCase("poison")) {
             if (bind) {
                 if (POISONBIND == null) {
@@ -301,7 +301,7 @@ public class Rhea implements Deity {
                 int t = (int) (RHEAULTIMATECOOLDOWNMAX - ((RHEAULTIMATECOOLDOWNMAX - RHEAULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
                 int hit = entangle(p);
                 if (hit > 0) {
-                    p.sendMessage(ChatColor.YELLOW + "Rhea has entangled " + hit + " enemies.");
+                    p.sendMessage(ChatColor.YELLOW + "Jord has entangled " + hit + " enemies.");
                     DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - RHEAULTIMATECOST);
                     RHEAULTIMATETIME = System.currentTimeMillis() + (t * 1000);
                 } else p.sendMessage(ChatColor.YELLOW + "No targets found.");
@@ -467,7 +467,7 @@ public class Rhea implements Deity {
 
     private void trap(final LivingEntity le, int durationseconds, final Player p) {
         if (le instanceof Player) {
-            ((Player) le).sendMessage(ChatColor.YELLOW + "You have been entangled by Rhea.");
+            ((Player) le).sendMessage(ChatColor.YELLOW + "You have been entangled by Jord.");
         }
         le.setVelocity(new Vector(0, 0, 0));
         final Location originalloc = le.getLocation();
@@ -556,5 +556,10 @@ public class Rhea implements Deity {
                 }
             }
         }, durationseconds * 20);
+    }
+
+    @Override
+    public boolean canTribute() {
+        return true;
     }
 }

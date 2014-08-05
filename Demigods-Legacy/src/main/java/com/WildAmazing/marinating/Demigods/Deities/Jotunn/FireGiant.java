@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 //TODO better replacement for BLAZE
-public class Jörmungandr implements Deity {
+public class FireGiant implements Deity {
     private static final long serialVersionUID = -6437607905225500420L;
     private final UUID PLAYER;
     private final int FIREBALLCOST = 100;
@@ -33,7 +33,7 @@ public class Jörmungandr implements Deity {
     private long BLAZETIME;
     private long FIREBALLTIME;
 
-    public Jörmungandr(UUID name) {
+    public FireGiant(UUID name) {
         PLAYER = name;
         FIRESTORMTIME = System.currentTimeMillis();
         BLAZETIME = System.currentTimeMillis();
@@ -42,10 +42,10 @@ public class Jörmungandr implements Deity {
 
     @Override
     public String getName() {
-        return "Jörmungandr";
+        return "Fire Giant";
     }
 
-    public boolean getBLAZE() {
+    public boolean getBlaze() {
         return BLAZE;
     }
 
@@ -61,8 +61,8 @@ public class Jörmungandr implements Deity {
 
     @Override
     public void printInfo(Player p) {
-        if (DMiscUtil.hasDeity(p, "Jörmungandr") && DMiscUtil.isFullParticipant(p)) {
-            int devotion = DMiscUtil.getDevotion(p, getName());
+        if (DMiscUtil.hasDeity(p, "Fire Giant") && DMiscUtil.isFullParticipant(p)) {
+            int devotion = 10000;
             /*
              * Calculate special values first
 			 */
@@ -70,35 +70,35 @@ public class Jörmungandr implements Deity {
             int diameter = (int) Math.ceil(1.43 * Math.pow(devotion, 0.1527));
             if (diameter > 12) diameter = 12;
             int firestormshots = (int) Math.round(2 * Math.pow(DMiscUtil.getDevotion(p, getName()), 0.15));
-			/*
+            /*
 			 * The printed text
 			 */
-            p.sendMessage("--" + ChatColor.GOLD + "Jörmungandr" + ChatColor.GRAY + "[" + devotion + "]");
+            p.sendMessage("--" + ChatColor.GOLD + "Fire Giant");
             p.sendMessage(":Immune to fire damage.");
             p.sendMessage(":Shoot a fireball at the cursor's location. " + ChatColor.GREEN + "/fireball");
             p.sendMessage(ChatColor.YELLOW + "Costs " + FIREBALLCOST + " Favor.");
-            if (((Jörmungandr) (DMiscUtil.getDeity(p, "Jörmungandr"))).FIREBALLITEM != null)
-                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Jörmungandr) (DMiscUtil.getDeity(p, "Jörmungandr"))).FIREBALLITEM.name());
+            if (((FireGiant) (DMiscUtil.getDeity(p, "Fire Giant"))).FIREBALLITEM != null)
+                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((FireGiant) (DMiscUtil.getDeity(p, "Fire Giant"))).FIREBALLITEM.name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
             p.sendMessage(":Ignite the ground at the target location with diameter " + diameter + ". " + ChatColor.GREEN + "/blaze");
             p.sendMessage(ChatColor.YELLOW + "Costs " + BLAZECOST + " Favor. Cooldown time: " + BLAZEDELAY + " seconds.");
-            if (((Jörmungandr) (DMiscUtil.getDeity(p, "Jörmungandr"))).BLAZEITEM != null)
-                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Jörmungandr) (DMiscUtil.getDeity(p, "Jörmungandr"))).BLAZEITEM.name());
+            if (((FireGiant) (DMiscUtil.getDeity(p, "Fire Giant"))).BLAZEITEM != null)
+                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((FireGiant) (DMiscUtil.getDeity(p, "Fire Giant"))).BLAZEITEM.name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
-            p.sendMessage(":Jörmungandr rains fire on nearby enemies.");
+            p.sendMessage(":Your fire power rains down on your enemies.");
             p.sendMessage("Shoots " + firestormshots + " fireballs. " + ChatColor.GREEN + "/firestorm");
             p.sendMessage(ChatColor.YELLOW + "Costs " + PROMETHEUSULTIMATECOST + " Favor. Cooldown time: " + t + " seconds.");
             return;
         }
-        p.sendMessage("--" + ChatColor.GOLD + "Jörmungandr");
+        p.sendMessage("--" + ChatColor.GOLD + "Fire Giant");
         p.sendMessage("Passive: Immune to fire damage.");
         p.sendMessage("Active: Shoot a fireball. " + ChatColor.GREEN + "/fireball");
         p.sendMessage(ChatColor.YELLOW + "Costs " + FIREBALLCOST + " Favor. Can bind.");
         p.sendMessage("Active: Ignite the ground around the target." + ChatColor.GREEN + " /blaze ");
         p.sendMessage(ChatColor.YELLOW + "Costs " + BLAZECOST + " Favor. Can bind. Has cooldown.");
-        p.sendMessage("Ultimate: Jörmungandr rains fireballs on your enemies.");
+        p.sendMessage("Ultimate: Your fire power rains down on your enemies.");
         p.sendMessage(ChatColor.GREEN + "/firestorm" + ChatColor.YELLOW + " Costs " + PROMETHEUSULTIMATECOST + " Favor. Has cooldown.");
-        p.sendMessage(ChatColor.YELLOW + "Select item: clay ball");
+        p.sendMessage(ChatColor.YELLOW + "Select item: lighter (flint and steel)");
     }
 
     @Override
@@ -107,7 +107,7 @@ public class Jörmungandr implements Deity {
             PlayerInteractEvent e = (PlayerInteractEvent) ee;
             Player p = e.getPlayer();
             if (!DMiscUtil.isFullParticipant(p)) return;
-            if (!DMiscUtil.hasDeity(p, "Jörmungandr")) return;
+            if (!DMiscUtil.hasDeity(p, "Fire Giant")) return;
             if (FIREBALL || ((p.getItemInHand() != null) && (p.getItemInHand().getType() == FIREBALLITEM))) {
                 if (System.currentTimeMillis() < FIREBALLTIME) return;
                 if (DMiscUtil.getFavor(p) >= FIREBALLCOST) {
@@ -134,7 +134,7 @@ public class Jörmungandr implements Deity {
                         p.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
                         return;
                     }
-                    int diameter = (int) Math.ceil(1.43 * Math.pow(DMiscUtil.getDevotion(p, getName()), 0.1527));
+                    int diameter = (int) Math.ceil(1.43 * Math.pow(10000, 0.1527));
                     if (diameter > 12) diameter = 12;
                     if (DMiscUtil.canLocationPVP(DMiscUtil.getTargetLocation(p))) {
                         blaze(DMiscUtil.getTargetLocation(p), diameter);
@@ -153,7 +153,7 @@ public class Jörmungandr implements Deity {
     public void onCommand(Player P, String str, String[] args, boolean bind) {
         final Player p = P;
         if (!DMiscUtil.isFullParticipant(p)) return;
-        if (!DMiscUtil.hasDeity(p, "Jörmungandr")) return;
+        if (!DMiscUtil.hasDeity(p, "Fire Giant")) return;
         if (str.equalsIgnoreCase("fireball")) {
             if (bind) {
                 if (FIREBALLITEM == null) {
@@ -218,7 +218,7 @@ public class Jörmungandr implements Deity {
                 int t = (int) (PROMETHEUSULTIMATECOOLDOWNMAX - ((PROMETHEUSULTIMATECOOLDOWNMAX - PROMETHEUSULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
                 FIRESTORMTIME = System.currentTimeMillis() + (t * 1000);
                 p.sendMessage("In exchange for " + ChatColor.AQUA + PROMETHEUSULTIMATECOST + ChatColor.WHITE + " Favor, ");
-                p.sendMessage(ChatColor.GOLD + "Jörmungandr " + ChatColor.WHITE + " has unleashed his wrath on " + firestorm(p) + " non-allied entities.");
+                p.sendMessage(ChatColor.GOLD + "your divine fire " + ChatColor.WHITE + " has unleashed his wrath on " + firestorm(p) + " non-allied entities.");
                 DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - PROMETHEUSULTIMATECOST);
             } else p.sendMessage("Firestorm requires " + PROMETHEUSULTIMATECOST + " Favor.");
         }
@@ -227,6 +227,11 @@ public class Jörmungandr implements Deity {
     @Override
     public void onTick(long timeSent) {
 
+    }
+
+    @Override
+    public boolean canTribute() {
+        return false;
     }
 
     private static void shootFireball(Location from, Location to, Player player) {
@@ -259,7 +264,7 @@ public class Jörmungandr implements Deity {
     }
 
     private int firestorm(Player p) {
-        int total = 20 * (int) Math.round(2 * Math.pow(DMiscUtil.getDevotion(p, getName()), 0.15));
+        int total = 20 * (int) Math.round(2 * Math.pow(10000, 0.15));
         Vector ploc = p.getLocation().toVector();
         ArrayList<LivingEntity> entitylist = new ArrayList<LivingEntity>();
         for (LivingEntity anEntity : p.getWorld().getLivingEntities()) {

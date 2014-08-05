@@ -449,25 +449,27 @@ public class DCommandExecutor implements CommandExecutor {
                 p.sendMessage(ChatColor.GRAY + "For more information on the Æsir, use /dg <name>");
                 p.sendMessage(ChatColor.GOLD + "----Tier 1");
                 p.sendMessage(ChatColor.GRAY + "Odin - God of death, wisdom, and time.");
-                p.sendMessage(ChatColor.GRAY + "Thor - God of battle, lightning, and strength.");
-                p.sendMessage(ChatColor.GRAY + "Loki - Demigod-Jatunn of mischief and deception.");
+                p.sendMessage(ChatColor.GRAY + "Thor - God of battle, thunder, and strength.");
+                p.sendMessage(ChatColor.GRAY + "Baldr - God of light and purity.");
                 p.sendMessage(ChatColor.GOLD + "----Tier 2");
-                p.sendMessage(ChatColor.GRAY + "Ares - God of war.");
-                p.sendMessage(ChatColor.GRAY + "Athena - Goddess of wisdom.");
-                p.sendMessage(ChatColor.GRAY + "Hephaestus - God of the forge.");
-                p.sendMessage(ChatColor.GRAY + "Apollo - God of archery and healing.");
+                p.sendMessage(ChatColor.GRAY + "Vidar - God of vengeance.");
+                p.sendMessage(ChatColor.GRAY + "Heimdallr - God of wit.");
+                p.sendMessage(ChatColor.GRAY + "Bragi - God of poetry.");
+                p.sendMessage(ChatColor.GRAY + "Dwarf** - A crafty race of wise blacksmiths.");
+                p.sendMessage(ChatColor.GRAY + " - Marked (**): These are races, not deities. No shrines or tributes.");
             } else if (args[0].equalsIgnoreCase("")) {
                 p.sendMessage(ChatColor.YELLOW + "[Demigods] Jotunn Help File");
                 p.sendMessage(ChatColor.GRAY + "For more information on the Jotunn, use /dg <name>");
                 p.sendMessage(ChatColor.GOLD + "----Tier 1");
-                p.sendMessage(ChatColor.GRAY + "Fárbauti (farbauti) - Jatunn of anger and war.");
-                p.sendMessage(ChatColor.GRAY + "Hel - Ruler of Hel.");
-                p.sendMessage(ChatColor.GRAY + "Jörmungandr (jormungandr) - Jatunn of fire.");
+                p.sendMessage(ChatColor.GRAY + "Hel - Ruler of the unwanted dead.");
+                p.sendMessage(ChatColor.GRAY + "Jormungand - The World Serpent.");
+                p.sendMessage(ChatColor.GRAY + "Fire Giant (firegiant)** - A mighty race of deified fire.");
                 p.sendMessage(ChatColor.GOLD + "----Tier 2");
-                p.sendMessage(ChatColor.GRAY + "Atlas - Titan of enduring.");
-                p.sendMessage(ChatColor.GRAY + "Oceanus - Titan of the oceans.");
-                p.sendMessage(ChatColor.GRAY + "Hyperion - Titan of light.");
-                p.sendMessage(ChatColor.GRAY + "Themis - Titaness of diplomacy and foresight.");
+                p.sendMessage(ChatColor.GRAY + "Thrymr - Late king of the Jotunn.");
+                p.sendMessage(ChatColor.GRAY + "Jord - Mother of plants and animals.");
+                p.sendMessage(ChatColor.GRAY + "Frost Giant (frostgiant)** - A mighty race of deified frost.");
+                p.sendMessage(ChatColor.GRAY + "Dís (dis)** - A fearsome race of protective spirits.");
+                p.sendMessage(ChatColor.GRAY + " - Marked (**): These are races, not deities. No shrines or tributes.");
             } else if (args[0].equalsIgnoreCase("claim")) {
                 p.sendMessage(ChatColor.YELLOW + "[Demigods] Claim Help File");
                 p.sendMessage(ChatColor.GRAY + "To claim your first deity, use " + ChatColor.YELLOW + "/claim" + ChatColor.GRAY + " with");
@@ -534,7 +536,6 @@ public class DCommandExecutor implements CommandExecutor {
                 int othercount = 0;
                 int titankills = 0;
                 int godkills = 0;
-                int giantkills = 0;
                 int otherkills = 0;
                 int titandeaths = 0;
                 int goddeaths = 0;
@@ -574,7 +575,7 @@ public class DCommandExecutor implements CommandExecutor {
                     } catch (NullPointerException ignored) {
                     }
                 }
-				/*
+                /*
 				 * Print data
 				 */
                 p.sendMessage(ChatColor.GRAY + "----Stats----");
@@ -1499,51 +1500,57 @@ public class DCommandExecutor implements CommandExecutor {
             return true;
         } else {
             String s = args[1].toLowerCase();
+            String success = ChatColor.YELLOW + "Success! " + target + " now has the deity " + args[1] + ".";
             switch (s) {
                 case "thor":
                     DMiscUtil.giveDeity(target, new Thor(target));
                     break;
-                case "farbauti":
-                    DMiscUtil.giveDeity(target, new Fárbauti(target));
+                case "vidar":
+                    DMiscUtil.giveDeity(target, new Vidar(target));
                     break;
                 case "odin":
                     DMiscUtil.giveDeity(target, new Odin(target));
                     break;
-                case "jormungandr":
-                    DMiscUtil.giveDeity(target, new Jörmungandr(target));
+                case "firegiant":
+                    DMiscUtil.giveDeity(target, new FireGiant(target));
+                    success = ChatColor.YELLOW + "Success! " + target + " now has divine fire.";
                     break;
-                case "rhea":
-                    DMiscUtil.giveDeity(target, new Rhea(target));
+                case "jord":
+                    DMiscUtil.giveDeity(target, new Jord(target));
                     break;
                 case "hel":
                     DMiscUtil.giveDeity(target, new Hel(target));
                     break;
-                case "poseidon":
-                    DMiscUtil.giveDeity(target, new Poseidon(target));
+                case "jormungand":
+                    DMiscUtil.giveDeity(target, new Jormungand(target));
                     break;
-                case "atlas":
-                    DMiscUtil.giveDeity(target, new Atlas(target));
+                case "thrymr":
+                    DMiscUtil.giveDeity(target, new Thrymr(target));
                     break;
-                case "athena":
-                    DMiscUtil.giveDeity(target, new Athena(target));
+                case "heimdallr":
+                    DMiscUtil.giveDeity(target, new Heimdallr(target));
                     break;
-                case "oceanus":
-                    DMiscUtil.giveDeity(target, new Oceanus(target));
+                case "frostgiant":
+                    DMiscUtil.giveDeity(target, new FrostGiant(target));
+                    success = ChatColor.YELLOW + "Success! " + target + " now has divine frost.";
                     break;
-                case "hyperion":
-                    DMiscUtil.giveDeity(target, new Hyperion(target));
+                case "baldr":
+                    DMiscUtil.giveDeity(target, new Baldr(target));
                     break;
-                case "hephaestus":
-                    DMiscUtil.giveDeity(target, new Hephaestus(target));
+                case "dwarf":
+                    DMiscUtil.giveDeity(target, new Dwarf(target));
+                    success = ChatColor.YELLOW + "Success! " + target + " now has dwarven powers.";
                     break;
-                case "apollo":
-                    DMiscUtil.giveDeity(target, new Apollo(target));
+                case "bragi":
+                    DMiscUtil.giveDeity(target, new Bragi(target));
                     break;
-                case "themis":
-                    DMiscUtil.giveDeity(target, new Themis(target));
+                case "dís":
+                case "dis":
+                    DMiscUtil.giveDeity(target, new Dís(target));
+                    success = ChatColor.YELLOW + "Success! " + target + " has joined the dísir.";
                     break;
             }
-            p.sendMessage(ChatColor.YELLOW + "Success! " + target + " now has the deity " + args[1] + ".");
+            p.sendMessage(success);
             p.sendMessage(ChatColor.YELLOW + "Skills may not work if you mismatch Jotunn and Æsir.");
         }
         return true;
@@ -1855,25 +1862,25 @@ public class DCommandExecutor implements CommandExecutor {
         if ((DMiscUtil.getDeities(p) == null) || (DMiscUtil.getDeities(p).size() == 0)) {
             Deity choice = null;
             switch (p.getItemInHand().getType()) {
-                case IRON_INGOT:
-                    choice = new Thor(p.getUniqueId());
-                    break;
                 case SOUL_SAND:
                     choice = new Odin(p.getUniqueId());
                     break;
-                case WATER_BUCKET:
-                    choice = new Poseidon(p.getUniqueId());
+                case IRON_INGOT:
+                    choice = new Thor(p.getUniqueId());
                     break;
-
+                case RED_ROSE:
+                case YELLOW_FLOWER:
+                    choice = new Baldr(p.getUniqueId());
+                    break;
                 //
+                case FLINT_AND_STEEL:
+                    choice = new FireGiant(p.getUniqueId());
+                    break;
+                case WATER_BUCKET:
+                    choice = new Jormungand(p.getUniqueId());
+                    break;
                 case BONE:
                     choice = new Hel(p.getUniqueId());
-                    break;
-                case CLAY_BALL:
-                    choice = new Jörmungandr(p.getUniqueId());
-                    break;
-                case GOLD_SWORD:
-                    choice = new Rhea(p.getUniqueId());
                     break;
             }
             if (choice != null) {
@@ -1887,7 +1894,15 @@ public class DCommandExecutor implements CommandExecutor {
                     p.sendMessage(ChatColor.RED + "Try again later or select a different deity.");
                     return true;
                 }
-                p.sendMessage(ChatColor.YELLOW + "You have been accepted to the lineage of " + choice.getName() + ".");
+                if (choice.getClass() == Dwarf.class) {
+                    p.sendMessage(ChatColor.YELLOW + "You have been accepted to the dwarven lineage.");
+                } else if (choice.getClass() == Dís.class) {
+                    p.sendMessage(ChatColor.YELLOW + "You have been accepted into the lineage of the dísir.");
+                } else if (choice.getClass() == FireGiant.class) {
+                    p.sendMessage(ChatColor.YELLOW + "You are gifted with divine fire, joining the lineage of the fire giants.");
+                } else {
+                    p.sendMessage(ChatColor.YELLOW + "You have been accepted to the lineage of " + choice.getName() + ".");
+                }
                 DMiscUtil.initializePlayer(p.getUniqueId(), choice.getDefaultAlliance(), choice);
                 p.getWorld().strikeLightningEffect(p.getLocation());
                 for (int i = 0; i < 20; i++)
@@ -1910,45 +1925,46 @@ public class DCommandExecutor implements CommandExecutor {
             case IRON_INGOT:
                 choice = new Thor(p.getUniqueId());
                 break;
-            case WATER_BUCKET:
-                choice = new Poseidon(p.getUniqueId());
+            case GOLD_SWORD:
+                choice = new Vidar(p.getUniqueId());
                 break;
             case SOUL_SAND:
                 choice = new Odin(p.getUniqueId());
                 break;
             case BOOK:
-                choice = new Athena(p.getUniqueId());
+                choice = new Heimdallr(p.getUniqueId());
                 break;
             case FURNACE:
-                choice = new Hephaestus(p.getUniqueId());
+                choice = new Dwarf(p.getUniqueId());
                 break;
             case JUKEBOX:
-                choice = new Apollo(p.getUniqueId());
+                choice = new Bragi(p.getUniqueId());
+                break;
+            case RED_ROSE:
+            case YELLOW_FLOWER:
+                choice = new Baldr(p.getUniqueId());
                 break;
             //
+            case WATER_BUCKET:
+                choice = new Jormungand(p.getUniqueId());
+                break;
             case BONE:
                 choice = new Hel(p.getUniqueId());
                 break;
-            case GOLD_SWORD:
-                choice = new Fárbauti(p.getUniqueId());
-                break;
-            case CLAY_BALL:
-                choice = new Jörmungandr(p.getUniqueId());
+            case FLINT_AND_STEEL:
+                choice = new FireGiant(p.getUniqueId());
                 break;
             case VINE:
-                choice = new Rhea(p.getUniqueId());
+                choice = new Jord(p.getUniqueId());
                 break;
             case OBSIDIAN:
-                choice = new Atlas(p.getUniqueId());
+                choice = new Thrymr(p.getUniqueId());
                 break;
             case INK_SACK:
-                choice = new Oceanus(p.getUniqueId());
-                break;
-            case GLOWSTONE:
-                choice = new Hyperion(p.getUniqueId());
+                choice = new FrostGiant(p.getUniqueId());
                 break;
             case COMPASS:
-                choice = new Themis(p.getUniqueId());
+                choice = new Dís(p.getUniqueId());
                 break;
         }
         if (choice == null) {
@@ -1974,8 +1990,17 @@ public class DCommandExecutor implements CommandExecutor {
         DMiscUtil.giveDeity(p, choice);
         DMiscUtil.setFavorCap(p, DMiscUtil.getFavorCap(p) + 100);
         DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) + 100);
-        // p.getWorld().strikeLightningEffect((inside.getCenter().toLocationNewWorld(p.getWorld())));
-        p.sendMessage(ChatColor.YELLOW + "You have been accepted to the lineage of " + choice.getName() + ".");
+        if (choice.getClass() == Dwarf.class) {
+            p.sendMessage(ChatColor.YELLOW + "You have been accepted to the dwarven lineage.");
+        } else if (choice.getClass() == Dís.class) {
+            p.sendMessage(ChatColor.YELLOW + "You have been accepted into the lineage of the dísir.");
+        } else if (choice.getClass() == FireGiant.class) {
+            p.sendMessage(ChatColor.YELLOW + "You are gifted with divine fire, joining the lineage of the fire giants.");
+        } else if (choice.getClass() == FrostGiant.class) {
+            p.sendMessage(ChatColor.YELLOW + "You are gifted with divine frost, joining the lineage of the frost giants.");
+        } else {
+            p.sendMessage(ChatColor.YELLOW + "You have been accepted to the lineage of " + choice.getName() + ".");
+        }
         return true;
     }
 

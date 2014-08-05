@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods.Deities.Jotunn;
+package com.WildAmazing.marinating.Demigods.Deities.Æsir;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
@@ -25,7 +25,7 @@ import java.util.UUID;
  * Range, damage, and cooldown of ultimate
  */
 
-public class Fárbauti implements Deity {
+public class Vidar implements Deity {
     private static final long serialVersionUID = -5825867521620334951L;
     private final UUID PLAYER;
     /*
@@ -42,7 +42,7 @@ public class Fárbauti implements Deity {
     private long STRIKETIME;
     private long ARESULTIMATETIME;
 
-    public Fárbauti(UUID player) {
+    public Vidar(UUID player) {
         PLAYER = player;
         ARESULTIMATETIME = System.currentTimeMillis();
         STRIKETIME = System.currentTimeMillis();
@@ -50,12 +50,12 @@ public class Fárbauti implements Deity {
 
     @Override
     public String getDefaultAlliance() {
-        return "Jotunn";
+        return "Æsir";
     }
 
     @Override
     public void printInfo(Player p) {
-        if (DMiscUtil.hasDeity(p, "Fárbauti") && DMiscUtil.isFullParticipant(p)) {
+        if (DMiscUtil.hasDeity(p, "Vidar") && DMiscUtil.isFullParticipant(p)) {
             int devotion = DMiscUtil.getDevotion(p, getName());
             /*
              * Calculate special values first
@@ -69,27 +69,27 @@ public class Fárbauti implements Deity {
             int damage = (int) Math.ceil(10 * Math.pow(DMiscUtil.getAscensions(p), 0.868));
             int confuseduration = (int) (1.0354 * Math.pow(DMiscUtil.getAscensions(p), 0.4177)) * 20;
             int t = (int) (ARESULTIMATECOOLDOWNMAX - ((ARESULTIMATECOOLDOWNMAX - ARESULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
-			/*
+            /*
 			 * The printed text
 			 */
-            p.sendMessage("--" + ChatColor.GOLD + "Fárbauti" + ChatColor.GRAY + " [" + devotion + "]");
+            p.sendMessage("--" + ChatColor.GOLD + "Vidar" + ChatColor.GRAY + " [" + devotion + "]");
             p.sendMessage(":Up to " + DMiscUtil.getAscensions(p) + " additional Favor per hit on overkill.");
             p.sendMessage(":Strike an enemy from afar with your sword, slowing them down.");
             p.sendMessage("Slow: " + slowpower + " for " + duration + " seconds. Damage: " + dmg + ChatColor.GREEN + " /strike " + ChatColor.YELLOW + "Costs " + STRIKECOST + " Favor.");
-            if (((Fárbauti) DMiscUtil.getDeity(p, getName())).STRIKEBIND != null)
-                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Fárbauti) DMiscUtil.getDeity(p, getName())).STRIKEBIND.name());
+            if (((Vidar) DMiscUtil.getDeity(p, getName())).STRIKEBIND != null)
+                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Vidar) DMiscUtil.getDeity(p, getName())).STRIKEBIND.name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
-            p.sendMessage(":Fárbauti flings up to " + targets + " targets within range " + range + " to you, dealing");
+            p.sendMessage(":Vidar flings up to " + targets + " targets within range " + range + " to you, dealing");
             p.sendMessage(damage + " damage to each and confusing them for " + confuseduration + " seconds." + ChatColor.GREEN + " /crash");
             p.sendMessage(ChatColor.YELLOW + "Costs " + ARESULTIMATECOST + " Favor. Cooldown time: " + t + " seconds.");
             return;
         }
-        p.sendMessage("--" + ChatColor.GOLD + "Fárbauti");
+        p.sendMessage("--" + ChatColor.GOLD + "Vidar");
         p.sendMessage("Passive: Gain favor for overkill attacks.");
         p.sendMessage("Active: Strike at an enemy from afar with your sword, with");
         p.sendMessage("a slowing effect. " + ChatColor.GREEN + "/strike");
         p.sendMessage(ChatColor.YELLOW + "Costs " + STRIKECOST + " Favor. Can bind.");
-        p.sendMessage("Ultimate: Fárbauti flings nearby enemies towards you. Damages and");
+        p.sendMessage("Ultimate: Vidar flings nearby enemies towards you. Damages and");
         p.sendMessage("confuses targets. " + ChatColor.GREEN + "/crash");
         p.sendMessage(ChatColor.YELLOW + "Costs " + ARESULTIMATECOST + " Favor. Has cooldown.");
         p.sendMessage(ChatColor.YELLOW + "Select item: gold sword");
@@ -97,7 +97,7 @@ public class Fárbauti implements Deity {
 
     @Override
     public String getName() {
-        return "Fárbauti";
+        return "Vidar";
     }
 
     @Override
@@ -110,7 +110,7 @@ public class Fárbauti implements Deity {
         if (ee instanceof PlayerInteractEvent) {
             PlayerInteractEvent e = (PlayerInteractEvent) ee;
             Player p = e.getPlayer();
-            if (!DMiscUtil.hasDeity(p, "Fárbauti") || !DMiscUtil.isFullParticipant(p)) return;
+            if (!DMiscUtil.hasDeity(p, "Vidar") || !DMiscUtil.isFullParticipant(p)) return;
             if ((p.getItemInHand() != null) && p.getItemInHand().getType().name().contains("SWORD")) {
                 if (STRIKE || ((p.getItemInHand() != null) && (p.getItemInHand().getType() == STRIKEBIND))) {
                     if (STRIKETIME > System.currentTimeMillis()) return;
@@ -129,7 +129,7 @@ public class Fárbauti implements Deity {
                 EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) ee;
                 if (e.getDamager() instanceof Player) {
                     Player p = (Player) e.getDamager();
-                    if (!DMiscUtil.hasDeity(p, "Fárbauti") || !DMiscUtil.isFullParticipant(p)) return;
+                    if (!DMiscUtil.hasDeity(p, "Vidar") || !DMiscUtil.isFullParticipant(p)) return;
                     try {
                         LivingEntity le = (LivingEntity) e.getEntity();
                         if (le.getHealth() - e.getDamage() <= 0.0) {
@@ -155,7 +155,7 @@ public class Fárbauti implements Deity {
      */
     @Override
     public void onCommand(final Player p, String str, String[] args, boolean bind) {
-        if (DMiscUtil.hasDeity(p, "Fárbauti")) {
+        if (DMiscUtil.hasDeity(p, "Vidar")) {
             if (str.equalsIgnoreCase("strike")) {
                 if (bind) {
                     if (STRIKEBIND == null) {
@@ -204,7 +204,7 @@ public class Fárbauti implements Deity {
                     int t = (int) (ARESULTIMATECOOLDOWNMAX - ((ARESULTIMATECOOLDOWNMAX - ARESULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
                     ARESULTIMATETIME = System.currentTimeMillis() + (t * 1000);
                     p.sendMessage("In exchange for " + ChatColor.AQUA + ARESULTIMATECOST + ChatColor.WHITE + " Favor, ");
-                    p.sendMessage(ChatColor.GOLD + "Fárbauti" + ChatColor.WHITE + " has unleashed his powers on " + hits + " non-allied entities.");
+                    p.sendMessage(ChatColor.GOLD + "Vidar" + ChatColor.WHITE + " has unleashed his powers on " + hits + " non-allied entities.");
                     DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - ARESULTIMATECOST);
                 } else p.sendMessage(ChatColor.YELLOW + "Power crash requires " + ARESULTIMATECOST + " Favor.");
             }
@@ -288,5 +288,10 @@ public class Fárbauti implements Deity {
 
     @Override
     public void onTick(long timeSent) {
+    }
+
+    @Override
+    public boolean canTribute() {
+        return true;
     }
 }

@@ -1,4 +1,4 @@
-package com.WildAmazing.marinating.Demigods.Deities.Jotunn;
+package com.WildAmazing.marinating.Demigods.Deities.Æsir;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.WildAmazing.marinating.Demigods.Util.DMiscUtil;
@@ -19,7 +19,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Hyperion implements Deity {
+public class Baldr implements Deity {
     private static final long serialVersionUID = -2472769863144336856L;
     private final UUID PLAYER;
 
@@ -40,7 +40,7 @@ public class Hyperion implements Deity {
     private long ULTIMATETIME;
     private long LASTCHECK;
 
-    public Hyperion(UUID player) {
+    public Baldr(UUID player) {
         PLAYER = player;
         SKILLTIME = System.currentTimeMillis();
         ULTIMATETIME = System.currentTimeMillis();
@@ -49,7 +49,7 @@ public class Hyperion implements Deity {
 
     @Override
     public String getName() {
-        return "Hyperion";
+        return "Baldr";
     }
 
     @Override
@@ -59,7 +59,7 @@ public class Hyperion implements Deity {
 
     @Override
     public String getDefaultAlliance() {
-        return "Titan";
+        return "Æsir";
     }
 
     @Override
@@ -78,14 +78,14 @@ public class Hyperion implements Deity {
             int ultrange = (int) Math.round(25 * Math.pow(devotion, 0.09));
             int ultdamage = (int) (Math.floor(10 * Math.pow(devotion, 0.105)));
             int t = (int) (ULTIMATECOOLDOWNMAX - ((ULTIMATECOOLDOWNMAX - ULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / DMiscUtil.ASCENSIONCAP)));
-			/*
+            /*
 			 * The printed text
 			 */
             p.sendMessage("--" + ChatColor.GOLD + getName() + ChatColor.GRAY + "[" + devotion + "]");
             p.sendMessage(":Move with increased speed while in a well-lit area (use" + ChatColor.GREEN + " /sprint " + ChatColor.YELLOW + "to toggle).");
             p.sendMessage(":Left-click to call down an attack dealing " + damage + " in radius " + range + "." + ChatColor.GREEN + " /starfall " + ChatColor.YELLOW + "Costs " + SKILLCOST + " Favor.");
-            if (((Hyperion) DMiscUtil.getDeity(p, getName())).SKILLBIND != null)
-                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Hyperion) DMiscUtil.getDeity(p, getName())).SKILLBIND.name());
+            if (((Baldr) DMiscUtil.getDeity(p, getName())).SKILLBIND != null)
+                p.sendMessage(ChatColor.AQUA + "    Bound to " + ((Baldr) DMiscUtil.getDeity(p, getName())).SKILLBIND.name());
             else p.sendMessage(ChatColor.AQUA + "    Use /bind to bind this skill to an item.");
             p.sendMessage("Ignite up to " + numtargets + " enemies in range " + ultrange + " for " + igniteduration + " seconds, then");
             p.sendMessage("attack them for " + ultdamage + " damage." + ChatColor.GREEN + " /smite");
@@ -98,7 +98,7 @@ public class Hyperion implements Deity {
         p.sendMessage(ChatColor.YELLOW + "Costs " + SKILLCOST + " Favor. Can bind.");
         p.sendMessage("Ultimate: Ignite nearby enemies with the power of the sun, then");
         p.sendMessage("attack for a killing blow. " + ChatColor.GREEN + "/smite " + ChatColor.YELLOW + "Costs " + ULTIMATECOST + " Favor. Has cooldown.");
-        p.sendMessage(ChatColor.YELLOW + "Select item: glowstone");
+        p.sendMessage(ChatColor.YELLOW + "Select item: flower");
     }
 
     @Override
@@ -122,7 +122,7 @@ public class Hyperion implements Deity {
             PlayerMoveEvent move = (PlayerMoveEvent) ee;
             Player p = move.getPlayer();
             if (!DMiscUtil.isFullParticipant(p)) return;
-            if (!DMiscUtil.hasDeity(p, "Hyperion")) return;
+            if (!DMiscUtil.hasDeity(p, "Baldr")) return;
             // KENYANS
             if (PASSIVE) {
                 Block playerBlock = p.getLocation().getBlock();
@@ -189,7 +189,7 @@ public class Hyperion implements Deity {
                     ULTIMATETIME = System.currentTimeMillis() + (t * 1000);
                     int num = smite(p);
                     if (num > 0) {
-                        p.sendMessage("In exchange for " + ChatColor.AQUA + ULTIMATECOST + ChatColor.WHITE + " Favor, " + ChatColor.GOLD + "Hyperion" + ChatColor.WHITE + " has struck " + num + " targets.");
+                        p.sendMessage("In exchange for " + ChatColor.AQUA + ULTIMATECOST + ChatColor.WHITE + " Favor, " + ChatColor.GOLD + "Baldr" + ChatColor.WHITE + " has struck " + num + " targets.");
                         DMiscUtil.setFavor(p, DMiscUtil.getFavor(p) - ULTIMATECOST);
                     } else p.sendMessage(ChatColor.YELLOW + "No targets found.");
                 } else p.sendMessage(ChatColor.YELLOW + "" + ult + " requires " + ULTIMATECOST + " Favor.");
@@ -267,5 +267,10 @@ public class Hyperion implements Deity {
             }
         }, 20 * entitylist.size() + 20);
         return entitylist.size();
+    }
+
+    @Override
+    public boolean canTribute() {
+        return true;
     }
 }

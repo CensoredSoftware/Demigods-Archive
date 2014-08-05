@@ -42,19 +42,19 @@ public class Demigods extends JavaPlugin implements Listener {
     public static final ImmutableSet<Deity> deities = ImmutableSet.copyOf(new HashSet<Deity>() {
         {
             add(new Odin(null));
-            add(new Rhea(null));
-            add(new Jörmungandr(null));
-            add(new Atlas(null));
-            add(new Oceanus(null));
-            add(new Hyperion(null));
-            add(new Themis(null));
+            add(new Jord(null));
+            add(new FireGiant(null));
+            add(new Thrymr(null));
+            add(new FrostGiant(null));
+            add(new Baldr(null));
+            add(new Dís(null));
             add(new Thor(null));
-            add(new Poseidon(null));
+            add(new Jormungand(null));
             add(new Hel(null));
-            add(new Fárbauti(null));
-            add(new Athena(null));
-            add(new Apollo(null));
-            add(new Hephaestus(null));
+            add(new Vidar(null));
+            add(new Heimdallr(null));
+            add(new Bragi(null));
+            add(new Dwarf(null));
         }
     });
 
@@ -178,7 +178,7 @@ public class Demigods extends JavaPlugin implements Listener {
         getCommand("exportdata").setExecutor(ce);
 
 		/*
-		 * Shrine commands
+         * Shrine commands
 		 */
         getCommand("shrine").setExecutor(ce);
         getCommand("shrinewarp").setExecutor(ce);
@@ -244,7 +244,7 @@ public class Demigods extends JavaPlugin implements Listener {
         getCommand("sprint").setExecutor(ce);
         getCommand("smite").setExecutor(ce);
 
-        // Hephaestus
+        // Brokkr
         getCommand("reforge").setExecutor(ce);
         getCommand("shatter").setExecutor(ce);
 
@@ -269,7 +269,7 @@ public class Demigods extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new DPvP(), this);
         getServer().getPluginManager().registerEvents(new DShrines(), this);
         getServer().getPluginManager().registerEvents(new DDeities(), this);
-        getServer().getPluginManager().registerEvents(new Hephaestus(null), this);
+        getServer().getPluginManager().registerEvents(new Dwarf(null), this);
     }
 
     private void initializeThreads() {

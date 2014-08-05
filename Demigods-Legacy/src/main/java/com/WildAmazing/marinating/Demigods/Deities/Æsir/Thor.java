@@ -69,7 +69,7 @@ public class Thor implements Deity {
             double multiply = 0.1753 * Math.pow(devotion, 0.322917);
             // ultimate
             int t = (int) (ZEUSULTIMATECOOLDOWNMAX - ((ZEUSULTIMATECOOLDOWNMAX - ZEUSULTIMATECOOLDOWNMIN) * ((double) DMiscUtil.getAscensions(p) / 100)));
-			/*
+            /*
 			 * The printed text
 			 */
             p.sendMessage("--" + ChatColor.GOLD + "Thor" + ChatColor.GRAY + " [" + devotion + "]");
@@ -278,5 +278,10 @@ public class Thor implements Deity {
     @Override
     public void onTick(long timeSent) {
 
+    }
+
+    @Override
+    public boolean canTribute() {
+        return true;
     }
 }
