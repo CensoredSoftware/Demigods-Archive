@@ -169,11 +169,11 @@ commands:
     timestop:
         description: Odin's ultimate.
     fireball:
-        description: One of Fárbauti's abilities.
+        description: One of a fire giant's abilities.
     blaze:
-        description: One of Fárbauti's abilities.
+        description: One of a fire giant's abilities.
     firestorm:
-        description: Fárbauti's ultimate.
+        description: A fire giant's ultimate.
     poison:
         description: One of Jord's abilities.
     plant:
@@ -193,17 +193,17 @@ commands:
     drown:
         description: One of Jormungand's abilities.
     unburden:
-        description: One of Atlas' abilities.
+        description: One of Thrymr' abilities.
     invincible:
-        description: Atlas' ultimate.
+        description: Thrymr' ultimate.
     flash:
         description: One of Heimdallr's abilities.
     ceasefire:
         description: Heimdallr's ultimate.
     ice:
-        description: One of Bergelmir's abilities.
+        description: One of a frost giant's abilities.
     chill:
-        description: Bergelmir's ultimate.
+        description: A frost giant's ultimate.
     starfall:
         description: One of Baldr's abilities.
     sprint:
@@ -211,19 +211,19 @@ commands:
     smite:
         description: Baldr's ultimate.
     reforge:
-        description: One of any dwarf's abilities.
+        description: One of a dwarf's abilities.
     shatter:
         description: A dwarf's ultimate.
     cure:
-        description: One of Apollo's abilities.
+        description: One of Bragi's abilities.
     finale:
-        description: Apollo's ultimate.
+        description: Bragi's ultimate.
     swap:
         description: One of a dís' abilities.
     congregate:
         description: A dís' ultimate.
     assemble:
-        description: Used with any dís' ultimate.
+        description: A dís' ultimate.
 permissions:
     demigods.bypassclaim:
         default: false
