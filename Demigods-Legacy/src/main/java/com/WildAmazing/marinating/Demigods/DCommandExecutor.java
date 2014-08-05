@@ -2365,11 +2365,11 @@ public class DCommandExecutor implements CommandExecutor {
 
         public static void writeLegacyData(UUID p) throws IOException {
             // Legacy folder.
-            File legacyFolder = new File("plugins/Demigods/Legacy");
+            File legacyFolder = new File("plugins/NorseDemigods/Legacy");
             legacyFolder.mkdir();
 
             // Delete file if it exists.
-            File file = new File("plugins/Demigods/Legacy/" + p + ".txt");
+            File file = new File("plugins/NorseDemigods/Legacy/" + p + ".txt");
             if (file.exists()) file.delete();
 
             FileWriter f = new FileWriter(file);

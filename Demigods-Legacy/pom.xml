@@ -10,10 +10,10 @@
     <modelVersion>4.0.0</modelVersion>
     <version>2.5.1</version>
 
-    <artifactId>Demigods-Legacy-Norse</artifactId>
+    <artifactId>Norse-Demigods</artifactId>
 
     <build>
-        <finalName>Demigods-Norse</finalName>
+        <finalName>NorseDemigods</finalName>
         <defaultGoal>clean install</defaultGoal>
         <sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
         <resources>

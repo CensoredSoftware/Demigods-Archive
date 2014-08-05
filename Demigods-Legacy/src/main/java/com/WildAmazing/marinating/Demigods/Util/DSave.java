@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class DSave {
     private final static Logger log = Logger.getLogger("Minecraft");
-    private final static String PATH = "plugins/Demigods/";
+    private final static String PATH = "plugins/NorseDemigods/";
     private static HashMap<UUID, HashMap<String, Object>> SAVEDDATA = Maps.newHashMap();
 
     public DSave() {
