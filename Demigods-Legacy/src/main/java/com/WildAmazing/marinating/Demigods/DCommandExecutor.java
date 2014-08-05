@@ -1503,7 +1503,8 @@ public class DCommandExecutor implements CommandExecutor {
             return true;
         } else {
             String s = args[1].toLowerCase();
-            String success = ChatColor.YELLOW + "Success! " + target + " now has the deity " + args[1] + ".";
+            String targetName = DMiscUtil.getLastKnownName(target);
+            String success = ChatColor.YELLOW + "Success! " + targetName + " now has the deity " + args[1] + ".";
             switch (s) {
                 case "thor":
                     DMiscUtil.giveDeity(target, new Thor(target));
@@ -1517,7 +1518,7 @@ public class DCommandExecutor implements CommandExecutor {
                 case "fire":
                 case "firegiant":
                     DMiscUtil.giveDeity(target, new FireGiant(target));
-                    success = ChatColor.YELLOW + "Success! " + target + " now has divine fire.";
+                    success = ChatColor.YELLOW + "Success! " + targetName + " now has divine fire.";
                     break;
                 case "jord":
                     DMiscUtil.giveDeity(target, new Jord(target));
@@ -1537,14 +1538,14 @@ public class DCommandExecutor implements CommandExecutor {
                 case "frost":
                 case "frostgiant":
                     DMiscUtil.giveDeity(target, new FrostGiant(target));
-                    success = ChatColor.YELLOW + "Success! " + target + " now has divine frost.";
+                    success = ChatColor.YELLOW + "Success! " + targetName + " now has divine frost.";
                     break;
                 case "baldr":
                     DMiscUtil.giveDeity(target, new Baldr(target));
                     break;
                 case "dwarf":
                     DMiscUtil.giveDeity(target, new Dwarf(target));
-                    success = ChatColor.YELLOW + "Success! " + target + " now has dwarven powers.";
+                    success = ChatColor.YELLOW + "Success! " + targetName + " now has dwarven powers.";
                     break;
                 case "bragi":
                     DMiscUtil.giveDeity(target, new Bragi(target));
@@ -1552,7 +1553,7 @@ public class DCommandExecutor implements CommandExecutor {
                 case "dís":
                 case "dis":
                     DMiscUtil.giveDeity(target, new Dis(target));
-                    success = ChatColor.YELLOW + "Success! " + target + " has joined the dísir.";
+                    success = ChatColor.YELLOW + "Success! " + targetName + " has joined the dísir.";
                     break;
             }
             p.sendMessage(success);
