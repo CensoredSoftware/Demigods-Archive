@@ -1610,36 +1610,42 @@ public class DCommandExecutor implements CommandExecutor {
         if (!(DMiscUtil.hasPermission(p, "demigods.forsake") || DMiscUtil.hasPermission(p, "demigods.admin")))
             return true;
         if (!DMiscUtil.isFullParticipant(p)) return true;
-        if (args.length != 1) return false;
-        if (args[0].equalsIgnoreCase("all")) {
-            DMiscUtil.getPlugin().getServer().broadcastMessage(ChatColor.RED + p.getName() + " has forsaken their deities.");
-            p.kickPlayer(ChatColor.RED + "You are mortal.");
-            for (WriteLocation w : DMiscUtil.getShrines(p.getUniqueId()).values())
-                DMiscUtil.removeShrine(w);
-            DSave.removePlayer(p);
-            DSave.addPlayer(p);
-            return true;
-        }
-        if (!DMiscUtil.hasDeity(p, args[0])) {
-            p.sendMessage(ChatColor.YELLOW + "You do not have that deity.");
-        } else {
-            if (DMiscUtil.getDeities(p).size() >= 2) {
-                String str = "";
-                Deity toremove = DMiscUtil.getDeity(p, args[0]);
-                DLevels.levelProcedure(p);
-                p.sendMessage(ChatColor.YELLOW + "You have forsaken " + toremove.getName() + "." + str);
-                DMiscUtil.getPlugin().getServer().broadcastMessage(ChatColor.RED + p.getName() + " has forsaken " + toremove.getName() + ".");
-                DMiscUtil.getDeities(p).remove(toremove);
-            } else {
-                Deity toremove = DMiscUtil.getDeity(p, args[0]);
-                p.sendMessage(ChatColor.YELLOW + "You have forsaken " + toremove.getName() + ".");
-                p.kickPlayer(ChatColor.YELLOW + "You have forsaken " + toremove.getName() + ChatColor.WHITE + " -- " + ChatColor.RED + "You are mortal.");
-                DMiscUtil.getPlugin().getServer().broadcastMessage(ChatColor.RED + p.getName() + " has forsaken " + toremove.getName() + ".");
+        if (args.length == 1 || args.length == 2) {
+            if (args[0].equalsIgnoreCase("all")) {
+                DMiscUtil.getPlugin().getServer().broadcastMessage(ChatColor.RED + p.getName() + " has forsaken their deities.");
+                p.kickPlayer(ChatColor.RED + "You are mortal.");
+                for (WriteLocation w : DMiscUtil.getShrines(p.getUniqueId()).values())
+                    DMiscUtil.removeShrine(w);
                 DSave.removePlayer(p);
                 DSave.addPlayer(p);
+                return true;
             }
+            String deityName = args[0];
+            if (args.length == 2) {
+                deityName = args[0] + " " + args[1];
+            }
+            if (!DMiscUtil.hasDeity(p, deityName)) {
+                p.sendMessage(ChatColor.YELLOW + "You do not have that deity.");
+            } else {
+                if (DMiscUtil.getDeities(p).size() >= 2) {
+                    String str = "";
+                    Deity toremove = DMiscUtil.getDeity(p, deityName);
+                    DLevels.levelProcedure(p);
+                    p.sendMessage(ChatColor.YELLOW + "You have forsaken " + toremove.getName() + "." + str);
+                    DMiscUtil.getPlugin().getServer().broadcastMessage(ChatColor.RED + p.getName() + " has forsaken " + toremove.getName() + ".");
+                    DMiscUtil.getDeities(p).remove(toremove);
+                } else {
+                    Deity toremove = DMiscUtil.getDeity(p, deityName);
+                    p.sendMessage(ChatColor.YELLOW + "You have forsaken " + toremove.getName() + ".");
+                    p.kickPlayer(ChatColor.YELLOW + "You have forsaken " + toremove.getName() + ChatColor.WHITE + " -- " + ChatColor.RED + "You are mortal.");
+                    DMiscUtil.getPlugin().getServer().broadcastMessage(ChatColor.RED + p.getName() + " has forsaken " + toremove.getName() + ".");
+                    DSave.removePlayer(p);
+                    DSave.addPlayer(p);
+                }
+            }
+            return true;
         }
-        return true;
+        return false;
     }
 
     private boolean setFavor(Player p, String[] args) {
