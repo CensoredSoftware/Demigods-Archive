@@ -39,20 +39,27 @@ public class Demigods extends JavaPlugin implements Listener {
 
     public static final ImmutableSet<Deity> deities = ImmutableSet.copyOf(new HashSet<Deity>() {
         {
-            add(new Odin(null));
-            add(new Jord(null));
-            add(new FireGiant(null));
-            add(new Thrymr(null));
-            add(new FrostGiant(null));
-            add(new Baldr(null));
-            add(new Dis(null));
-            add(new Thor(null));
-            add(new Jormungand(null));
-            add(new Hel(null));
-            add(new Vidar(null));
-            add(new Heimdallr(null));
-            add(new Bragi(null));
-            add(new Dwarf(null));
+            UUID notchId = UUID.fromString("069a79f4-44e9-4726-a5be-fca90e38aaf5");
+            Odin odin = new Odin(notchId);
+            DMiscUtil.initializePlayer(notchId, "AEsir", odin);
+            add(odin);
+            add(new Thor(notchId));
+            add(new Baldr(notchId));
+            add(new Vidar(notchId));
+            add(new Heimdallr(notchId));
+            add(new Bragi(notchId));
+            add(new Dwarf(notchId));
+
+            UUID evilsephId = UUID.fromString("020242a1-7b94-4179-9eff-511eea1221da");
+            FireGiant fireGiant = new FireGiant(evilsephId);
+            DMiscUtil.initializePlayer(notchId, "Jotunn", fireGiant);
+            add(fireGiant);
+            add(new Jord(evilsephId));
+            add(new Thrymr(evilsephId));
+            add(new FrostGiant(evilsephId));
+            add(new Dis(evilsephId));
+            add(new Jormungand(evilsephId));
+            add(new Hel(evilsephId));
         }
     });
 

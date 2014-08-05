@@ -79,6 +79,10 @@ public class DLevels implements Listener {
                 Deity d = deities.get((int) Math.floor(Math.random() * deities.size()));
                 DMiscUtil.setDevotion(p, d, (int) (DMiscUtil.getDevotion(p, d) + e.getDamage() * MULTIPLIER));
                 levelProcedure(p);
+            } else if (!DMiscUtil.getDeities(p).isEmpty()) {
+                Deity d = deities.get((int) Math.floor(Math.random() * DMiscUtil.getDeities(p).size()));
+                DMiscUtil.setDevotion(p, d, (int) (DMiscUtil.getDevotion(p, d) + e.getDamage() * MULTIPLIER));
+                levelProcedure(p);
             }
         }
     }
