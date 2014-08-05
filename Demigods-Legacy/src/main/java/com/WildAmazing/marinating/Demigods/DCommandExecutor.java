@@ -456,7 +456,7 @@ public class DCommandExecutor implements CommandExecutor {
                 p.sendMessage(ChatColor.GRAY + "Heimdallr - God of wit.");
                 p.sendMessage(ChatColor.GRAY + "Bragi - God of poetry.");
                 p.sendMessage(ChatColor.GRAY + "Dwarf** - A crafty race of wise blacksmiths.");
-                p.sendMessage(ChatColor.GRAY + " - Marked (**): These are races, not deities. No shrines or tributes.");
+                p.sendMessage(ChatColor.GRAY.toString() + ChatColor.ITALIC + " Those marked ** are races, not deities. No shrines or tributes.");
             } else if (args[0].equalsIgnoreCase("")) {
                 p.sendMessage(ChatColor.YELLOW + "[Demigods] Jotunn Help File");
                 p.sendMessage(ChatColor.GRAY + "For more information on the Jotunn, use /dg <name>");
@@ -469,7 +469,7 @@ public class DCommandExecutor implements CommandExecutor {
                 p.sendMessage(ChatColor.GRAY + "Jord - Mother of plants and animals.");
                 p.sendMessage(ChatColor.GRAY + "Frost Giant (frostgiant)** - A mighty race of deified frost.");
                 p.sendMessage(ChatColor.GRAY + "Dís (dis)** - A fearsome race of protective spirits.");
-                p.sendMessage(ChatColor.GRAY + " - Marked (**): These are races, not deities. No shrines or tributes.");
+                p.sendMessage(ChatColor.GRAY.toString() + ChatColor.ITALIC + " Those marked ** are races, not deities. No shrines or tributes.");
             } else if (args[0].equalsIgnoreCase("claim")) {
                 p.sendMessage(ChatColor.YELLOW + "[Demigods] Claim Help File");
                 p.sendMessage(ChatColor.GRAY + "To claim your first deity, use " + ChatColor.YELLOW + "/claim" + ChatColor.GRAY + " with");
