@@ -51,11 +51,12 @@ public class DDamage implements Listener {
                 }
                 DMiscUtil.damageDemigods((Player) ee.getDamager(), p, e.getDamage(), DamageCause.ENTITY_ATTACK);
                 return;
-            } else if (ee.getDamager() instanceof Projectile && ((Projectile) ee.getDamager()).getShooter() instanceof LivingEntity) {
+            } else if (ee.getDamager() instanceof Projectile && ((Projectile) ee.getDamager()).getShooter() instanceof Player) {
                 Projectile projectile = (Projectile) ee.getDamager();
                 if (projectile.hasMetadata("how_do_I_shot_web")) {
                     DFixes.checkAndCancel(e);
-                    DMiscUtil.damageDemigods((LivingEntity) projectile.getShooter(), p, e.getDamage() * (DMiscUtil.getAscensions(p) + 1), DamageCause.ENTITY_EXPLOSION);
+                    double damage = e.getDamage() * (DMiscUtil.getAscensions((Player) projectile.getShooter()) + 2);
+                    DMiscUtil.damageDemigods((LivingEntity) projectile.getShooter(), p, p.getHealth() - damage >= 1 ? damage : -(1 - p.getHealth()), DamageCause.ENTITY_EXPLOSION);
                 }
                 return;
             }
