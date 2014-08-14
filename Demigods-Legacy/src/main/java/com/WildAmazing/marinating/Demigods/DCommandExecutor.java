@@ -1972,7 +1972,7 @@ public class DCommandExecutor implements CommandExecutor {
             case OBSIDIAN:
                 choice = new Thrymr(p.getUniqueId());
                 break;
-            case INK_SACK:
+            case GLASS_BOTTLE:
                 choice = new FrostGiant(p.getUniqueId());
                 break;
             case COMPASS:
