@@ -803,7 +803,7 @@ public class DMiscUtil {
                 case 6:
                     return "Hero";
                 case 7:
-                    return "Demigod";
+                    return "demigods";
                 case 8:
                     return "Exalted";
                 case 9:

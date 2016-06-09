@@ -1,0 +1,131 @@
+name: Demigods
+main: com.WildAmazing.marinating.demigods.Demigods
+version: 0.9.1
+author: marinating
+commands:
+    dg:
+        description: Important information.
+        aliases: demigods
+    check:
+        description: About the player.
+    transfer:
+        description: Transfer favor.
+        usage: /transfer <player> <favor> OR /transfer <favor>
+    alliance:
+        description: Used to toggle alliance chat.
+        usage: /alliance
+    checkplayer:
+        description: View information about another player.
+        usage: /checkplayer <player>
+        permission: demigods.checkplayer
+    givedeity:
+        description: Gives a deity to a player.
+        usage: /givedeity <player> <deity>
+        permission: demigods.givedeity
+    removedeity:
+        description: Removes a deity from a player.
+        usage: /removedeity <player> <deity>
+        permission: demigods.removedeity
+    forsake:
+        description: Remove a deity from a player.
+        usage: /forsake <deity>
+    setfavor:
+        description: Set a player's favor.
+        usage: /setfavor <player> <amount>
+        permission: demigods.setfavor
+    setallegiance:
+        description: Manually set a player's allegiance.
+        usage: /setallegiance <player> <allegiance>
+        aliases: setalliance
+        permission: demigods.setalliance
+    setlevel:
+        description: Set a player's level.
+        usage: /setlevel <player> <level>
+        aliases: setascensions
+        permission: demigods.setlevel
+    setkills:
+        description: Set a player's kills.
+        usage: /setkills <player> <kills>
+        permission: demigods.setkills
+    setdeaths:
+        description: Set a player's deaths.
+        usage: /setdeaths <player> <deaths>
+        permission: demigods.setdeaths
+    createshrine:
+        description: Create a shrine at the user's location.
+        permission: demigods.createshrine
+    removeplayer:
+        usage: /removeplayer <player>
+        description: Removes a player from the save.
+        permission: demigods.removeplayers
+    removeshrine:
+        usage: /removeshrine
+        description: Removes a shrine from the save.
+        permission: demigods.removeshrine
+    nameshrine:
+        usage: /nameshrine
+        description: Renames a shrine from the save.
+        permission: demigods.nameshrine
+    warpshrine:
+        usage: /warpshrine <shrine name>
+        description: Warp to an allied shrine.
+        permission: demigods.warpshrine
+        aliases: shrinewarp
+    setradius:
+        description: Change a shrine's default protection radius.
+        usage: /setradius <number>
+        permission: demigods.setradius
+    shrine:
+        description: Gives information about shrines.
+    offer:
+        description: Same effect as tributing at a shrine.
+    value:
+        description: See Favor value of item in hand.
+    shove:
+        description: One of Zeus's abilities.
+    lightning:
+        description: One of Zeus's abilities.
+    storm:
+        description: Zeus's ultimate.
+    strike:
+        description: One of Ares' abilities.
+    bloodthirst:
+        description: One of Ares' abilities.
+    crash:
+        description: Ares' ultimate.
+    cleave:
+        description: One of Cronus's abilities.
+    slow:
+        description: One of Cronus's abilities.
+    timestop:
+        description: Cronus's ultimate.
+    fireball:
+        description: One of Prometheus's abilities.
+    defect:
+        description: One of Prometheus's abilities.
+    firestorm:
+        description: Prometheus's ultimate.
+    poison:
+        description: One of Rhea's abilities.
+    plant:
+        description: One of Rhea's abilities.
+    detonate:
+        description: One of Rhea's abilities.
+    entangle:
+        description: Rhea's ultimate.
+    chain:
+        description: One of Hades' abilities.
+    entomb:
+        description: One of Hades' abilities.
+    tartarus:
+        description: Hades' ultimate.
+    reel:
+        description: One of Poseidon's abilities.
+    drown:
+        description: One of Poseidon's abilities.
+    earthquake:
+        description: Poseidon's ultimate.
+    blast:
+        description: One of Atlas' abilities.
+    invincible:
+        description: Atlas' ultimate.

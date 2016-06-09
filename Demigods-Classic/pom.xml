@@ -8,12 +8,12 @@
         <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>2.5.0-LEGACY</version>
+    <version>0.9.1-CLASSIC</version>
 
-    <artifactId>Demigods-Legacy</artifactId>
+    <artifactId>Demigods-Classic</artifactId>
 
     <build>
-        <finalName>Demigods-Legacy</finalName>
+        <finalName>Demigods-Classic</finalName>
         <defaultGoal>clean install</defaultGoal>
         <sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
         <resources>

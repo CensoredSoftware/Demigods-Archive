@@ -4,12 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.censoredsoftware</groupId>
+    <groupId>com.demigodsrpg</groupId>
     <artifactId>Demigods-Archive</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
     <modules>
         <module>Demigods-Legacy</module>
+        <module>Demigods-Classic</module>
         <module>Demigods-Retro</module>
     </modules>
 

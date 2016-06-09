@@ -52,7 +52,7 @@ public class TitanCommands {
                             p2.sendMessage("You have been rewarded with " + add + " Power for slaying " + p1.getDisplayName() + ".");
                             p2.sendMessage("Your Power has increased to " + tpi.getPower() + ".");
                             for (Player pla : p1.getWorld().getPlayers())
-                                pla.sendMessage(ChatColor.RED + "[TITANS] " + ChatColor.DARK_RED + p2.getName() + ChatColor.WHITE + " has slain the Demigod " + ChatColor.GREEN + p1.getName() + ChatColor.WHITE + ".");
+                                pla.sendMessage(ChatColor.RED + "[TITANS] " + ChatColor.DARK_RED + p2.getName() + ChatColor.WHITE + " has slain the demigods " + ChatColor.GREEN + p1.getName() + ChatColor.WHITE + ".");
                             tpi.setKills(tpi.getKills() + 1);
                             gpi.setDeaths(gpi.getDeaths() + 1);
                         }

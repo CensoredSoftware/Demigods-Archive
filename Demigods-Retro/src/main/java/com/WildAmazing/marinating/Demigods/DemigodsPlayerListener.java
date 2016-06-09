@@ -867,7 +867,7 @@ public class DemigodsPlayerListener implements Listener {
                     try {
                         if (args[0].equalsIgnoreCase("all")) {
                             plugin.removeFromMaster(player);
-                            player.sendMessage(ChatColor.RED + "You are no longer a Demigod/Titanspawn.");
+                            player.sendMessage(ChatColor.RED + "You are no longer a demigods/Titanspawn.");
                         } else {
                             Divine remove = Divine.valueOf(args[0].toUpperCase());
                             if (plugin.getInfo(player).hasDeity(remove)) {

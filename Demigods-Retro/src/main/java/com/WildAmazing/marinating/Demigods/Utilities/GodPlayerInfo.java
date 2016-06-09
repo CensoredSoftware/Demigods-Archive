@@ -67,7 +67,7 @@ public class GodPlayerInfo extends PlayerInfo implements Serializable {
     public String getRank() {
         if (super.getAllegiance().size() == 1) return "Acolyte";
         else if (super.getAllegiance().size() == 2) return "Zealot";
-        else if (super.getAllegiance().size() == 3) return "Demigod";
+        else if (super.getAllegiance().size() == 3) return "demigods";
         else if (super.getAllegiance().size() >= 4) return "Olympian";
         return "Mortal";
     }
