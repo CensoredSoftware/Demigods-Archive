@@ -14,6 +14,8 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Set;
+
 public class RheaCommands {
     public static void onPlayerInteractRhea(PlayerInteractEvent e, Demigods plugin) {
         final Player p = e.getPlayer();
@@ -121,8 +123,8 @@ public class RheaCommands {
                                 player.sendMessage("This ability requires 1000 Power.");
                                 break;
                             }
-                            if (player.getTargetBlock(null, 200) != null) {
-                                Block b = player.getTargetBlock(null, 200);
+                            if (player.getTargetBlock((Set) null, 200) != null) {
+                                Block b = player.getTargetBlock((Set) null, 200);
                                 if (b.getType() != Material.AIR && b.getType() != Material.BEDROCK) {
                                     terraform(b.getChunk(), plugin, player);
                                 } else {
@@ -147,7 +149,7 @@ public class RheaCommands {
                                     } else {
                                         player.sendMessage("Plant " + ChatColor.YELLOW + "is already bound to " + r.getPlantItem().name() + ".");
                                     }
-                                } else if (bind == -1) {
+                                } else {
                                     player.sendMessage("Plant " + ChatColor.YELLOW + "is no longer bound to " + r.getPlantItem().name() + ".");
                                     r.setPlantItem(Material.AIR);
                                 }
@@ -218,7 +220,7 @@ public class RheaCommands {
             player.sendMessage("You need 100 Power to do that.");
             return;
         }
-        Block b = player.getTargetBlock(null, 200);
+        Block b = player.getTargetBlock((Set) null, 200);
         if (b != null && plugin.isUnprotected(b.getLocation())) {
             if (player.getWorld().generateTree(b.getRelative(BlockFace.UP).getLocation(), TreeType.TREE)) {
                 player.sendMessage("Use /detonate to create an explosion at this tree.");

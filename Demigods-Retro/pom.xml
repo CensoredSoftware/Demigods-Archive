@@ -51,7 +51,7 @@
                             <relocations>
                                 <relocation>
                                     <pattern>mkremins</pattern>
-                                    <shadedPattern>me.hqm.plugindev.wget.mkremins</shadedPattern>
+                                    <shadedPattern>me.hqm.mkremins</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

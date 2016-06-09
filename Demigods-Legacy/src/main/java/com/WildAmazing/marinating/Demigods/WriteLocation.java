@@ -1,60 +1,51 @@
 package com.WildAmazing.marinating.Demigods;
 
-import java.io.Serializable;
-
 import org.bukkit.Location;
 import org.bukkit.World;
 
-public class WriteLocation implements Serializable
-{
+import java.io.Serializable;
 
-	private static final long serialVersionUID = 8201132625259394712L;
+public class WriteLocation implements Serializable {
 
-	private final int X;
-	private final int Y;
-	private final int Z;
-	private final String WORLD;
+    private static final long serialVersionUID = 8201132625259394712L;
 
-	public WriteLocation(String world, int x, int y, int z)
-	{
-		X = x;
-		Y = y;
-		Z = z;
-		WORLD = world;
-	}
+    private final int X;
+    private final int Y;
+    private final int Z;
+    private final String WORLD;
 
-	public String getWorld()
-	{
-		return WORLD;
-	}
+    public WriteLocation(String world, int x, int y, int z) {
+        X = x;
+        Y = y;
+        Z = z;
+        WORLD = world;
+    }
 
-	public int getX()
-	{
-		return X;
-	}
+    public String getWorld() {
+        return WORLD;
+    }
 
-	public int getY()
-	{
-		return Y;
-	}
+    public int getX() {
+        return X;
+    }
 
-	public int getZ()
-	{
-		return Z;
-	}
+    public int getY() {
+        return Y;
+    }
 
-	public Location toLocationNewWorld(World w)
-	{
-		return new Location(w, X, Y, Z);
-	}
+    public int getZ() {
+        return Z;
+    }
 
-	public Location toLocation(Demigods instance)
-	{
-		return new Location(instance.getServer().getWorld(WORLD), X, Y, Z);
-	}
+    public Location toLocationNewWorld(World w) {
+        return new Location(w, X, Y, Z);
+    }
 
-	public boolean equalsApprox(WriteLocation other)
-	{
-		return((X == other.getX()) && (Y == other.getY()) && (Z == other.getZ()) && WORLD.equals(other.getWorld()));
-	}
+    public Location toLocation(Demigods instance) {
+        return new Location(instance.getServer().getWorld(WORLD), X, Y, Z);
+    }
+
+    public boolean equalsApprox(WriteLocation other) {
+        return ((X == other.getX()) && (Y == other.getY()) && (Z == other.getZ()) && WORLD.equals(other.getWorld()));
+    }
 }

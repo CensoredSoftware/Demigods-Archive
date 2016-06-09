@@ -450,7 +450,7 @@ public class GodCommands {
                 if (p.hasPermission("god.apollo") || p.hasPermission("god.all")) choice = Divine.APOLLO;
                 break;
         /*
-		 * case WOOL: if (i.getData().getData()==((byte)0x6)) choice = Divine.APHRODITE; break;
+         * case WOOL: if (i.getData().getData()==((byte)0x6)) choice = Divine.APHRODITE; break;
 		 * case ARROW: choice = Divine.APOLLO; break;
 		 * case BOW: choice = Divine.ARTEMIS; break;
 		 * case WHEAT: choice = Divine.DEMETER; break;

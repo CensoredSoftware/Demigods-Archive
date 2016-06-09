@@ -12,129 +12,112 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-public class DLevels implements Listener
-{
-	static final double MULTIPLIER = DSettings.getSettingDouble("globalexpmultiplier"); // can be modified
-	static final int LOSSLIMIT = DSettings.getSettingInt("max_devotion_lost_on_death"); // max devotion lost on death per deity
+public class DLevels implements Listener {
+    static final double MULTIPLIER = DSettings.getSettingDouble("globalexpmultiplier"); // can be modified
+    static final int LOSSLIMIT = DSettings.getSettingInt("max_devotion_lost_on_death"); // max devotion lost on death per deity
 
-	@SuppressWarnings({ "incomplete-switch" })
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void gainEXP(BlockBreakEvent e)
-	{
-		if(e.getPlayer() != null)
-		{
-			Player p = e.getPlayer();
-			try
-			{
-				if(!DMiscUtil.canWorldGuardBuild(p, e.getBlock().getLocation())) return;
-			}
-			catch(Exception ignored)
-			{}
-			if(!DSettings.getEnabledWorlds().contains(p.getWorld())) return;
-			if(!DMiscUtil.isFullParticipant(p)) return;
-			int value = 0;
-			switch(e.getBlock().getType())
-			{
-				case DIAMOND_ORE:
-					if(e.getExpToDrop() != 0) value = 100;
-					break;
-				case COAL_ORE:
-					if(e.getExpToDrop() != 0) value = 3;
-					break;
-				case LAPIS_ORE:
-					if(e.getExpToDrop() != 0) value = 30;
-					break;
-				case OBSIDIAN:
-					value = 15;
-					break;
-				case REDSTONE_ORE:
-					if(e.getExpToDrop() != 0) value = 5;
-					break;
-			}
-			value *= MULTIPLIER;
-			/*
+    @SuppressWarnings({"incomplete-switch"})
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void gainEXP(BlockBreakEvent e) {
+        if (e.getPlayer() != null) {
+            Player p = e.getPlayer();
+            try {
+                if (!DMiscUtil.canWorldGuardBuild(p, e.getBlock().getLocation())) return;
+            } catch (Exception ignored) {
+            }
+            if (!DSettings.getEnabledWorlds().contains(p.getWorld())) return;
+            if (!DMiscUtil.isFullParticipant(p)) return;
+            int value = 0;
+            switch (e.getBlock().getType()) {
+                case DIAMOND_ORE:
+                    if (e.getExpToDrop() != 0) value = 100;
+                    break;
+                case COAL_ORE:
+                    if (e.getExpToDrop() != 0) value = 3;
+                    break;
+                case LAPIS_ORE:
+                    if (e.getExpToDrop() != 0) value = 30;
+                    break;
+                case OBSIDIAN:
+                    value = 15;
+                    break;
+                case REDSTONE_ORE:
+                    if (e.getExpToDrop() != 0) value = 5;
+                    break;
+            }
+            value *= MULTIPLIER;
+            /*
 			 * for (Deity d : DMiscUtil.getDeities(p)) {
 			 * DMiscUtil.setDevotion(p, d, DMiscUtil.getDevotion(p, d)+value);
 			 * }
 			 */
-			Deity d = DMiscUtil.getDeities(p).get((int) Math.floor(Math.random() * DMiscUtil.getDeities(p).size()));
-			DMiscUtil.setDevotion(p, d, DMiscUtil.getDevotion(p, d) + value);
-			levelProcedure(p);
-		}
-	}
+            Deity d = DMiscUtil.getDeities(p).get((int) Math.floor(Math.random() * DMiscUtil.getDeities(p).size()));
+            DMiscUtil.setDevotion(p, d, DMiscUtil.getDevotion(p, d) + value);
+            levelProcedure(p);
+        }
+    }
 
-	@EventHandler(priority = EventPriority.HIGH)
-	public void gainEXP(EntityDamageByEntityEvent e)
-	{
-		if(e.getDamager() instanceof Player)
-		{
-			Player p = (Player) e.getDamager();
-			try
-			{
-				if(!DMiscUtil.canWorldGuardBuild(p, e.getEntity().getLocation())) return;
-			}
-			catch(Exception ex)
-			{
-				// Do nothing
-			}
-			if(!DMiscUtil.isFullParticipant(p)) return;
-			if(!DSettings.getEnabledWorlds().contains(p.getWorld())) return;
-			if(!DMiscUtil.canTarget(e.getEntity(), e.getEntity().getLocation()))
-			{
-				return;
-			}
+    @EventHandler(priority = EventPriority.HIGH)
+    public void gainEXP(EntityDamageByEntityEvent e) {
+        if (e.getDamager() instanceof Player) {
+            Player p = (Player) e.getDamager();
+            try {
+                if (!DMiscUtil.canWorldGuardBuild(p, e.getEntity().getLocation())) return;
+            } catch (Exception ex) {
+                // Do nothing
+            }
+            if (!DMiscUtil.isFullParticipant(p)) return;
+            if (!DSettings.getEnabledWorlds().contains(p.getWorld())) return;
+            if (!DMiscUtil.canTarget(e.getEntity(), e.getEntity().getLocation())) {
+                return;
+            }
 			/*
 			 * for (Deity d : DMiscUtil.getDeities(p)) {
 			 * DMiscUtil.setDevotion(p, d, (int)(DMiscUtil.getDevotion(p, d)+e.getDamage()*MULTIPLIER));
 			 * }
 			 */
-			// random deity
-			Deity d = DMiscUtil.getDeities(p).get((int) Math.floor(Math.random() * DMiscUtil.getDeities(p).size()));
-			DMiscUtil.setDevotion(p, d, (int) (DMiscUtil.getDevotion(p, d) + e.getDamage() * MULTIPLIER));
-			levelProcedure(p);
-		}
-	}
+            // random deity
+            Deity d = DMiscUtil.getDeities(p).get((int) Math.floor(Math.random() * DMiscUtil.getDeities(p).size()));
+            DMiscUtil.setDevotion(p, d, (int) (DMiscUtil.getDevotion(p, d) + e.getDamage() * MULTIPLIER));
+            levelProcedure(p);
+        }
+    }
 
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void deathPenalty(EntityDeathEvent e)
-	{
-		if(!(e.getEntity() instanceof Player)) return;
-		Player p = (Player) e.getEntity();
-		if(!DMiscUtil.isFullParticipant(p)) return;
-		if(!DSettings.getEnabledWorlds().contains(p.getWorld())) return;
-		double reduced = 0.1; // TODO
-		long before = DMiscUtil.getDevotion(p);
-		for(Deity d : DMiscUtil.getDeities(p))
-		{
-			int reduceamt = (int) Math.round(DMiscUtil.getDevotion(p, d) * reduced * MULTIPLIER);
-			if(reduceamt > LOSSLIMIT) reduceamt = LOSSLIMIT;
-			DMiscUtil.setDevotion(p, d, DMiscUtil.getDevotion(p, d) - reduceamt);
-		}
-		if(DMiscUtil.getDeities(p).size() < 2) p.sendMessage(ChatColor.DARK_RED + "You have failed in your service to " + DMiscUtil.getDeities(p).get(0).getName() + ".");
-		else p.sendMessage(ChatColor.DARK_RED + "You have failed in your service to your deities.");
-		p.sendMessage(ChatColor.DARK_RED + "Your Devotion has been reduced by " + (before - DMiscUtil.getDevotion(p)) + ".");
-		DMiscUtil.setHP(p, 0);
-	}
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void deathPenalty(EntityDeathEvent e) {
+        if (!(e.getEntity() instanceof Player)) return;
+        Player p = (Player) e.getEntity();
+        if (!DMiscUtil.isFullParticipant(p)) return;
+        if (!DSettings.getEnabledWorlds().contains(p.getWorld())) return;
+        double reduced = 0.1; // TODO
+        long before = DMiscUtil.getDevotion(p);
+        for (Deity d : DMiscUtil.getDeities(p)) {
+            int reduceamt = (int) Math.round(DMiscUtil.getDevotion(p, d) * reduced * MULTIPLIER);
+            if (reduceamt > LOSSLIMIT) reduceamt = LOSSLIMIT;
+            DMiscUtil.setDevotion(p, d, DMiscUtil.getDevotion(p, d) - reduceamt);
+        }
+        if (DMiscUtil.getDeities(p).size() < 2)
+            p.sendMessage(ChatColor.DARK_RED + "You have failed in your service to " + DMiscUtil.getDeities(p).get(0).getName() + ".");
+        else p.sendMessage(ChatColor.DARK_RED + "You have failed in your service to your deities.");
+        p.sendMessage(ChatColor.DARK_RED + "Your Devotion has been reduced by " + (before - DMiscUtil.getDevotion(p)) + ".");
+        DMiscUtil.setHP(p, 0);
+    }
 
-	public static void levelProcedure(Player p)
-	{
-		levelProcedure(p.getName());
-	}
+    public static void levelProcedure(Player p) {
+        levelProcedure(p.getName());
+    }
 
-	public static void levelProcedure(String p)
-	{
-		if(DMiscUtil.isFullParticipant(p)) if(DMiscUtil.getAscensions(p) >= DMiscUtil.ASCENSIONCAP) return;
-		while((DMiscUtil.getDevotion(p) >= DMiscUtil.costForNextAscension(p)) && (DMiscUtil.getAscensions(p) < DMiscUtil.ASCENSIONCAP))
-		{
-			DMiscUtil.setMaxHP(p, DMiscUtil.getMaxHP(p) + 10);
-			DMiscUtil.setHP(p, DMiscUtil.getMaxHP(p));
-			DMiscUtil.setAscensions(p, DMiscUtil.getAscensions(p) + 1);
+    public static void levelProcedure(String p) {
+        if (DMiscUtil.isFullParticipant(p)) if (DMiscUtil.getAscensions(p) >= DMiscUtil.ASCENSIONCAP) return;
+        while ((DMiscUtil.getDevotion(p) >= DMiscUtil.costForNextAscension(p)) && (DMiscUtil.getAscensions(p) < DMiscUtil.ASCENSIONCAP)) {
+            DMiscUtil.setMaxHP(p, DMiscUtil.getMaxHP(p) + 10);
+            DMiscUtil.setHP(p, DMiscUtil.getMaxHP(p));
+            DMiscUtil.setAscensions(p, DMiscUtil.getAscensions(p) + 1);
 
-			if(DMiscUtil.getOnlinePlayer(p) != null)
-			{
-				DMiscUtil.getOnlinePlayer(p).sendMessage(ChatColor.AQUA + "Congratulations! Your Ascensions increased to " + DMiscUtil.getAscensions(p) + ".");
-				DMiscUtil.getOnlinePlayer(p).sendMessage(ChatColor.YELLOW + "Your maximum HP has increased to " + DMiscUtil.getMaxHP(p) + ".");
-			}
-		}
-	}
+            if (DMiscUtil.getOnlinePlayer(p) != null) {
+                DMiscUtil.getOnlinePlayer(p).sendMessage(ChatColor.AQUA + "Congratulations! Your Ascensions increased to " + DMiscUtil.getAscensions(p) + ".");
+                DMiscUtil.getOnlinePlayer(p).sendMessage(ChatColor.YELLOW + "Your maximum HP has increased to " + DMiscUtil.getMaxHP(p) + ".");
+            }
+        }
+    }
 }
